@@ -3,7 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
 { config, pkgs, ... }:
-
+let
+  user = "drone";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -14,6 +16,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  
+  # docker
+  virtualisation.docker.enable = true;
 
   networking.hostName = "kvm-nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -50,10 +55,11 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.drone = {
+  users.defaultUserShell = pkgs.zsh;
+  users.users.${user} = {
     isNormalUser = true;
-    description = "drone";
-    extraGroups = [ "networkmanager" "wheel" ];
+    description = "${user}";
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
   };
 
@@ -63,15 +69,62 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  fonts.fonts = with pkgs; [ nerdfonts ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     neovim
+    wget
+    emacs
+    htop
+    sshfs
     git
-    parted
+    git-crypt
+    gnupg
+    pinentry_qt
+    tcpdump
+    wireshark
+    rclone
+    xclip
+    valgrind
+    ansible
+    speedtest-cli
+    pulseaudio
+    restic
+    gcc
+    clang
+    tmux
+    zsh
     bat
+    syncthing
+    ncdu
+    du-dust
+    delta
     exa
+    nmap
+    fzf
+    tree
+    ripgrep
+    openconnect
+    cmake
+    gnumake
+    lua
+    duf
+    unzip
+    whois
+    plantuml
+    inxi
+    fd
+    shellcheck
+    arandr
+
+    # Backend that is used by oh-my-zsh z plugin.
+    # an alternative is to install autojump
+    # to use the plugin exezute "z" from the shell.
+    zsh-z
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
