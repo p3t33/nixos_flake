@@ -18,6 +18,11 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    SUDO_EDITOR = "nvim";
+  };
+
   home.packages = with pkgs; [
     zsh-syntax-highlighting
     zsh-autosuggestions
@@ -108,8 +113,8 @@
     programs.zsh = {
        history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
        shellAliases = {
-         update = "sudo nixos-rebuild switch";
-         upgrade = "sudo nixos-rebuild switch --upgrade";
+         update = "sudo nixos-rebuild switch --flake /home/drone/system#kvm-nixos";
+         upgrade = "sudo nix flake update && update";
          list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
          clean-generations = "sudo nix-collect-garbage --delete-older-than 2d";
          rollback = "sudo nixos-rebuild switch --rollback";
