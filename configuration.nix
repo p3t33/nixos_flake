@@ -70,6 +70,8 @@
     neovim
     git
     parted
+    bat
+    exa
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
