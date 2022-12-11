@@ -11,6 +11,10 @@
     displayManager = {
       lightdm.enable = true;
       defaultSession = "none+i3";
+      autoLogin = {
+        enable = true;
+        user = "kmedrish";
+      };
     };
 
     desktopManager = {
