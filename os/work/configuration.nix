@@ -10,6 +10,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ../../hardware/work/hardware-configuration.nix
+      ../services/xserver.nix
     ];
 
   # Bootloader.
@@ -49,10 +50,10 @@ in
   };
 
   # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
+  #services.xserver = {
+  #  layout = "us";
+  #  xkbVariant = "";
+  #};
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
