@@ -21,7 +21,7 @@
       lib = nixpkgs.lib;
     in{
       nixosConfigurations = {
-        kvm-nixos = lib.nixosSystem {
+        kvm_vm = lib.nixosSystem {
 	  inherit system;
 	  modules = [ 
 	  ./os/vm/configuration.nix 
@@ -35,11 +35,27 @@
 	};
       };
 
+      nixosConfigurations = {
+        work_pc = lib.nixosSystem {
+	  inherit system;
+	  modules = [ 
+	  ./os/work/configuration.nix 
+	  home-manager.nixosModules.home-manager
+	  {
+	    home-manager.useGlobalPkgs = true;
+	    home-manager.useUserPackages = true;
+	    home-manager.users.drone = import ./home/work/home.nix;
+	  }
+	  ];
+	};
+      };
+
+
     hmConfig = {
       drone = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 	modules = [
-	  ./home.nix
+	  ./home/vm/home.nix
 	];
       };
     };
