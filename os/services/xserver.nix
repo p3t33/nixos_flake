@@ -1,6 +1,7 @@
 {config, pkgs, ...}:
 
 {
+
   services.xserver = {
     enable = true;
     layout = "us,il";
@@ -16,18 +17,15 @@
       cinnamon.enable = true;
     };
 
-    videoDrivers = [ "intel" ];
-
     windowManager.i3 = {
       enable = true;
       #configFile = "/etc/i3.conf";
       extraPackages = with pkgs; [
-        dmenu
 	rofi
 	i3status
 	i3blocks
-	#i3lock
       ];
     };
   };
+
 }
