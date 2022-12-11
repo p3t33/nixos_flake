@@ -26,6 +26,7 @@
     ../modules/zsh.nix
     ../modules/tmux.nix
     ../modules/ssh.nix
+    ../modules/sxhkd.nix
   ];
 
   home.sessionVariables = {
