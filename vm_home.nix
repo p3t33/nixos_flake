@@ -21,6 +21,7 @@
   imports = [
     ./home/vm_home
   ];
+
   home.sessionVariables = {
     EDITOR = "nvim";
     SUDO_EDITOR = "nvim";
@@ -31,11 +32,6 @@
     zsh-autosuggestions
     thefuck
   ];
-
-  programs.ssh = {
-    enable = true;
-  };
-
 
     programs.zsh = {
        history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
@@ -85,22 +81,4 @@
         #theme = "avit";
       };
     };
-
-    programs.git = {
-      enable = true;
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          line-numbers = true;
-          side-by-side = true;
-          theme = "Nord";
-        };
-      };
-
-      userName = "Kobi Medrish";
-      userEmail = "kobi.medrish@motorolasolutions.com";
-    };
-
-
 }
