@@ -1,0 +1,7 @@
+{ ... }:
+{
+
+  programs ssh = {
+    enable = true;
+  };
+}

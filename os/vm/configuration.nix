@@ -64,7 +64,7 @@ in
   };
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = "drone";
+  services.getty.autologinUser = "${user}";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;

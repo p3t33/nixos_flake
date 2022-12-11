@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "drone";
-  home.homeDirectory = "/home/drone";
+  home.username = "kmedrish";
+  home.homeDirectory = "/home/kmedrish";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -25,6 +25,7 @@
     ../modules/git.nix
     ../modules/zsh.nix
     ../modules/tmux.nix
+    ../modules/ssh.nix
   ];
 
   home.sessionVariables = {
