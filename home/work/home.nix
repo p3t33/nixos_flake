@@ -28,6 +28,7 @@
     ../modules/ssh.nix
     ../modules/sxhkd.nix
     ../modules/syncthing.nix
+    ../modules/i3status.nix
   ];
 
   home.sessionVariables = {
