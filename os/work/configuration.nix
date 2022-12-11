@@ -21,6 +21,12 @@ in
   # docker
   virtualisation.docker.enable = true;
 
+  #KVM
+  virtualisation.libvirtd.enable = true;
+  programs.dconf.enable = true;
+
+  services.udev.packages = [ pkgs.moolticute.udev ];
+
   networking.hostName = "HP-Zbook"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
