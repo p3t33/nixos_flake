@@ -71,18 +71,23 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     neovim
     wget
+    firefox
     emacs
     htop
+    gimp
     sshfs
     git
     git-crypt
     gnupg
     pinentry_qt
+    picocom
     tcpdump
     wireshark
+    moolticute
+    polybar
     rclone
     xclip
     valgrind
@@ -92,18 +97,27 @@ in
     restic
     gcc
     clang
+    vscode
+    cherrytree
     tmux
+    gparted
+    dmenu
     zsh
     bat
     syncthing
+    vlc
     ncdu
     du-dust
     delta
     exa
     nmap
+    alacritty
+    moolticute
     fzf
     tree
     ripgrep
+    cryptomator
+    veracrypt
     openconnect
     cmake
     gnumake
@@ -115,13 +129,35 @@ in
     inxi
     fd
     shellcheck
+    xorg.xrandr
     arandr
+    google-chrome
+    nitrogen # A wallpaper browser and setter for X11
+    picom # A fork of XCompMgr, a sample compositing manager for X servers
+    gnome.nautilus
+    flameshot
+    sxhkd
 
     # Backend that is used by oh-my-zsh z plugin.
     # an alternative is to install autojump
     # to use the plugin exezute "z" from the shell.
     zsh-z
 
+    # U2F libraries - this needs to be tested because not all
+    # packages that are installed on Ubuntu 22.04 were installed
+    # and found here.
+    libfido2 #webauto
+    pam_u2f #linux system
+
+    # Virt-manager
+    virt-manager
+    qemu_kvm
+    qemu
+    libvirt
+
+    # infrastructure as code
+    packer
+    vagrant
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
