@@ -24,7 +24,7 @@
         kvm-nixos = lib.nixosSystem {
 	  inherit system;
 	  modules = [ 
-	  ./configuration.nix 
+	  ./os_configurations/vm/configuration.nix 
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;
