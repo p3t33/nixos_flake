@@ -29,7 +29,7 @@
 	  {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
-	    home-manager.users.drone = import ./home/vm_home;
+	    home-manager.users.drone = import ./home/vm/home.nix;
 	  }
 	  ];
 	};
