@@ -27,6 +27,7 @@
     ../modules/tmux.nix
     ../modules/ssh.nix
     ../modules/sxhkd.nix
+    ../modules/syncthing.nix
   ];
 
   home.sessionVariables = {
