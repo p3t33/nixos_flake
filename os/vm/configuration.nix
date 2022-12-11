@@ -58,6 +58,7 @@ in
   users.defaultUserShell = pkgs.zsh;
   users.users.${user} = {
     isNormalUser = true;
+    initialPassword = "q";
     description = "${user}";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
