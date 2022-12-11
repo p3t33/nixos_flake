@@ -30,6 +30,7 @@
     ../modules/syncthing.nix
     ../modules/i3status.nix
     ../modules/alacritty.nix
+    ../modules/picom.nix
   ];
 
   home.sessionVariables = {
