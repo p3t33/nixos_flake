@@ -44,7 +44,7 @@
 	  {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
-	    home-manager.users.drone = import ./home/work/home.nix;
+	    home-manager.users.kmedrish = import ./home/work/home.nix;
 	  }
 	  ];
 	};

@@ -4,7 +4,7 @@
 
 { config, pkgs, ... }:
 let
-  user = "drone";
+  user = "kmedrish";
 in
 {
   imports =
@@ -20,7 +20,7 @@ in
   # docker
   virtualisation.docker.enable = true;
 
-  networking.hostName = "kvm-nixos"; # Define your hostname.
+  networking.hostName = "HP-Zbook"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -58,13 +58,14 @@ in
   users.defaultUserShell = pkgs.zsh;
   users.users.${user} = {
     isNormalUser = true;
+    initialPassword = "changeme";
     description = "${user}";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
   };
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = "drone";
+  services.getty.autologinUser = "${user}";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
