@@ -29,6 +29,7 @@
     ../modules/sxhkd.nix
     ../modules/syncthing.nix
     ../modules/i3status.nix
+    ../modules/alacritty.nix
   ];
 
   home.sessionVariables = {
