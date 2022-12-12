@@ -31,6 +31,7 @@
     ../modules/i3status.nix
     ../modules/alacritty.nix
     ../modules/picom.nix
+    ../modules/i3.nix.com
   ];
 
   home.sessionVariables = {
