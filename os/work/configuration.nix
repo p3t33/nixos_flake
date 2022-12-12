@@ -66,9 +66,6 @@ in
     packages = with pkgs; [];
   };
 
-  # Enable automatic login for the user.
-  services.getty.autologinUser = "${user}";
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
