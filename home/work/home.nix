@@ -19,6 +19,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   imports = [
+    ./wallpaper.nix
     ../modules/starship.nix
     ../modules/fzf.nix
     ../modules/neovim.nix

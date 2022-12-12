@@ -13,6 +13,8 @@ let
   ws9 = "9: VPN";
   ws10 = "10";
 
+  wallpaperOut = "wallpaper/city.jpg";
+
 in {
   xsession.windowManager.i3 = {
     enable = true;
@@ -51,6 +53,11 @@ in {
         {
           command = "${pkgs.google-chrome}/bin/google-chrome-stable";
           always = false;
+          notification = false;
+        }
+        {
+          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${wallpaperOut} --head=-1";
+          always = true;
           notification = false;
         }
       ];
