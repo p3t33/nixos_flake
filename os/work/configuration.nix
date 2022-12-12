@@ -90,6 +90,8 @@ in
 
   fonts.fonts = with pkgs; [ nerdfonts ];
 
+  environment.variables.EDITOR = "nvim";
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
