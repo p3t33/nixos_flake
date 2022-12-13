@@ -26,13 +26,13 @@
     ../modules/git.nix
     ../modules/zsh.nix
     ../modules/tmux.nix
-    ../modules/ssh.nix
     ../modules/sxhkd.nix
     ../modules/syncthing.nix
     ../modules/i3status.nix
     ../modules/alacritty.nix
     ../modules/picom.nix
     ../modules/i3.nix
+    ../modules/gpg.nix
   ];
 
   home.sessionVariables = {
