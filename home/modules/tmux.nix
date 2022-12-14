@@ -34,6 +34,10 @@ programs.tmux = {
 	
     set-option -g status-position top
 
+    # S easier move of windows
+    bind-key -r < swap-window -t -
+    bind-key -r > swap-window -t +
+
     # Plugins
     # -------
 
