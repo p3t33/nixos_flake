@@ -3,11 +3,11 @@
 let
     # relative path for wallpaper on system
     # fulle path will be:
-    # ~/.config/wallpaper/city.jpg
-  wallpaperOut = "wallpaper/city.jpg";
+    # ~/.config/wallpaper/mountains.jpg
+  wallpaperOut = "wallpaper/mountain.jpg";
 
 in
 
 {
-  xdg.configFile."${wallpaperOut}".source = ../../wallpaper/city.jpg;
+  xdg.configFile."${wallpaperOut}".source = ../../wallpaper/mountain.jpg;
 }

@@ -32,6 +32,7 @@
     ../modules/alacritty.nix
     ../modules/picom.nix
     ../modules/i3.nix
+    ../modules/rofi.nix
     ../modules/gpg.nix
     ../modules/ssh/work/ssh.nix
   ];
