@@ -3,7 +3,20 @@
 
   programs.i3status = {
     enable = true;
+    # Enables display of defult data
+    # can work along with set modules
     enableDefault = false;
+
+
+    # According to documentation the format for
+    # setting the modules option is as follows:
+    #
+    # programs.i3status.modules.<name>.<option>
+    # so for example "volume master" is a "name"
+    #
+    # by default each "name" that is defined is
+    # enabled implicitly. 
+    # programs.i3status.modules.<name>.enable
     modules = {
       "volume master" = {
          position = 1;
