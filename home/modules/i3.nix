@@ -149,6 +149,35 @@ in {
 
       };
 
+      # i3wm like other tiling window managers defines where and how bars are
+      # set(position, font...). i3wm has a builtin status bar called i3bar.
+      #
+      # i3wm isn't responsible for what informtion is displayed inside the bar
+      # that is defined at the status bar level(E.g i3status). i3bar might be
+      # an exception to the rule.
+      #
+      # nixOS specifics:
+      #
+      # If a standalone bar such as i3status has home-manger configuration and
+      # it is enabled but no bars option is set for it, it will be present
+      # and default settings will be applied for it. 
+      
+      bars = [
+        {
+          position = "bottom";
+          fonts = {
+            names = [ "nerdfonts" ];
+            size = 20.0;
+          };
+
+          # No need to specify path for settings file for i3status bar.
+          # By default i3status will look for config files at specific paths.
+          # I have a seperate file with definitions for i3status bar and it will
+          # generate a config file for i3status to look at.
+          statusCommand = "${pkgs.i3status}/bin/i3status";
+        }
+
+      ];
       modes = {
         resize = {
 
