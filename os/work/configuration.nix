@@ -123,6 +123,7 @@ in
     git
     git-crypt
     gnupg
+    # used by gpg-agent as a gui popup
     pinentry_qt
     picocom
     tcpdump
