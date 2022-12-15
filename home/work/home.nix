@@ -33,6 +33,7 @@
     ../modules/picom.nix
     ../modules/i3.nix
     ../modules/gpg.nix
+    ../modules/ssh/work/ssh.nix
   ];
 
   home.sessionVariables = {
