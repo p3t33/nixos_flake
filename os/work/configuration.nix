@@ -17,7 +17,14 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  
+
+
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
+
   # docker
   virtualisation.docker.enable = true;
 
@@ -36,6 +43,13 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
+  
+  networking.interfaces.enp0s20f0u6u3u1.useDHCP = false;
+  networking.interfaces.enp0s20f0u6u3u1.ipv4.addresses = [ {
+    address = "192.168.99.1";
+    prefixLength = 24;
+  } ];
+
 
   # Set your time zone.
   time.timeZone = "Asia/Jerusalem";
@@ -84,6 +98,9 @@ in
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
   };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
