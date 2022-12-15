@@ -13,7 +13,7 @@ let
   ws9 = "9: VPN";
   ws10 = "10";
 
-  wallpaperOut = "wallpaper/city.jpg";
+  wallpaperOut = "wallpaper/mountain.jpg";
 
 in {
   xsession.windowManager.i3 = {
@@ -28,7 +28,8 @@ in {
         size = 20.0;
       };
 
-      menu = "${pkgs.rofi}/bin/rofi -show drun -show-icons";
+      # mod + d
+      menu = "${pkgs.rofi}/bin/rofi -modi drun -show drun";
 
       startup = [
         {
@@ -79,8 +80,9 @@ in {
 
 
 
-        "${mod}+p" = "exec ${pkgs.dmenu}/bin/dmenu_run";
-        "${mod}+x" = "exec sh -c '${pkgs.maim}/bin/maim -s | xclip -selection clipboard -t image/png'";
+        "${mod}+x" = ''exec --no-startup-id "rofi -modi ssh -show ssh"'';
+        "${mod}+z" = ''exec --no-startup-id "rofi -modi emoji -show emoji"'';
+        "${mod}+c" = ''exec --no-startup-id "rofi -modi calc -show calc"'';
         "${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
 
         # Change focus
