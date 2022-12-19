@@ -120,6 +120,8 @@ in
     htop
     gimp
     sshfs
+    present
+    slides
     git
     git-crypt
     gnupg
