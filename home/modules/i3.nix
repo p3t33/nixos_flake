@@ -1,6 +1,25 @@
 { config, lib, pkgs, ... }:
 
 let 
+  colors = rec {
+    background = "#312f2f";
+    background-alt = "#3b4354";
+
+    foreground = "#F1FAEE";
+
+    primary = "#08D9D6";
+    secondary = "#047672";
+    alert = "#ff2e63";
+    disabled = "#707880";
+
+    bg = "#2f343f";
+    inactive-bg = "#2f343f";
+    text = "#f3f4f5";
+    inactive-text = "#676E70";
+    urgent-bg = "#E53935";
+    
+  };
+
   mod = "Mod4";
   ws1 = "1:  Firefox";
   ws2 = "2:  VSCode";
@@ -154,6 +173,32 @@ in {
         "XF86AudioMicMute" = "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle";
       };
 
+      colors = {
+        focused = {
+          text = colors.text;
+          background = colors.background-alt;
+          border = colors.primary;
+          childBorder = colors.primary;
+          indicator = colors.alert;
+        };
+
+        focusedInactive = {
+          text = colors.inactive-text;
+          background = colors.inactive-bg;
+          border = colors.inactive-bg;
+          childBorder = colors.secondary;
+          indicator = colors.alert;
+        };
+
+        unfocused = {
+          text = colors.inactive-text;
+          background = colors.inactive-bg;
+          border = colors.background;
+          childBorder = colors.background;
+          indicator = colors.alert;
+          };
+        };
+
       # i3wm like other tiling window managers defines where and how bars are
       # set(position, font...). i3wm has a builtin status bar called i3bar.
       #
@@ -180,6 +225,29 @@ in {
           # I have a seperate file with definitions for i3status bar and it will
           # generate a config file for i3status to look at.
           statusCommand = "${pkgs.i3status}/bin/i3status";
+          colors = {
+            background = colors.bg;
+            separator = "#757575";
+
+            focusedWorkspace = {
+              border = colors.bg;
+              background = colors.bg;
+              text = colors.text;
+            };
+
+            inactiveWorkspace = {
+              border = colors.inactive-bg;
+              background = colors.inactive-bg;
+              text = colors.inactive-text;
+            };
+
+            urgentWorkspace = {
+              border = colors.urgent-bg;
+              background = colors.urgent-bg;
+              text = colors.text;
+            };
+
+          };
         }
 
       ];
