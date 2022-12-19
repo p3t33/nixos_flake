@@ -80,6 +80,11 @@ in {
           always = true;
           notification = false;
         }
+        {
+          command = "pgrep sxhkd || ${pkgs.sxhkd}/bin/sxhkd";
+          always = true;
+          notification = false;
+        }
       ];
 
       assigns = {
@@ -99,10 +104,10 @@ in {
 
 
 
-        "${mod}+x" = ''exec --no-startup-id "rofi -modi ssh -show ssh"'';
-        "${mod}+z" = ''exec --no-startup-id "rofi -modi emoji -show emoji"'';
-        "${mod}+c" = ''exec --no-startup-id "rofi -modi calc -show calc"'';
-        "${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
+        #"${mod}+x" = ''exec --no-startup-id "rofi -modi ssh -show ssh"'';
+        #"${mod}+z" = ''exec --no-startup-id "rofi -modi emoji -show emoji"'';
+        #"${mod}+c" = ''exec --no-startup-id "rofi -modi calc -show calc"'';
+        #"${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
 
         # Change focus
         "${mod}+h" = "focus left";
