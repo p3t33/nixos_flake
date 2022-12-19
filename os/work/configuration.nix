@@ -95,7 +95,7 @@ in
     isNormalUser = true;
     initialPassword = "changeme";
     description = "${user}";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" ];
     packages = with pkgs; [];
   };
 
