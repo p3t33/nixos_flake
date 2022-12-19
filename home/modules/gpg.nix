@@ -1,4 +1,8 @@
 { ... }:
+let
+  # 12 hours in seconds
+  timeout = 43200;
+in
 {
 
   programs.gpg = {
@@ -7,6 +11,15 @@
 
   services.gpg-agent = {
     enableSshSupport = true;
+
+    # this is the overall timeout it overides any other
+    # set values. By default it is set to 2 hours. 
+    # Which means that even if defaultCacheTtlSsh is set 
+    # for more then 2 hours it will be ignored by the 
+    # value in maxCachedTtl
+    maxCacheTtl = timeout;
+    defaultCacheTtl = timeout;
+    defaultCacheTtlSsh = timeout;
     enable = true;
 
     # Requires pinentry_qt to be installed.
