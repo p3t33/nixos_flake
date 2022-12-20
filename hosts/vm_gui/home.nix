@@ -20,21 +20,21 @@
   programs.home-manager.enable = true;
   imports = [
     ./wallpaper.nix
-    ../modules/starship.nix
-    ../modules/fzf.nix
-    ../modules/neovim.nix
-    ../modules/git.nix
-    ../modules/zsh.nix
-    ../modules/tmux.nix
-    ../modules/sxhkd.nix
-    ../modules/syncthing.nix
-    ../modules/i3status.nix
-    ../modules/alacritty.nix
-    ../modules/picom.nix
-    ../modules/i3.nix
-    ../modules/rofi.nix
-    ../modules/gpg.nix
-    ../modules/ssh/work/ssh.nix
+    ../../home/modules/starship.nix
+    ../../home/modules/fzf.nix
+    ../../home/modules/neovim.nix
+    ../../home/modules/git.nix
+    ../../home/modules/zsh.nix
+    ../../home/modules/tmux.nix
+    ../../home/modules/sxhkd.nix
+    ../../home/modules/syncthing.nix
+    ../../home/modules/i3status.nix
+    ../../home/modules/alacritty.nix
+    ../../home/modules/picom.nix
+    ../../home/modules/i3.nix
+    ../../home/modules/rofi.nix
+    ../../home/modules/gpg.nix
+    ../../home/modules/ssh/work/ssh.nix
   ];
 
   home.sessionVariables = {

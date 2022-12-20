@@ -21,15 +21,30 @@
       lib = nixpkgs.lib;
     in{
       nixosConfigurations = {
-        kvm_vm = lib.nixosSystem {
+        vm_server = lib.nixosSystem {
 	  inherit system;
 	  modules = [ 
-	  ./os/vm/configuration.nix 
+	  ./hosts/vm_server/configuration.nix 
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
-	    home-manager.users.drone = import ./home/vm/home.nix;
+	    home-manager.users.drone = import ./hosts/vm_server/home.nix;
+	  }
+	  ];
+	};
+      };
+
+      nixosConfigurations = {
+        vm_gui = lib.nixosSystem {
+	  inherit system;
+	  modules = [ 
+	  ./hosts/vm_gui/configuration.nix 
+	  home-manager.nixosModules.home-manager
+	  {
+	    home-manager.useGlobalPkgs = true;
+	    home-manager.useUserPackages = true;
+	    home-manager.users.kmedrish = import ./hosts/vm_gui/home.nix;
 	  }
 	  ];
 	};
@@ -39,12 +54,12 @@
         work_pc = lib.nixosSystem {
 	  inherit system;
 	  modules = [ 
-	  ./os/work/configuration.nix 
+	  ./hosts/work_pc/configuration.nix 
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;
 	    home-manager.useUserPackages = true;
-	    home-manager.users.kmedrish = import ./home/work/home.nix;
+	    home-manager.users.kmedrish = import ./hosts/work_pc/home.nix;
 	  }
 	  ];
 	};
