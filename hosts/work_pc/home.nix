@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "drone";
-  home.homeDirectory = "/home/drone";
+  home.username = "kmedrish";
+  home.homeDirectory = "/home/kmedrish";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -19,11 +19,22 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   imports = [
-    ../modules/starship.nix
-    ../modules/fzf.nix
-    ../modules/neovim.nix
-    ../modules/git.nix
-    ../modules/zsh.nix
+    ./wallpaper.nix
+    ../../home/modules/starship.nix
+    ../../home/modules/fzf.nix
+    ../../home/modules/neovim.nix
+    ../../home/modules/git.nix
+    ../../home/modules/zsh.nix
+    ../../home/modules/tmux.nix
+    ../../home/modules/sxhkd.nix
+    ../../home/modules/syncthing.nix
+    ../../home/modules/i3status.nix
+    ../../home/modules/alacritty.nix
+    ../../home/modules/picom.nix
+    ../../home/modules/i3.nix
+    ../../home/modules/rofi.nix
+    ../../home/modules/gpg.nix
+    ../../home/modules/ssh/work/ssh.nix
   ];
 
   home.sessionVariables = {

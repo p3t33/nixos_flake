@@ -9,8 +9,8 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      ../../hardware/vm/hardware-configuration.nix
-      ./services.nix
+      ./hardware-configuration.nix
+      ./configuration-services.nix
     ];
 
   # Bootloader.
