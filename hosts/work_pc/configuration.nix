@@ -122,6 +122,7 @@ in
     sshfs
     present
     slides
+    rofi-power-menu
     git
     git-crypt
     gnupg

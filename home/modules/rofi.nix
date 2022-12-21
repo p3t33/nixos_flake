@@ -26,7 +26,7 @@ in
     enable = true;
 
     #package = with pkgs; rofi.override { plugins = [ rofi-calc rofi-emoji ]; };
-    plugins = with pkgs; [ rofi-calc rofi-emoji ];
+    plugins = with pkgs; [ rofi-calc rofi-emoji rofi-power-menu];
     #plugins = [ pkgs.rofi-calc pkgs.rofi-emoji ];
 
     #package = with pkgs; rofi.override { plugins = [ rofi-calc rofi-emoji ]; };
@@ -131,7 +131,7 @@ in
 
     extraConfig = {
       show-icons = true;
-      modi = "drun,ssh,emoji,calc";
+      modi = "drun,ssh,emoji,calc, power-menu";
       #modi = "drun,ssh";
       terminal = "alacritty";
     };

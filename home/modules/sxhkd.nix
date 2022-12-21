@@ -33,7 +33,7 @@
          rofi -modi calc -show calc
        
        super + p
-         flameshot gui
+         rofi -modi power-menu:rofi-power-menu -show power-menu
 
        Print
          flameshot gui
