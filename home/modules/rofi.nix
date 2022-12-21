@@ -132,8 +132,8 @@ in
     extraConfig = {
       show-icons = true;
       modi = "drun,ssh,emoji,calc, power-menu";
-      #modi = "drun,ssh";
       terminal = "alacritty";
+      sort = true;
     };
   };
 
