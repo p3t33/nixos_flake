@@ -73,6 +73,7 @@ in
     emacs
     htop
     sshfs
+    rofi-power-menu
     git
     git-crypt
     gnupg
