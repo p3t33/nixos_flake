@@ -11,6 +11,7 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ../../os/fonts.nix
     ];
 
   # Bootloader.
@@ -104,8 +105,6 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  fonts.fonts = with pkgs; [ nerdfonts ];
 
   environment.variables.EDITOR = "nvim";
 

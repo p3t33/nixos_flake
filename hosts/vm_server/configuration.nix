@@ -11,6 +11,7 @@ in
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ../../os/fonts.nix
     ];
 
   # Bootloader.
