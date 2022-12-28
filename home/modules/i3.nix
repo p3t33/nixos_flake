@@ -35,6 +35,9 @@ let
   wallpaperOut = "wallpaper/mountain.jpg";
 
 in {
+  # uncomment if you would like to use the i3status bar
+  #imports = [./i3/bars.nix];
+
   xsession.windowManager.i3 = {
     enable = true;
     
@@ -47,10 +50,21 @@ in {
         size = 20.0;
       };
 
+      # using polybar so this isn't required.
+      # if the imports varible is commented in then the bars = [] needs
+      # to be commented out or there will be conflicts. and nixos will
+      # fail to build.
+      bars = [];
+
       # mod + d
       menu = "${pkgs.rofi}/bin/rofi -modi drun -show drun";
 
       startup = [
+        {
+          command = "systemctl --user restart polybar";
+          always = true;
+          notification = false;
+        }
         {
           command = "${pkgs.vscode}/bin/code";
 
@@ -217,45 +231,6 @@ in {
       # it is enabled but no bars option is set for it, it will be present
       # and default settings will be applied for it. 
       
-      bars = [
-        {
-          position = "bottom";
-          fonts = {
-            names = [ "nerdfonts" ];
-            size = 20.0;
-          };
-
-          # No need to specify path for settings file for i3status bar.
-          # By default i3status will look for config files at specific paths.
-          # I have a seperate file with definitions for i3status bar and it will
-          # generate a config file for i3status to look at.
-          statusCommand = "${pkgs.i3status}/bin/i3status";
-          colors = {
-            background = colors.bg;
-            separator = "#757575";
-
-            focusedWorkspace = {
-              border = colors.bg;
-              background = colors.bg;
-              text = colors.text;
-            };
-
-            inactiveWorkspace = {
-              border = colors.inactive-bg;
-              background = colors.inactive-bg;
-              text = colors.inactive-text;
-            };
-
-            urgentWorkspace = {
-              border = colors.urgent-bg;
-              background = colors.urgent-bg;
-              text = colors.text;
-            };
-
-          };
-        }
-
-      ];
       modes = {
         resize = {
 
