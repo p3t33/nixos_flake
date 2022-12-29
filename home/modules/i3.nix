@@ -173,6 +173,10 @@ in {
         "${mod}+Shift+9" = "move container to workspace number ${ws9}";
         "${mod}+Shift+10" = "move container to workspace number ${ws10}";
 
+        # Move focus to different outputs(monitors)
+        "${mod}+comma" = "focus output left";
+        "${mod}+period" = "focus output right";
+
         # Move workspace to different outputs(monitors)
         "${mod}+Shift+comma" = "move workspace to output left";
         "${mod}+Shift+period" = "move workspace to output right";
