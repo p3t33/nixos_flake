@@ -66,7 +66,7 @@ in
         font-0 = "JetBrainsMono Nerd Font:style=Regular:size=15;4";
         # Just sticking them together in the center for now
         modules-left = "i3";
-        modules-right = "filesystem memory cpu wlan battery allen_tx date";
+        modules-right = "filesystem memory cpu wlan battery date allen_tx ";
         #modules-center = "i3";
 
         cursor-click = "pointer";
@@ -189,7 +189,7 @@ in
         "module/date" = {
           type = "internal/date";
           interval = 1;
-          date = "%H:%M %d-%m-%Y";
+          date = "%H:%M  %d-%m-%Y";
           label = "%date%";
           format = "<label>";
           format-prefix = " ";
