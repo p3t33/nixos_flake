@@ -13,7 +13,10 @@ programs.tmux = {
   sensibleOnTop = true;
 
   plugins = with pkgs.tmuxPlugins; [
-    resurrect
+    {
+        plugin = resurrect;
+        extraConfig = "set -g @resurrect-strategy-nvim 'session'"; 
+    }
     continuum
     nord
   ];
@@ -42,7 +45,6 @@ programs.tmux = {
     # -------
 
     # Tmux resurrect
-    #set -g @resurrect-strategy-vim 'session'
 
     #set -g @resurrect-strategy-nvim 'session'
     #set -g @continuum-boot 'on'
