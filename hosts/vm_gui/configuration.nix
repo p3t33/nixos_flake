@@ -66,13 +66,13 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     neovim
     wget
     emacs
     htop
     sshfs
     rofi-power-menu
+    slack
     git
     git-crypt
     gnupg
@@ -80,12 +80,25 @@ in
     tcpdump
     wireshark
     rclone
+
+    # required by neovim/vim for copy/past
+    # to work with system clipboard on x11.
     xclip
     valgrind
     ansible
     speedtest-cli
     pulseaudio
     restic
+    present
+    slides
+    polybar
+    sumneko-lua-language-server
+    ccls # LSP for C/CPP
+    clang-tools # has clangd as part of it
+    rnix-lsp
+    vscode
+    cherrytree
+    alacritty
     gcc
     clang
     tmux
@@ -117,6 +130,8 @@ in
     # an alternative is to install autojump
     # to use the plugin exezute "z" from the shell.
     zsh-z
+
+    universal-ctags
 
   ];
 

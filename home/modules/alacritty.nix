@@ -5,11 +5,12 @@
     enable = true;
     settings = {
       font = {
-	size = 20;
+	size = 18;
       };
 
       window = {
         opacity = 0.95;
+        dynamic_padding = false;
       };
 
       colors = {
