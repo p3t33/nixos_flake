@@ -122,6 +122,7 @@ in
     present
     slides
     rofi-power-menu
+    slack
     git
     git-crypt
     gnupg
@@ -133,6 +134,9 @@ in
     moolticute
     polybar
     rclone
+
+    # required by neovim/vim for copy/past
+    # to work with system clipboard on x11.
     xclip
     valgrind
     ansible
@@ -140,7 +144,11 @@ in
     pulseaudio
     restic
     gcc
+    sumneko-lua-language-server
+    ccls # LSP for C/CPP
+    clang-tools # has clangd as part of it
     clang
+    rnix-lsp
     vscode
     cherrytree
     tmux
@@ -202,6 +210,7 @@ in
     # infrastructure as code
     packer
     vagrant
+    universal-ctags
   ];
 
   # Automatic garbage collection.
