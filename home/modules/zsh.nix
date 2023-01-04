@@ -52,6 +52,7 @@
         "sudo"
         "web-search"
         "z"
+        "vi-mode"
       ];
       # Not used because I am using starship prompt.
       #theme = "agnoster";
