@@ -76,6 +76,9 @@ in
     rofi-power-menu
     slack
     lsyncd
+    plantuml
+    graphviz
+    jdk11
     git
     git-crypt
     gnupg
