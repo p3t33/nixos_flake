@@ -82,6 +82,7 @@ in
     emacs
     htop
     sshfs
+    lsyncd
     git
     present
     slides

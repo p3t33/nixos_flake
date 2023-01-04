@@ -124,6 +124,7 @@ in
     slides
     rofi-power-menu
     slack
+    lsyncd
     git
     git-crypt
     gnupg
