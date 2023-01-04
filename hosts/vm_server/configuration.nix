@@ -83,6 +83,9 @@ in
     htop
     sshfs
     lsyncd
+    plantuml
+    graphviz
+    jdk11
     git
     present
     slides
