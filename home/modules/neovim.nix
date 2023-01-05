@@ -290,6 +290,7 @@
         '';
       }
 
+      trouble-nvim
       # status/tabline 
       # --------------
       vim-airline
@@ -297,6 +298,10 @@
       # Icons
       # -----
       vim-devicons
+
+      # required by trouble-nvim
+      nvim-web-devicons
+
 
       #pear-tree
       delimitMate
@@ -325,7 +330,6 @@
           vim.keymap.set("n", "<leader>a", mark.add_file)
           vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
 
-          vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end)
           vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end)
           vim.keymap.set("n", "<C-n>", function() ui.nav_file(3) end)
           vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
@@ -434,27 +438,21 @@
       "make file executalbe"
       nnoremap <silent> <leader>x <cmd>!chmod +x %<CR>
 
-      nnoremap <leader>t :NERDTree<CR>
-      nnoremap <C-n> :NERDTree<CR>
-      nnoremap <C-t> :NERDTreeToggle<CR>
+      nnoremap <C-f> :NERDTreeToggle<CR>
 
-      nnoremap <C-p> :Files<Cr>
-      nnoremap <C-f> :Rg<Cr>
-      nnoremap <C-b> :Buffers<Cr>Cr
+      nnoremap <leader>ff :Files<Cr>
+      nnoremap <leader>fs :Rg<Cr>
+      nnoremap <leader>fb :Buffers<Cr>Cr
 
       nmap<F8> :TagbarToggle<CR>
       map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us<CR>
+
+      noremap <leader>xd :TroubleToggle<CR>
 
       noremap <Up> <Nop>
       noremap <Down> <Nop>
       noremap <Left> <Nop>
       noremap <Right> <Nop>
-
-      nnoremap <C-h> <C-w>h
-      nnoremap <C-j> <C-w>j
-      nnoremap <C-k> <C-w>k
-      nnoremap <C-l> <C-w>l
-
 
       nmap <silent> <c-k> :wincmd k<CR>
       nmap <silent> <c-j> :wincmd j<CR>
