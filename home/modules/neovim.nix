@@ -348,7 +348,30 @@
 
       # Navigation
       # ==========
-      fzf-vim
+      {
+          plugin = fzf-vim;
+          config = ''
+
+              "FZF Buffer Delete
+
+              function! s:list_buffers()
+              redir => list
+              silent ls
+              redir END
+              return split(list, "\n")
+              endfunction
+
+              function! s:delete_buffers(lines)
+              execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
+              endfunction
+
+              command! BD call fzf#run(fzf#wrap({
+                          \ 'source': s:list_buffers(),
+                          \ 'sink*': { lines -> s:delete_buffers(lines) },
+                          \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+                          \ }))
+          '';
+      }
       nerdtree
 
       {
@@ -480,9 +503,12 @@
 
       nnoremap <C-f> :NERDTreeToggle<CR>
 
+      "fzf"
       nnoremap <leader>ff :Files<Cr>
       nnoremap <leader>fs :Rg<Cr>
       nnoremap <leader>fb :Buffers<Cr>
+      nnoremap <leader>fd :BD<Cr>
+
 
       nmap<F8> :TagbarToggle<CR>
       map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us<CR>
@@ -498,6 +524,8 @@
       nmap <silent> <c-j> :wincmd j<CR>
       nmap <silent> <c-h> :wincmd h<CR>
       nmap <silent> <c-l> :wincmd l<CR>
+
+
       '';
     };
 
