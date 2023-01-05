@@ -16,6 +16,7 @@ in
       ../../os/garbage_collection.nix
       ../../os/system_version.nix
       ../../os/non_free_software.nix
+      ../../os/locale.nix
     ];
 
   # Bootloader.
@@ -54,25 +55,6 @@ in
     address = "192.168.99.1";
     prefixLength = 24;
   } ];
-
-
-  # Set your time zone.
-  time.timeZone = "Asia/Jerusalem";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_IL";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "he_IL.UTF-8";
-    LC_IDENTIFICATION = "he_IL.UTF-8";
-    LC_MEASUREMENT = "he_IL.UTF-8";
-    LC_MONETARY = "he_IL.UTF-8";
-    LC_NAME = "he_IL.UTF-8";
-    LC_NUMERIC = "he_IL.UTF-8";
-    LC_PAPER = "he_IL.UTF-8";
-    LC_TELEPHONE = "he_IL.UTF-8";
-    LC_TIME = "he_IL.UTF-8";
-  };
 
   # Enable sound
   sound.enable = true;
