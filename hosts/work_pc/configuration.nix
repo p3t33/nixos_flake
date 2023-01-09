@@ -17,6 +17,11 @@ in
       ../../os/system_version.nix
       ../../os/non_free_software.nix
       ../../os/locale.nix
+      ../../os/system_packages/development.nix
+      ../../os/system_packages/cli_utilities.nix
+      ../../os/system_packages/encryption.nix
+      ../../os/system_packages/gui.nix
+      ../../os/system_packages/iac.nix
     ];
 
   # Bootloader.
@@ -94,99 +99,16 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim
-    neovim
-    wget
-    firefox
-    emacs
-    htop
-    gimp
-    sshfs
-    present
-    slides
     rofi-power-menu
     slack
-    lsyncd
-    plantuml
-    graphviz
-    jdk11
-    git
-    git-crypt
-    gnupg
-    # used by gpg-agent as a gui popup
-    pinentry_qt
-    picocom
-    tcpdump
-    wireshark
+
     moolticute
     polybar
-    rclone
 
-    # required by neovim/vim for copy/past
-    # to work with system clipboard on x11.
-    xclip
-    valgrind
-    ansible
-    speedtest-cli
     pulseaudio
-    restic
-    gcc
-    sumneko-lua-language-server
-    ccls # LSP for C/CPP
-    clang-tools # has clangd as part of it
-    clang
-    rnix-lsp
-    vscode
-    cherrytree
-    tmux
-    gparted
-    dmenu
-    zsh
-    bat
     syncthing
-    vlc
-    ncdu
-    du-dust
-    delta
-    exa
-    nmap
-    alacritty
-    moolticute
-    fzf
-    tree
-    ripgrep
-    cryptomator
-    veracrypt
-    openconnect
-    cmake
-    gnumake
-    lua
-    duf
-    unzip
-    whois
-    plantuml
-    inxi
-    fd
-    shellcheck
-    xorg.xrandr
-    arandr
-    google-chrome
     nitrogen # A wallpaper browser and setter for X11
     picom # A fork of XCompMgr, a sample compositing manager for X servers
-    gnome.nautilus
-    flameshot
-    sxhkd
-
-    # Backend that is used by oh-my-zsh z plugin.
-    # an alternative is to install autojump
-    # to use the plugin exezute "z" from the shell.
-    zsh-z
-
-    # U2F libraries - this needs to be tested because not all
-    # packages that are installed on Ubuntu 22.04 were installed
-    # and found here.
-    libfido2 #webauto
-    pam_u2f #linux system
 
     # Virt-manager
     virt-manager
@@ -194,15 +116,6 @@ in
     qemu
     libvirt
 
-    # infrastructure as code
-    packer
-    vagrant
-    universal-ctags
-
-    # python devlepoment 
-    # ------------------
-    python39
-    nodePackages.pyright # language server.
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
