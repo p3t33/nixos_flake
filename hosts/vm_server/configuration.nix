@@ -17,6 +17,9 @@ in
       ../../os/system_version.nix
       ../../os/non_free_software.nix
       ../../os/locale.nix
+      ../../os/system_packages/development.nix
+      ../../os/system_packages/cli_utilities.nix
+      ../../os/system_packages/encryption.nix
 
     ];
 
@@ -60,75 +63,6 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
-    wget
-    emacs
-    htop
-    sshfs
-    lsyncd
-    plantuml
-    graphviz
-    jdk11
-    git
-    present
-    slides
-    polybar
-    sumneko-lua-language-server
-    ccls # LSP for C/CPP
-    clang-tools # has clangd as part of it
-    rnix-lsp
-    git-crypt
-    gnupg
-    pinentry_qt
-    tcpdump
-    wireshark
-    rclone
-
-    # required by neovim/vim for copy/past     
-    # to work with system clipboard on x11.
-    xclip
-    valgrind
-    ansible
-    speedtest-cli
-    pulseaudio
-    restic
-    gcc
-    clang
-    tmux
-    zsh
-    bat
-    syncthing
-    ncdu
-    du-dust
-    delta
-    exa
-    nmap
-    fzf
-    tree
-    ripgrep
-    openconnect
-    cmake
-    gnumake
-    lua
-    duf
-    unzip
-    whois
-    plantuml
-    inxi
-    fd
-    shellcheck
-    arandr
-
-    # Backend that is used by oh-my-zsh z plugin.
-    # an alternative is to install autojump
-    # to use the plugin exezute "z" from the shell.
-    zsh-z
-    universal-ctags
-
-    # python devlepoment 
-    # ------------------
-    python39
-    nodePackages.pyright # language server.
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

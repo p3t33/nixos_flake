@@ -17,6 +17,11 @@ in
       ../../os/system_version.nix
       ../../os/non_free_software.nix
       ../../os/locale.nix
+      ../../os/system_packages/development.nix
+      ../../os/system_packages/cli_utilities.nix
+      ../../os/system_packages/encryption.nix
+      ../../os/system_packages/gui.nix
+      ../../os/system_packages/iac.nix
 
     ];
 
@@ -51,81 +56,22 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim
-    wget
-    emacs
-    htop
-    sshfs
     rofi-power-menu
     slack
-    lsyncd
-    plantuml
-    graphviz
-    jdk11
-    git
-    git-crypt
-    gnupg
-    pinentry_qt
-    tcpdump
-    wireshark
-    rclone
 
-    # required by neovim/vim for copy/past
-    # to work with system clipboard on x11.
-    xclip
-    valgrind
-    ansible
-    speedtest-cli
-    pulseaudio
-    restic
-    present
-    slides
+    moolticute
     polybar
-    sumneko-lua-language-server
-    ccls # LSP for C/CPP
-    clang-tools # has clangd as part of it
-    rnix-lsp
-    vscode
-    cherrytree
-    alacritty
-    gcc
-    clang
-    tmux
-    zsh
-    bat
+
+    pulseaudio
     syncthing
-    ncdu
-    du-dust
-    delta
-    exa
-    nmap
-    fzf
-    tree
-    ripgrep
-    openconnect
-    cmake
-    gnumake
-    lua
-    duf
-    unzip
-    whois
-    plantuml
-    inxi
-    fd
-    shellcheck
-    arandr
+    nitrogen # A wallpaper browser and setter for X11
+    picom # A fork of XCompMgr, a sample compositing manager for X servers
 
-    # Backend that is used by oh-my-zsh z plugin.
-    # an alternative is to install autojump
-    # to use the plugin exezute "z" from the shell.
-    zsh-z
-
-    universal-ctags
-
-    # python devlepoment 
-    # ------------------
-    python39
-    nodePackages.pyright # language server.
+    # Virt-manager
+    virt-manager
+    qemu_kvm
+    qemu
+    libvirt
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
