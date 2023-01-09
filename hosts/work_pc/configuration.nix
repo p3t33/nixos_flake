@@ -198,6 +198,11 @@ in
     packer
     vagrant
     universal-ctags
+
+    # python devlepoment 
+    # ------------------
+    python39
+    nodePackages.pyright # language server.
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
