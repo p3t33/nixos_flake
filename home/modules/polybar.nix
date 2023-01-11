@@ -5,8 +5,8 @@ let
   ws2 = "2:  VSCode";
   ws3 = "3:  Cherrytree";
   ws4 = "4:  Chrome";
-  ws5 = "5:  BuildServer";
-  ws6 = "6:  terminal";
+  ws6 = "5:  terminal";
+  ws5 = "6:  BuildServer";
   ws7 = "7";
   ws8 = "8:  VM";
   ws9 = "9: VPN";
@@ -109,8 +109,8 @@ in
           icon-2 = "${ws2};";
           icon-3 = "${ws3};";
           icon-4 = "${ws4};";
-          icon-5 = "${ws5};";
-          icon-6 = "${ws6};";
+          icon-5 = "${ws5};";
+          icon-6 = "${ws6};";
           icon-7 = "${ws7};";
           icon-8 = "${ws8};";
           icon-9 = "${ws9};";
@@ -241,8 +241,8 @@ in
         ws-icon-2 = "${ws2};";
         ws-icon-3 = "${ws3};";
         ws-icon-4 = "${ws4};";
-        ws-icon-5 = "${ws5};";
-        ws-icon-6 = "${ws6};";
+        ws-icon-5 = "${ws5};";
+        ws-icon-6 = "${ws6};";
         ws-icon-7 = "${ws7};";
         ws-icon-8 = "${ws8};";
         ws-icon-9 = "${ws9};";

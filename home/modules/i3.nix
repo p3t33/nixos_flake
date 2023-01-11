@@ -25,8 +25,8 @@ let
   ws2 = "2:  VSCode";
   ws3 = "3:  Cherrytree";
   ws4 = "4:  Chrome";
-  ws5 = "5:  BuildServer";
-  ws6 = "6:  terminal";
+  ws5 = "5:  terminal";
+  ws6 = "6:  BuildServer";
   ws7 = "7";
   ws8 = "8:  VM";
   ws9 = "9: VPN";
