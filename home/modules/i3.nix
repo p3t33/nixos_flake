@@ -90,11 +90,6 @@ in {
           notification = false;
         }
         {
-          command = "${pkgs.slack}/bin/slack";
-          always = false;
-          notification = false;
-        }
-        {
           command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${wallpaperOut} --head=-1";
           always = true;
           notification = false;
