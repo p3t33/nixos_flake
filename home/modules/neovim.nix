@@ -404,8 +404,8 @@
     ];
 
     extraConfig = ''
-      "path for treesitter"
-      "-------------------"
+      " path for treesitter"
+      " -------------------"
       lua << EOF
       local parser_install_dir = vim.fn.stdpath("cache") .. "~/treesitters"
       vim.fn.mkdir(parser_install_dir, "p")
@@ -430,7 +430,10 @@
 
       set smartindent
 
-      "Disable wrap of text"
+      :set cursorline
+
+      " Disable wrap of text"
+      " --------------------"
       set nowrap
 
       "Setting up backup of files"
