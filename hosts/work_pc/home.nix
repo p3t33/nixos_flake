@@ -36,6 +36,8 @@
     ../../home/modules/gpg.nix
     ../../home/modules/ssh/work/ssh.nix
     ../../home/modules/polybar.nix
+    ../../home/scripts/helloworld-bash.nix
+    ../../home/scripts/helloworld-python.nix
   ];
 
   home.sessionVariables = {
