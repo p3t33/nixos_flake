@@ -40,7 +40,14 @@
 
     # python devlepoment 
     # ------------------
-    python39
+    # 
+    # For packages to be able to find each other they must be delared toghter 
+    # I installed there the bare minimum minimum to be able to use python 
+    # venv scheme.
+    (python39.withPackages (p: with p; [
+      python39Packages.pip
+      python39Packages.virtualenv
+    ]))
     nodePackages.pyright # language server.
 
     # networking
