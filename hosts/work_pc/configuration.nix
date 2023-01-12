@@ -100,7 +100,6 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     rofi-power-menu
-    slack
 
     moolticute
     polybar
