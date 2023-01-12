@@ -16,6 +16,12 @@
 
     userName = "Kobi Medrish";
     userEmail = "kobi.medrish@gmail.com";
-    };  
+
+    aliases = {
+        kobi = "log";
+
+    };
+
+   };  
   
 }
