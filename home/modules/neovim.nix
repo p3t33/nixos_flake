@@ -9,10 +9,18 @@
       # Utils
       # =====
       vim-obsession
-
+      plenary-nvim
       # All the lua functions I don't want to write
       # twice.
-      plenary-nvim
+      {
+          plugin = vim-bookmarks;
+          config = ''
+            let g:bookmark_save_per_working_dir = 1
+            let g:bookmark_no_default_key_mappings = 1
+          '';
+      }
+
+      
 
       # Code completion
       # ===============
@@ -514,6 +522,18 @@
       nnoremap <leader>fs :Rg<Cr>
       nnoremap <leader>fb :Buffers<Cr>
       nnoremap <leader>fd :BD<Cr>
+
+
+      "bookmarks"
+      nnoremap <leader>mm :BookmarkToggle<Cr>
+      nnoremap <leader>mi :BookmarkAnnotate<Cr>
+      nnoremap <leader>mn :BookmarkNext<Cr>
+      nnoremap <leader>mp :BookmarkPrev<Cr>
+
+      nnoremap <leader>ma :BookmarkShowAll<Cr>
+
+      nnoremap <leader>mc :BookmarkClear<Cr>
+      nnoremap <leader>mx :BookmarkClearAll<Cr>
 
 
       nmap<F8> :TagbarToggle<CR>
