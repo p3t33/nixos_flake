@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
 
@@ -14,8 +14,8 @@
       };
     };
 
-    userName = "Kobi Medrish";
-    userEmail = "kobi.medrish@gmail.com";
+    userName = config.userDefinedGlobalVariables.gitUser;
+    userEmail = config.userDefinedGlobalVariables.email;
 
     aliases = {
         kobi = "log";
