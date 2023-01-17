@@ -1,10 +1,21 @@
 { config, pkgs, ... }:
 
 {
+
+  # IMPORTANT: hostname must be defined! 
+  # All of the global variables are defined based on the value set for it. Many 
+  # files use them and by not setting the hostname they will be using thier 
+  # default values which may cause all kind of issues. 
+  userDefinedGlobalVariables = {
+      enable = true;
+      hostname = "HP-Zbook";
+  };
+
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "kmedrish";
-  home.homeDirectory = "/home/kmedrish";
+  home.username = config.userDefinedGlobalVariables.username;
+  home.homeDirectory = config.userDefinedGlobalVariables.homeDirectory;
+  #home.homeDirectory = "/home/kmedrish";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -20,6 +31,7 @@
   programs.home-manager.enable = true;
   imports = [
     ./wallpaper.nix
+    ../../meta/meta.nix
     ../../home/modules/starship.nix
     ../../home/modules/fzf.nix
     ../../home/modules/neovim.nix
@@ -41,8 +53,8 @@
   ];
 
   home.sessionVariables = {
-    EDITOR = "nvim";
-    SUDO_EDITOR = "nvim";
+    EDITOR = config.userDefinedGlobalVariables.editor;
+    SUDO_EDITOR = config.userDefinedGlobalVariables.editor;
   };
 
 }
