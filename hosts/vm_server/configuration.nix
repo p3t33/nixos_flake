@@ -3,9 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
 { config, pkgs, ... }:
-let
-  user = "drone";
-in
+
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -20,6 +18,7 @@ in
       ../../os/system_packages/development.nix
       ../../os/system_packages/cli_utilities.nix
       ../../os/system_packages/encryption.nix
+      ../../meta/meta.nix
 
     ];
 
@@ -27,11 +26,20 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
+  # IMPORTANT: hostname must be defined! 
+  # All of the global variables are defined based on the value set for it. Many 
+  # files use them and by not setting the hostname they will be using thier 
+  # default values which may cause all kind of issues. 
+  userDefinedGlobalVariables = {
+      enable = true;
+      hostname = "kvm-nixos-server" ;
+  };
   
   # docker
   virtualisation.docker.enable = true;
 
-  networking.hostName = "kvm-nixos-server"; # Define your hostname.
+  networking.hostName = config.userDefinedGlobalVariables.hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -49,16 +57,16 @@ in
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
-  users.users.${user} = {
+  users.users.${config.userDefinedGlobalVariables.username} = {
     isNormalUser = true;
     initialPassword = "q";
-    description = "${user}";
+    description = config.userDefinedGlobalVariables.username;
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
   };
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = "${user}";
+  services.getty.autologinUser = config.userDefinedGlobalVariables.username;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
