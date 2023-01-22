@@ -50,6 +50,7 @@
     ../../home/modules/polybar.nix
     ../../home/scripts/helloworld-bash.nix
     ../../home/scripts/helloworld-python.nix
+    ../../home/modules/redshift.nix
   ];
 
   home.sessionVariables = {
