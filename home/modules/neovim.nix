@@ -8,6 +8,7 @@
     plugins = with pkgs.vimPlugins; [
       # Utils
       # =====
+      colorizer
       vim-obsession
       plenary-nvim
       # All the lua functions I don't want to write
@@ -344,7 +345,18 @@
       trouble-nvim
       # status/tabline 
       # --------------
-      vim-airline
+      {
+          plugin = vim-airline;
+          config = ''
+
+              " Enable the list of buffers
+              let g:airline#extensions#tabline#enabled = 1
+
+              " Show just the filename
+              let g:airline#extensions#tabline#fnamemod = ':t'
+          '';
+      }
+      
 
       # Icons
       # -----
@@ -423,6 +435,7 @@
       " Editor setup"
       " ============"
       let mapleader = " "
+
 
       colorscheme rose-pine
       
