@@ -436,6 +436,9 @@
       " ============"
       let mapleader = " "
 
+      "No timeout for leader key"
+      set notimeout nottimeout
+
 
       colorscheme rose-pine
       
@@ -528,13 +531,14 @@
       "make file executalbe"
       nnoremap <silent> <leader>x <cmd>!chmod +x %<CR>
 
-      nnoremap <C-f> :NERDTreeToggle<CR>
+      nnoremap <leader>. :NERDTreeToggle<CR>
 
       "fzf"
       nnoremap <leader>ff :Files<Cr>
       nnoremap <leader>fs :Rg<Cr>
       nnoremap <leader>fb :Buffers<Cr>
       nnoremap <leader>fd :BD<Cr>
+
 
 
       "bookmarks"
@@ -548,6 +552,13 @@
       nnoremap <leader>mc :BookmarkClear<Cr>
       nnoremap <leader>mx :BookmarkClearAll<Cr>
 
+
+      "boffer control"
+      nnoremap <leader>bn :bn<Cr>
+      nnoremap <leader>bp :bp<Cr>
+      nnoremap <leader>bd :bd<Cr>
+      nnoremap <leader>bs <C-w>s
+      nnoremap <leader>bv <C-w>v
 
       nmap<F8> :TagbarToggle<CR>
       map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us<CR>
