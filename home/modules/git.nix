@@ -18,7 +18,18 @@
     userEmail = config.userDefinedGlobalVariables.email;
 
     aliases = {
-        kobi = "log";
+        cp = "cherry-pick";
+        st = "status";
+        cm = "commit";
+        cma = "commit --amend";
+
+        # add all uncommitted and un-staged changes currently in the working 
+        # directory and add them to the previous commit, stopping for amending 
+        caa = "commit -a --amend -C HEAD";
+        co = "checkout";
+        br = "branch";
+
+        rl = "remote -v";
 
     };
 
