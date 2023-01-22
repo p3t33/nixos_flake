@@ -7,27 +7,27 @@
       Host 1-dev-wgv
           HostName 10.81.91.14
 	  User kmedrish
-          IdentityFile ~/.ssh/id_rsa
+          IdentityFile ~/.ssh/id_ed25519
 
       Host 2-dev-wgv
           HostName 10.81.91.16
 	  User kmedrish
-	  IdentityFile ~/.ssh/id_rsa
+	  IdentityFile ~/.ssh/id_ed25519
 
       Host 3-dev-wgv
           HostName 10.81.91.18
           User kmedrish
-	  IdentityFile ~/.ssh/id_rsa
+	  IdentityFile ~/.ssh/id_ed25519
 
       Host 4-dev-wgv
           HostName 10.81.91.36
           User kmedrish
-	  IdentityFile ~/.ssh/id_rsa
+	  IdentityFile ~/.ssh/id_ed25519
 
       Host 5-dev-wgv
           HostName 10.81.91.44
           User kmedrish
-	  IdentityFile ~/.ssh/id_rsa
+	  IdentityFile ~/.ssh/id_ed25519
 	
       Host usb_base_bwc
           HostName 192.168.99.2
