@@ -8,6 +8,17 @@
     plugins = with pkgs.vimPlugins; [
       # Utils
       # =====
+
+      {
+          # without the require'nvim-tree'.setup {} this plugin doesn't work
+          # the commands won't be recognised. 
+          plugin = nvim-tree-lua;
+          type = "lua";
+          config = ''
+          require'nvim-tree'.setup {}
+          '';
+      }
+
       colorizer
       vim-obsession
       plenary-nvim
@@ -395,7 +406,6 @@
                           \ }))
           '';
       }
-      nerdtree
 
       {
         plugin = undotree;
@@ -531,7 +541,7 @@
       "make file executalbe"
       nnoremap <silent> <leader>x <cmd>!chmod +x %<CR>
 
-      nnoremap <leader>. :NERDTreeToggle<CR>
+      nnoremap <leader>. :NvimTreeToggle<Cr>
 
       "fzf"
       nnoremap <leader>ff :Files<Cr>
