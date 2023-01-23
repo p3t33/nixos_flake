@@ -9,6 +9,20 @@
       # Utils
       # =====
 
+      # vim-tmux-navigator plugin has a dual function(although name implies only 
+      # vim integration )
+      #
+      # This plugin adds smart movments between vim windows and tmux panes, By using
+      # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
+      # vim inside it and then move inside the vim windows and back seamlessly
+      # For this integration to work counterpart plugin needs to be added to tmux.
+      # 
+      # If the conterpart isn't installed the only functionality that will be added
+      # is the aability to move between windows using Ctr+h/j/k/l in vim.
+      {
+          plugin = vim-tmux-navigator;
+      }
+
       {
           # without the require'nvim-tree'.setup {} this plugin doesn't work
           # the commands won't be recognised. 
@@ -579,13 +593,6 @@
       noremap <Down> <Nop>
       noremap <Left> <Nop>
       noremap <Right> <Nop>
-
-      nmap <silent> <c-k> :wincmd k<CR>
-      nmap <silent> <c-j> :wincmd j<CR>
-      nmap <silent> <c-h> :wincmd h<CR>
-      nmap <silent> <c-l> :wincmd l<CR>
-
-
       '';
     };
 

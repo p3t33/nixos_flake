@@ -17,6 +17,20 @@ programs.tmux = {
         plugin = resurrect;
         extraConfig = "set -g @resurrect-strategy-nvim 'session'"; 
     }
+
+    # vim-tmux-navigator plugin has a dual function(although name implies only 
+    # vim integration )
+    #
+    # This plugin adds smart movments between tmux panes and vim windows. By using
+    # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
+    # vim inside it and then move inside the vim windows and back seamlessly
+    # For this integration to work counterpart plugin needs to be added to vim.
+    # 
+    # If the conterpart isn't installed the only functionality that will be added
+    # is the aability to move between panes using Ctr+h/j/k/l in tmux.
+    {
+        plugin = vim-tmux-navigator;
+    }
     continuum
     nord
   ];
@@ -61,11 +75,6 @@ programs.tmux = {
 
     bind -n S-Left previous-window
     bind -n S-Right next-window
-
-    bind -n M-h select-pane -L
-    bind -n M-l select-pane -R
-    bind -n M-k select-pane -U
-    bind -n M-j select-pane -D
    ";
   };
 
