@@ -116,6 +116,7 @@
     syncthing
     nitrogen # A wallpaper browser and setter for X11
     picom # A fork of XCompMgr, a sample compositing manager for X servers
+    git-review
 
     # Virt-manager
     virt-manager
