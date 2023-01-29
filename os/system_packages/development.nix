@@ -62,6 +62,9 @@
     #general
     universal-ctags
 
+    # encryption
+    openssl
+
 
 
 
