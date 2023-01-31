@@ -46,6 +46,7 @@
 
       exa
       tree
+      taskwarrior
 
       zsh
      # Backend that is used by oh-my-zsh z plugin.
