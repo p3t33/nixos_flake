@@ -35,6 +35,7 @@
     ../../home/modules/neovim.nix
     ../../home/modules/git.nix
     ../../home/modules/zsh.nix
+    ../../home/modules/taskwarrior.nix
   ];
 
   home.sessionVariables = {
