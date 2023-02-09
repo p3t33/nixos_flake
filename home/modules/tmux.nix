@@ -14,6 +14,12 @@ programs.tmux = {
 
   plugins = with pkgs.tmuxPlugins; [
     {
+        plugin = tmux-fzf;
+        extraConfig = ''
+        TMUX_FZF_LAUNCH_KEY="C-f"
+        '';
+    }
+    {
         plugin = resurrect;
         extraConfig = "set -g @resurrect-strategy-nvim 'session'"; 
     }
@@ -36,6 +42,13 @@ programs.tmux = {
   ];
 
   extraConfig = "
+    # sets the length of session name
+    set -g status-left-length 30
+
+    # don't detach from tmux once last window of session is closed and instead
+    # atttach to another existing session if one exist.
+    set-option -g detach-on-destroy off
+
     # don't rename windows automatically
     set-option -g allow-rename off
 
