@@ -63,6 +63,12 @@
     description = config.userDefinedGlobalVariables.username;
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [];
+
+    # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
+    # This key is added for passwordless login and this key is for VM only
+    openssh.authorizedKeys.keys = [
+     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password" 
+    ];
   };
 
   # Enable automatic login for the user.
