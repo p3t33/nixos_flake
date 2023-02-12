@@ -189,10 +189,10 @@ in
         "module/date" = {
           type = "internal/date";
           interval = 1;
-          date = "%H:%M  %d-%m-%Y";
+          date = "%d-%m-%Y  %H:%M" ;
           label = "%date%";
           format = "<label>";
-          format-prefix = " ";
+          format-prefix = " ";
           format-foreground = "${colors.foreground}";
           format-background = "${colors.background-alt}";
           format-padding = 2;
@@ -230,7 +230,7 @@ in
 
         # this will drop the number from workspace
         # E.g: 1: Firefox --> Firefox 
-        strip-wsnumbers = false;
+        strip-wsnumbers = true;
         scroll-up = "i3wm-wsnext";
         scroll-down = "i3wm-wsprev";
 
@@ -260,17 +260,17 @@ in
         label-focused-underline = "${colors.primary}";
         label-focused-padding = 2;
 
-        label-unfocused = "%name%";
+        label-unfocused = "%icon%";
         label-unfocused-padding = 2;
 
         #label-unfocused-foreground = "${colors.primary}";
         #label-unfocused-background = "${colors.background-alt}";
         #label-unfocused-underline = "${colors.primary}";
-        label-visible = "%name%";
+        label-visible = "%icon%";
         label-visible-padding = 2;
 
 
-        label-urgent = "%name%";
+        label-urgent = "%icon%";
         label-urgent-foreground = "${colors.alert}";
         label-urgent-padding = 2;
 
