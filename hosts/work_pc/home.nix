@@ -48,7 +48,7 @@
     ../../home/modules/gpg.nix
     ../../home/modules/ssh/work/ssh.nix
     ../../home/modules/polybar.nix
-    ../../home/scripts/helloworld-bash.nix
+    ../../home/scripts/rofi-firefox-bookmarks.nix
     ../../home/scripts/helloworld-python.nix
     ../../home/modules/redshift.nix
     ../../home/modules/taskwarrior.nix

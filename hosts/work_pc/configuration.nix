@@ -123,6 +123,7 @@
     qemu_kvm
     qemu
     libvirt
+    sqlite
 
   ];
 
