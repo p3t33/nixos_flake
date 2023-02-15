@@ -25,11 +25,7 @@ in
   programs.rofi = {
     enable = true;
 
-    #package = with pkgs; rofi.override { plugins = [ rofi-calc rofi-emoji ]; };
     plugins = with pkgs; [ rofi-calc rofi-emoji rofi-power-menu];
-    #plugins = [ pkgs.rofi-calc pkgs.rofi-emoji ];
-
-    #package = with pkgs; rofi.override { plugins = [ rofi-calc rofi-emoji ]; };
 
     font = "FiraCode NF 20";
   theme = 
@@ -131,7 +127,9 @@ in
 
     extraConfig = {
       show-icons = true;
-      modi = "drun,ssh,emoji,calc, power-menu";
+      # I am using # as a delimiter because this is the recommendation on rofi man page for i3wm
+      # This is the default list of models that will be available.
+      modi = "drun#ssh#emoji#calc#power-menu:rofi-power-menu";
       terminal = "alacritty";
       sort = true;
     };
