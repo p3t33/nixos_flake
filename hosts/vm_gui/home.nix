@@ -46,6 +46,7 @@
     ../../home/modules/gpg.nix
     ../../home/modules/ssh/work/ssh.nix
     ../../home/modules/polybar.nix
+    ../../home/scripts/rofi-firefox-bookmarks.nix
     ../../home/modules/taskwarrior.nix
   ];
 

@@ -129,7 +129,7 @@ in
       show-icons = true;
       # I am using # as a delimiter because this is the recommendation on rofi man page for i3wm
       # This is the default list of models that will be available.
-      modi = "drun#ssh#emoji#calc#power-menu:rofi-power-menu";
+      modi = "drun#ssh#emoji#calc#power-menu:rofi-power-menu#firefox-bookmarks:rofi-firefox-bookmakrs";
       terminal = "alacritty";
       sort = true;
     };
