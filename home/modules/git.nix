@@ -39,6 +39,7 @@
    # This file will be used as a global ignore file for git
    xdg.configFile."git/ignore".text = ''
     .vim-bookmarks
+    tags
   '';
   
 }

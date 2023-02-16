@@ -7,7 +7,7 @@
 
     plugins = with pkgs.vimPlugins; [
       # Utils
-      # =====
+      # ===== dsdf sdsd sdsd
 
       # vim-tmux-navigator plugin has a dual function(although name implies only 
       # vim integration )
@@ -543,6 +543,13 @@
       nnoremap <leader>fs :Rg<Cr>
       nnoremap <leader>fb :Buffers<Cr>
       nnoremap <leader>fd :BD<Cr>
+
+      "use of Ctrl-s to save current buffer in normal and insert mode."
+      nnoremap <c-q> :w<CR>
+      inoremap <c-q> <Esc>:w<CR>a
+
+      "Generate ctags"
+      nnoremap <leader>gt :!ctags -R --exclude=.git<Cr><Cr>
 
 
 
