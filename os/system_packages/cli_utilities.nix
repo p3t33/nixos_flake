@@ -18,9 +18,6 @@
       whois
       openconnect
 
-
-
-    
     # display
       xorg.xrandr
 
@@ -43,6 +40,7 @@
       bat
       unzip
       tmux
+      smug # Session manager for tmux.
 
       exa
       tree
@@ -53,22 +51,6 @@
      # an alternative is to install autojump
      # to use the plugin exezute "z" from the shell.
       zsh-z
-
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
 
     ];
 
