@@ -6,25 +6,27 @@
     vimAlias = true;
 
     plugins = with pkgs.vimPlugins; [
-      # Utils
-      # ===== dsdf sdsd sdsd
 
-      # vim-tmux-navigator plugin has a dual function(although name implies only 
-      # vim integration )
-      #
-      # This plugin adds smart movments between vim windows and tmux panes, By using
-      # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
-      # vim inside it and then move inside the vim windows and back seamlessly
-      # For this integration to work counterpart plugin needs to be added to tmux.
-      # 
-      # If the conterpart isn't installed the only functionality that will be added
-      # is the aability to move between windows using Ctr+h/j/k/l in vim.
+      # Utils
+      # ===== 
       {
+          # vim-tmux-navigator plugin has a dual function(although name implies only 
+          # vim integration )
+          #
+          # This plugin adds smart movments between vim windows and tmux panes, By using
+          # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
+          # vim inside it and then move inside the vim windows and back seamlessly
+          # For this integration to work counterpart plugin needs to be added to tmux.
+          # 
+          # If the conterpart isn't installed the only functionality that will be added
+          # is the aability to move between windows using Ctr+h/j/k/l in vim.
           plugin = vim-tmux-navigator;
       }
 
       {
-          # without the require'nvim-tree'.setup {} this plugin doesn't work
+          # A tree file explore.
+
+          # Without the require'nvim-tree'.setup {} this plugin doesn't work
           # the commands won't be recognised. 
           plugin = nvim-tree-lua;
           type = "lua";
@@ -33,12 +35,19 @@
           '';
       }
 
+      # Adds actual color to hex value for that represtn colors. 
       colorizer
+
+      # This is a vim session manager that I currently do not use because I am
+      # using X
       vim-obsession
+
+      # This is a dependencie for many other plugins and could be considered as
+      # a "library"
       plenary-nvim
-      # All the lua functions I don't want to write
-      # twice.
+
       {
+          # a vim bookmarks manager 
           plugin = vim-bookmarks;
           config = ''
             let g:bookmark_save_per_working_dir = 1
@@ -46,12 +55,24 @@
           '';
       }
 
+      {
+        # A git wrapper for vim 
+           plugin = vim-fugitive;
+           type = "lua";
+           config = ''
+               vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
+          '';
+      }
+
       
+      # Code completion and LSP
+      # =======================
 
-      # Code completion
-      # ===============
+      # Automatic closing of quotes, parenthesis, brackets...
+      delimitMate
 
-
+      # A pretty list for showing diagnostics, references and fixes. 
+      trouble-nvim
 
       # LSP completion related capabilities
       # -----------------------------------
@@ -162,7 +183,6 @@
       cmp-path
       cmp-cmdline
 
-
       # users of luasnip
       luasnip
       cmp_luasnip
@@ -173,12 +193,13 @@
 
       # LSP clients
       # -----------
-      # This is the base for all of the LSP functionality.
-      # It can work just fine wihtout nvim-cmp but not the
-      # other way around. But if nvim-cmp isn't installed and
-      # set the amount of default information will be very
-      # minimal.
+
       {
+        # This plugin is the base for all of the LSP functionality.
+        # It can work just fine wihtout nvim-cmp but not the
+        # other way around. But if nvim-cmp isn't installed and
+        # set the amount of default information will be very
+        # minimal.
         plugin = nvim-lspconfig;
         type = "lua";
         config = ''
@@ -236,9 +257,13 @@
       
       # linter
       # ------
-      tagbar # depends on universal-ctags
+      
+      # List all the tag objects in a file 
+      # Depends on universal-ctags
+      tagbar 
 
-      nvim-treesitter-textobjects
+      # Tree-sitter is a parsing library for programming languages that
+      # can be used to analyze, edit, and transform code.
       {
         plugin =  nvim-treesitter;
         type = "lua";
@@ -307,6 +332,9 @@
           }
         '';
       }
+
+      # Dependeed on nvim-treesitter 
+      nvim-treesitter-textobjects
       
       # Look and feel
       # ====================== 
@@ -317,15 +345,9 @@
       dracula-vim
       nord-vim
       gruvbox
-      {
-        plugin = vim-fugitive;
-        type = "lua";
-        config = ''
-          vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
-        '';
-      }
 
       {
+        # Manages the start screen for vim and also sessions
         plugin = vim-startify;
         config = ''
           let g:startify_session_persistence = 1 
@@ -348,8 +370,7 @@
         '';
       }
 
-      trouble-nvim
-      # status/tabline 
+      # Status/tabline 
       # --------------
       {
           plugin = vim-airline;
@@ -363,21 +384,18 @@
           '';
       }
       
-
       # Icons
       # -----
       vim-devicons
-
-      # required by trouble-nvim
+      # Required by trouble-nvim
       nvim-web-devicons
 
 
-      #pear-tree
-      delimitMate
 
       # Navigation
       # ==========
       {
+          # fuzzy finder for files/string/open buffers...
           plugin = fzf-vim;
           config = ''
 
@@ -403,6 +421,8 @@
       }
 
       {
+        # Undotree visualizes the undo history and makes it easy to 
+        # browse and switch between different undo branches.
         plugin = undotree;
         type = "lua";
         config = ''
@@ -411,6 +431,7 @@
       }
 
       {
+        # specify marks on the file and then manage them.
         plugin = harpoon;
         type = "lua";
         config = ''
