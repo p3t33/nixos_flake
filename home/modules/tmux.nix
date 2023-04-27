@@ -19,23 +19,33 @@ programs.tmux = {
         TMUX_FZF_LAUNCH_KEY="C-f"
         '';
     }
+
     {
         plugin = resurrect;
-        extraConfig = "set -g @resurrect-strategy-nvim 'session'"; 
+        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
     }
 
-    # vim-tmux-navigator plugin has a dual function(although name implies only 
+    # vim-tmux-navigator plugin has a dual function(although name implies only
     # vim integration )
     #
     # This plugin adds smart movments between tmux panes and vim windows. By using
     # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
     # vim inside it and then move inside the vim windows and back seamlessly
     # For this integration to work counterpart plugin needs to be added to vim.
-    # 
+    #
     # If the conterpart isn't installed the only functionality that will be added
     # is the aability to move between panes using Ctr+h/j/k/l in tmux.
     {
         plugin = vim-tmux-navigator;
+    }
+
+    {
+        plugin = yank;
+        extraConfig = ''
+          bind-key -T copy-mode-vi v send-keys -X begin-selection
+          bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+          bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cance
+        '';
     }
     continuum
     nord
@@ -61,7 +71,7 @@ programs.tmux = {
 
     # Enable mouse mode(tmux 2.1++)
     setw -g mouse on
-	
+
     set-option -g status-position top
 
     # S easier move of windows
@@ -78,7 +88,7 @@ programs.tmux = {
 
     # Tmux continuum settings
     set -g @continuum-restore 'on'
-	
+
     #set -g @continuum-save-interval '1'
 
     # Windows
