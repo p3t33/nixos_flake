@@ -8,16 +8,16 @@
   ];
 
   programs.zsh = {
-    
+
     enable = true;
 
     history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
 
     shellAliases = {
-      update = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/projects/nixos_flake#${config.userDefinedGlobalVariables.hostTag}";
-      upgrade = "sudo nix flake update ${config.home.homeDirectory}/projects/nixos_flake";
+      rebuild = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/projects/nixos_flake#${config.userDefinedGlobalVariables.hostTag}";
+      update = "sudo nix flake update ${config.home.homeDirectory}/projects/nixos_flake && rebuild";
       list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
-      clean-generations = "sudo nix-collect-garbage --delete-older-than 2d";
+      cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
       rollback = "sudo nixos-rebuild switch --rollback";
       ls = "exa --icons --color=always --group-directories-first";
       ll = "exa -l --icons --color=always --group-directories-first";
