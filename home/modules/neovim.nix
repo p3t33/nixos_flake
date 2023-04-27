@@ -8,16 +8,16 @@
     plugins = with pkgs.vimPlugins; [
 
       # Utils
-      # ===== 
+      # =====
       {
-          # vim-tmux-navigator plugin has a dual function(although name implies only 
+          # vim-tmux-navigator plugin has a dual function(although name implies only
           # vim integration )
           #
           # This plugin adds smart movments between vim windows and tmux panes, By using
           # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
           # vim inside it and then move inside the vim windows and back seamlessly
           # For this integration to work counterpart plugin needs to be added to tmux.
-          # 
+          #
           # If the conterpart isn't installed the only functionality that will be added
           # is the aability to move between windows using Ctr+h/j/k/l in vim.
           plugin = vim-tmux-navigator;
@@ -27,7 +27,7 @@
           # A tree file explore.
 
           # Without the require'nvim-tree'.setup {} this plugin doesn't work
-          # the commands won't be recognised. 
+          # the commands won't be recognised.
           plugin = nvim-tree-lua;
           type = "lua";
           config = ''
@@ -35,7 +35,7 @@
           '';
       }
 
-      # Adds actual color to hex value for that represtn colors. 
+      # Adds actual color to hex value for that represtn colors.
       colorizer
 
       # This is a vim session manager that I currently do not use because I am
@@ -47,7 +47,7 @@
       plenary-nvim
 
       {
-          # a vim bookmarks manager 
+          # a vim bookmarks manager
           plugin = vim-bookmarks;
           config = ''
             let g:bookmark_save_per_working_dir = 1
@@ -56,7 +56,7 @@
       }
 
       {
-        # A git wrapper for vim 
+        # A git wrapper for vim
            plugin = vim-fugitive;
            type = "lua";
            config = ''
@@ -64,14 +64,14 @@
           '';
       }
 
-      
+
       # Code completion and LSP
       # =======================
 
       # Automatic closing of quotes, parenthesis, brackets...
       delimitMate
 
-      # A pretty list for showing diagnostics, references and fixes. 
+      # A pretty list for showing diagnostics, references and fixes.
       trouble-nvim
 
       # LSP completion related capabilities
@@ -176,7 +176,7 @@
         '';
       }
 
-      # nvim-cmp dependencies 
+      # nvim-cmp dependencies
       # ---------------------
       cmp-nvim-lsp
       cmp-buffer
@@ -254,13 +254,13 @@
           }
         '';
       }
-      
+
       # linter
       # ------
-      
-      # List all the tag objects in a file 
+
+      # List all the tag objects in a file
       # Depends on universal-ctags
-      tagbar 
+      tagbar
 
       # Tree-sitter is a parsing library for programming languages that
       # can be used to analyze, edit, and transform code.
@@ -333,11 +333,11 @@
         '';
       }
 
-      # Dependeed on nvim-treesitter 
+      # Dependeed on nvim-treesitter
       nvim-treesitter-textobjects
-      
+
       # Look and feel
-      # ====================== 
+      # ======================
 
       # Themes
       # ------
@@ -350,7 +350,7 @@
         # Manages the start screen for vim and also sessions
         plugin = vim-startify;
         config = ''
-          let g:startify_session_persistence = 1 
+          let g:startify_session_persistence = 1
           let g:startify_custom_header = [
           \' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
           \' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
@@ -358,8 +358,8 @@
           \' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
           \' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
           \' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-          \] 
-          
+          \]
+
 
           let g:startify_lists = [
              \ { 'type': 'sessions',  'header': ['   Sessions']       },
@@ -370,7 +370,7 @@
         '';
       }
 
-      # Status/tabline 
+      # Status/tabline
       # --------------
       {
           plugin = vim-airline;
@@ -383,7 +383,7 @@
               let g:airline#extensions#tabline#fnamemod = ':t'
           '';
       }
-      
+
       # Icons
       # -----
       vim-devicons
@@ -421,7 +421,7 @@
       }
 
       {
-        # Undotree visualizes the undo history and makes it easy to 
+        # Undotree visualizes the undo history and makes it easy to
         # browse and switch between different undo branches.
         plugin = undotree;
         type = "lua";
@@ -467,7 +467,7 @@
 
 
       colorscheme codedark
-      
+
       "line numbers and relative lines"
       set number
       set relativenumber
@@ -521,6 +521,14 @@
 
       set mouse=a
 
+      "Remove white spaces at the end of the line on buffer write"
+      fun! TrimWhitespace()
+          let l:save = winsaveview()
+          keeppatterns %s/\s\+$//e
+          call winrestview(l:save)
+      endfun
+      autocmd BufWritePre * call TrimWhitespace()
+
       "Mappings"
       "========"
 
@@ -565,14 +573,17 @@
       nnoremap <leader>fb :Buffers<Cr>
       nnoremap <leader>fd :BD<Cr>
 
-      "use of Ctrl-s to save current buffer in normal and insert mode."
+      "use of Ctrl-q to save current buffer in normal and insert mode."
       nnoremap <c-q> :w<CR>
       inoremap <c-q> <Esc>:w<CR>a
 
+      "used for saving and exiting file - useful for git commits"
+      nnoremap <c-x> :wq<CR>
+      inoremap <c-x> <Esc>:wq<CR>
+
+
       "Generate ctags"
       nnoremap <leader>gt :!ctags -R --exclude=.git<Cr><Cr>
-
-
 
       "bookmarks"
       nnoremap <leader>mm :BookmarkToggle<Cr>
