@@ -52,6 +52,7 @@
      # to use the plugin exezute "z" from the shell.
       zsh-z
 
+      thefuck
     ];
 
 }
