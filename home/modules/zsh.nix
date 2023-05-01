@@ -2,9 +2,12 @@
 
 {
   home.packages = with pkgs; [
+
+  # This are plugins that are installed directly with no
+  # plugin manager.
   zsh-syntax-highlighting
   zsh-autosuggestions
-  thefuck
+  zsh-fzf-tab
   ];
 
   programs.zsh = {
@@ -34,11 +37,14 @@
       grind = "rm callgrind.out.* && valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
      };
 
-    # there are two types of plugins.
-    # the one that are part of the shell(like the two bellow),
+    # There are two types of plugins.
+    # the one that are part of the shell(like the once bellow),
     # and then one that are part of oh-my-zsh.
     enableAutosuggestions = true;
     enableSyntaxHighlighting = true;
+    # This is also a non oh-my-zsh pluging but it doesn't have
+    # a clean option(E.g enableFzfTab = true;)
+    plugins = [ { name = "fzf-tab"; src = "${pkgs.zsh-fzf-tab}/share/fzf-tab"; } ];
 
     oh-my-zsh = {
       enable = true;
