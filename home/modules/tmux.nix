@@ -74,6 +74,7 @@ programs.tmux = {
 
     set-option -g status-position top
 
+    bind-key -r f run-shell 'tmux neww tmux-sessionizer'
     # S easier move of windows
     bind-key -r < swap-window -t -
     bind-key -r > swap-window -t +
