@@ -2,10 +2,10 @@
 
 {
 
-  # IMPORTANT: hostname must be defined! 
-  # All of the global variables are defined based on the value set for it. Many 
-  # files use them and by not setting the hostname they will be using thier 
-  # default values which may cause all kind of issues. 
+  # IMPORTANT: hostname must be defined!
+  # All of the global variables are defined based on the value set for it. Many
+  # files use them and by not setting the hostname they will be using thier
+  # default values which may cause all kind of issues.
   userDefinedGlobalVariables = {
       enable = true;
       hostname = "kvm-nixos-server";
@@ -36,6 +36,8 @@
     ../../home/modules/git.nix
     ../../home/modules/zsh.nix
     ../../home/modules/taskwarrior.nix
+    ../../home/scripts/tmux-sessionizer.nix
+
   ];
 
   home.sessionVariables = {
