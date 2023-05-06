@@ -52,6 +52,8 @@ programs.tmux = {
   ];
 
   extraConfig = "
+    # kill a session
+    bind-key X kill-session
     # sets the length of session name
     set -g status-left-length 30
 
