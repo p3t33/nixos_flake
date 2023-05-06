@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 let
   tmux-sessionizer = pkgs.writeShellScriptBin "tmux-sessionizer" ''
-  SINGLE_ARGUMENT=1
+ SINGLE_ARGUMENT=1
 DEFAULT_PATHS_TO_USE_IF_USER_NOT_PROVIDED_INTPUT="/home/$USER/projects /home/$USER "
 
 _is_user_provided_directory_as_cli_arguments()
@@ -11,7 +11,12 @@ _is_user_provided_directory_as_cli_arguments()
 
 _is_user_provided_his_working_directory_as_path_argument()
 {
-    [[ "." = $1 ]]
+    [[ "." = $1 ]] || [[ "./" = $1 ]]
+}
+
+_is_user_provided_name_of_exisitng_directory()
+{
+    [[ -d $1 ]]
 }
 
 get_directory_to_open_as_tmux_session()
@@ -20,6 +25,10 @@ get_directory_to_open_as_tmux_session()
         if _is_user_provided_his_working_directory_as_path_argument $1; then
             echo "$(pwd)"
         else
+            if ! _is_user_provided_name_of_exisitng_directory $1; then
+                mkdir -p $1
+            fi
+
             echo "$1"
         fi
     else
@@ -97,7 +106,6 @@ main()
 }
 
 main "$@"
-
 
   '';
 in
