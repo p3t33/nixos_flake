@@ -37,6 +37,9 @@
       grind = "rm callgrind.out.* && valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
      };
 
+    initExtra = ''
+        export LANG="en_US.UTF-8";
+    '';
     # There are two types of plugins.
     # the one that are part of the shell(like the once bellow),
     # and then one that are part of oh-my-zsh.
