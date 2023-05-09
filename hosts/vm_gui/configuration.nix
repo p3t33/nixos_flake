@@ -22,6 +22,7 @@
       ../../os/system_packages/gui.nix
       ../../os/system_packages/iac.nix
       ../../os/sound.nix
+      ../../os/environment_variables.nix
     ];
 
   # Bootloader.
