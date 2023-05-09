@@ -21,6 +21,7 @@
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
       ../../meta/meta.nix
+      ../../os/users.nix
     ];
 
   # Bootloader.
@@ -54,14 +55,7 @@
     xkbVariant = "";
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.defaultUserShell = pkgs.zsh;
   users.users.${config.userDefinedGlobalVariables.username} = {
-    isNormalUser = true;
-    initialPassword = "q";
-    description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only

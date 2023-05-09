@@ -25,6 +25,8 @@
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
       ../../os/virtualization/kvm.nix
+      ../../os/virtualization/virtualbox.nix
+      ../../os/users.nix
     ];
 
   # Bootloader.
@@ -52,13 +54,7 @@
   networking.networkmanager.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.defaultUserShell = pkgs.zsh;
   users.users.${config.userDefinedGlobalVariables.username} = {
-    isNormalUser = true;
-    initialPassword = "q";
-    description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
@@ -82,11 +78,6 @@
     nitrogen # A wallpaper browser and setter for X11
     picom # A fork of XCompMgr, a sample compositing manager for X servers
 
-    # Virt-manager
-    virt-manager
-    qemu_kvm
-    qemu
-    libvirt
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
