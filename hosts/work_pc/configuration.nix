@@ -58,8 +58,6 @@
   virtualisation.libvirtd.enable = true;
   programs.dconf.enable = true;
 
-  services.udev.packages = [ pkgs.moolticute.udev ];
-
   networking.hostName = config.userDefinedGlobalVariables.hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
