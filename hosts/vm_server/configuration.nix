@@ -19,6 +19,7 @@
       ../../os/system_packages/cli_utilities.nix
       ../../os/system_packages/encryption.nix
       ../../os/environment_variables.nix
+      ../../os/virtualization/docker.nix
       ../../meta/meta.nix
     ];
 
@@ -36,8 +37,6 @@
       hostname = "kvm-nixos-server" ;
   };
 
-  # docker
-  virtualisation.docker.enable = true;
 
   networking.hostName = config.userDefinedGlobalVariables.hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -61,7 +60,7 @@
     isNormalUser = true;
     initialPassword = "q";
     description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.

@@ -22,6 +22,7 @@
       ../../os/system_packages/iac.nix
       ../../os/sound.nix
       ../../os/environment_variables.nix
+      ../../os/virtualization/docker.nix
       ../../meta/meta.nix
     ];
 
@@ -46,8 +47,6 @@
   };
 
 
-  # docker
-  virtualisation.docker.enable = true;
 
   # VirtualBox
   virtualisation.virtualbox.host.enable = true;
@@ -81,7 +80,7 @@
     isNormalUser = true;
     initialPassword = "changeme";
     description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
     packages = with pkgs; [];
   };
 
