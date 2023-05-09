@@ -24,6 +24,7 @@
       ../../os/sound.nix
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
+      ../../os/virtualization/kvm.nix
     ];
 
   # Bootloader.
@@ -56,7 +57,7 @@
     isNormalUser = true;
     initialPassword = "q";
     description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
