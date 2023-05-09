@@ -21,7 +21,7 @@
       ../../os/system_packages/encryption.nix
       ../../os/system_packages/gui.nix
       ../../os/system_packages/iac.nix
-
+      ../../os/sound.nix
     ];
 
   # Bootloader.
@@ -29,15 +29,15 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  # IMPORTANT: hostname must be defined! 
-  # All of the global variables are defined based on the value set for it. Many 
-  # files use them and by not setting the hostname they will be using thier 
-  # default values which may cause all kind of issues. 
+  # IMPORTANT: hostname must be defined!
+  # All of the global variables are defined based on the value set for it. Many
+  # files use them and by not setting the hostname they will be using thier
+  # default values which may cause all kind of issues.
   userDefinedGlobalVariables = {
       enable = true;
       hostname = "kvm-nixos-gui";
   };
-  
+
   # docker
   virtualisation.docker.enable = true;
 
@@ -63,7 +63,7 @@
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
-     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password" 
+     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
     ];
 
   };
