@@ -46,7 +46,12 @@
         type = str;
         default = "";
     };
-    
+
+    initialPassword = mkOption {
+        type = str;
+        default = "changeme";
+    };
+
     };
   };
 
@@ -63,12 +68,15 @@
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "vm_gui";
           userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
+          userDefinedGlobalVariables.initialPassword = "q";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-server"){
           userDefinedGlobalVariables.username = "drone";
           userDefinedGlobalVariables.hostTag = "vm_server";
           userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
+          userDefinedGlobalVariables.initialPassword = "q";
+
       })
 
    ]);

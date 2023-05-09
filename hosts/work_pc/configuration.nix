@@ -24,6 +24,8 @@
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
       ../../os/virtualization/kvm.nix
+      ../../os/virtualization/virtualbox.nix
+      ../../os/users.nix
       ../../meta/meta.nix
     ];
 
@@ -49,11 +51,6 @@
 
 
 
-  # VirtualBox
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-  virtualisation.virtualbox.guest.x11 = true;
-  users.extraGroups.vboxusers.members = [ config.userDefinedGlobalVariables.username ];
 
   programs.dconf.enable = true;
 
@@ -73,15 +70,6 @@
     prefixLength = 24;
   } ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.defaultUserShell = pkgs.zsh;
-  users.users.${config.userDefinedGlobalVariables.username} = {
-    isNormalUser = true;
-    initialPassword = "changeme";
-    description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
