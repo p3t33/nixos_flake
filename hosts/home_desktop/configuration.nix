@@ -24,16 +24,16 @@
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
       ../../os/virtualization/kvm.nix
-      ../../os/virtualization/virtualbox.nix
       ../../os/users.nix
       ../../os/gui.nix
       ../../meta/meta.nix
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.useOSProber = true;
+
 
 
   # IMPORTANT: hostname must be defined!
@@ -42,7 +42,7 @@
   # default values which may cause all kind of issues.
   userDefinedGlobalVariables = {
       enable = true;
-      hostname = "HP-Zbook";
+      hostname = "home-desktop";
   };
 
   # Setup keyfile
@@ -50,8 +50,13 @@
     "/crypto_keyfile.bin" = null;
   };
 
+  # Enable grub cryptodisk
+  boot.loader.grub.enableCryptodisk=true;
 
-
+  boot.initrd.luks.devices."luks-01b11c05-22ec-4569-b265-29e1ca00b72b".keyFile = "/crypto_keyfile.bin";
+  # Enable swap on luks
+  boot.initrd.luks.devices."luks-d1cf13c1-d395-469b-8c26-651828d85993".device = "/dev/disk/by-uuid/d1cf13c1-d395-469b-8c26-651828d85993";
+  boot.initrd.luks.devices."luks-d1cf13c1-d395-469b-8c26-651828d85993".keyFile = "/crypto_keyfile.bin";
 
   programs.dconf.enable = true;
 
@@ -65,21 +70,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  networking.interfaces.enp0s20f0u6u3u1.useDHCP = false;
-  networking.interfaces.enp0s20f0u6u3u1.ipv4.addresses = [ {
-    address = "192.168.99.1";
-    prefixLength = 24;
-  } ];
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.defaultUserShell = pkgs.zsh;
-  users.users.${config.userDefinedGlobalVariables.username} = {
-    isNormalUser = true;
-    initialPassword = "changeme";
-    description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -87,9 +77,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
+    signal-desktop
     moolticute
+
     syncthing
-    git-review # cli tool to interact with gerrit.
+    git-review
+    ntfs3g
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
