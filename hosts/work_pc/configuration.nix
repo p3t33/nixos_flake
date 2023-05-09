@@ -23,6 +23,7 @@
       ../../os/sound.nix
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
+      ../../os/virtualization/kvm.nix
       ../../meta/meta.nix
     ];
 
@@ -54,8 +55,6 @@
   virtualisation.virtualbox.guest.x11 = true;
   users.extraGroups.vboxusers.members = [ config.userDefinedGlobalVariables.username ];
 
-  #KVM
-  virtualisation.libvirtd.enable = true;
   programs.dconf.enable = true;
 
   networking.hostName = config.userDefinedGlobalVariables.hostname;
@@ -80,7 +79,7 @@
     isNormalUser = true;
     initialPassword = "changeme";
     description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
 
@@ -101,11 +100,6 @@
     picom # A fork of XCompMgr, a sample compositing manager for X servers
     git-review
 
-    # Virt-manager
-    virt-manager
-    qemu_kvm
-    qemu
-    libvirt
     sqlite
   ];
 
