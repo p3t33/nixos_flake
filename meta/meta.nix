@@ -63,6 +63,11 @@
           userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
       })
 
+     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "home-desktop"){
+          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.hostTag = "home_desktop";
+          userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
+      })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-gui"){
           userDefinedGlobalVariables.username = "kmedrish";

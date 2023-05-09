@@ -65,6 +65,20 @@
 	};
       };
 
+      nixosConfigurations = {
+        home_desktop = lib.nixosSystem {
+	  inherit system;
+	  modules = [ 
+	  ./hosts/home_desktop/configuration.nix 
+	  home-manager.nixosModules.home-manager
+	  {
+	    home-manager.useGlobalPkgs = true;
+	    home-manager.useUserPackages = true;
+	    home-manager.users.kmedrish = import ./hosts/home_desktop/home.nix;
+	  }
+	  ];
+	};
+      };
 
     hmConfig = {
       drone = home-manager.lib.homeManagerConfiguration {
