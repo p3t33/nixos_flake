@@ -21,6 +21,7 @@
       ../../os/system_packages/gui.nix
       ../../os/system_packages/iac.nix
       ../../os/sound.nix
+      ../../os/environment_variables.nix
       ../../meta/meta.nix
     ];
 
@@ -87,8 +88,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  environment.variables.EDITOR = "nvim";
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -109,7 +108,6 @@
     qemu
     libvirt
     sqlite
-
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
