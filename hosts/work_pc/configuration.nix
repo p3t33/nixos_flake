@@ -29,10 +29,10 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
 
-  # IMPORTANT: hostname must be defined! 
-  # All of the global variables are defined based on the value set for it. Many 
-  # files use them and by not setting the hostname they will be using thier 
-  # default values which may cause all kind of issues. 
+  # IMPORTANT: hostname must be defined!
+  # All of the global variables are defined based on the value set for it. Many
+  # files use them and by not setting the hostname they will be using thier
+  # default values which may cause all kind of issues.
   userDefinedGlobalVariables = {
       enable = true;
       hostname = "HP-Zbook";
@@ -46,6 +46,12 @@
 
   # docker
   virtualisation.docker.enable = true;
+
+  # VirtualBox
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+  virtualisation.virtualbox.guest.x11 = true;
+  users.extraGroups.vboxusers.members = [ config.userDefinedGlobalVariables.username ];
 
   #KVM
   virtualisation.libvirtd.enable = true;
@@ -62,7 +68,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  
+
   networking.interfaces.enp0s20f0u6u3u1.useDHCP = false;
   networking.interfaces.enp0s20f0u6u3u1.ipv4.addresses = [ {
     address = "192.168.99.1";
