@@ -20,20 +20,28 @@
     aliases = {
         cp = "cherry-pick";
         st = "status";
-        cm = "commit";
         cma = "commit --amend";
 
-        # add all uncommitted and un-staged changes currently in the working 
-        # directory and add them to the previous commit, stopping for amending 
+        # add all uncommitted and un-staged changes currently in the working
+        # directory and add them to the previous commit, stopping for amending
         caa = "commit -a --amend -C HEAD";
         co = "checkout";
         br = "branch";
+        cc = "commit";
+        cm = "commit -m";
+        amend = "commit --amend";
+        ls = "log --stat";
+        aa = "add --all";
 
-        rl = "remote -v";
+        rem = "remote -v";
+        rebi = "rebase -i";
+
+        pl = "pull";
+        ph = "push";
 
     };
 
-   };  
+   };
 
    # will create ~/.config/git/ingore file
    # This file will be used as a global ignore file for git
@@ -41,5 +49,5 @@
     .vim-bookmarks
     tags
   '';
-  
+
 }
