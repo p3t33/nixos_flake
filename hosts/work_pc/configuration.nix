@@ -81,7 +81,6 @@
     moolticute
     syncthing
     git-review
-    sqlite
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
