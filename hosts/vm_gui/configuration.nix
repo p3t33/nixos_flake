@@ -26,6 +26,7 @@
       ../../os/virtualization/docker.nix
       ../../os/virtualization/kvm.nix
       ../../os/virtualization/virtualbox.nix
+      ../../os/gui.nix
       ../../os/users.nix
     ];
 
@@ -67,17 +68,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    rofi-power-menu
-    slack
-
     moolticute
-    polybar
-
-    pulseaudio
     syncthing
-    nitrogen # A wallpaper browser and setter for X11
-    picom # A fork of XCompMgr, a sample compositing manager for X servers
-
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
