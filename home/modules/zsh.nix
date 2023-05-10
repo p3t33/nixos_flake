@@ -17,7 +17,7 @@
     history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
 
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/projects/nixos_flake#${config.userDefinedGlobalVariables.hostTag}";
+      build = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/projects/nixos_flake#${config.userDefinedGlobalVariables.hostTag}";
       update = "sudo nix flake update ${config.home.homeDirectory}/projects/nixos_flake && rebuild";
       list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
       cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
