@@ -80,7 +80,7 @@
   environment.systemPackages = with pkgs; [
     moolticute
     syncthing
-    git-review
+    git-review # cli tool to interact with gerrit.
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
