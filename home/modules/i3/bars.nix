@@ -1,26 +1,6 @@
 { pkgs,  ... }:
 
 
-let 
-  colors = rec {
-    background = "#312f2f";
-    background-alt = "#3b4354";
-
-    foreground = "#F1FAEE";
-
-    primary = "#08D9D6";
-    secondary = "#047672";
-    alert = "#ff2e63";
-    disabled = "#707880";
-
-    bg = "#2f343f";
-    inactive-bg = "#2f343f";
-    text = "#f3f4f5";
-    inactive-text = "#676E70";
-    urgent-bg = "#E53935";
-    
-  };
-in
 {
 
   xsession.windowManager.i3.config.bars = [
@@ -37,25 +17,25 @@ in
           # generate a config file for i3status to look at.
           statusCommand = "${pkgs.i3status}/bin/i3status";
           colors = {
-            background = colors.bg;
+            background = config.userDefinedGlobalVariables.colors.bg;
             separator = "#757575";
 
             focusedWorkspace = {
-              border = colors.bg;
-              background = colors.bg;
-              text = colors.text;
+              border = config.userDefinedGlobalVariables.colors.bg;
+              background = config.userDefinedGlobalVariables.colors.bg;
+              text = config.userDefinedGlobalVariables.colors.text;
             };
 
             inactiveWorkspace = {
-              border = colors.inactive-bg;
-              background = colors.inactive-bg;
-              text = colors.inactive-text;
+              border = config.userDefinedGlobalVariables.colors.inactive-bg;
+              background = config.userDefinedGlobalVariables.colors.inactive-bg;
+              text = config.userDefinedGlobalVariables.colors.inactive-text;
             };
 
             urgentWorkspace = {
-              border = colors.urgent-bg;
-              background = colors.urgent-bg;
-              text = colors.text;
+              border = config.userDefinedGlobalVariables.colors.urgent-bg;
+              background = config.userDefinedGlobalVariables.colors.urgent-bg;
+              text = config.userDefinedGlobalVariables.colors.text;
             };
 
           };

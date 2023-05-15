@@ -2,23 +2,12 @@
 
 let
   colors = rec {
-    # general
-    background = "#312f2f";
-    background-alt = "#3b4354";
-
-    foreground = "#F1FAEE";
-
-    primary = "#08D9D6";
-    secondary = "#047672";
-    alert = "#ff2e63";
-    disabled = "#707880";
-
-    bg0 = "${colors.background}E6";
-    bg1 = "${colors.background-alt}80";
-    bg2 = "${colors.primary}E6";
+    bg0 = "${config.userDefinedGlobalVariables.colors.background}E6";
+    bg1 = "${config.userDefinedGlobalVariables.colors.background-alt}80";
+    bg2 = "${config.userDefinedGlobalVariables.colors.primary}E6";
     fg0 = "#DEDEDE";
-    fg1 = "${colors.foreground}";
-    fg2 = "${colors.disabled}80";
+    fg1 = "${config.userDefinedGlobalVariables.colors.foreground}";
+    fg2 = "${config.userDefinedGlobalVariables.colors.disabled}80";
   };
 in
 {
@@ -28,7 +17,7 @@ in
     plugins = with pkgs; [ rofi-calc rofi-emoji rofi-power-menu];
 
     font = "FiraCode NF 20";
-  theme = 
+  theme =
     let
       mkL = config.lib.formats.rasi.mkLiteral;
     in
