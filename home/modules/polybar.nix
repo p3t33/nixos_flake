@@ -1,4 +1,4 @@
-{ pkgs,  ... }:
+{ config, pkgs,  ... }:
 
 let
   ws1 = "1:  Firefox";
@@ -11,27 +11,7 @@ let
   ws8 = "8:  VM";
   ws9 = "9: VPN";
   ws10 = "10";
-  
-  colors = rec {
-    # general
-    background = "#312f2f";
-    background-alt = "#3b4354";
 
-    foreground = "#F1FAEE";
-
-    primary = "#08D9D6";
-    secondary = "#047672";
-    alert = "#ff2e63";
-    disabled = "#707880";
-
-    # rofi
-    bg0 = "${colors.background}E6";
-    bg1 = "${colors.background-alt}80";
-    bg2 = "${colors.primary}E6";
-    fg0 = "#DEDEDE";
-    fg1 = "${colors.foreground}";
-    fg2 = "${colors.disabled}80";
-  };
 in
 {
     services.polybar = {
@@ -52,16 +32,16 @@ in
 
         # put the bar at the top
         bottom = true;
-        foreground = "${colors.foreground}";
-        background = "${colors.background}";
+        foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+        background = "${config.userDefinedGlobalVariables.colors.background}";
 
         # underline / overline
         line-size = 2;
-        line-color = "${colors.primary}";
+        line-color = "${config.userDefinedGlobalVariables.colors.primary}";
         border-size = 0;
         padding = 0;
         module-margin = 1;
-        
+
 
         font-0 = "JetBrainsMono Nerd Font:style=Regular:size=15;4";
         # Just sticking them together in the center for now
@@ -78,16 +58,16 @@ in
         type = "custom/script";
         exec = "TZ=America/Chicago /run/current-system/sw/bin/date +\"US: %H:%M\"";
         interval = 30;
-        format-foreground = "${colors.foreground}";
-        format-background = "${colors.background-alt}";
+        format-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+        format-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
         format-padding = 2;
       };
 
       "module/oslogo" = {
           type = "custom/text";
           content = " NixOS";
-          content-foreground = "${colors.foreground}";
-          content-background = "${colors.background-alt}";
+          content-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+          content-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
           content-padding = 2;
         };
 
@@ -119,17 +99,17 @@ in
           format = "<label-state>";
 
           label-active = "%name%";
-          label-active-foreground = "${colors.primary}";
-          label-active-background = "${colors.background-alt}";
-          label-active-underline = "${colors.primary}";
+          label-active-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          label-active-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
+          label-active-underline = "${config.userDefinedGlobalVariables.colors.primary}";
 
           label-occupied = "%name%";
 
           label-urgent = "%icon%";
-          label-urgent-foreground = "${colors.alert}";
+          label-urgent-foreground = "${config.userDefinedGlobalVariables.colors.alert}";
 
           label-empty = "%icon%";
-          label-empty-foreground = "${colors.disabled}";
+          label-empty-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
 
           label-active-padding = 2;
           label-occupied-padding = 2;
@@ -142,7 +122,7 @@ in
           label = "%title:0:40:...%";
           format = "<label>";
           format-prefix = "  ";
-          format-prefix-foreground = "${colors.primary}";
+          format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           label-empty = "NixOS";
         };
 
@@ -150,16 +130,16 @@ in
           type = "internal/fs";
           interval = 25;
           mount-0 = "/";
-          label-mounted = "%{F${colors.primary}}DISK:%{F-} %percentage_used:2%%";
+          label-mounted = "%{F${config.userDefinedGlobalVariables.colors.primary}}DISK:%{F-} %percentage_used:2%%";
           label-unmounted = "%mountpoint% not mounted";
-          label-unmounted-foreground = "${colors.disabled}";
+          label-unmounted-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
         };
 
         "module/memory" = {
           type = "internal/memory";
           interval = 2;
           format-prefix = "RAM: ";
-          format-prefix-foreground = "${colors.primary}";
+          format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           label = "%percentage_used:2%%";
         };
 
@@ -167,7 +147,7 @@ in
           type = "internal/cpu";
           interval = 2;
           format-prefix = "CPU: ";
-          format-prefix-foreground = "${colors.primary}";
+          format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           label = "%percentage:2%%";
         };
 
@@ -180,10 +160,10 @@ in
           label-connected = "on";
           label-disconnected = "off";
           format-connected-prefix = "直 ";
-          format-connected-prefix-foreground = "${colors.primary}";
+          format-connected-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           format-disconnected-prefix = "睊 ";
-          format-disconnected-foreground = "${colors.disabled}";
-          format-disconnected-prefix-foreground = "${colors.disabled}";
+          format-disconnected-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
+          format-disconnected-prefix-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
         };
 
         "module/date" = {
@@ -193,8 +173,8 @@ in
           label = "%date%";
           format = "<label>";
           format-prefix = " ";
-          format-foreground = "${colors.foreground}";
-          format-background = "${colors.background-alt}";
+          format-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+          format-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
           format-padding = 2;
         };
 
@@ -204,7 +184,7 @@ in
           battery = "BAT0";
           adapter = "AC";
 
-          # This is useful in case the battery never 
+          # This is useful in case the battery never
           # reports 100% charge
           full-at = 95;
 
@@ -217,9 +197,9 @@ in
           format-charging-prefix = " ";
           format-discharging-prefix = " ";
           format-full-prefix = " ";
-          format-charging-prefix-foreground = "${colors.primary}";
-          format-discharging-prefix-foreground = "${colors.primary}";
-          format-full-prefix-foreground = "${colors.primary}";
+          format-charging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          format-discharging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          format-full-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
         };
 
       "module/i3" = {
@@ -229,7 +209,7 @@ in
         pin-workspaces = true;
 
         # this will drop the number from workspace
-        # E.g: 1: Firefox --> Firefox 
+        # E.g: 1: Firefox --> Firefox
         strip-wsnumbers = true;
         scroll-up = "i3wm-wsnext";
         scroll-down = "i3wm-wsprev";
@@ -249,29 +229,29 @@ in
         ws-icon-default = "";
 
         format = "<label-state> <label-mode>";
-        label-dimmed-underline= "${colors.background}";
+        label-dimmed-underline= "${config.userDefinedGlobalVariables.colors.background}";
 
         label-mode = "%mode%";
         label-mode-padding = 2;
 
         label-focused = "%name%";
-        label-focused-foreground = "${colors.primary}";
-        label-focused-background = "${colors.background-alt}";
-        label-focused-underline = "${colors.primary}";
+        label-focused-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        label-focused-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
+        label-focused-underline = "${config.userDefinedGlobalVariables.colors.primary}";
         label-focused-padding = 2;
 
         label-unfocused = "%icon%";
         label-unfocused-padding = 2;
 
-        #label-unfocused-foreground = "${colors.primary}";
-        #label-unfocused-background = "${colors.background-alt}";
-        #label-unfocused-underline = "${colors.primary}";
+        #label-unfocused-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        #label-unfocused-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
+        #label-unfocused-underline = "${config.userDefinedGlobalVariables.colors.primary}";
         label-visible = "%icon%";
         label-visible-padding = 2;
 
 
         label-urgent = "%icon%";
-        label-urgent-foreground = "${colors.alert}";
+        label-urgent-foreground = "${config.userDefinedGlobalVariables.colors.alert}";
         label-urgent-padding = 2;
 
         #label-separator = "|";

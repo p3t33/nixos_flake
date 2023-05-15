@@ -1,25 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let 
-  colors = rec {
-    background = "#312f2f";
-    background-alt = "#3b4354";
-
-    foreground = "#F1FAEE";
-
-    primary = "#08D9D6";
-    secondary = "#047672";
-    alert = "#ff2e63";
-    disabled = "#707880";
-
-    bg = "#2f343f";
-    inactive-bg = "#2f343f";
-    text = "#f3f4f5";
-    inactive-text = "#676E70";
-    urgent-bg = "#E53935";
-    
-  };
-
+let
   mod = "Mod4";
   ws1 = "1:  Firefox";
   ws2 = "2:  VSCode";
@@ -40,7 +21,7 @@ in {
 
   xsession.windowManager.i3 = {
     enable = true;
-    
+
     config = {
       modifier = mod;
       defaultWorkspace = "workspace number 1";
@@ -198,27 +179,27 @@ in {
 
       colors = {
         focused = {
-          text = colors.text;
-          background = colors.background-alt;
-          border = colors.primary;
-          childBorder = colors.primary;
-          indicator = colors.alert;
+          text = config.userDefinedGlobalVariables.colors.text;
+          background = config.userDefinedGlobalVariables.colors.background-alt;
+          border = config.userDefinedGlobalVariables.colors.primary;
+          childBorder = config.userDefinedGlobalVariables.colors.primary;
+          indicator = config.userDefinedGlobalVariables.colors.alert;
         };
 
         focusedInactive = {
-          text = colors.inactive-text;
-          background = colors.inactive-bg;
-          border = colors.inactive-bg;
-          childBorder = colors.secondary;
-          indicator = colors.alert;
+          text = config.userDefinedGlobalVariables.colors.inactive-text;
+          background = config.userDefinedGlobalVariables.colors.inactive-bg;
+          border = config.userDefinedGlobalVariables.colors.inactive-bg;
+          childBorder = config.userDefinedGlobalVariables.colors.secondary;
+          indicator = config.userDefinedGlobalVariables.colors.alert;
         };
 
         unfocused = {
-          text = colors.inactive-text;
-          background = colors.inactive-bg;
-          border = colors.background;
-          childBorder = colors.background;
-          indicator = colors.alert;
+          text = config.userDefinedGlobalVariables.colors.inactive-text;
+          background = config.userDefinedGlobalVariables.colors.inactive-bg;
+          border = config.userDefinedGlobalVariables.colors.background;
+          childBorder = config.userDefinedGlobalVariables.colors.background;
+          indicator = config.userDefinedGlobalVariables.colors.alert;
           };
         };
 
@@ -233,8 +214,8 @@ in {
       #
       # If a standalone bar such as i3status has home-manger configuration and
       # it is enabled but no bars option is set for it, it will be present
-      # and default settings will be applied for it. 
-      
+      # and default settings will be applied for it.
+
       modes = {
         resize = {
 
@@ -242,7 +223,7 @@ in {
             "j" = "resize grow height 10 px or 10 ppt";
             "k" = "resize shrink height 10 px or 10 ppt";
             "l" = "resize grow width 10 px or 10 ppt";
-            
+
             "Left" = "resize shrink width 10 px or 10 ppt";
             "Down" = "resize grow height 10 px or 10 ppt";
             "Up" = "resize shrink height 10 px or 10 ppt";
