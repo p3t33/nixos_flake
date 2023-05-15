@@ -10,6 +10,9 @@
       # Utils
       # =====
       {
+          plugin = indent-blankline-nvim;
+      }
+      {
           # vim-tmux-navigator plugin has a dual function(although name implies only
           # vim integration )
           #
