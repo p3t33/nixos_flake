@@ -85,6 +85,51 @@
       description = "The color palette for the user interface.";
     };
 
+    workspaces_icons = mkOption {
+        type = attrsOf str;
+        default = {
+            firefox = "";
+            vscode = "";
+            cherrytree = "";
+            chrome = "";
+            terminal = "";
+            buildserver = "";
+            vm = "";
+        };
+        description = "Icon definitions";
+    };
+
+    #"${config.userDefinedGlobalVariables.workspaces.ws9}"
+    workspaces = mkOption {
+        type = attrsOf str;
+        default = {
+            ws1 = "1: ${config.userDefinedGlobalVariables.workspaces_icons.firefox} Firefox";
+            ws2 = "2: ${config.userDefinedGlobalVariables.workspaces_icons.vscode} VSCode";
+            ws3 = "3: ${config.userDefinedGlobalVariables.workspaces_icons.cherrytree} Cherrytree";
+            ws4 = "4: ${config.userDefinedGlobalVariables.workspaces_icons.chrome} Chrome";
+            ws6 = "5: ${config.userDefinedGlobalVariables.workspaces_icons.terminal} terminal";
+            ws5 = "6: ${config.userDefinedGlobalVariables.workspaces_icons.buildserver} BuildServer";
+            ws7 = "7";
+            ws8 = "8: ${config.userDefinedGlobalVariables.workspaces_icons.vm} VM";
+            ws9 = "9: VPN";
+            ws10 = "10";
+
+      };
+        example = {
+            ws1 = "1:  Firefox";
+            ws2 = "2:  VSCode";
+            ws3 = "3:  Cherrytree";
+            ws4 = "4:  Chrome";
+            ws6 = "5:  terminal";
+            ws5 = "6:  BuildServer";
+            ws7 = "7";
+            ws8 = "8:  VM";
+            ws9 = "9: VPN";
+            ws10 = "10";
+        };
+      description = "i3wm and i3wm related strings";
+    };
+
     };
   };
 
