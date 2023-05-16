@@ -13,9 +13,9 @@ let
   ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
   ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
 
-  wallpaperOut = "wallpaper/mountain.jpg";
 
-in {
+in
+{
   # uncomment if you would like to use the i3status bar
   #imports = [./i3/bars.nix];
 
@@ -71,7 +71,7 @@ in {
           notification = false;
         }
         {
-          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${wallpaperOut} --head=-1";
+          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.userDefinedGlobalVariables.wallpaperOut} --head=-1";
           always = true;
           notification = false;
         }

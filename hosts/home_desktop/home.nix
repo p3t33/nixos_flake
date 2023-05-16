@@ -30,7 +30,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   imports = [
-    ./wallpaper.nix
     ../../meta/meta.nix
     ../../home/modules/starship.nix
     ../../home/modules/fzf.nix
@@ -53,6 +52,8 @@
     ../../home/scripts/helloworld-python.nix
     ../../home/modules/redshift.nix
     ../../home/modules/taskwarrior.nix
+    ../../home/modules/wallpaper.nix
+
   ];
 
   home.sessionVariables = {

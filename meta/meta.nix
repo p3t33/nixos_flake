@@ -52,6 +52,25 @@
         default = "changeme";
     };
 
+    wallpaperName = mkOption {
+        default = "mountain.jpg";
+        type = str;
+        description = "the name of the wallpaper file";
+    };
+
+    wallpaperOut = mkOption {
+        default = "wallpaper/${config.userDefinedGlobalVariables.wallpaperName}";
+        type = str;
+        description = "the relative path to $HOME/.config/wallpaper/ where wallpaper will be located";
+    };
+
+    wallpaperIn = mkOption {
+        default = ../wallpaper/${config.userDefinedGlobalVariables.wallpaperName};
+        type = path;
+        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+    };
+
+
     colors = mkOption {
         type = attrsOf str;
         default = {
@@ -145,6 +164,7 @@
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "home_desktop";
           userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
+          userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-gui"){

@@ -28,7 +28,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   imports = [
-    ./wallpaper.nix
     ../../meta/meta.nix
     ../../home/modules/starship.nix
     ../../home/modules/fzf.nix
@@ -49,6 +48,8 @@
     ../../home/scripts/rofi-firefox-bookmarks.nix
     ../../home/scripts/tmux-sessionizer.nix
     ../../home/modules/taskwarrior.nix
+    ../../home/modules/wallpaper.nix
+
   ];
 
     home.sessionVariables = {
