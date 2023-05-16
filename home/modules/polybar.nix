@@ -1,17 +1,24 @@
 { config, pkgs,  ... }:
 
 let
-  ws1 = "1:  Firefox";
-  ws2 = "2:  VSCode";
-  ws3 = "3:  Cherrytree";
-  ws4 = "4:  Chrome";
-  ws6 = "5:  terminal";
-  ws5 = "6:  BuildServer";
-  ws7 = "7";
-  ws8 = "8:  VM";
-  ws9 = "9: VPN";
-  ws10 = "10";
+     ws1 = "${config.userDefinedGlobalVariables.workspaces.ws1}";
+     ws2 = "${config.userDefinedGlobalVariables.workspaces.ws2}";
+     ws3 = "${config.userDefinedGlobalVariables.workspaces.ws3}";
+     ws4 = "${config.userDefinedGlobalVariables.workspaces.ws4}";
+     ws5 = "${config.userDefinedGlobalVariables.workspaces.ws5}";
+     ws6 = "${config.userDefinedGlobalVariables.workspaces.ws6}";
+     ws7 = "${config.userDefinedGlobalVariables.workspaces.ws7}";
+     ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
+     ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
+     ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
 
+     ws1_icon = "${config.userDefinedGlobalVariables.workspaces_icons.firefox}";
+     ws2_icon = "${config.userDefinedGlobalVariables.workspaces_icons.vscode}";
+     ws3_icon = "${config.userDefinedGlobalVariables.workspaces_icons.cherrytree}";
+     ws4_icon = "${config.userDefinedGlobalVariables.workspaces_icons.chrome}";
+     ws5_icon = "${config.userDefinedGlobalVariables.workspaces_icons.terminal}";
+     ws6_icon = "${config.userDefinedGlobalVariables.workspaces_icons.buildserver}";
+     ws8_icon = "${config.userDefinedGlobalVariables.workspaces_icons.vm}";
 in
 {
     services.polybar = {
@@ -85,14 +92,14 @@ in
           fuzzy-match = true;
 
           icon-0 = "${ws10};";
-          icon-1 = "${ws1};";
-          icon-2 = "${ws2};";
-          icon-3 = "${ws3};";
-          icon-4 = "${ws4};";
-          icon-5 = "${ws5};";
-          icon-6 = "${ws6};";
+          icon-1 = "${ws1};${ws1_icon}";
+          icon-2 = "${ws2};${ws2_icon}";
+          icon-3 = "${ws3};${ws3_icon}";
+          icon-4 = "${ws4};${ws4_icon}";
+          icon-5 = "${ws5};${ws5_icon}";
+          icon-6 = "${ws6};${ws6_icon}";
           icon-7 = "${ws7};";
-          icon-8 = "${ws8};";
+          icon-8 = "${ws8};${ws8_icon}";
           icon-9 = "${ws9};";
           icon-default = "";
 
@@ -217,14 +224,14 @@ in
         # ws-icon-[0-9]+ = <label>;<icon>
         # NOTE: The <label> needs to match the name of the i3 workspace
         ws-icon-0 = "${ws10};";
-        ws-icon-1 = "${ws1};";
-        ws-icon-2 = "${ws2};";
-        ws-icon-3 = "${ws3};";
-        ws-icon-4 = "${ws4};";
-        ws-icon-5 = "${ws5};";
-        ws-icon-6 = "${ws6};";
+        ws-icon-1 = "${ws1};${ws1_icon}";
+        ws-icon-2 = "${ws2};${ws2_icon}";
+        ws-icon-3 = "${ws3};${ws3_icon}";
+        ws-icon-4 = "${ws4};${ws4_icon}";
+        ws-icon-5 = "${ws5};${ws5_icon}";
+        ws-icon-6 = "${ws6};${ws6_icon}";
         ws-icon-7 = "${ws7};";
-        ws-icon-8 = "${ws8};";
+        ws-icon-8 = "${ws8};${ws8_icon}";
         ws-icon-9 = "${ws9};";
         ws-icon-default = "";
 

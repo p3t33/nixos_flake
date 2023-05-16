@@ -2,16 +2,16 @@
 
 let
   mod = "Mod4";
-  ws1 = "1:  Firefox";
-  ws2 = "2:  VSCode";
-  ws3 = "3:  Cherrytree";
-  ws4 = "4:  Chrome";
-  ws5 = "5:  terminal";
-  ws6 = "6:  BuildServer";
-  ws7 = "7";
-  ws8 = "8:  VM";
-  ws9 = "9: VPN";
-  ws10 = "10";
+  ws1 = "${config.userDefinedGlobalVariables.workspaces.ws1}";
+  ws2 = "${config.userDefinedGlobalVariables.workspaces.ws2}";
+  ws3 = "${config.userDefinedGlobalVariables.workspaces.ws3}";
+  ws4 = "${config.userDefinedGlobalVariables.workspaces.ws4}";
+  ws5 = "${config.userDefinedGlobalVariables.workspaces.ws5}";
+  ws6 = "${config.userDefinedGlobalVariables.workspaces.ws6}";
+  ws7 = "${config.userDefinedGlobalVariables.workspaces.ws7}";
+  ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
+  ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
+  ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
 
   wallpaperOut = "wallpaper/mountain.jpg";
 
