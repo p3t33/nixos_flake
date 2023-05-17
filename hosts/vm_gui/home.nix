@@ -7,7 +7,6 @@
   # files use them and by not setting the hostname they will be using thier
   # default values which may cause all kind of issues.
   userDefinedGlobalVariables = {
-      enable = true;
       hostname = "kvm-nixos-gui";
   };
 
