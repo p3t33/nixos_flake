@@ -35,15 +35,13 @@
   boot.loader.grub.useOSProber = true;
 
 
-
   # IMPORTANT: hostname must be defined!
   # All of the global variables are defined based on the value set for it. Many
   # files use them and by not setting the hostname they will be using thier
   # default values which may cause all kind of issues.
-  userDefinedGlobalVariables = {
-      enable = true;
-      hostname = "home-desktop";
-  };
+  userDefinedGlobalVariables.hostname = "home-desktop";
+  networking.hostName = config.userDefinedGlobalVariables.hostname;
+
 
   # Setup keyfile
   boot.initrd.secrets = {
@@ -60,7 +58,6 @@
 
   programs.dconf.enable = true;
 
-  networking.hostName = config.userDefinedGlobalVariables.hostname;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

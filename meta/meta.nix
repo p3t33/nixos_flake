@@ -5,11 +5,6 @@
   options = with lib; with types; {
 
     userDefinedGlobalVariables = {
-    enable = mkOption {
-      default = true;
-      type = bool;
-      description = "enables user defined global variables";
-    };
 
     hostname = mkOption {
       default = "";
@@ -44,7 +39,7 @@
 
     homeDirectory = mkOption {
         type = str;
-        default = "";
+        default = "/home/${config.userDefinedGlobalVariables.username}";
     };
 
     initialPassword = mkOption {
@@ -152,36 +147,30 @@
     };
   };
 
-  config = lib.mkIf config.userDefinedGlobalVariables.enable (lib.mkMerge [
+  config = lib.mkMerge [
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "HP-Zbook"){
           userDefinedGlobalVariables.email = "kobi.medrish@motorolasolutions.com";
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "work_pc";
-          userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "home-desktop"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "home_desktop";
-          userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
           userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-gui"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "vm_gui";
-          userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
           userDefinedGlobalVariables.initialPassword = "q";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-server"){
           userDefinedGlobalVariables.username = "drone";
           userDefinedGlobalVariables.hostTag = "vm_server";
-          userDefinedGlobalVariables.homeDirectory = "/home/${config.userDefinedGlobalVariables.username}";
           userDefinedGlobalVariables.initialPassword = "q";
-
       })
-
-   ]);
+   ];
 }
 
