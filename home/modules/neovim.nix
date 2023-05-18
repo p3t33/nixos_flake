@@ -578,7 +578,7 @@
 
       "use of Ctrl-q to save current buffer in normal and insert mode."
       nnoremap <c-q> :w<CR>
-      inoremap <c-q> <Esc>:w<CR>a
+      inoremap <c-q> <Esc>:w<CR>
 
       "used for saving and exiting file - useful for git commits"
       nnoremap <c-x> :wq<CR>
