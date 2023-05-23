@@ -611,6 +611,9 @@
       nnoremap <leader>mx :BookmarkClearAll<Cr>
 
 
+      "make file executalbe"
+      nnoremap <leader>fx :!chmod +x %<Cr><Cr>
+
       "boffer control"
       nnoremap <leader>bn :bn<Cr>
       nnoremap <leader>bp :bp<Cr>
