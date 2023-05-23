@@ -49,6 +49,7 @@
     ../../home/scripts/rofi-firefox-bookmarks.nix
     ../../home/scripts/tmux-sessionizer.nix
     ../../home/scripts/helloworld-python.nix
+    ../../home/scripts/cheat-sh.nix
     ../../home/modules/redshift.nix
     ../../home/modules/taskwarrior.nix
     ../../home/modules/wallpaper.nix
