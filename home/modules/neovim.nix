@@ -10,6 +10,13 @@
       # Utils
       # =====
       {
+          plugin = nvim-autopairs;
+          type = "lua";
+          config = ''
+          require("nvim-autopairs").setup {}
+          '';
+      }
+      {
           plugin = indent-blankline-nvim;
       }
       {
@@ -481,7 +488,11 @@
       set shiftwidth=4
       set expandtab
 
-      set smartindent
+      " Use file type based indentation
+      filetype plugin indent on
+
+      " Use cindent for C/C++
+      autocmd FileType c,cc,cpp setlocal cindent
 
       :set cursorline
 
