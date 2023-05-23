@@ -51,7 +51,7 @@ programs.tmux = {
     nord
   ];
 
-  extraConfig = "
+  extraConfig = ''
     # kill a session
     bind-key X kill-session
     # sets the length of session name
@@ -101,7 +101,11 @@ programs.tmux = {
 
     bind -n S-Left previous-window
     bind -n S-Right next-window
-   ";
+
+    # reload config
+    bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "~/.tmux.conf reloaded."
+
+   '';
   };
 
 }
