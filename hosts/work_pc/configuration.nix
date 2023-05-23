@@ -62,12 +62,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  networking.interfaces.enp0s20f0u6u3u1.useDHCP = false;
-  networking.interfaces.enp0s20f0u6u3u1.ipv4.addresses = [ {
-    address = "192.168.99.1";
-    prefixLength = 24;
-  } ];
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh;
   users.users.${config.userDefinedGlobalVariables.username} = {
