@@ -36,6 +36,11 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
 
+  # Setup keyfile
+  boot.initrd.secrets = {
+    "/crypto_keyfile.bin" = null;
+  };
+
   # IMPORTANT: hostname must be defined!
   # All of the global variables are defined based on the value set for it. Many
   # files use them and by not setting the hostname they will be using thier
@@ -43,10 +48,6 @@
   userDefinedGlobalVariables.hostname = "HP-Zbook";
   networking.hostName = config.userDefinedGlobalVariables.hostname;
 
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
 
 
 
@@ -62,16 +63,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.defaultUserShell = pkgs.zsh;
-  users.users.${config.userDefinedGlobalVariables.username} = {
-    isNormalUser = true;
-    initialPassword = "changeme";
-    description = config.userDefinedGlobalVariables.username;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-  };
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -86,12 +77,7 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  # List services that you want to enable:
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
