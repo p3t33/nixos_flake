@@ -46,8 +46,7 @@ create_session_name()
 
 _is_command_executed_from_within_tmux()
 {
-    tmux_pid=$(pgrep tmux)
-    [[ -z $TMUX ]] && [[ -z $tmux_running ]]
+    [[ -n $TMUX ]]
 }
 
 # if attached session is created then the execution will continue inside of
@@ -68,7 +67,7 @@ _is_session_name_already_exit()
 
 start_tmux_session()
 {
-    if ! _is_command_executed_from_within_tmux; then
+    if _is_command_executed_from_within_tmux; then
         if ! _is_session_name_already_exit $1; then
             create_new_detached_tmux_session $1 $2
         fi
