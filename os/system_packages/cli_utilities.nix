@@ -53,6 +53,7 @@
       zsh-z
 
       thefuck
+      expect
     ];
 
 }
