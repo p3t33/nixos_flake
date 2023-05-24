@@ -17,8 +17,9 @@
     history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
 
     shellAliases = {
-      update = "sudo nixos-rebuild switch --flake ${config.home.homeDirectory}/projects/nixos_flake#${config.userDefinedGlobalVariables.hostTag}";
-      upgrade = "sudo nix flake update ${config.home.homeDirectory}/projects/nixos_flake && update";
+      get_flake_repository_if_does_not_exit = "if [[ ! -d ${config.userDefinedGlobalVariables.pathToFlakeDirectory} ]]; then git clone ${config.userDefinedGlobalVariables.flakeRepositoryUrl} ${config.userDefinedGlobalVariables.pathToFlakeDirectory}; fi;";
+      update = "get_flake_repository_if_does_not_exit; sudo nixos-rebuild switch --flake ${config.userDefinedGlobalVariables.pathToFlakeDirectory}#${config.userDefinedGlobalVariables.hostTag}";
+      upgrade = "get_flake_repository_if_does_not_exit; sudo nix flake update ${config.userDefinedGlobalVariables.pathToFlakeDirectory} && update";
       list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
       cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
       rollback = "sudo nixos-rebuild switch --rollback";

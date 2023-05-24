@@ -6,6 +6,18 @@
 
     userDefinedGlobalVariables = {
 
+    pathToFlakeDirectory = mkOption {
+      default = "${config.home.homeDirectory}/projects/nixos_flake";
+      type = str;
+      description = "used to define host hostname";
+    };
+
+    flakeRepositoryUrl = mkOption {
+      default = "git@github.com:p3t33/nixos_flake.git";
+      type = str;
+      description = "used to define host hostname";
+    };
+
     hostname = mkOption {
       default = "";
       type = str;
