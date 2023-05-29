@@ -3,12 +3,11 @@
 
   systemd.services.moolticuted = {
     enable = true;
-    unitConfig = {
-      description = "Moolticute daemon";
-    };
+    description = "Moolticute daemon";
 
     serviceConfig = {
       Type = "simple";
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
       ExecStart="${pkgs.moolticute}/bin/moolticuted";
       killMode = "process";
       Restart = "always";
@@ -30,10 +29,8 @@
       RestrictRealtime = true;
     };
 
-    #installConfig = {
-    #  wantedBy = [ "multi-user.target" ];
-    #};
-    wantedBy = [ "multi-user.target" ];
+    after = [ "graphical.target" ];
+    wantedBy = [ "graphical.target" ];
   };
 
 }
