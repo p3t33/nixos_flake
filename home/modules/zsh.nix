@@ -40,6 +40,12 @@
 
     initExtra = ''
         export LANG="en_US.UTF-8";
+        function tmux-sesssion {
+        BUFFER='tmux-sessionizer'
+            zle accept-line
+        }
+        zle -N tmux-sesssion
+        bindkey '^f' tmux-sesssion
     '';
     # There are two types of plugins.
     # the one that are part of the shell(like the once bellow),
