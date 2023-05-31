@@ -28,6 +28,7 @@
       ../../os/virtualization/virtualbox.nix
       ../../os/gui.nix
       ../../os/users.nix
+      ../../os/dictionaries.nix
     ];
 
   # Bootloader.

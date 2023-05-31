@@ -22,6 +22,7 @@
       ../../os/virtualization/docker.nix
       ../../meta/meta.nix
       ../../os/users.nix
+      ../../os/dictionaries.nix
     ];
 
   # Bootloader.

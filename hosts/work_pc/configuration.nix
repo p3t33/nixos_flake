@@ -27,6 +27,7 @@
       ../../os/virtualization/virtualbox.nix
       ../../os/users.nix
       ../../os/gui.nix
+      ../../os/dictionaries.nix
       ../../meta/meta.nix
     ];
 
