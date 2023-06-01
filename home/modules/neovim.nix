@@ -252,7 +252,7 @@
             }
           require('lspconfig').rust_analyzer.setup{}
           require('lspconfig').rnix.setup{}
-          require('lspconfig').sumneko_lua.setup{}
+          require('lspconfig').lua_ls.setup{}
           require('lspconfig').clangd.setup{
               on_attach = on_attach,
               flags = lsp_flags,
