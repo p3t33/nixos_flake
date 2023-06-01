@@ -68,7 +68,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -82,6 +81,7 @@
     syncthing
     git-review
     ntfs3g
+    calibre
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
