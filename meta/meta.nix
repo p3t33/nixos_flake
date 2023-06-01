@@ -6,6 +6,14 @@
 
     userDefinedGlobalVariables = {
 
+    homeManagerStateVersion = mkOption {
+      # Helps to avied brakeage and as a best practice shoud be the same version
+      # as the reset of the system.
+      default = "23.05";
+      type = str;
+      description = "Defines the realease that Home Manager has backwards compatibility with";
+    };
+
     pathToFlakeDirectory = mkOption {
       default = "${config.home.homeDirectory}/projects/nixos_flake";
       type = str;
