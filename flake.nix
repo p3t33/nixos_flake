@@ -2,15 +2,15 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.11";
+      url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }: 
+  outputs = inputs@{ nixpkgs, home-manager, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -23,8 +23,8 @@
       nixosConfigurations = {
         vm_server = lib.nixosSystem {
 	  inherit system;
-	  modules = [ 
-	  ./hosts/vm_server/configuration.nix 
+	  modules = [
+	  ./hosts/vm_server/configuration.nix
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;
@@ -38,8 +38,8 @@
       nixosConfigurations = {
         vm_gui = lib.nixosSystem {
 	  inherit system;
-	  modules = [ 
-	  ./hosts/vm_gui/configuration.nix 
+	  modules = [
+	  ./hosts/vm_gui/configuration.nix
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;
@@ -53,8 +53,8 @@
       nixosConfigurations = {
         work_pc = lib.nixosSystem {
 	  inherit system;
-	  modules = [ 
-	  ./hosts/work_pc/configuration.nix 
+	  modules = [
+	  ./hosts/work_pc/configuration.nix
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;
@@ -68,8 +68,8 @@
       nixosConfigurations = {
         home_desktop = lib.nixosSystem {
 	  inherit system;
-	  modules = [ 
-	  ./hosts/home_desktop/configuration.nix 
+	  modules = [
+	  ./hosts/home_desktop/configuration.nix
 	  home-manager.nixosModules.home-manager
 	  {
 	    home-manager.useGlobalPkgs = true;

@@ -1,6 +1,8 @@
 { pkgs, config, ... }:
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Since 23.05 there will be a failed assertion if zsh is not enabled here.
+  programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
   users.users.${config.userDefinedGlobalVariables.username} = {
     isNormalUser = true;
