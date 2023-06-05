@@ -22,6 +22,7 @@
       ../../os/system_packages/gui.nix
       ../../os/system_packages/iac.nix
       ../../os/sound.nix
+      ../../os/networking.nix
       ../../os/environment_variables.nix
       ../../os/virtualization/docker.nix
       ../../os/virtualization/kvm.nix
@@ -48,9 +49,6 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${config.userDefinedGlobalVariables.username} = {
