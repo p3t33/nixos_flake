@@ -45,6 +45,18 @@ process_bookmark() {
             query="select p.url from moz_bookmarks as b left outer join moz_places as p on b.fk=p.id where b.type = 1 and p.hidden=0 and b.title not null and b.id=$id"
             url="$($sqlite_path $sqlite_params "$places_backup" "$query")"
             nohup $browser_path "$url" >/dev/null 2>&1 &
+
+            # give Firefox time to open the window to be found by wmctrl, if time is too
+            # short them wmctrl will fail and i3-msg will fail to swtich.
+            sleep 0.1
+            windowid=$(wmctrl -lx | grep -i Navigator.Firefox | awk '{print $1}' | tail -1)
+
+            # & is used for the script not to wait for to command to finish
+            # /dev/null is used to discard the standard output (stdout) of a command.
+            # It prevents the output of the command from being displayed in the
+            # terminal or being passed to other parts of the script.
+            # this command is i3wm specific!
+            i3-msg "[id=\"$windowid\"] focus" > /dev/null &
             fi
 }
 
@@ -67,5 +79,5 @@ process_bookmarks
   '';
 in
 {
-    home.packages = [ rofi-firefox-bookmakrs ];
+    home.packages = [rofi-firefox-bookmakrs ];
 }

@@ -25,9 +25,10 @@
       enable = true;
       #configFile = "/etc/i3.conf";
       extraPackages = with pkgs; [
-	rofi
-	i3status
-	i3blocks
+        rofi
+        i3status
+        i3blocks
+        wmctrl
       ];
     };
   };
