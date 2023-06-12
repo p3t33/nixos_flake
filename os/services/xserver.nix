@@ -28,7 +28,14 @@
         rofi
         i3status
         i3blocks
+
+        # Can query the window manager for information and is dependency for
+        # the rofi Firefox bookmars script.
         wmctrl
+
+        # Monitor control
+        arandr
+        xorg.xrandr
       ];
     };
   };

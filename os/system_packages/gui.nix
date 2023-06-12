@@ -10,11 +10,7 @@
       # graphics
       gimp
       vlc
-      arandr
       flameshot
-
-
-
 
       # note taking
       cherrytree
@@ -26,12 +22,6 @@
 
       sxhkd
       gparted
-
-
-
-
-
-
     ];
 
 }

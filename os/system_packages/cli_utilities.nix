@@ -18,9 +18,6 @@
       whois
       openconnect
 
-    # display
-      xorg.xrandr
-
     # search
       ripgrep
       fd
