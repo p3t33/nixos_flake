@@ -4,6 +4,7 @@
 
   services.xserver = {
     enable = true;
+    logFile = "/var/log/Xorg.0.log"; # Enables logging to this file
     layout = "us,il";
     xkbVariant = "";
     xkbOptions = "grp:win_space_toggle";
@@ -36,6 +37,10 @@
         # Monitor control
         arandr
         xorg.xrandr
+
+        # debugging and information
+        xorg.xdpyinfo
+        glxinfo # query the properties of an OpenGL implementation
       ];
     };
   };
