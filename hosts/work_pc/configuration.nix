@@ -51,8 +51,13 @@
   userDefinedGlobalVariables.hostname = "HP-Zbook";
   networking.hostName = config.userDefinedGlobalVariables.hostname;
 
-
-
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia.prime = {
+    sync.enable = true;
+    # found by executing lspci| grep -E 'VGA|3D'
+    nvidiaBusId = "PCI:01:00:0";
+    intelBusId = "PCI:00:02:0";
+  };
 
 
   programs.dconf.enable = true;
