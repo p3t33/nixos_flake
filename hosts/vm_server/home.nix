@@ -37,6 +37,7 @@
     ../../home/modules/taskwarrior.nix
     ../../home/scripts/tmux-sessionizer.nix
     ../../home/scripts/cheat-sh.nix
+    ../../home/modules/nix-index.nix
 
   ];
 

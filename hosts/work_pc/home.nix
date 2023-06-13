@@ -53,6 +53,7 @@
     ../../home/modules/redshift.nix
     ../../home/modules/taskwarrior.nix
     ../../home/modules/wallpaper.nix
+    ../../home/modules/nix-index.nix
   ];
 
   home.sessionVariables = {
