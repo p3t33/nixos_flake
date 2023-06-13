@@ -51,6 +51,8 @@
 
       thefuck
       expect
+
+      pciutils
     ];
 
 }
