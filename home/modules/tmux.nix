@@ -79,8 +79,8 @@ programs.tmux = {
     bind-key -r f run-shell 'tmux neww tmux-sessionizer'
     bind-key -r i run-shell 'tmux neww cheat-sh'
     # S easier move of windows
-    bind-key -r < swap-window -t -
-    bind-key -r > swap-window -t +
+    bind-key -r Home swap-window -t - \; select-window -t -
+    bind-key -r End swap-window -t + \; select-window -t +
 
     # Plugins
     # -------
