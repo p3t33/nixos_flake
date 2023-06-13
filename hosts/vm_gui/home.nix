@@ -49,6 +49,7 @@
     ../../home/scripts/cheat-sh.nix
     ../../home/modules/taskwarrior.nix
     ../../home/modules/wallpaper.nix
+    ../../home/modules/nix-index.nix
 
   ];
 
