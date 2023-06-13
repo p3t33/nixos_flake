@@ -35,6 +35,7 @@
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
+  boot.initrd.kernelModules = [ "amdgpu" ];
 
 
   # IMPORTANT: hostname must be defined!
@@ -80,7 +81,15 @@
     git-review
     ntfs3g
     calibre
+
+    mesa.drivers # For Vulkan support
+    rocm-opencl-icd # For OpenCL support
   ];
+
+  services.xserver = {
+  enable = true;
+  videoDrivers = [ "amdgpu" ]; # Enables the AMDGPU driver
+};
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
