@@ -82,6 +82,8 @@ programs.tmux = {
     bind-key -r Home swap-window -t - \; select-window -t -
     bind-key -r End swap-window -t + \; select-window -t +
 
+    bind-key -r o command-prompt -p "Name of new session:" "new-session -s '%%'"
+
     # Plugins
     # -------
 
