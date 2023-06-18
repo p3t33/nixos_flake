@@ -31,6 +31,7 @@
 
     # general
       sshfs
+      sshpass
       lsyncd
       rclone
       restic
