@@ -454,7 +454,6 @@
 
           vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end)
           vim.keymap.set("n", "<C-n>", function() ui.nav_file(3) end)
-          vim.keymap.set("n", "<C-s>", function() ui.nav_file(4) end)
         '';
       }
     ];
@@ -588,8 +587,8 @@
       nnoremap <leader>fd :BD<Cr>
 
       "use of Ctrl-q to save current buffer in normal and insert mode."
-      nnoremap <c-q> :w<CR>
-      inoremap <c-q> <Esc>:w<CR>
+      nnoremap <c-s> :w<CR>
+      inoremap <c-s> <Esc>:w<CR>
 
       "used for saving and exiting file - useful for git commits"
       nnoremap <c-x> :wq<CR>
