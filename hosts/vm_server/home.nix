@@ -38,6 +38,7 @@
     ../../home/scripts/tmux-sessionizer.nix
     ../../home/scripts/cheat-sh.nix
     ../../home/modules/nix-index.nix
+    ../../home/modules/atuin.nix
 
   ];
 
