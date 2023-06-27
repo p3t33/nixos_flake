@@ -171,10 +171,10 @@ in
         # exit i3 (logs you out of your X session)
         "${mod}+Shift+q" = "exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'\"";
 
-        "XF86AudioRaiseVolume" =  "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%";
-        "XF86AudioLowerVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%";
-        "XF86AudioMute" = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle";
-        "XF86AudioMicMute" = "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+        #"XF86AudioRaiseVolume" =  "exec --no-startup-id amixer sset Master 5%+";
+        #"XF86AudioLowerVolume" = "exec --no-startup-id amixer sset Master 5%-";
+        #"XF86AudioMute" = "exec --no-startup-id amixer sset Master toggle";
+        #"XF86AudioMicMute" = "exec --no-startup-id amixer set Capture toggle";
       };
 
       colors = {
