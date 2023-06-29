@@ -130,7 +130,7 @@ in
         "${mod}+w" = "layout tabbed";
         "${mod}+e" = "layout toggle split";
 
-        # switch to worspace
+        # switch to workspace
         "${mod}+1" = "workspace number ${ws1}";
         "${mod}+2" = "workspace number ${ws2}";
         "${mod}+3" = "workspace number ${ws3}";
@@ -161,6 +161,10 @@ in
         # Move workspace to different outputs(monitors)
         "${mod}+Shift+Home" = "move workspace to output left";
         "${mod}+Shift+End" = "move workspace to output right";
+
+
+        # Alternating between two most recent workspaces
+        "${mod}+Tab" = "workspace back_and_forth";
 
         # reload the configuration file
         "${mod}+Shift+r" = "reload";
