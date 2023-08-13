@@ -154,6 +154,18 @@ in
         "${mod}+Shift+9" = "move container to workspace number ${ws9}";
         "${mod}+Shift+10" = "move container to workspace number ${ws10}";
 
+        # move focused container to workspace and go there
+        "${mod}+Control+Shift+1" = "move container to workspace number ${ws1}; workspace ${ws1}";
+        "${mod}+Control+Shift+2" = "move container to workspace number ${ws2}; workspace ${ws2}";
+        "${mod}+Control+Shift+3" = "move container to workspace number ${ws3}; workspace ${ws3}";
+        "${mod}+Control+Shift+4" = "move container to workspace number ${ws4}; workspace ${ws4}";
+        "${mod}+Control+Shift+5" = "move container to workspace number ${ws5}; workspace ${ws5}";
+        "${mod}+Control+Shift+6" = "move container to workspace number ${ws6}; workspace ${ws6}";
+        "${mod}+Control+Shift+7" = "move container to workspace number ${ws7}; workspace ${ws7}";
+        "${mod}+Control+Shift+8" = "move container to workspace number ${ws8}; workspace ${ws8}";
+        "${mod}+Control+Shift+9" = "move container to workspace number ${ws9}; workspace ${ws9}";
+        "${mod}+Control+Shift+10" = "move container to workspace number ${ws10}; workspace ${ws10}";
+
         # Move focus to different outputs(monitors)
         "${mod}+Home" = "focus output left";
         "${mod}+End" = "focus output right";
