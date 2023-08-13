@@ -33,4 +33,5 @@
     wantedBy = [ "graphical.target" ];
   };
 
+  services.udev.packages = [ pkgs.moolticute.udev ];
 }
