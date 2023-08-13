@@ -31,6 +31,7 @@
       ../../os/gui.nix
       ../../os/dictionaries.nix
       ../../meta/meta.nix
+      ../../os/security/nitrokey.nix
     ];
 
   # Bootloader.
