@@ -621,7 +621,12 @@
       nnoremap <leader>bv <C-w>v
 
       nmap<F8> :TagbarToggle<CR>
+
+      "spell checker"
+      "------------"
       map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us<CR>
+      "will activate spell checker automatically once trying to create a new git commit"
+      autocmd FileType gitcommit setlocal spell spellsuggest=best,5 spelllang=en_us
 
       noremap <leader>xd :TroubleToggle<CR>
 
