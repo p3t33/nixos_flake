@@ -115,6 +115,9 @@ programs.tmux = {
 
     bind-key -r o command-prompt -p "Name of new session:" "new-session -s '%%'"
 
+    # switch to last session
+    bind-key L switch-client -l
+
     # Windows
     set -g set-titles 'on'
 
