@@ -12,7 +12,24 @@ programs.tmux = {
   clock24 = true;
   sensibleOnTop = true;
 
+  # Important notice about tmux plugins and the tmux.conf that generated from
+  # this tmux.nix
+  #
+  # in general plugins may and will conflict with each other, so the order in
+  # which tmux loads them matters.  This is true when editing directly tmux.conf
+  # and same applies when putting them in the plugins list in NixOS.
+  #
+  # Specifically in my current list. the theme plugin(nord) must be included before
+  # continuum and same is true for everything that might set tmux status-right
+  # as the auto save command(set -g @continuum-save-interval '1')
+  # gets written into status-right. So everything that sets status-right would have to be loaded
+  # beforehand.
+  # Furthermore the continuum plugin must be loaded after the resurrect plugin.
   plugins = with pkgs.tmuxPlugins; [
+    # The nord plugin or any other theme should on the top of the list
+    # of the plugins. As it wtites into the status-right which breaks the
+    # set -g @continuum-save-interval for the continumm plugin.
+    nord
     {
         plugin = tmux-fzf;
         extraConfig = ''
@@ -20,6 +37,8 @@ programs.tmux = {
         '';
     }
 
+    # This plugin needs to be loaded before continuum or else continuu, will
+    # not work.
     {
         plugin = resurrect;
         extraConfig = ''
@@ -70,16 +89,24 @@ programs.tmux = {
     # nothing is generated "willy-nilly" by applications.
     # So this aspect of the plugin is already taken care of by me in a seperate
     # systemd unit that is responsible to start tmux when system starts.
+    #
+    # set -g @continuum-save-interval is written into the status-right which
+    # means that any other plugin that writes into status-right needs to be
+    # loaded first or the autosave functionality will not work.
+    #
+    # More then that is looks like the autosave feature(set -g @continuum-save-interval)
+    # only works if you are attached to tmux, for some reason it does not work
+    # in detached mode.
+    #
+    # If autosave option interval is not set there is a default of 15 minutes
+    # and it worked for me when tested.
     {
        plugin = continuum;
        extraConfig = ''
          set -g @continuum-restore 'on'
-         set -g @continuum-save-interval '10'
+         set -g @continuum-save-interval '1'
        '';
-
-
     }
-    nord
   ];
 
   extraConfig = ''
