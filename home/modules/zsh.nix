@@ -36,6 +36,7 @@
       clpp17d = "clang++ -std=c++17 -pedantic-errors -Wall -Wextra -g";
       vlg = "valgrind --leak-check=yes --track-origins=yes";
       grind = "rm callgrind.out.* && valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
+      vi = "nvim";
      };
 
     initExtra = ''
