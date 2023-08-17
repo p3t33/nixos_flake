@@ -121,6 +121,8 @@ in
       modi = "drun#ssh#emoji#calc#power-menu:rofi-power-menu#firefox-bookmarks:rofi-firefox-bookmakrs";
       terminal = "alacritty";
       sort = true;
+      matching = "fuzzy";
+      tokenize = true;
     };
   };
 
