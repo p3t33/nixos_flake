@@ -64,11 +64,6 @@ programs.tmux = {
 
     {
         plugin = yank;
-        extraConfig = ''
-          bind-key -T copy-mode-vi v send-keys -X begin-selection
-          bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
-          bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cance
-        '';
     }
     # a few wods about @continuum-boot and @continuum-systemd-start-cmd that
     # are not used as part of the extraConfig for the continuum plugin.
@@ -152,6 +147,17 @@ programs.tmux = {
 
     bind -n S-Left previous-window
     bind -n S-Right next-window
+
+    # quick yank of the text in the corrent line without going into selection
+    # very useful when coping from the command line.
+    bind-key -T copy-mode-vi U send-keys -X copy-selection-and-cancel
+
+    # go into selction mode(with vim motions) and once done press Enter
+    # to yank selected.
+    bind-key -T copy-mode-vi u send-keys -X begin-selection
+
+    # go into rectangle selection mode
+    bind-key -T copy-mode-vi C-S-u send-keys -X rectangle-toggle
 
     # reload config
     bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "~/.tmux.conf reloaded."
