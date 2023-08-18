@@ -73,6 +73,15 @@ programs.tmux = {
     {
         plugin = yank;
     }
+    # For some reason this plugun by default only copy into the Tmux copy buffer
+    # and so I had to explicitly state the command to make it copy into the system
+    # clipboard as swell.
+    {
+        plugin = tmux-thumbs;
+        extraConfig = ''
+          set -g @thumbs-command 'tmux set-buffer -- {} && tmux display-message "Copied {}" && printf %s {} | xclip -i -selection clipboard'
+        '';
+    }
     # a few wods about @continuum-boot and @continuum-systemd-start-cmd that
     # are not used as part of the extraConfig for the continuum plugin.
     #
