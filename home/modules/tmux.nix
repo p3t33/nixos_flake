@@ -61,7 +61,15 @@ programs.tmux = {
     {
         plugin = vim-tmux-navigator;
     }
-
+    # The copy buffer for tmux is separate from the system one, in the past in
+    # order to sync the two there was a need to install tmux-yank but it looks like
+    # Tmux now sends the OSC52 escape code that tells the terminal(one that support this)
+    # to not display the following characters, but to copy them into the clipboard
+    # instead.
+    #
+    # The reason that this plugin is still included because it provides a quick way to copy what
+    # what is on the command line and once in copy mode to copy the PWD. I might just replace the
+    # plugin with keybindings(based on send-keys).
     {
         plugin = yank;
     }
@@ -102,6 +110,7 @@ programs.tmux = {
          set -g @continuum-save-interval '1'
        '';
     }
+
   ];
 
   extraConfig = ''
