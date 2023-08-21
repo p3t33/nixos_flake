@@ -35,7 +35,7 @@ to achieve code reuse.
 
 # ToDo
 - [ ] Generic way to mount hard drives that is not based on UUID but on instead.
-- [ ] tmux and plugins such as resurrect and continuum not working.
+- [x] ~~tmux and plugins such as resurrect and continuum not working.~~
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 
