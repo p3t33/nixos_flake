@@ -80,6 +80,14 @@ programs.tmux = {
         plugin = tmux-thumbs;
         extraConfig = ''
           set -g @thumbs-command 'tmux set-buffer -- {} && tmux display-message "Copied {}" && printf %s {} | xclip -i -selection clipboard'
+          set -g @thumbs-key C-y
+        '';
+    }
+    {
+        plugin = extrakto;
+        extraConfig = ''
+          set -g @extrakto_key M-y
+          set -g @extrakto_split_direction v
         '';
     }
     # a few wods about @continuum-boot and @continuum-systemd-start-cmd that
@@ -119,6 +127,7 @@ programs.tmux = {
          set -g @continuum-save-interval '1'
        '';
     }
+
 
   ];
 
