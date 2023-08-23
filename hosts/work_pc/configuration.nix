@@ -47,15 +47,27 @@
 
   # IMPORTANT: hostname must be defined!
   # All of the global variables are defined based on the value set for it. Many
-  # files use them and by not setting the hostname they will be using thier
+  # files use them and by not setting the hostname they will be using their
   # default values which may cause all kind of issues.
   userDefinedGlobalVariables.hostname = "HP-Zbook";
   networking.hostName = config.userDefinedGlobalVariables.hostname;
 
+  # Nvidia PRIME(technology used to manage hybrid graphics) settings
+  # Note: non hybrid Nvidia graphics have a bit different configurations.
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.prime = {
-    sync.enable = true;
-    # found by executing lspci| grep -E 'VGA|3D'
+
+    # In this mode the Nvidia card is only activated on demand
+    # There is also the sync mode in which In this mode the Nvidia card is
+    # turned on constantly, having impact on laptop battery and health.
+    # And in this mode there might be some issues.
+    # In any case it is always a good idia to keep an eye on the official documentation.
+    offload = {
+      enable = true;
+      enableOffloadCmd = true;
+    };
+
+    # found by executing lspci | grep -E 'VGA|3D'
     nvidiaBusId = "PCI:01:00:0";
     intelBusId = "PCI:00:02:0";
   };
