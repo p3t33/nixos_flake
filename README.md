@@ -35,7 +35,11 @@ to achieve code reuse.
 
 # ToDo
 - [ ] Generic way to mount hard drives that is not based on UUID but on instead.
-- [x] ~~tmux and plugins such as resurrect and continuum not working.~~
+- [ ] tmux save and restore sessions(using resurrect and continuum) not working.
+  - [x] ~~Make tmux start as a systemd service after reboot in server mode.~~
+  - [x] ~~Make tmux to restore saved sessions after reboot automatically.~~
+  - [x] ~~Make tmux automatically save current session state at predefined intervals.~~
+  - [ ] Fix the failure to restore applications(man, vim..).
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 
