@@ -39,7 +39,8 @@ to achieve code reuse.
   - [x] ~~Make tmux start as a systemd service after reboot in server mode.~~
   - [x] ~~Make tmux to restore saved sessions after reboot automatically.~~
   - [x] ~~Make tmux automatically save current session state at predefined intervals.~~
-  - [ ] Fix the failure to restore applications(man, vim..).
+  - [x] ~~Fix the failure to restore applications(man, vim..).~~
+  - [ ] Find a way for tmux to restore vim with vim session.
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 
