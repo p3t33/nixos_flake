@@ -4,7 +4,7 @@ various machines.
 
 # Philosophy
 - Multiple machines are defined with emphasis on shared code between them
-in order to achieve consistency and to avoid code reuse where possible.
+in order to achieve consistency and to avoid code repeat where possible.
 - Work flow is heavily skewed towards the use of the keyboard and the terminal.
 Some keyboard bindings may look strange but they are effected by the fact
 that I use a programmable keyboard(configurations can be located in
@@ -35,12 +35,12 @@ to achieve code reuse.
 
 # ToDo
 - [ ] Generic way to mount hard drives that is not based on UUID but on instead.
-- [ ] tmux save and restore sessions(using resurrect and continuum) not working.
+- [x] tmux save and restore sessions(using resurrect and continuum) not working.
   - [x] ~~Make tmux start as a systemd service after reboot in server mode.~~
   - [x] ~~Make tmux to restore saved sessions after reboot automatically.~~
   - [x] ~~Make tmux automatically save current session state at predefined intervals.~~
   - [x] ~~Fix the failure to restore applications(man, vim..).~~
-  - [ ] Find a way for tmux to restore vim with vim session.
+  - [x] ~~Find a way for tmux to restore vim with vim session.~~
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 
