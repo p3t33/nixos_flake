@@ -361,6 +361,7 @@
         plugin = vim-startify;
         config = ''
           let g:startify_session_persistence = 1
+          let g:startify_session_autoload = 1
           let g:startify_custom_header = [
           \' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
           \' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
@@ -376,6 +377,7 @@
              \ { 'type': 'files',     'header': ['   Recent files']            },
              \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
              \]
+
 
         '';
       }
