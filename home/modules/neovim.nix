@@ -388,9 +388,6 @@
           plugin = vim-airline;
           config = ''
 
-              " Enable the list of buffers
-              let g:airline#extensions#tabline#enabled = 1
-
               " Show just the filename
               let g:airline#extensions#tabline#fnamemod = ':t'
           '';
@@ -535,6 +532,7 @@
       set colorcolumn =80
 
       set mouse=a
+
 
       "Remove white spaces at the end of the line on buffer write"
       fun! TrimWhitespace()
