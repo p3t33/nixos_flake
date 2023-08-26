@@ -42,8 +42,23 @@ programs.tmux = {
     {
         plugin = resurrect;
         extraConfig = ''
+
+          # I have tested this strategy to work with neovim but it is not enough to have
+          # Session.vim at the root of the path from which the plugin is going to do the restore
+          # it is important that for neovim to be saved to be restored from the path where Session.vim
+          # exist for this flow to kick in. Which means that even if tmux-resurrect saved the path with
+          # Session.vim in it but vim was not open at the time of the save of the sessions then when
+          # tmux-resurrect restore the window with the path with Session.vim nothing will happen.
+
+          # Furthermore I currently using vim-startify which among other things is able to restore
+          # from Session.vim if neovim is opened from the path where Session.vim exist. So in a
+          # sense I don't really need tmux resurrect to restore the session as this already
+          # taken care of and this functionality becomes redundant. But as I am not sure if I keep
+          # using vim-startify or its auto restore feature and it doe not conflict in any way that
+          # I know of with set -g @resurrect-strategy-* I decided to keep it enabled for the time being.
           set -g @resurrect-strategy-nvim 'session'
           set -g @resurrect-strategy-vim 'session'
+
           set -g @resurrect-capture-pane-contents 'on'
 
           # This three lines are specific to NixOS and they are intended
