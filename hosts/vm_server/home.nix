@@ -39,6 +39,7 @@
     ../../home/scripts/cheat-sh.nix
     ../../home/modules/nix-index.nix
     ../../home/modules/atuin.nix
+    ../../home/modules/lazygit.nix
 
   ];
 

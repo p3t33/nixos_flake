@@ -55,6 +55,7 @@
     ../../home/modules/wallpaper.nix
     ../../home/modules/nix-index.nix
     ../../home/modules/atuin.nix
+    ../../home/modules/lazygit.nix
   ];
 
   home.sessionVariables = {
