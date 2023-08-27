@@ -183,7 +183,7 @@ programs.tmux = {
 
     set-option -g status-position top
 
-    bind-key -r f run-shell 'tmux neww tmux-sessionizer'
+    bind-key -r f run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
     bind-key -r i run-shell 'tmux neww cheat-sh'
     # S easier move of windows
     bind-key -r Home swap-window -t - \; select-window -t -
