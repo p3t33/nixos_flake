@@ -40,7 +40,7 @@
     ../../home/modules/nix-index.nix
     ../../home/modules/atuin.nix
     ../../home/modules/lazygit.nix
-
+    ../../home/modules/clipmenu.nix
   ];
 
   home.sessionVariables = {

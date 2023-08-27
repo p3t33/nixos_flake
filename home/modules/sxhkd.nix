@@ -43,6 +43,9 @@
          rofi -modi emoji -show emoji
 
        super + c
+         clipmenu
+
+       super + y
          rofi -modi calc -show calc
 
        super + p
