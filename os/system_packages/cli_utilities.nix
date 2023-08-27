@@ -40,6 +40,7 @@
       tmux
       smug # Session manager for tmux.
       moreutils # I need the sponge appliction to be used as part of tmux configuration.
+      exfat # required by Ventoy installer.
 
 
       exa
