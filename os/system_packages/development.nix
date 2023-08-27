@@ -19,6 +19,7 @@
     git
     git-crypt
     delta
+    lazygit
 
 
     # lua
@@ -38,11 +39,11 @@
     # nix devlepoment
     rnix-lsp
 
-    # python devlepoment 
+    # python devlepoment
     # ------------------
-    # 
-    # For packages to be able to find each other they must be delared toghter 
-    # I installed there the bare minimum minimum to be able to use python 
+    #
+    # For packages to be able to find each other they must be delared toghter
+    # I installed there the bare minimum minimum to be able to use python
     # venv scheme.
     (python39.withPackages (p: with p; [
       python39Packages.pip
