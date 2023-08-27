@@ -10,6 +10,13 @@
       # Utils
       # =====
       {
+        plugin = gitsigns-nvim;
+        type = "lua";
+        config = ''
+            require('gitsigns').setup()
+        '';
+      }
+      {
           plugin = nvim-autopairs;
           type = "lua";
           config = ''
