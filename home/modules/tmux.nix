@@ -30,12 +30,6 @@ programs.tmux = {
     # of the plugins. As it wtites into the status-right which breaks the
     # set -g @continuum-save-interval for the continumm plugin.
     nord
-    {
-        plugin = tmux-fzf;
-        extraConfig = ''
-        TMUX_FZF_LAUNCH_KEY="C-f"
-        '';
-    }
 
     # This plugin needs to be loaded before continuum or else continuu, will
     # not work.
