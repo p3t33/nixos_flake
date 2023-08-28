@@ -187,6 +187,11 @@ programs.tmux = {
 
     bind-key -r o command-prompt -p "Name of new session:" "new-session -s '%%'"
 
+    # Orders the session list by time of last access
+    # The default being to order by the index that is assigned when
+    # session was created.
+    bind s choose-tree -sZ -O time
+
     # switch to last session
     bind-key L switch-client -l
 
