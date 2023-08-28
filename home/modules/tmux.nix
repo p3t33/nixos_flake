@@ -213,6 +213,7 @@ programs.tmux = {
 
     # go into rectangle selection mode
     bind-key -T copy-mode-vi C-S-u send-keys -X rectangle-toggle
+    bind Enter new-window
 
     # reload config
     bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "~/.tmux.conf reloaded."
