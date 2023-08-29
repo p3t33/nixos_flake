@@ -57,6 +57,10 @@
       expect
 
       pciutils
+      # Used for fetching source from github
+      # I used it to package tmux pluging that was not already available.
+      nix-prefetch-github
+      nix-prefetch-git
     ];
 
 }
