@@ -32,7 +32,7 @@
     ../../meta/meta.nix
     ../../home/modules/starship.nix
     ../../home/modules/fzf.nix
-    ../../home/modules/neovim.nix
+    ../../home/modules/neovim/neovim.nix
     ../../home/modules/git.nix
     ../../home/modules/zsh.nix
     ../../home/modules/tmux.nix

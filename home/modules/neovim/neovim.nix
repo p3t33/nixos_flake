@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 
 {
+    imports = [./spelling.nix];
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -522,7 +523,9 @@
       " --------------------"
       set nowrap
 
+      "--------------------------"
       "Setting up backup of files"
+      "--------------------------"
       set noswapfile
       set nobackup
       " Let's save undo info!
@@ -535,6 +538,7 @@
 
       set undodir=~/.vim/undo-dir
       set undofile
+      "---------------------------"
 
       "Search related"
       set incsearch
@@ -557,15 +561,59 @@
 
       set mouse=a
 
-
+      "----------------------------------------------------------"
       "Remove white spaces at the end of the line on buffer write"
+      "----------------------------------------------------------"
       fun! TrimWhitespace()
           let l:save = winsaveview()
           keeppatterns %s/\s\+$//e
           call winrestview(l:save)
       endfun
       autocmd BufWritePre * call TrimWhitespace()
+      "----------------------------------------------------------"
 
+      "----------------------------------------------------------"
+      " Define the custom command for nixen spell file compilation
+      " This is user defined .nix English dictionary."
+      " This command is executed at the starting of vim."
+      "----------------------------------------------------------"
+      command! MakeNixSpell mkspell! ~/.config/nvim/spell/nixen.utf-8.spl ~/.config/nvim/spell/nixen.utf-8.add
+
+      function! CompileNixSpellFileIfNeeded()
+        let spellfile = expand("~/.config/nvim/spell/nixen.utf-8.spl")
+        let addfile = expand("~/.config/nvim/spell/nixen.utf-8.add")
+
+        if !filereadable(addfile)
+            return
+        endif
+
+        let spell_timestamp = system('stat -c %Y ' . shellescape(spellfile))
+        let add_timestamp = system('stat -c %Y ' . shellescape(addfile))
+
+        if !filereadable(spellfile) || add_timestamp > spell_timestamp
+            silent! MakeNixSpell
+        endif
+
+      endfunction
+
+      autocmd VimEnter * call CompileNixSpellFileIfNeeded()
+
+      "spell checker"
+      "------------"
+      map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us,nixen<CR>
+      "will activate spell checker automatically once trying to create a new git commit or README.md file."
+      autocmd FileType gitcommit,markdown setlocal spell spellsuggest=best,5 spelllang=en_us,nixen
+      "------------"
+
+      " Jump to the next misspelled word and activate fix mode
+      nnoremap ]s ]sz=
+
+      " Jump to the previous misspelled word and activate fix mode
+      nnoremap [s [sz=
+      " go into spelling suggestions"
+      "----------------------------------------------------------"
+
+      "========"
       "Mappings"
       "========"
 
@@ -646,11 +694,6 @@
 
       nmap<F8> :TagbarToggle<CR>
 
-      "spell checker"
-      "------------"
-      map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us<CR>
-      "will activate spell checker automatically once trying to create a new git commit"
-      autocmd FileType gitcommit,markdown setlocal spell spellsuggest=best,5 spelllang=en_us
 
       noremap <leader>xd :TroubleToggle<CR>
 
