@@ -1,4 +1,17 @@
 { pkgs, ... }:
+let
+  tmux-nerd-font-window-name = pkgs.tmuxPlugins.mkTmuxPlugin {
+    pluginName = "tmux-nerd-font-window-name.tmux";
+    version = "unstable-2023-08-22";
+    rtpFilePath = "tmux-nerd-font-window-name.tmux";
+    src = pkgs.fetchFromGitHub {
+      owner = "joshmedeski";
+      repo = "tmux-nerd-font-window-name";
+      rev = "c2e62d394a290a32e1394a694581791b0e344f9a";
+      sha256 = "stkhp95iLNxPy74Lo2SNes5j1AA4q/rgl+eLiZS81uA=";
+    };
+  };
+in
 {
 
 programs.tmux = {
@@ -147,6 +160,12 @@ programs.tmux = {
          set -g @continuum-restore 'on'
          set -g @continuum-save-interval '10'
        '';
+    }
+    {
+        plugin = tmux-nerd-font-window-name;
+        extraConfig = ''
+            set -g @plugin 'joshmedeski/tmux-nerd-font-window-name'
+        '';
     }
 
 
