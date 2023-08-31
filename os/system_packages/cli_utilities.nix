@@ -57,6 +57,11 @@
       expect
 
       pciutils
+
+      # command-line YAML processor, Used by the tmux
+      # tmux-nerd-font-window-name.tmux plugin.
+      yq
+
       # Used for fetching source from github
       # I used it to package tmux pluging that was not already available.
       nix-prefetch-github
