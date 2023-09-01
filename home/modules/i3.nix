@@ -167,12 +167,12 @@ in
         "${mod}+Control+Shift+10" = "move container to workspace number ${ws10}; workspace ${ws10}";
 
         # Move focus to different outputs(monitors)
-        "${mod}+Home" = "focus output left";
-        "${mod}+End" = "focus output right";
+        "${mod}+bracketleft" = "focus output left";
+        "${mod}+bracketright" = "focus output right";
 
         # Move workspace to different outputs(monitors)
-        "${mod}+Shift+Home" = "move workspace to output left";
-        "${mod}+Shift+End" = "move workspace to output right";
+        "${mod}+Shift+bracketleft" = "move workspace to output left";
+        "${mod}+Shift+bracketright" = "move workspace to output right";
 
 
         # Alternating between two most recent workspaces
