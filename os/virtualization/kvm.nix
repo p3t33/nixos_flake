@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 {
     virtualisation.libvirtd.enable = true;
+    virtualisation.spiceUSBRedirection.enable = true;
     users.users.${config.userDefinedGlobalVariables.username} = {
         extraGroups = [ "libvirtd" ];
     };
