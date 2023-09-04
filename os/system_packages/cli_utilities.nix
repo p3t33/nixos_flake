@@ -66,6 +66,9 @@
       # I used it to package tmux pluging that was not already available.
       nix-prefetch-github
       nix-prefetch-git
+
+      # added to get access to lsusb
+      usbutils
     ];
 
 }
