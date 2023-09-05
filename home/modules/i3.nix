@@ -92,16 +92,14 @@ in
 
       keybindings = lib.mkOptionDefault {
         # lunch alacritty.
-        "${mod}+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
+        "${mod}+Return" = "exec --no-startup-id ${pkgs.alacritty}/bin/alacritty";
+
+        # lunch alacritty with tmux attach.
+        "${mod}+Shift+Return" = "exec --no-startup-id ${pkgs.alacritty}/bin/alacritty -e  zsh -i -c 'tmux a || tmux new'";
 
         # kill window.
         "${mod}+Shift+c" = "kill";
 
-
-
-        #"${mod}+x" = ''exec --no-startup-id "rofi -modi ssh -show ssh"'';
-        #"${mod}+z" = ''exec --no-startup-id "rofi -modi emoji -show emoji"'';
-        #"${mod}+c" = ''exec --no-startup-id "rofi -modi calc -show calc"'';
         #"${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 222222 & sleep 5 && xset dpms force of'";
 
         # Change focus
