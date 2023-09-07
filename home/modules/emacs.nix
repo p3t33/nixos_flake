@@ -8,6 +8,7 @@
             epkgs.use-package
             epkgs.evil
             epkgs.evil-collection
+            epkgs.general
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -53,6 +54,25 @@
                 ;; in the future.
                 (setq evil-collection-mode-list '(dashboard dired ibuffer))
                 (evil-collection-init))
+
+            (use-package general
+                 :config
+                 (general-evil-setup)
+
+                 ;; I treid to use general-create-definer and had some issues
+                 ;; so for now general-def will do.
+                 (general-def :states '(normal insert visual emacs)
+                  :keymaps 'override
+                  :prefix "SPC"
+                  :global-prefix "M-SPC"
+                  "b" '(:ignore t :wk "buffer")
+                  "bb" '(switch-to-buffer :wk "Switch buffer")
+                  "bk" '(kill-this-buffer :wk "Kill this buffer")
+                  "bn" '(next-buffer :wk "Next buffer")
+                  "bp" '(previous-buffer :wk "Previous buffer")
+                  "br" '(revert-buffer :wk "Reload buffer"))
+            )
+
 
 
             (setq standard-indent 2)
