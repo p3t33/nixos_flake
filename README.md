@@ -42,6 +42,7 @@ to achieve code reuse.
   - [x] ~~Fix the failure to restore applications(man, vim..).~~
   - [x] ~~Find a way for tmux to restore vim with vim session.~~
 - [ ] Configure Emacs.
+  - [ ] Make emacs server load my settings.
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 
