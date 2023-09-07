@@ -5,6 +5,7 @@
         package = pkgs.emacs;  # replace with pkgs.emacs-gtk, or a version provided by the community overlay if desired.
 
         extraPackages = epkgs: [
+            epkgs.use-package
             epkgs.nord-theme
 
         ];
@@ -22,6 +23,12 @@
             (setq package-menu-async nil)
             (setq package-load-list '(all))
 
+            ;; Ensure the use-package macro is available
+            ;; This needs to be the first plugin related settings as
+            ;; every pluging that uses this macro in order to use it
+            ;; for its own configuration needs to be loaded only after
+            ;; this macro has been loaded.
+            (require 'use-package)
             (setq standard-indent 2)
             (load-theme 'nord t)
             (message "Loading init.el...")
