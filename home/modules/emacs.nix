@@ -9,6 +9,8 @@
             epkgs.evil
             epkgs.evil-collection
             epkgs.general
+            epkgs.toc-org
+            epkgs.org-bullets
             epkgs.which-key
             epkgs.nord-theme
         ];
@@ -112,6 +114,16 @@
             (global-display-line-numbers-mode 1)
             (global-visual-line-mode t)
             ;;================================
+
+            ;; org-mode enhancement
+            (use-package toc-org
+                :commands toc-org-enable
+                :init (add-hook 'org-mode-hook 'toc-org-enable))
+
+            (add-hook 'org-mode-hook 'org-indent-mode)
+            (use-package org-bullets)
+            (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 
             (use-package which-key
                 :init
