@@ -6,8 +6,9 @@
 
         extraPackages = epkgs: [
             epkgs.use-package
+            epkgs.evil
+            epkgs.evil-collection
             epkgs.nord-theme
-
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -29,6 +30,31 @@
             ;; for its own configuration needs to be loaded only after
             ;; this macro has been loaded.
             (require 'use-package)
+
+            ;; Configure and initialize evil-mode using use-package
+            (use-package evil
+                :init
+                ;; by default evil has some basic intergration with other
+                ;; packages and modes but as I am delegating the intergration
+                ;; to evil-collection this basic intergration should be
+                ;; disabled.
+                (setq evil-want-integration nil)
+                (setq evil-want-keybinding nil)
+
+                (setq evil-vsplit-window-right t)
+                (setq evil-split-window-below t)
+                :config
+                (evil-mode 1))
+
+            (use-package evil-collection
+                :after evil
+                :config
+                ;; limites the mode list to intergrate with, might chagne this
+                ;; in the future.
+                (setq evil-collection-mode-list '(dashboard dired ibuffer))
+                (evil-collection-init))
+
+
             (setq standard-indent 2)
             (load-theme 'nord t)
             (message "Loading init.el...")
