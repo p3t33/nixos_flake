@@ -12,6 +12,7 @@
             epkgs.toc-org
             epkgs.org-bullets
             epkgs.which-key
+            epkgs.sudo-edit
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -58,6 +59,8 @@
                 (setq evil-collection-mode-list '(dashboard dired ibuffer))
                 (evil-collection-init))
 
+            (use-package sudo-edit)
+
             (use-package general
                  :config
                  (general-evil-setup)
@@ -74,6 +77,10 @@
                   "." '(find-file :wk "Find file")
                   "TAB TAB" '(comment-line :wk "Comment lines")
                   ;;
+                  ;; sudo on files
+                  ;; -------------
+                  "fu" '(sudo-edit-find-file :wk "Sudo find file")
+                  "fU" '(sudo-edit :wk "Sudo edit file")
                   ;; Buffer
                   ;; -----
                   "b" '(:ignore t :wk "buffer")
@@ -185,8 +192,6 @@
                     which-key-max-description-length 25
                     which-key-allow-imprecise-window-fit t
                     which-key-separator " → " ))
-
-
 
             (load-theme 'nord t)
             (message "Loading init.el...")
