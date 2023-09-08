@@ -68,12 +68,42 @@
                   :keymaps 'override
                   :prefix "SPC"
                   :global-prefix "M-SPC"
+                  ;;
+                  ;; general
+                  ;; -------
+                  "." '(find-file :wk "Find file")
+                  "TAB TAB" '(comment-line :wk "Comment lines")
+                  ;;
+                  ;; Buffer
+                  ;; -----
                   "b" '(:ignore t :wk "buffer")
                   "bb" '(switch-to-buffer :wk "Switch buffer")
+                  "bi" '(ibuffer :wk "Ibuffer")
                   "bk" '(kill-this-buffer :wk "Kill this buffer")
                   "bn" '(next-buffer :wk "Next buffer")
                   "bp" '(previous-buffer :wk "Previous buffer")
-                  "br" '(revert-buffer :wk "Reload buffer"))
+                  "br" '(revert-buffer :wk "Reload buffer")
+                  ;;
+                  ;; emacs help
+                  ;; ---
+                  "h" '(:ignore t :wk "Help")
+                  "h f" '(describe-function :wk "Describe function")
+                  "h v" '(describe-variable :wk "Describe variable")
+                  ;;
+                  ;; Toggle
+                  ;; ------
+                  "t" '(:ignore t :wk "Toggle")
+                  "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
+                  "t t" '(visual-line-mode :wk "Toggle truncated lines")
+                  ;;
+                  ;; Evaluate
+                  ;; -------
+                  "e" '(:ignore t :wk "Evaluate")
+                  "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
+                  "ed" '(eval-defun :wk "Evaluate defun containing or after point")
+                  "ee" '(eval-expression :wk "Evaluate and elisp expression")
+                  "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
+                  "er" '(eval-region :wk "Evaluate elisp in region"))
             )
 
             ;; Font settings
@@ -143,7 +173,7 @@
                     which-key-separator " → " ))
 
 
-            (setq standard-indent 2)
+
             (load-theme 'nord t)
             (message "Loading init.el...")
 
