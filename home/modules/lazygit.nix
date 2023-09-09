@@ -20,6 +20,13 @@
                     diffPagingArg = " ";
                 };
             };
+
+            keybinding = {
+                commits = {
+                    moveUpCommit = "K";
+                    moveDownCommit = "J";
+                };
+            };
         };
     };
 }
