@@ -32,6 +32,7 @@
             epkgs.company
             epkgs.company-box
             epkgs.nord-theme
+            epkgs.vscode-dark-plus-theme
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -431,7 +432,7 @@
                     which-key-allow-imprecise-window-fit nil
                     which-key-separator " → " ))
 
-            (load-theme 'nord t)
+            (load-theme 'vscode-dark-plus t)
             (message "Loading init.el...")
 
             (require 'windmove)
