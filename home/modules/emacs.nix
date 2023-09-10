@@ -13,6 +13,12 @@
             epkgs.org-bullets
             epkgs.which-key
             epkgs.sudo-edit
+            epkgs.counsel
+            epkgs.ivy
+            epkgs.all-the-icons-ivy-rich
+            epkgs.ivy-rich
+            epkgs.all-the-icons
+            epkgs.all-the-icons-dired
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -113,6 +119,16 @@
                   "er" '(eval-region :wk "Evaluate elisp in region"))
             )
 
+            ;; Iconns
+            ;; ======
+            (use-package all-the-icons
+                :ensure t
+                :if (display-graphic-p))
+
+            (use-package all-the-icons-dired
+                :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+
+
             ;; Font settings
             ;; ============
             (set-face-attribute 'default nil
@@ -159,6 +175,41 @@
             (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
             (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
             ;; =============================
+
+            ;; ivy settings
+            ;; ============
+            (use-package counsel
+                :after ivy
+                :config (counsel-mode))
+
+            (use-package ivy
+                :bind
+                ;; ivy-resume resumes the last Ivy-based completion.
+                (("C-c C-r" . ivy-resume)
+                 ("C-x B" . ivy-switch-buffer-other-window))
+                :custom
+                (setq ivy-use-virtual-buffers t)
+                (setq ivy-count-format "(%d/%d) ")
+                (setq enable-recursive-minibuffers t)
+                :config
+                (ivy-mode))
+
+            (use-package all-the-icons-ivy-rich
+                :ensure t
+                :init (all-the-icons-ivy-rich-mode 1))
+
+            (use-package ivy-rich
+                :after ivy
+                :ensure t
+                :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
+                :custom
+                (ivy-virtual-abbreviate 'full
+                 ivy-rich-switch-buffer-align-virtual-buffer t
+                 ivy-rich-path-style 'abbrev)
+                :config
+                (ivy-set-display-transformer 'ivy-switch-buffer
+                 'ivy-rich-switch-buffer-transformer))
+            ;; ====================
 
             ;; org-mode enhancement
             ;; ====================
