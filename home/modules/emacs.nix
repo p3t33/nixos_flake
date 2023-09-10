@@ -25,6 +25,7 @@
             epkgs.rainbow-mode
             epkgs.dashboard
             epkgs.projectile
+            epkgs.diminish
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -199,9 +200,11 @@
                 :config
                 (dashboard-setup-startup-hook))
 
-                 (use-package projectile
-                    :config
-                    (projectile-mode 1))
+            (use-package diminish)
+
+            (use-package projectile
+                 :config
+                 (projectile-mode 1))
 
             ;; Font settings
             ;; ============
@@ -359,6 +362,7 @@
             (use-package which-key
                 :init
                     (which-key-mode 1)
+                :diminish
                 :config
                     (setq which-key-side-window-location 'bottom
                     which-key-sort-order #'which-key-key-order-alpha
