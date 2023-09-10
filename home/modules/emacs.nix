@@ -136,6 +136,19 @@
                   "w J" '(buf-move-down :wk "Buffer move down")
                   "w K" '(buf-move-up :wk "Buffer move up")
                   "w L" '(buf-move-right :wk "Buffer move right")
+                  ;;
+                  ;; org-mode keybindings
+                  "m" '(:ignore t :wk "Org")
+                  "m a" '(org-agenda :wk "Org agenda")
+                  "m e" '(org-export-dispatch :wk "Org export dispatch")
+                  "m i" '(org-toggle-item :wk "Org toggle item")
+                  "m t" '(org-todo :wk "Org todo")
+                  "m B" '(org-babel-tangle :wk "Org babel tangle")
+                  "m T" '(org-todo-list :wk "Org todo list")
+                  "m b" '(:ignore t :wk "Tables")
+                  "m b -" '(org-table-insert-hline :wk "Insert hline in table")
+                  "m d" '(:ignore t :wk "Date/deadline")
+                  "m d t" '(org-time-stamp :wk "Org time stamp")
 
                   ;; Evaluate
                   ;; -------
