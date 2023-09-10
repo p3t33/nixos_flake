@@ -23,6 +23,8 @@
             epkgs.vterm
             epkgs.vterm-toggle
             epkgs.rainbow-mode
+            epkgs.dashboard
+            epkgs.projectile
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -156,6 +158,36 @@
             (use-package all-the-icons-dired
                 :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
+
+            ;; Dashboard
+            ;; ============
+            ;; DOTO: Right now I do not see icons in the welcome screen.
+            (use-package dashboard
+                :ensure t
+                :init
+                (setq initial-buffer-choice 'dashboard-open)
+                (setq dashboard-set-heading-icons t)
+                (setq dashboard-set-file-icons t)
+                (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+                (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+                ;; I will need to first create it using home manager and it is a very
+                ;; low priority. For the time being I will be using the defatul log for emacs.
+                ;;(setq dashboard-startup-banner "some path to costum logo")  ;; use custom image as banner
+                (setq dashboard-center-content nil) ;; set to 't' for centered content
+                (setq dashboard-items '((recents . 5)
+                                        (agenda . 5 )
+                                        (bookmarks . 3)
+                                        (projects . 3)
+                                        (registers . 3)))
+                :custom
+                (dashboard-modify-heading-icons '((recents . "file-text")
+                                                  (bookmarks . "book")))
+                :config
+                (dashboard-setup-startup-hook))
+
+                 (use-package projectile
+                    :config
+                    (projectile-mode 1))
 
             ;; Font settings
             ;; ============
