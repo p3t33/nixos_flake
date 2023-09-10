@@ -22,6 +22,7 @@
             epkgs.eshell-syntax-highlighting
             epkgs.vterm
             epkgs.vterm-toggle
+            epkgs.rainbow-mode
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -251,6 +252,11 @@
             (electric-indent-mode -1)
             ;; provides support for "easy org mode templates".
             (require 'org-tempo)
+
+            (use-package rainbow-mode
+                :hook
+                ((org-mode prog-mode) . rainbow-mode))
+
             ;;=======================
 
             ;; shell settings
