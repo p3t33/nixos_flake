@@ -86,6 +86,7 @@
                   ;;
                   ;; general
                   ;; -------
+                  "SPC" '(counsel-M-x :wk "Counsel M-x")
                   "." '(find-file :wk "Find file")
                   "f r" '(counsel-recentf :wk "Find recent files")
                   "TAB TAB" '(comment-line :wk "Comment lines")
@@ -295,6 +296,8 @@
             (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
             (electric-indent-mode -1)
+            (setq org-edit-src-content-indentation 0)
+
             ;; provides support for "easy org mode templates".
             (require 'org-tempo)
 
