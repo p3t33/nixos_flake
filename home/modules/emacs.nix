@@ -26,6 +26,11 @@
             epkgs.dashboard
             epkgs.projectile
             epkgs.diminish
+            epkgs.lua-mode
+            epkgs.flycheck
+            epkgs.lsp-mode
+            epkgs.company
+            epkgs.company-box
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -286,6 +291,55 @@
                 :config
                 (ivy-set-display-transformer 'ivy-switch-buffer
                  'ivy-rich-switch-buffer-transformer))
+            ;; ====================
+
+            ;; Language support
+            ;; ====================
+            ;;
+            ;; Syntax static error checking
+            ;; -------------------
+            (use-package flycheck
+                :ensure t
+                :defer t
+                :diminish
+                :init (global-flycheck-mode))
+
+            ;; syntax highlighting
+            ;; -------------------
+            ;; Not all languages are supported by default such as lua.
+            (use-package lua-mode)
+
+            ;; Language Servers (LSP)
+            ;; ----------------------
+            ;; this is the client side support for something like clgand
+            ;; server.
+            (use-package lsp-mode
+                :hook ((c-mode c++-mode) . lsp)
+                :commands lsp)
+
+            ;; company can be used to provide the frontend for code
+            ;; completions that the Language Server (like clangd for C++)
+            ;; sends to the client (in this case, lsp-mode in Emacs).
+            (use-package company
+                :defer 2
+                :diminish
+                :custom
+                (company-begin-commands '(self-insert-command))
+                (company-idle-delay .1)
+                (company-minimum-prefix-length 2)
+                (company-show-numbers t)
+                (company-tooltip-align-annotations 't)
+                (global-company-mode t))
+
+            ;; company-box is an extension for company that provides a visually
+            ;; enhanced dropdown for completions. It makes the completion menu
+            ;; more aesthetically pleasing and can display additional information,
+            ;; such as icons for different types of completion
+            ;; candidates (e.g., a function, variable, or class).
+            (use-package company-box
+                :after company
+                :diminish
+                :hook (company-mode . company-box-mode))
             ;; ====================
 
             ;; org-mode enhancement
