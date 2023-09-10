@@ -19,6 +19,9 @@
             epkgs.ivy-rich
             epkgs.all-the-icons
             epkgs.all-the-icons-dired
+            epkgs.eshell-syntax-highlighting
+            epkgs.vterm
+            epkgs.vterm-toggle
             epkgs.nord-theme
         ];
         extraConfig = ''
@@ -109,6 +112,7 @@
                   "t" '(:ignore t :wk "Toggle")
                   "t l" '(display-line-numbers-mode :wk "Toggle line numbers")
                   "t t" '(visual-line-mode :wk "Toggle truncated lines")
+                  "t v" '(vterm-toggle :wk "Toggle vterm")
                   ;;
                   ;; Windows
                   ;; -------
@@ -132,12 +136,14 @@
 
                   ;; Evaluate
                   ;; -------
-                  "e" '(:ignore t :wk "Evaluate")
+                  "e" '(:ignore t :wk "Eshell/Evaluate")
                   "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
                   "ed" '(eval-defun :wk "Evaluate defun containing or after point")
                   "ee" '(eval-expression :wk "Evaluate and elisp expression")
+                  "eh" '(counsel-esh-history :which-key "Eshell history")
                   "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
-                  "er" '(eval-region :wk "Evaluate elisp in region"))
+                  "er" '(eval-region :wk "Evaluate elisp in region")
+                  "es" '(eshell :which-key "Eshell"))
             )
 
             ;; Iconns
@@ -243,8 +249,56 @@
             (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
             (electric-indent-mode -1)
-            ;; provides support for "easy templates".
+            ;; provides support for "easy org mode templates".
             (require 'org-tempo)
+            ;;=======================
+
+            ;; shell settings
+            ;;=======================
+            ;; TODO: this setting made some erros and I will need to look into it.
+            ;;(use-package eshell-syntax-highlighting
+            ;;    :after esh-mode
+            ;;    :config
+            ;;    (eshell-syntax-highlighting-global-mode +1))
+            ;;    ;; eshell-syntax-highlighting -- adds fish/zsh-like syntax highlighting.
+
+                ;; eshell-rc-script -- your profile for eshell; like a bashrc for eshell.
+                ;; eshell-aliases-file -- sets an aliases file for the eshell.
+            (setq eshell-rc-script (concat user-emacs-directory "eshell/profile")
+                eshell-aliases-file (concat user-emacs-directory "eshell/aliases")
+                eshell-history-size 5000
+                eshell-buffer-maximum-lines 5000
+                eshell-hist-ignoredups t
+                eshell-scroll-to-bottom-on-input t
+                eshell-destroy-buffer-when-process-dies t
+                eshell-visual-commands'("bash" "fish" "htop" "ssh" "top" "zsh"))
+
+            (use-package vterm
+                :config
+                (setq shell-file-name "zsh"
+                 vterm-max-scrollback 5000))
+
+            (use-package vterm-toggle
+                :after vterm
+                :config
+                (setq vterm-toggle-fullscreen-p nil)
+                (setq vterm-toggle-scope 'project)
+                (add-to-list 'display-buffer-alist
+                 '((lambda (buffer-or-name _)
+                         (let ((buffer (get-buffer buffer-or-name)))
+                          (with-current-buffer buffer
+                           (or (equal major-mode 'vterm-mode)
+                            (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                     (display-buffer-reuse-window display-buffer-at-bottom)
+                     ;;(display-buffer-reuse-window display-buffer-in-direction)
+                     ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                     ;;(direction . bottom)
+                     ;;(dedicated . t) ;dedicated is supported in emacs27
+                     (reusable-frames . visible)
+                     (window-height . 0.3))))
+
+
+
             ;;=======================
 
 
