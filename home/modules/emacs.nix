@@ -19,6 +19,8 @@
             epkgs.ivy-rich
             epkgs.all-the-icons
             epkgs.all-the-icons-dired
+            epkgs.dired-open
+            epkgs.peep-dired
             epkgs.eshell-syntax-highlighting
             epkgs.vterm
             epkgs.vterm-toggle
@@ -433,6 +435,31 @@
                     which-key-allow-imprecise-window-fit nil
                     which-key-separator " → " ))
 
+            ;; dired
+            ;; =====================
+            ;; used to open files that are not text using the desired software
+            ;; this is mostly an example a I did not installed sxiv or mpv.
+            (use-package dired-open
+                :config
+                (setq dired-open-extensions '(("gif" . "sxiv")
+                                              ("jpg" . "sxiv")
+                                              ("png" . "sxiv")
+                                              ("mkv" . "mpv")
+                                              ("mp4" . "mpv"))))
+
+            ;; Used to provide a preview of a file.
+            ;; looks like this plugin is archived.
+            (use-package peep-dired
+            :after dired
+            :hook (evil-normalize-keymaps . peep-dired-hook)
+            :config
+                (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+                (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
+                (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
+                (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file))
+
+            ;; =====================
+
             ;; Theme
             ;; =====================
             (use-package doom-themes
@@ -441,7 +468,7 @@
                  doom-themes-enable-italic t)) ; if nil, italics is universally disabled
 
             ;; this is the line that loads the theme(E.g 'vscode-dark-plus)
-            (load-theme 'doom-tokyo-night t)
+            (load-theme 'vscode-dark-plus t)
             ;; =====================
 
             (message "Loading init.el...")
