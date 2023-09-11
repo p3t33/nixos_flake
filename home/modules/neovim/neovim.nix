@@ -431,8 +431,20 @@
           plugin = fzf-vim;
           config = ''
 
-              "FZF Buffer Delete
 
+              "some tweaks for the search and preview look and feel"
+              "----------------------------------------------------"
+              "the ~ means that the size will be up to 60% depending on"
+              "the number of results"
+              let g:fzf_layout = { 'down': '~61%' }
+
+              "fzf_layout can also be defined with 'window' which is the"
+              "defautl view but can only accept vim command such as enew"
+              "E.g let g:fzf_layout = { 'window': 'enew' }"
+              "but window can't work with %"
+              let g:fzf_preview_window = ['up:75%']
+
+              "FZF Buffer Delete
               function! s:list_buffers()
               redir => list
               silent ls
