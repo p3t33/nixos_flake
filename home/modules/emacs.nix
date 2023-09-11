@@ -21,6 +21,7 @@
             epkgs.all-the-icons-dired
             epkgs.dired-open
             epkgs.peep-dired
+            epkgs.neotree
             epkgs.eshell-syntax-highlighting
             epkgs.vterm
             epkgs.vterm-toggle
@@ -160,6 +161,14 @@
                   "m b -" '(org-table-insert-hline :wk "Insert hline in table")
                   "m d" '(:ignore t :wk "Date/deadline")
                   "m d t" '(org-time-stamp :wk "Org time stamp")
+
+                  ;; dired
+                  ;; -----
+                  "d" '(:ignore t :wk "Dired")
+                  "d d" '(dired :wk "Open dired")
+                  "d j" '(dired-jump :wk "Dired jump to current")
+                  "d n" '(neotree-dir :wk "Open directory in neotree")
+                  "d p" '(peep-dired :wk "Peep-dired")
 
                   ;; Evaluate
                   ;; -------
@@ -434,6 +443,25 @@
                     which-key-max-description-length 25
                     which-key-allow-imprecise-window-fit nil
                     which-key-separator " → " ))
+
+            ;; neotree
+            ;; =====================
+            (use-package neotree
+                :config
+                (setq neo-smart-open t
+                 neo-show-hidden-files t
+                 neo-window-width 55
+                 neo-window-fixed-size nil
+                 inhibit-compacting-font-caches t
+                 projectile-switch-project-action 'neotree-projectile-action)
+                ;; truncate long file names in neotree
+                (add-hook 'neo-after-create-hook
+                    #'(lambda (_)
+                        (with-current-buffer (get-buffer neo-buffer-name)
+                         (setq truncate-lines t)
+                         (setq word-wrap nil)
+                         (make-local-variable 'auto-hscroll-mode)
+                         (setq auto-hscroll-mode nil)))))
 
             ;; dired
             ;; =====================
