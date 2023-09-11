@@ -468,6 +468,8 @@
                  doom-themes-enable-italic t)) ; if nil, italics is universally disabled
 
             ;; this is the line that loads the theme(E.g 'vscode-dark-plus)
+            ;; TODO: I had a few warnings when using a theme from the pack so at least for now
+            ;; I will be using a theme that I had no warning for as this is a low priority.
             (load-theme 'vscode-dark-plus t)
             ;; =====================
 
