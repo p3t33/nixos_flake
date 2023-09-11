@@ -33,6 +33,7 @@
             epkgs.company-box
             epkgs.nord-theme
             epkgs.vscode-dark-plus-theme
+            epkgs.doom-themes
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -432,7 +433,17 @@
                     which-key-allow-imprecise-window-fit nil
                     which-key-separator " → " ))
 
-            (load-theme 'vscode-dark-plus t)
+            ;; Theme
+            ;; =====================
+            (use-package doom-themes
+                :config
+                (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+                 doom-themes-enable-italic t)) ; if nil, italics is universally disabled
+
+            ;; this is the line that loads the theme(E.g 'vscode-dark-plus)
+            (load-theme 'doom-tokyo-night t)
+            ;; =====================
+
             (message "Loading init.el...")
 
             (require 'windmove)
