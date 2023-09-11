@@ -7,7 +7,6 @@
     # to work with system clipboard on x11.
     xclip
 
-    emacs
     vscode
 
     # UML
