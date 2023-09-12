@@ -37,6 +37,7 @@
             epkgs.nord-theme
             epkgs.vscode-dark-plus-theme
             epkgs.doom-themes
+            epkgs.doom-modeline
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -505,7 +506,20 @@
             ;; this is the line that loads the theme(E.g 'vscode-dark-plus)
             ;; TODO: I had a few warnings when using a theme from the pack so at least for now
             ;; I will be using a theme that I had no warning for as this is a low priority.
-            (load-theme 'vscode-dark-plus t)
+            ;; TODO: My current theme gets a few warning
+            (load-theme 'doom-one t)
+            ;; =====================
+
+            ;; Status bar
+            ;; =========
+            (use-package doom-modeline
+                :ensure t
+                :init (doom-modeline-mode 1)
+                :config
+                (setq doom-modeline-height 35      ;; sets modeline height
+                 doom-modeline-bar-width 5    ;; sets right bar width
+                 doom-modeline-persp-name t   ;; adds perspective name to modeline
+                 doom-modeline-persp-icon t)) ;; adds folder icon next to persp name
             ;; =====================
 
             (message "Loading init.el...")
