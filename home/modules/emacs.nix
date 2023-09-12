@@ -40,6 +40,7 @@
             epkgs.doom-modeline
             epkgs.elfeed
             epkgs.elfeed-goodies
+            epkgs.git-timemachine
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -101,7 +102,17 @@
                 (define-key evil-motion-state-map (kbd "TAB") nil))
             ;; Setting RETURN key in org-mode to follow links
             (setq org-return-follows-link  t)
+            ;; =================================
 
+            ;; git
+            ;; ============
+            (use-package git-timemachine
+                :after git-timemachine
+                :hook (evil-normalize-keymaps . git-timemachine-hook)
+                :config
+                    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
+                    (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
+            )
 
             (use-package sudo-edit)
 
