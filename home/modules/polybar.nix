@@ -137,7 +137,7 @@ in
           type = "internal/fs";
           interval = 25;
           mount-0 = "/";
-          label-mounted = "%{F${config.userDefinedGlobalVariables.colors.primary}}DISK:%{F-} %percentage_used:2%%";
+          label-mounted = "%{F${config.userDefinedGlobalVariables.colors.primary}}󱛟 DISK:%{F-} %percentage_used:2%%";
           label-unmounted = "%mountpoint% not mounted";
           label-unmounted-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
         };
@@ -145,7 +145,7 @@ in
         "module/memory" = {
           type = "internal/memory";
           interval = 2;
-          format-prefix = "RAM: ";
+          format-prefix = "󰍛 RAM:";
           format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           label = "%percentage_used:2%%";
         };
@@ -153,7 +153,7 @@ in
         "module/cpu" = {
           type = "internal/cpu";
           interval = 2;
-          format-prefix = "CPU: ";
+          format-prefix = "󰻠 CPU:";
           format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           label = "%percentage:2%%";
         };
@@ -166,9 +166,9 @@ in
           format-disconnected = "<label-disconnected>";
           label-connected = "on";
           label-disconnected = "off";
-          format-connected-prefix = "直 ";
+          format-connected-prefix = " ";
           format-connected-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          format-disconnected-prefix = "睊 ";
+          format-disconnected-prefix = "󰖪 ";
           format-disconnected-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
           format-disconnected-prefix-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
         };
@@ -201,9 +201,9 @@ in
           format-charging = "<label-charging>";
           format-discharging = "<label-discharging>";
           format-full = "<label-full>";
-          format-charging-prefix = " ";
-          format-discharging-prefix = " ";
-          format-full-prefix = " ";
+          format-charging-prefix = "󰂅";
+          format-discharging-prefix = "󱟞";
+          format-full-prefix = "󰁹";
           format-charging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           format-discharging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           format-full-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
