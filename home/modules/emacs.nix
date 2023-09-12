@@ -26,6 +26,7 @@
             epkgs.vterm
             epkgs.vterm-toggle
             epkgs.rainbow-mode
+            epkgs.rainbow-delimiters
             epkgs.dashboard
             epkgs.projectile
             epkgs.diminish
@@ -324,7 +325,7 @@
                 (setq initial-buffer-choice 'dashboard-open)
                 (setq dashboard-set-heading-icons t)
                 (setq dashboard-set-file-icons t)
-                (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+                (setq dashboard-banner-logo-title "Emacs is a great operating system, lacking only a decent text editor")
                 (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
                 ;; I will need to first create it using home manager and it is a very
                 ;; low priority. For the time being I will be using the defatul log for emacs.
@@ -453,6 +454,9 @@
                 (setq elfeed-goodies/entry-pane-size 0.5))
             ;; ====================
 
+            ;; mini buffer escape
+            (global-set-key [escape] 'keyboard-escape-quit)
+
             ;; Language support
             ;; ====================
             ;;
@@ -518,10 +522,17 @@
             ;; provides support for "easy org mode templates".
             (require 'org-tempo)
 
+            ;;=======================
+
+            ;; color enhancement
+            ;; ==============
             (use-package rainbow-mode
                 :hook
                 ((org-mode prog-mode) . rainbow-mode))
 
+            (use-package rainbow-delimiters
+                :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+                (clojure-mode . rainbow-delimiters-mode)))
             ;;=======================
 
             ;; shell settings
@@ -738,6 +749,12 @@
     services.emacs = {
         enable = true;
         package = pkgs.emacs29;
+    };
+
+
+   home.file = {
+     ".emacs.d/init.el".text = ''
+     '';
     };
 
 }
