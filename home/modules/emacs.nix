@@ -38,6 +38,8 @@
             epkgs.vscode-dark-plus-theme
             epkgs.doom-themes
             epkgs.doom-modeline
+            epkgs.elfeed
+            epkgs.elfeed-goodies
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -218,6 +220,14 @@
                   "d n" '(neotree-dir :wk "Open directory in neotree")
                   "d p" '(peep-dired :wk "Peep-dired")
 
+                  ;; Open
+                  ;; ----
+                  "o" '(:ignore t :wk "Open")
+                  "o d" '(dashboard-open :wk "Dashboard")
+                  "o e" '(elfeed :wk "Elfeed RSS")
+                  "o f" '(make-frame :wk "Open buffer in new frame")
+                  "o F" '(select-frame-by-name :wk "Select frame by name")
+
                   ;; Evaluate
                   ;; -------
                   "e" '(:ignore t :wk "Eshell/Evaluate")
@@ -352,6 +362,30 @@
                 :config
                 (ivy-set-display-transformer 'ivy-switch-buffer
                  'ivy-rich-switch-buffer-transformer))
+            ;; ====================
+
+            ;; RSS feed
+            ;; ====================
+            (use-package elfeed
+                :config
+                (setq elfeed-search-feed-face ":foreground #ffffff :weight bold"
+                    elfeed-feeds (quote
+                        (("https://www.reddit.com/r/linux.rss" reddit linux)
+                         ("https://www.reddit.com/r/commandline.rss" reddit commandline)
+                         ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                         ("https://hackaday.com/blog/feed/" hackaday linux)
+                         ("https://opensource.com/feed" opensource linux)
+                         ("https://linux.softpedia.com/backend.xml" softpedia linux)
+                         ("https://www.computerworld.com/index.rss" computerworld linux)
+                         ("https://www.networkworld.com/category/linux/index.rss" networkworld linux)
+                         ("https://www.techrepublic.com/rssfeeds/topic/open-source/" techrepublic linux)
+                         ("http://lxer.com/module/newswire/headlines.rss" lxer linux)))))
+
+            (use-package elfeed-goodies
+                :init
+                (elfeed-goodies/setup)
+                :config
+                (setq elfeed-goodies/entry-pane-size 0.5))
             ;; ====================
 
             ;; Language support
