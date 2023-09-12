@@ -69,7 +69,8 @@
             ;; this macro has been loaded.
             (require 'use-package)
 
-            ;; Configure and initialize evil-mode using use-package
+            ;; Configure and initialize evil-mode
+            ;; =================================
             (use-package evil
                 :init
                 ;; by default evil has some basic intergration with other
@@ -91,6 +92,16 @@
                 ;; in the future.
                 (setq evil-collection-mode-list '(dashboard dired ibuffer))
                 (evil-collection-init))
+
+            ;; Using RETURN to follow links in Org/Evil
+            ;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
+            (with-eval-after-load 'evil-maps
+                (define-key evil-motion-state-map (kbd "SPC") nil)
+                (define-key evil-motion-state-map (kbd "RET") nil)
+                (define-key evil-motion-state-map (kbd "TAB") nil))
+            ;; Setting RETURN key in org-mode to follow links
+            (setq org-return-follows-link  t)
+
 
             (use-package sudo-edit)
 
