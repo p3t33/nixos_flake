@@ -42,6 +42,7 @@
             epkgs.elfeed-goodies
             epkgs.git-timemachine
             epkgs.magit
+            epkgs.hl-todo
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -299,6 +300,20 @@
             (use-package all-the-icons-dired
                 :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
 
+
+            ;; Adding highlighting to TODO and related words
+            (use-package hl-todo
+                :hook ((org-mode . hl-todo-mode)
+                    (prog-mode . hl-todo-mode))
+                :config
+                    (setq hl-todo-highlight-punctuation ":"
+                     hl-todo-keyword-faces
+                     `(("TODO"       warning bold)
+                      ("FIXME"      error bold)
+                      ("HACK"       font-lock-constant-face bold)
+                      ("REVIEW"     font-lock-keyword-face bold)
+                      ("NOTE"       success bold)
+                      ("DEPRECATED" font-lock-doc-face bold))))
 
             ;; Dashboard
             ;; ============
