@@ -41,6 +41,7 @@
             epkgs.elfeed
             epkgs.elfeed-goodies
             epkgs.git-timemachine
+            epkgs.magit
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -113,6 +114,10 @@
                     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
                     (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
             )
+            (use-package magit)
+            ;; ============
+
+            (use-package magit)
 
             (use-package sudo-edit)
 
@@ -160,9 +165,32 @@
                   "b w" '(bookmark-save :wk "Save current bookmarks to bookmark file")
                   "b y" '(yank-buffer :wk "Yank buffer")
 
-                  ;;
+                  ;; git
+                  ;; ---------
+                  "g" '(:ignore t :wk "Git")
+                  "g /" '(magit-displatch :wk "Magit dispatch")
+                  "g ." '(magit-file-displatch :wk "Magit file dispatch")
+                  "g b" '(magit-branch-checkout :wk "Switch branch")
+                  "g c" '(:ignore t :wk "Create")
+                  "g c b" '(magit-branch-and-checkout :wk "Create branch and checkout")
+                  "g c c" '(magit-commit-create :wk "Create commit")
+                  "g c f" '(magit-commit-fixup :wk "Create fixup commit")
+                  "g C" '(magit-clone :wk "Clone repo")
+                  "g f" '(:ignore t :wk "Find")
+                  "g f c" '(magit-show-commit :wk "Show commit")
+                  "g f f" '(magit-find-file :wk "Magit find file")
+                  "g f g" '(magit-find-git-config-file :wk "Find gitconfig file")
+                  "g F" '(magit-fetch :wk "Git fetch")
+                  "g g" '(magit-status :wk "Magit status")
+                  "g i" '(magit-init :wk "Initialize git repo")
+                  "g l" '(magit-log-buffer-file :wk "Magit buffer log")
+                  "g r" '(vc-revert :wk "Git revert file")
+                  "g s" '(magit-stage-file :wk "Git stage file")
+                  "g t" '(git-timemachine :wk "Git time machine")
+                  "g u" '(magit-stage-file :wk "Git unstage file")
+
                   ;; emacs help
-                  ;; ---
+                  ;; ----------
                   "h" '(:ignore t :wk "Help")
                   "h a" '(counsel-apropos :wk "Apropos")
                   "h b" '(describe-bindings :wk "Describe bindings")
