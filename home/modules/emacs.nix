@@ -44,6 +44,7 @@
             epkgs.git-timemachine
             epkgs.magit
             epkgs.hl-todo
+            epkgs.tldr
         ];
         extraConfig = ''
             ;; disabling the default built int plugin manager
@@ -231,6 +232,15 @@
                   "t t" '(visual-line-mode :wk "Toggle truncated lines")
                   "t v" '(vterm-toggle :wk "Toggle vterm")
                   ;;
+                  ;; Search
+                  ;; ------
+                  "s" '(:ignore t :wk "Search")
+                  "s d" '(dictionary-search :wk "Search dictionary")
+                  "s m" '(man :wk "Man pages")
+                  "s t" '(tldr :wk "Lookup TLDR docs for a command")
+                  "s w" '(woman :wk "Similar to man but doesn't require man")
+
+                  ;;
                   ;; Windows
                   ;; -------
                   "w" '(:ignore t :wk "Windows")
@@ -378,13 +388,7 @@
             ;; Uncomment the following line if line spacing needs adjusting.
             (setq-default line-spacing 0.12)
 
-            (menu-bar-mode -1)
-            (tool-bar-mode -1)
-            (scroll-bar-mode -1)
-
             (setq display-line-numbers-type 'relative)
-            (global-display-line-numbers-mode 1)
-            (global-visual-line-mode t)
             ;;================================
 
             ;; simple keys to zoom in and out
@@ -516,9 +520,6 @@
             (use-package org-bullets)
             (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
-            (electric-indent-mode -1)
-            (setq org-edit-src-content-indentation 0)
-
             ;; provides support for "easy org mode templates".
             (require 'org-tempo)
 
@@ -583,6 +584,25 @@
 
             ;;=======================
 
+            ;; Sane defaults
+            ;;=======================
+            (delete-selection-mode 1)    ;; You can select text and delete it by typing.
+            (electric-indent-mode -1)    ;; Turn off the weird indenting that Emacs does by default.
+            (electric-pair-mode 1)       ;; Turns on automatic parens pairing
+            ;; The following prevents <> from auto-pairing when electric-pair-mode is on.
+            ;; Otherwise, org-tempo is broken when you try to <s TAB...
+            (add-hook 'org-mode-hook (lambda ()
+                                      (setq-local electric-pair-inhibit-predicate
+                                       `(lambda (c)
+                                           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+            (global-auto-revert-mode t)  ;; Automatically show changes if the file has changed
+            (global-display-line-numbers-mode 1) ;; Display line numbers
+            (global-visual-line-mode t)  ;; Enable truncated lines
+            (menu-bar-mode -1)           ;; Disable the menu bar
+            (scroll-bar-mode -1)         ;; Disable the scroll bar
+            (tool-bar-mode -1)           ;; Disable the tool bar
+            (setq org-edit-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
+            ;;=======================
 
             (use-package which-key
                 :init
