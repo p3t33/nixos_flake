@@ -52,6 +52,13 @@
             (setq package-menu-async nil)
             (setq package-load-list '(all))
 
+
+            ;; By default, Emacs creates automatic backups of files in their
+            ;; original directories, such “file.el” and the backup “file.el~”.
+            ;; This leads to a lot of clutter, so this setting defines a single
+            ;; path to put all the backup into.
+            (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+
             ;; Ensure the use-package macro is available
             ;; This needs to be the first plugin related settings as
             ;; every pluging that uses this macro in order to use it
