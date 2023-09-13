@@ -765,17 +765,5 @@
                (select-window other-win))))
         '';
     };
-
-    services.emacs = {
-        enable = true;
-        package = pkgs.emacs29;
-    };
-
-
-   home.file = {
-     ".emacs.d/init.el".text = ''
-     '';
-    };
-
 }
 
