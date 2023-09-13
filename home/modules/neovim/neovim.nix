@@ -1,15 +1,47 @@
 { pkgs, config, ... }:
 
+# plugin that is yet available on the nixos stable brach
+let
+    rainbow-delimiters-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+        pname = "rainbow-delimiters.nvim";
+        version = "unstable-2023-08-26";
+        src = pkgs.fetchgit {
+          url = "https://gitlab.com/HiPhish/rainbow-delimiters.nvim.git";
+          rev = "9cbd3dc409af1f5531778ccd1ea6bce668241f39";
+          sha256 = "0qz4my1xw1vww2109s8icscwfysa2aak3kjq2wym2smm259gd8g1";
+        };
+    };
+in
+
 {
-    imports = [./spelling.nix];
+  imports = [./spelling.nix];
   programs.neovim = {
     enable = true;
     vimAlias = true;
 
     plugins = with pkgs.vimPlugins; [
 
+
       # Utils
       # =====
+      {
+        plugin = rainbow-delimiters-nvim;
+        type = "lua";
+        config = ''
+
+            vim.g.rainbow_delimiters = {
+                highlight = {
+                    'RainbowDelimiterYellow',
+                    'RainbowDelimiterRed',
+                    'RainbowDelimiterBlue',
+                    'RainbowDelimiterOrange',
+                    'RainbowDelimiterGreen',
+                    'RainbowDelimiterViolet',
+                    'RainbowDelimiterCyan',
+                },
+            }
+        '';
+      }
       {
         plugin = gitsigns-nvim;
         type = "lua";
