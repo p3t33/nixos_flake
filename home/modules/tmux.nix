@@ -61,7 +61,7 @@ programs.tmux = {
           # from Session.vim if neovim is opened from the path where Session.vim exist. So in a
           # sense I don't really need tmux resurrect to restore the session as this already
           # taken care of and this functionality becomes redundant. But as I am not sure if I keep
-          # using vim-startify or its auto restore feature and it doe not conflict in any way that
+          # using vim-startify or its auto restore feature and it do not conflict in any way that
           # I know of with set -g @resurrect-strategy-* I decided to keep it enabled for the time being.
           set -g @resurrect-strategy-nvim 'session'
           set -g @resurrect-strategy-vim 'session'
@@ -148,9 +148,10 @@ programs.tmux = {
     # means that any other plugin that writes into status-right needs to be
     # loaded first or the autosave functionality will not work.
     #
-    # More then that is looks like the autosave feature(set -g @continuum-save-interval)
+    # More then that it looks like the autosave feature(set -g @continuum-save-interval)
     # only works if you are attached to tmux, for some reason it does not work
-    # in detached mode.
+    # in detached mode. Meaby if no one is attached then there is nothing
+    # changing and so nothing to save.
     #
     # If autosave option interval is not set there is a default of 15 minutes
     # and it worked for me when tested.
@@ -204,7 +205,6 @@ programs.tmux = {
     bind-key -r Home swap-window -t - \; select-window -t -
     bind-key -r End swap-window -t + \; select-window -t +
 
-    bind-key -r o command-prompt -p "Name of new session:" "new-session -s '%%'"
 
     # Orders the session list by time of last access
     # The default being to order by the index that is assigned when
@@ -223,16 +223,47 @@ programs.tmux = {
     bind -n S-Right next-window
 
     # quick yank of the text in the corrent line without going into selection
-    # very useful when coping from the command line.
-    bind-key -T copy-mode-vi U send-keys -X copy-selection-and-cancel
 
-    # go into selction mode(with vim motions) and once done press Enter
+    # vim idiomatic selction and yanking
+    # ==================================
+    # This section is done in addition to the yanking plugins I alredy installed
+    # as those plugins are "one shot yank" intended to achieve something
+    # very specific while the following keybindings are intended to selcet and yank
+    # text the same way you will do in vim.
+    #
+    # Comparing to vim, tmux starts in INSERT mode and by executing prefix+[
+    # tmux goes into NORMAL mode and the following keybindings mimic
+    # selecting text in vim NORML mode.
+
+    # Go into selection and once done press Enter or y to yank
+    # -----------------
+    # Go into selction mode(vim VISUAL mode)
     # to yank selected.
-    bind-key -T copy-mode-vi u send-keys -X begin-selection
+    bind-key -T copy-mode-vi v send-keys -X begin-selection
+    #
+    # Go into selection mode of line(vim VISUAL LINE mode)
+    bind-key -T copy-mode-vi V send-keys -X select-line
+    #
+    # Go into rectangle selection mode(vim VISUAL BLOCK mode)
+    bind-key -T copy-mode-vi C-v run-shell 'tmux send-keys -X rectangle-toggle; tmux send-keys -X begin-selection'
 
-    # go into rectangle selection mode
-    bind-key -T copy-mode-vi C-S-u send-keys -X rectangle-toggle
+    # Yanking
+    # -------
+    # This is the action that tapping the Enter key will do by default for tmux
+    # The only reason this is here is becaue this is how yanking is done
+    # vim.
+    # I created costum keybinding that removes \n when coping a line.
+    # not sure if it might break some flow and it requrews perl and xclip.
+    # so I left the version that adds \n and has no dependencies in comment.
+    #bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+    bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "perl -pe 'chomp if eof' | tmux load-buffer - ; tmux save-buffer - | xclip -i -selection clipboard"
+    # ==================================
+
+    # Creating new windows and sessions
+    # ==================================
     bind Enter new-window
+    bind-key -r o command-prompt -p "Name of new session:" "new-session -s '%%'"
+    # ==================================
 
     # reload config
     bind-key r source-file ~/.config/tmux/tmux.conf \; display-message "~/.tmux.conf reloaded."
