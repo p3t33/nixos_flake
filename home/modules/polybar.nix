@@ -159,18 +159,30 @@ in
         };
 
         "module/wlan" = {
+          # general
           type = "internal/network";
           interval = 5;
           interface-type = "wireless";
-          format-connected = "<label-connected>";
+
+          # Format when connected
+          format-connected = "<ramp-signal> <label-connected>";
+          label-connected = "%signal%%"; # This will show signal strength as a percentage
+
+          # Define signal strength icons (can be customized)
+          ramp-signal-0 = "󰤟";
+          ramp-signal-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-signal-1 = "󰤟";
+          ramp-signal-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-signal-2 = "󰤢";
+          ramp-signal-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-signal-3 = "󰤥";
+          ramp-signal-3-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-signal-4 = "󰤨";
+          ramp-signal-4-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+
           format-disconnected = "<label-disconnected>";
-          label-connected = "on";
-          label-disconnected = "off";
-          format-connected-prefix = " ";
-          format-connected-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          format-disconnected-prefix = "󰖪 ";
+          label-disconnected = "󰖪";
           format-disconnected-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
-          format-disconnected-prefix-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
         };
 
         "module/date" = {
@@ -195,15 +207,34 @@ in
           # reports 100% charge
           full-at = 95;
 
+          # Define different icons for different battery levels
+          ramp-capacity-0 = "󰁺" ; # replace with icon for battery <20%
+          ramp-capacity-1 = "󰁽" ; # replace with icon for battery between 20-40%
+          ramp-capacity-2 = "󰁾" ; # replace with icon for battery between 40-60%
+          ramp-capacity-3 = "󰂀" ; # replace with icon for battery between 60-80%
+          ramp-capacity-4 = "󰁹" ; # replace with icon for battery >80%
+
+          # Define different icons when charging
+          ramp-capacity-0-charging = "󰢜" ; # replace with charging icon for battery <20%
+          ramp-capacity-1-charging = "󰂇" ; # replace with charging icon for battery between 20-40%
+          ramp-capacity-2-charging = "󰢝" ; # replace with charging icon for battery between 40-60%
+          ramp-capacity-3-charging = "󰢞" ; # replace with charging icon for battery between 60-80%
+          ramp-capacity-4-charging = "󰂅" ; # replace with charging icon for battery >80%
+
+          # Color customization (optional)
+          ramp-capacity-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-capacity-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-capacity-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-capacity-3-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+          ramp-capacity-4-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+
           label-charging = "%percentage:3%%";
           label-discharging = "%percentage:3%%";
           label-full = "%percentage:3%%";
-          format-charging = "<label-charging>";
-          format-discharging = "<label-discharging>";
-          format-full = "<label-full>";
-          format-charging-prefix = "󰂅";
-          format-discharging-prefix = "󱟞";
-          format-full-prefix = "󰁹";
+
+          format-charging = "<ramp-capacity-charging> <label-charging>";
+          format-discharging = "<ramp-capacity> <label-discharging>";
+          format-full = "<ramp-capacity> <label-full>";
           format-charging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           format-discharging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
           format-full-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
