@@ -41,6 +41,11 @@ to achieve code reuse.
   - [x] ~~Make tmux automatically save current session state at predefined intervals.~~
   - [x] ~~Fix the failure to restore applications(man, vim..).~~
   - [x] ~~Find a way for tmux to restore vim with vim session.~~
+- [ ] Setup Emacs.
+  - [x] ~~Create sane settings with some plugins to be used as a base.~~
+  - [ ] Adjust Emacs settings to work with server-client mode. This is
+        a stretch goal as I installed Emacs for evaluation and right now
+        I am not sure I will be using it over neovim.
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 
