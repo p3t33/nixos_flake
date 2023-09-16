@@ -16,6 +16,8 @@
       # and found here.
       libfido2 #webauto
       pam_u2f #linux system
+
+      keepass
     ];
 
 }
