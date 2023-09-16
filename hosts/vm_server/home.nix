@@ -41,6 +41,8 @@
     ../../home/modules/atuin.nix
     ../../home/modules/lazygit.nix
     ../../home/modules/clipmenu.nix
+    ../../home/modules/emacs.nix
+
   ];
 
   home.sessionVariables = {
