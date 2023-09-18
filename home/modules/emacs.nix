@@ -1,5 +1,18 @@
 { pkgs, ... }:
 {
+
+    # This is a fix to make the system use universal-ctags package instead
+    # of the ctags package that is provided by emacs. The order in which
+    # the packges are listed is important and by listing universal-ctags first
+    # I am making sure that it will be the one used by the system.
+    #
+    # Note I am not sure if this is the right way to go about this problem
+    # and I am not sure how this will effect Emacs when it will try to call
+    # ctags.
+    home.packages = with pkgs; [
+        universal-ctags
+    ];
+
     programs.emacs = {
         enable = true;
         package = pkgs.emacs29;
