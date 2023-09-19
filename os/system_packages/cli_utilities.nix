@@ -69,6 +69,10 @@
 
       # added to get access to lsusb
       usbutils
+
+      # Used to list the process that that open a file or using a path as
+      # a mounting point.
+      lsof
     ];
 
 }
