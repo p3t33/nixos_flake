@@ -1,23 +1,24 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
     environment.systemPackages = with pkgs; [
-      #gpg
+      # gpg
+      # ---
       gnupg
-      # used by gpg-agent as a gui popup
-      pinentry_qt
+      pinentry_qt # used by gpg-agent as a gui popup
 
 
-      # general
-      cryptomator
+      # Whole disk partition and container on local device encryption.
       veracrypt
 
-      # U2F libraries - this needs to be tested because not all
-      # packages that are installed on Ubuntu 22.04 were installed
-      # and found here.
-      libfido2 #webauto
-      pam_u2f #linux system
+      # Backup of local files to the cloud.
+      cryptomator
+      gocryptfs
 
-      keepass
+      # FIDO/FIDO(U2F) libraries
+      libfido2 # webauto
+      pam_u2f #linux(sudo, display manager, console login...)
+
+      keepass # Local password manage
     ];
 
 }
