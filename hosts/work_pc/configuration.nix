@@ -32,6 +32,7 @@
       ../../os/dictionaries.nix
       ../../meta/meta.nix
       ../../os/security/nitrokey.nix
+      ../../os/services/adb.nix
     ];
 
   # Bootloader.
