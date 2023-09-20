@@ -64,6 +64,6 @@
   home.sessionVariables = {
     EDITOR = config.userDefinedGlobalVariables.editor;
     SUDO_EDITOR = config.userDefinedGlobalVariables.editor;
+    MANPAGER = config.userDefinedGlobalVariables.manPager;
   };
-
 }

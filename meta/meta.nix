@@ -47,6 +47,11 @@
         default = "nvim";
     };
 
+    manPager = mkOption {
+        type = str;
+        default = "nvim +Man!";
+    };
+
     gitUser = mkOption {
         type =  str;
         default = "Kobi Medrish";
