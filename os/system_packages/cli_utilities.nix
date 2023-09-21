@@ -34,6 +34,7 @@
       sshpass
       lsyncd
       rclone
+      watchman
       restic
       bat
       unzip
