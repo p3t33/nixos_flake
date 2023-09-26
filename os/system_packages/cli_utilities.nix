@@ -74,6 +74,9 @@
       # Used to list the process that that open a file or using a path as
       # a mounting point.
       lsof
+
+      # Sound control
+      pulseaudio # installed for pactl(which is cli for pavucontrol) and uses alsa.
     ];
 
 }
