@@ -7,6 +7,9 @@
     picom # A fork of XCompMgr, a sample compositing manager for X servers
     sqlite # rofi-firefox-bookmarks needs this package as a dependency.
     libreoffice
+
+    # Sound control
+    pavucontrol
   ];
 
 }

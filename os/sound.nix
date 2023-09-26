@@ -9,6 +9,7 @@
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
+    # Used with pavucontrol
     pulse.enable = true;
 
   # If you want to use JACK applications, uncomment t    his
