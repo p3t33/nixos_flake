@@ -9,5 +9,6 @@
     ../../os/services/printer.nix
     ../../os/services/sshd.nix
     ../../os/services/user/watchman.nix
+    ../../os/services/user/emacs.nix
   ];
 }
