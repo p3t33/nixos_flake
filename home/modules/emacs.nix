@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
 
     # This is a fix to make the system use universal-ctags package instead
@@ -59,7 +59,16 @@
             epkgs.hl-todo
             epkgs.tldr
         ];
-        extraConfig = ''
+    };
+
+   # programs.emcas.extraConfig is responsible to create a configuration file for
+   # Emacs but this file, although interpreted as init.el(in logs) isn't located in ~/.emacs.d.
+   # And although it gets picked up by Emacs this does not work so well for Emacs daemon that
+   # is executed as a systemd unit.
+   #
+   # So I just created ~/.emacs.d/init.el using home.file directive.
+   home.file = {
+     ".emacs.d/init.el".text = ''
             ;; disabling the default built int plugin manager
             ;; in context of nix these settings are essentially ensuring a
             ;; clean slate" in terms of package management behavior in Emacs
@@ -776,7 +785,7 @@
                ;; move this one to top
                (set-window-buffer other-win buf-this-buf)
                (select-window other-win))))
-        '';
-    };
+     '';
+   };
 }
 

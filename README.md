@@ -43,9 +43,14 @@ to achieve code reuse.
   - [x] ~~Find a way for tmux to restore vim with vim session.~~
 - [ ] Setup Emacs.
   - [x] ~~Create sane settings with some plugins to be used as a base.~~
-  - [ ] Adjust Emacs settings to work with server-client mode. This is
-        a stretch goal as I installed Emacs for evaluation and right now
-        I am not sure I will be using it over neovim.
+  - [x] ~~Adjust Emacs settings to work with server-client mode. This is~~
+        ~~a stretch goal as I installed Emacs for evaluation and right now~~
+        ~~I am not sure I will be using it over neovim.~~
+  - [ ] There is code duplication between the settings from Emacs and Emacs
+        server in the forum of packages used. This needs to be eliminated.
+  - [ ] I am not sure that the systemd for the Emacs server can communicate
+        with ssh-agent. This is a very low priority.
+
 - [ ] Move more variables into the meta.nix
 - [ ] Eliminate the error that is caused by terminal command not found.
 

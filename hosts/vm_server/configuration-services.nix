@@ -6,6 +6,7 @@
     ../../os/services/user/tmux.nix
     ../../os/services/system/moolticuted.nix
     ../../os/services/user/watchman.nix
+    ../../os/services/user/emacs.nix
   ];
 
 }
