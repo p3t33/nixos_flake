@@ -2,7 +2,6 @@
 let
   tmux-sessionizer = pkgs.writeShellScriptBin "tmux-sessionizer" ''
  SINGLE_ARGUMENT=1
-DEFAULT_PATHS_TO_USE_IF_USER_NOT_PROVIDED_INTPUT="/home/$USER/projects /home/$USER "
 
 _is_user_provided_directory_as_cli_arguments()
 {
@@ -32,7 +31,7 @@ get_directory_to_open_as_tmux_session()
             echo "$1"
         fi
     else
-        find $DEFAULT_PATHS_TO_USE_IF_USER_NOT_PROVIDED_INTPUT -mindepth 1 -maxdepth 1 -type d | fzf
+        zoxide query --list | fzf
     fi
 }
 
