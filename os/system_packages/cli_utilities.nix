@@ -49,10 +49,9 @@
       taskwarrior
 
       zsh
-     # Backend that is used by oh-my-zsh z plugin.
-     # an alternative is to install autojump
-     # to use the plugin exezute "z" from the shell.
-      zsh-z
+
+      # A cross shell smarter cd command, inspired by z and autojump
+      zoxide
 
       thefuck
       expect
