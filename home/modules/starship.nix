@@ -8,6 +8,7 @@ programs.starship = {
       enableBashIntegration = true;
       settings = {
 
+        command_timeout = 2000; # in milliseconds
         add_newline = false;
         username = {
           style_user = "green bold";
