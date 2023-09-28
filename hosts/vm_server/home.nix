@@ -35,6 +35,7 @@
     ../../home/modules/git.nix
     ../../home/modules/zoxide.nix
     ../../home/modules/zsh.nix
+    ../../home/modules/bash.nix
     ../../home/modules/taskwarrior.nix
     ../../home/scripts/tmux-sessionizer.nix
     ../../home/scripts/cheat-sh.nix
