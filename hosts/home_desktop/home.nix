@@ -34,6 +34,7 @@
     ../../home/modules/fzf.nix
     ../../home/modules/neovim/neovim.nix
     ../../home/modules/git.nix
+    ../../home/modules/zoxide.nix
     ../../home/modules/zsh.nix
     ../../home/modules/tmux.nix
     ../../home/modules/sxhkd.nix
