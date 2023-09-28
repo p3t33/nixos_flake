@@ -34,6 +34,7 @@
     ../../home/modules/git.nix
     ../../home/modules/zoxide.nix
     ../../home/modules/zsh.nix
+    ../../home/modules/bash.nix
     ../../home/modules/tmux.nix
     ../../home/modules/sxhkd.nix
     ../../home/modules/syncthing.nix
