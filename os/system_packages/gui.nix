@@ -22,6 +22,8 @@
 
       sxhkd
       gparted
+
+      gpick # color picker.
     ];
 
 }
