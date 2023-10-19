@@ -18,6 +18,24 @@ _is_user_provided_name_of_exisitng_directory()
     [[ -d $1 ]]
 }
 
+__get_existing_tmux_sessions()
+{
+    # List tmux sessions and get the names
+    tmux list-sessions -F $'\e[1;34m#{session_name}\e[0m' 2>/dev/null || true
+}
+
+_generate_list_of_existing_sessions_and_most_frequently_accessed_paths()
+{
+    # Will create ordered list of both existing sessions and and most
+    # frequently accessed paths with existing sessins in color and first in
+    # the order.
+    {
+        __get_existing_tmux_sessions
+        zoxide query --list
+    } | fzf --ansi
+
+}
+
 get_directory_to_open_as_tmux_session()
 {
     if _is_user_provided_directory_as_cli_arguments "$#"; then
@@ -31,7 +49,7 @@ get_directory_to_open_as_tmux_session()
             echo "$1"
         fi
     else
-        zoxide query --list | fzf
+        _generate_list_of_existing_sessions_and_most_frequently_accessed_paths
     fi
 }
 
