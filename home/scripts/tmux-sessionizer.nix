@@ -21,7 +21,7 @@ _is_user_provided_name_of_exisitng_directory()
 __get_existing_tmux_sessions()
 {
     # List tmux sessions and get the names
-    tmux list-sessions -F $'\e[1;34m#{session_name}\e[0m' 2>/dev/null || true
+    tmux list-sessions -F "#{session_activity} #{session_name}" 2>/dev/null | sort -rn | awk '{print "\033[1;34m" $2 "\033[0m"}' || true
 }
 
 _generate_list_of_existing_sessions_and_most_frequently_accessed_paths()
