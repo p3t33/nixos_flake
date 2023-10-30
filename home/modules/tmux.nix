@@ -197,11 +197,11 @@ programs.tmux = {
 
     set-option -g status-position top
 
-    bind-key -r f run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
+    bind-key -r s run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
     bind-key g new-window 'lazygit; tmux kill-pane'
 
     bind-key -r i run-shell 'tmux neww cheat-sh'
-    # S easier move of windows
+    # Easier move of windows
     bind-key -r Home swap-window -t - \; select-window -t -
     bind-key -r End swap-window -t + \; select-window -t +
 
@@ -209,7 +209,7 @@ programs.tmux = {
     # Orders the session list by time of last access
     # The default being to order by the index that is assigned when
     # session was created.
-    bind s choose-tree -sZ -O time
+    bind S choose-tree -sZ -O time
 
     # switch to last session
     bind-key L switch-client -l
@@ -221,6 +221,10 @@ programs.tmux = {
 
     bind -n S-Left previous-window
     bind -n S-Right next-window
+
+    # A more consistent(with i3wm) and ergonomic(qwerty) to focus on a pane
+    unbind z
+    bind-key f resize-pane -Z
 
     # quick yank of the text in the corrent line without going into selection
 
