@@ -214,6 +214,10 @@ programs.tmux = {
     # switch to last session
     bind-key L switch-client -l
 
+    # Pane to window
+    unbind !
+    bind-key w break-pane
+
     # Windows
     set -g set-titles 'on'
 
