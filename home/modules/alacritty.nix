@@ -1,12 +1,24 @@
-{ ... }:
+{ config, ... }:
 {
 
   programs.alacritty = {
     enable = true;
     settings = {
-      font = {
-	size = 18;
-      };
+        font = {
+            size = 18;
+            normal = {
+                family = config.userDefinedGlobalVariables.font;
+                style = "Regular";
+            };
+            bold = {
+                family = config.userDefinedGlobalVariables.font;
+                style = "Bold";
+            };
+            italic = {
+                family = config.userDefinedGlobalVariables.font;
+                style = "Italic";
+            };
+        };
 
       window = {
         opacity = 0.95;
