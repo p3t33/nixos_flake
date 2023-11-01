@@ -50,7 +50,7 @@ in
         module-margin = 1;
 
 
-        font-0 = "JetBrainsMono Nerd Font:style=Regular:size=15;4";
+        font-0 = "${config.userDefinedGlobalVariables.font}:style=Regular:size=15;4";
         # Just sticking them together in the center for now
         modules-left = "i3";
         modules-right = "filesystem memory cpu wlan battery date allen_tx ";

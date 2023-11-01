@@ -26,6 +26,11 @@
       description = "used to define host hostname";
     };
 
+    font = mkOption {
+      default =  "JetBrainsMono Nerd Font";
+      type = str;
+      description = "Font to be used on the system, depended on NerdFonts to be installed";
+    };
     hostname = mkOption {
       default = "";
       type = str;

@@ -16,7 +16,7 @@ in
 
     plugins = with pkgs; [ rofi-calc rofi-emoji rofi-power-menu];
 
-    font = "FiraCode NF 20";
+    font = "${config.userDefinedGlobalVariables.font} 20";
   theme =
     let
       mkL = config.lib.formats.rasi.mkLiteral;
