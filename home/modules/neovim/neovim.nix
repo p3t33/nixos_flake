@@ -337,6 +337,7 @@ in
           ensure_installed = { "c", "lua", "cpp", "nix", "python", "yaml", "cmake", "go", "json", "make", "markdown" },
           parser_install_dir = "~/.config/nvim/treesitters",
 
+          -- depending on nvim-treesitter-textobjects pluging
           textobjects = {
               lsp_interop = {
                   enable = true,
@@ -355,13 +356,17 @@ in
                       lookahead = true,
 
                   keymaps = {
-                      -- You can use the capture groups defined in textobjects.scm
-                          ["af"] = "@function.outer",
-                      ["if"] = "@function.inner",
-                      ["ac"] = "@class.outer",
-                      -- You can optionally set descriptions to the mappings (used in the desc parameter of
-                              -- nvim_buf_set_keymap) which plugins like which-key display
-                          ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+                      ['aa'] = '@parameter.outer',
+                      ['ia'] = '@parameter.inner',
+                      ['af'] = '@function.outer',
+                      ['if'] = '@function.inner',
+                      ['ac'] = '@class.outer',
+                      ['ic'] = '@class.inner',
+                      ['ii'] = '@conditional.inner',
+                      ['ai'] = '@conditional.outer',
+                      ['il'] = '@loop.inner',
+                      ['al'] = '@loop.outer',
+                      ['at'] = '@comment.outer',
                   },
                   -- You can choose the select mode (default is charwise 'v')
                       --
@@ -399,6 +404,7 @@ in
       }
 
       # Dependeed on nvim-treesitter
+      # and provides syntax aware text-objects, select, move, swap, and peek support.
       nvim-treesitter-textobjects
 
       # Look and feel
