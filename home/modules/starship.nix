@@ -46,7 +46,6 @@ programs.starship = {
         #    "$character"
         #];
         format = lib.concatStrings [
-            "$os"
             "$hostname"
             "$directory"
             "$python"
@@ -91,17 +90,17 @@ programs.starship = {
         directory = {
           read_only = "🔒"; # icon with some blank space
           truncation_length = 10;
-          truncation_symbol = "…/";
+          truncation_symbol = "";
           truncate_to_repo = true;
 
-          format = "[ [$read_only]($read_only_style)  $path]($style)";
+          format = "[ [$read_only]($read_only_style) $path]($style)";
           read_only_style = "red";
           style = "fg:#00B0FF";
         };
 
 
         git_branch = {
-            symbol = "   ";
+            symbol = "  ";
             style = "fg:#5FD700";
             format = "[$symbol$branch(:$remote_branch)]($style)";
         };
@@ -169,7 +168,6 @@ programs.starship = {
             format = "[ $symbol]($style)";
             style = "fg:#D8DEE9";
             symbols = {
-                NixOS = " ";
                 Ubuntu = " ";
             };
             disabled = false;
