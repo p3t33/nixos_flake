@@ -751,6 +751,10 @@ in
       noremap <Down> <Nop>
       noremap <Left> <Nop>
       noremap <Right> <Nop>
+
+      "Used to show current buffer absolute path and copy it into system clipboard"
+      "Assumes that xclip is installed to copy into system clipboard"
+      nnoremap <F6> :let @+=expand('%:p')<CR>:echo @+<CR>
       '';
     };
 }
