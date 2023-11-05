@@ -27,7 +27,7 @@ in
       defaultWorkspace = "workspace number 1";
 
       fonts = {
-        names = [ config.userDefinedGlobalVariables.font ];
+        names = [ config.userDefinedGlobalVariables.font.sansSerif ];
         # There is also an optin to set style for the font
         # style = "Bold Italic";
         size = 20.0;
