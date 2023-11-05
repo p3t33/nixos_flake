@@ -450,7 +450,10 @@ in
           config = ''
 
               " Show just the filename
-              let g:airline#extensions#tabline#fnamemod = ':t'
+              let g:airline_section_c = '%t'
+              "without puting this setting to 0 I was unable to disable section y"
+              let g:webdevicons_enable_airline_statusline_fileformat_symbols = 0
+              let g:airline_section_y = ""
           '';
       }
 
