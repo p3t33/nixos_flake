@@ -26,11 +26,6 @@
       description = "used to define host hostname";
     };
 
-    font = mkOption {
-      default =  "JetBrainsMono Nerd Font";
-      type = str;
-      description = "Font to be used on the system, depended on NerdFonts to be installed";
-    };
     hostname = mkOption {
       default = "";
       type = str;
@@ -95,6 +90,16 @@
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
     };
 
+
+    font = mkOption {
+        type = attrsOf str;
+        default = {
+            mono = "JetBrainsMono Nerd Font";
+            serif = "DejaVu Serif";
+            sansSerif = "DejaVu Sans";
+        };
+        description = "Font to be used on the system, depended on NerdFonts to be installed";
+    };
 
     colors = mkOption {
         type = attrsOf str;

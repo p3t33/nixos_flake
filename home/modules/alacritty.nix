@@ -7,15 +7,15 @@
         font = {
             size = 18;
             normal = {
-                family = config.userDefinedGlobalVariables.font;
+                family = config.userDefinedGlobalVariables.font.mono;
                 style = "Regular";
             };
             bold = {
-                family = config.userDefinedGlobalVariables.font;
+                family = config.userDefinedGlobalVariables.font.mono;
                 style = "Bold";
             };
             italic = {
-                family = config.userDefinedGlobalVariables.font;
+                family = config.userDefinedGlobalVariables.font.mono;
                 style = "Italic";
             };
         };
