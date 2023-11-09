@@ -56,7 +56,7 @@
     ../../home/modules/lazygit.nix
     ../../home/modules/clipmenu.nix
     ../../home/modules/emacs.nix
-    ../../home/modules/mime_apps.nix
+    ../../home/xdg/mime_apps.nix
     ../../home/modules/gtk.nix
   ];
 

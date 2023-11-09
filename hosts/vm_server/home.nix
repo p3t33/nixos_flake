@@ -43,8 +43,7 @@
     ../../home/modules/atuin.nix
     ../../home/modules/lazygit.nix
     ../../home/modules/emacs.nix
-    ../../home/modules/mime_apps.nix
-
+    ../../home/xdg/mime_apps.nix
   ];
 
   home.sessionVariables = {
