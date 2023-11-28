@@ -793,6 +793,9 @@ in
       "Used to show current buffer absolute path and copy it into system clipboard"
       "Assumes that xclip is installed to copy into system clipboard"
       nnoremap <F6> :let @+=expand('%:p')<CR>:echo @+<CR>
+      "will applay .clang-format file for style"
+      "requirs clang-forat to be installed"
+      nnoremap <leader>cf :%!clang-format<CR>
       '';
     };
 }

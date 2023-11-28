@@ -49,6 +49,7 @@
     .vim-bookmarks
     Session.vim
     tags
+    .clang-format
   '';
 
 }
