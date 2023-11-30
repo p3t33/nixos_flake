@@ -23,9 +23,9 @@
       list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
       cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
       rollback = "sudo nixos-rebuild switch --rollback";
-      ls = "exa --icons --color=always --group-directories-first";
-      ll = "exa -l --icons --color=always --group-directories-first";
-      lt = "exa -aT --icons --color=always --group-directories-first";
+      ls = "eza --icons --color=always --group-directories-first";
+      ll = "eza -l --icons --color=always --group-directories-first";
+      lt = "eza -aT --icons --color=always --group-directories-first";
       gc89 = "gcc -ansi -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
       gc89d = "gcc -ansi -pedantic-errors -Wall -Wextra -g";
       gc99 = "gcc -std=c99 -pedantic-errors -Wall -Wextra -g  -DNDEBUG -O3";
@@ -52,7 +52,7 @@
     # the one that are part of the shell(like the once bellow),
     # and then one that are part of oh-my-zsh.
     enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    syntaxHighlighting.enable = true;
     # This is also a non oh-my-zsh pluging but it doesn't have
     # a clean option(E.g enableFzfTab = true;)
     plugins = [ { name = "fzf-tab"; src = "${pkgs.zsh-fzf-tab}/share/fzf-tab"; } ];

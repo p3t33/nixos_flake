@@ -46,7 +46,7 @@
       lshw
 
 
-      exa
+      eza
       tree
       taskwarrior
 
