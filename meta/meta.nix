@@ -6,6 +6,12 @@
 
     userDefinedGlobalVariables = {
 
+    systemStateVersion = mkOption {
+      default = "";
+      type = str;
+      description = "Defines the realease version when OS was first installed";
+    };
+
     homeManagerStateVersion = mkOption {
       # Helps to avoid brakeage and as a best practice shoud be the same version
       # as the reset of the system.
@@ -187,24 +193,28 @@
           userDefinedGlobalVariables.email = "kobi.medrish@motorolasolutions.com";
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "work_pc";
+          userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "home-desktop"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "home_desktop";
           userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
+          userDefinedGlobalVariables.systemStateVersion = "23.11";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-gui"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "vm_gui";
           userDefinedGlobalVariables.initialPassword = "q";
+          userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-server"){
           userDefinedGlobalVariables.username = "drone";
           userDefinedGlobalVariables.hostTag = "vm_server";
           userDefinedGlobalVariables.initialPassword = "q";
+          userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
    ];
 }
