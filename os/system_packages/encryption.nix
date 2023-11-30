@@ -4,7 +4,7 @@
       # gpg
       # ---
       gnupg
-      pinentry_qt # used by gpg-agent as a gui popup
+      pinentry-qt # used by gpg-agent as a gui popup
 
 
       # Whole disk partition and container on local device encryption.

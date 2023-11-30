@@ -1,11 +1,10 @@
 { pkgs, config, ... }:
 {
-    # will need to be updated from fonts.fonts to fonts.packages post 23.05
     # In the future I might move this settings to the home-manger using the
     # fonts.fontconfig.enable directive.
     fonts = {
-        enableDefaultFonts = true;
-        fonts = with pkgs; [
+        enableDefaultPackages = true;
+        packages = with pkgs; [
             nerdfonts
             powerline-fonts
             font-awesome

@@ -2,7 +2,7 @@
 
 # plugin that is yet available on the nixos stable brach
 let
-    rainbow-delimiters-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    rainbow-delimiters-nvim = pkgs.vimUtils.buildVimPlugin {
         pname = "rainbow-delimiters.nvim";
         version = "unstable-2023-08-26";
         src = pkgs.fetchgit {
