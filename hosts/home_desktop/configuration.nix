@@ -55,10 +55,7 @@
   # Enable grub cryptodisk
   boot.loader.grub.enableCryptodisk=true;
 
-  boot.initrd.luks.devices."luks-01b11c05-22ec-4569-b265-29e1ca00b72b".keyFile = "/crypto_keyfile.bin";
-  # Enable swap on luks
-  boot.initrd.luks.devices."luks-d1cf13c1-d395-469b-8c26-651828d85993".device = "/dev/disk/by-uuid/d1cf13c1-d395-469b-8c26-651828d85993";
-  boot.initrd.luks.devices."luks-d1cf13c1-d395-469b-8c26-651828d85993".keyFile = "/crypto_keyfile.bin";
+  boot.initrd.luks.devices."luks-663db9ae-4317-4f9d-8860-1414b4ef27ed".keyFile = "/crypto_keyfile.bin";
 
   programs.dconf.enable = true;
 
