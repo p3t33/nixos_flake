@@ -15,8 +15,6 @@
       # note taking
       cherrytree
 
-      gnome.nautilus
-
       # terminal
       alacritty
 
@@ -24,6 +22,8 @@
       gparted
 
       gpick # color picker.
+      pcmanfm
+
     ];
 
 }
