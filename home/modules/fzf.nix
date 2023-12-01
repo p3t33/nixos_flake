@@ -7,14 +7,20 @@
     enableZshIntegration = true;
     enableBashIntegration = true;
 
-     # CTRL-T
-    fileWidgetCommand = "fd --hidden";
+    # Note: Effect to the shell environment variables only took place after reboot.
 
-    # ALT-C
-    changeDirWidgetCommand = "fd --hidden --type d";
+    # rg can be used but fd is the better choice. It is purpose built for listing files,
+    # which is what you want for fzf. ripgrep can list files too, but that
+    # isn't its primary function. Its primary function is to search files.
 
-    # Default command that is executed for fzf
-    defaultCommand = "fd --hidden --type f";
+    # CTRL-T - $FZF_CTRL_T_COMMAND
+    fileWidgetCommand = "fd --type file --hidden --exclude .git";
+
+    # ALT-C - $FZF_ALT_C_COMMAND
+    changeDirWidgetCommand = "fd --type directory --hidden --exclude .git";
+
+    # Default command that is executed for fzf - $FZF_DEFAULT_COMMAND
+    defaultCommand = "fd --type file --hidden --exclude .git";
     };
 
 }
