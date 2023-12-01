@@ -243,6 +243,41 @@
       # and is used in require('luasnip.loaders.from_vscode').lazy_load().
       friendly-snippets
 
+      {
+        plugin = telescope-nvim;
+        type = "lua";
+        config = ''
+            require('telescope').setup {
+                defaults = {
+                    mappings = {
+                        i = {
+                            ['<C-u>'] = false,
+                            ['<C-d>'] = false,
+                        },
+                    },
+                    layout_config = {
+                        vertical = { prompt_position = "top", mirror = true, }
+                        -- other layout configuration here
+                    },
+
+                },
+            }
+
+            require('telescope').load_extension('fzf')
+            local builtin = require('telescope.builtin')
+            vim.keymap.set('n', '<leader>xf', builtin.find_files, {})
+            vim.keymap.set('n', '<leader>xg', builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
+            vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
+        '';
+      }
+      {
+        plugin = telescope-fzf-native-nvim;
+        type = "lua";
+        config = ''
+        '';
+      }
+
       # LSP clients
       # -----------
 
@@ -780,6 +815,7 @@
       "Used to show current buffer absolute path and copy it into system clipboard"
       "Assumes that xclip is installed to copy into system clipboard"
       nnoremap <F6> :let @+=expand('%:p')<CR>:echo @+<CR>
+
       "will applay .clang-format file for style"
       "requirs clang-forat to be installed"
       nnoremap <leader>cf :%!clang-format<CR>
