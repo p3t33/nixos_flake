@@ -36,6 +36,8 @@
             require('gitsigns').setup {
                 on_attach = function(bufnr)
                 local gs = package.loaded.gitsigns
+                    vim.keymap.set('n', "<leader>gd", gs.reset_hunk)
+                    vim.keymap.set('v', "<leader>gd", function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
                     vim.keymap.set('n', "<leader>gb", gs.toggle_current_line_blame)
                     vim.keymap.set('n', "]g", function()
                             if vim.wo.diff then return ']c' end
