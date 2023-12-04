@@ -78,6 +78,10 @@
 
       # Sound control
       pulseaudio # installed for pactl(which is cli for pavucontrol) and uses alsa.
+
+      # Send notifications to the notification daemon, such as Dunst.
+      libnotify
+
     ];
 
 }
