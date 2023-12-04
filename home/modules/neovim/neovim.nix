@@ -64,6 +64,13 @@
           plugin = indent-blankline-nvim;
       }
       {
+          plugin = comment-nvim;
+          type = "lua";
+          config = ''
+            require('Comment').setup()
+          '';
+      }
+      {
           # vim-tmux-navigator plugin has a dual function(although name implies only
           # vim integration )
           #
@@ -258,17 +265,23 @@
                         },
                     },
                     layout_config = {
-                        vertical = { prompt_position = "top", mirror = true, }
+                        vertical = { width = 0.9, prompt_position = "bottom", mirror = true, }
                         -- other layout configuration here
                     },
 
+                },
+                pickers = {
+                    find_files = {
+                        theme = "dropdown",
+                    }
                 },
             }
 
             require('telescope').load_extension('fzf')
             local builtin = require('telescope.builtin')
             vim.keymap.set('n', '<leader>xf', builtin.find_files, {})
-            vim.keymap.set('n', '<leader>xg', builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>xs', builtin.live_grep, {})
+            vim.keymap.set('n', '<leader>xg', builtin.grep_string, {})
             vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
             vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
         '';
