@@ -54,7 +54,7 @@ in
         font-0 = "${config.userDefinedGlobalVariables.font.mono}:style=Regular:size=15;4";
         # Just sticking them together in the center for now
         modules-left = "i3";
-        modules-right = "filesystem memory cpu wlan battery date allen_tx ";
+        modules-right = "filesystem memory cpu wlan battery volume date allen_tx ";
         #modules-center = "i3";
 
         cursor-click = "pointer";
@@ -196,6 +196,31 @@ in
           format-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
           format-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
           format-padding = 2;
+        };
+        "module/volume" = {
+            type = "internal/volume";
+
+            #Volume display settings
+            format-volume = "<ramp-volume> <label-volume>";
+            format-muted = "<label-muted>";
+            label-volume = "%percentage%%";
+            label-muted = "󰝟";
+            ramp-volume-0 = "󰕿";  # Icon for low volume
+            ramp-volume-1 = "󰖀";  # Icon for medium volume
+            ramp-volume-2 = "󰕾";  # Icon for high volume
+
+            # Define volume mixer control
+            master-mixer = "Master";
+            mixer = "default";
+            mixer-idx = 0;
+
+            #Color customization (optional)
+            label-volume-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+
+            label-muted-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+            ramp-volume-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+            ramp-volume-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+            ramp-volume-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
         };
 
         "module/battery" = {
