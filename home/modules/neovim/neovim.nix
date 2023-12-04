@@ -367,13 +367,24 @@
       # Tree-sitter is a parsing library for programming languages that
       # can be used to analyze, edit, and transform code.
       {
-        plugin =  nvim-treesitter;
+        plugin = (nvim-treesitter.withPlugins (p: [
+          # this replaces the ensure_installed = { "c", "cpp"..}
+          p.tree-sitter-nix
+          p.tree-sitter-vim
+          p.tree-sitter-bash
+          p.tree-sitter-lua
+          p.tree-sitter-python
+          p.tree-sitter-json
+          p.tree-sitter-c
+          p.tree-sitter-cpp
+          p.tree-sitter-go
+          p.tree-sitter-make
+          p.tree-sitter-markdown
+          p.tree-sitter-yaml
+        ]));
         type = "lua";
         config = ''
           require('nvim-treesitter.configs').setup {
-          ensure_installed = { "c", "lua", "cpp", "nix", "python", "yaml", "cmake", "go", "json", "make", "markdown" },
-          parser_install_dir = "~/.config/nvim/treesitters",
-
           -- depending on nvim-treesitter-textobjects pluging
           textobjects = {
               lsp_interop = {
