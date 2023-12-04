@@ -62,6 +62,7 @@
     ../../home/modules/emacs.nix
     ../../home/xdg/mime_apps.nix
     ../../home/modules/gtk.nix
+    ../../home/services/dnust.nix
   ];
 
   home.sessionVariables = {
