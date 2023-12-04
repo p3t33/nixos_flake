@@ -82,6 +82,9 @@
       # Send notifications to the notification daemon, such as Dunst.
       libnotify
 
+      # evalute key and mouse presses for xorg
+      xorg.xev
+
     ];
 
 }
