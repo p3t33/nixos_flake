@@ -6,6 +6,19 @@
     enable = true;
     vimAlias = true;
 
+    # Dependency management
+    extraPackages = with pkgs; [
+        # required by neovim/vim for copy/paste
+        # to work with system clipboard on x11.
+        xclip
+
+        #LSP servers
+        sumneko-lua-language-server
+        clang-tools
+        rnix-lsp
+        nodePackages.pyright # language server.
+    ];
+
     plugins = with pkgs.vimPlugins; [
 
 
