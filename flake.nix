@@ -10,7 +10,7 @@
     };
 
 
-    outputs = inputs@{ nixpkgs, home-manager, ... }:
+    outputs = { nixpkgs, home-manager, ... }@inputs:
     let
         system = "x86_64-linux";
         pkgs = import nixpkgs {
@@ -24,12 +24,14 @@
         nixosConfigurations = {
             vm_server = lib.nixosSystem {
                 inherit system;
+                specialArgs = { inherit inputs; };
                 modules = [
                     ./hosts/vm_server/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
                             home-manager.useGlobalPkgs = true;
                             home-manager.useUserPackages = true;
+                            home-manager.extraSpecialArgs = {inherit inputs;};
                             home-manager.users.drone = import ./hosts/vm_server/home.nix;
                         }
                 ];
@@ -37,12 +39,14 @@
 
             vm_gui = lib.nixosSystem {
                 inherit system;
+                specialArgs = { inherit inputs; };
                 modules = [
                     ./hosts/vm_gui/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
                             home-manager.useGlobalPkgs = true;
                             home-manager.useUserPackages = true;
+                            home-manager.extraSpecialArgs = {inherit inputs;};
                             home-manager.users.kmedrish = import ./hosts/vm_gui/home.nix;
                         }
                 ];
@@ -50,12 +54,14 @@
 
             work_pc = lib.nixosSystem {
                 inherit system;
+                specialArgs = { inherit inputs; };
                 modules = [
                     ./hosts/work_pc/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
                             home-manager.useGlobalPkgs = true;
                             home-manager.useUserPackages = true;
+                            home-manager.extraSpecialArgs = {inherit inputs;};
                             home-manager.users.kmedrish = import ./hosts/work_pc/home.nix;
                         }
                 ];
@@ -63,12 +69,14 @@
 
             home_desktop = lib.nixosSystem {
                 inherit system;
+                specialArgs = { inherit inputs; };
                 modules = [
                     ./hosts/home_desktop/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
                             home-manager.useGlobalPkgs = true;
                             home-manager.useUserPackages = true;
+                            home-manager.extraSpecialArgs = {inherit inputs;};
                             home-manager.users.kmedrish = import ./hosts/home_desktop/home.nix;
                         }
                 ];
@@ -83,6 +91,7 @@
         homeConfigurations = {
             kmedrish = home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
+                extraSpecialArgs = {inherit inputs;}; #Needs to be tested
                 modules = [
                     ./hosts/work_pc/home.nix
                 ];
