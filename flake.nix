@@ -28,7 +28,7 @@
             config.allowUnfree = true;
         };
 
-    lib = nixpkgs.lib;
+        lib = nixpkgs.lib;
     in
     {
         nixosConfigurations = {
@@ -36,15 +36,9 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
-                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/vm_server/configuration.nix
-                        home-manager.nixosModules.home-manager
-                        {
-                            home-manager.useGlobalPkgs = true;
-                            home-manager.useUserPackages = true;
-                            home-manager.extraSpecialArgs = {inherit inputs;};
-                            home-manager.users.drone = import ./hosts/vm_server/home.nix;
-                        }
+                    inputs.home-manager.nixosModules.home-manager
+                    inputs.nix-index-database.nixosModules.nix-index
                 ];
             };
 
@@ -52,15 +46,9 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
-                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/vm_gui/configuration.nix
-                        home-manager.nixosModules.home-manager
-                        {
-                            home-manager.useGlobalPkgs = true;
-                            home-manager.useUserPackages = true;
-                            home-manager.extraSpecialArgs = {inherit inputs;};
-                            home-manager.users.kmedrish = import ./hosts/vm_gui/home.nix;
-                        }
+                    inputs.home-manager.nixosModules.home-manager
+                    inputs.nix-index-database.nixosModules.nix-index
                 ];
             };
 
@@ -68,15 +56,9 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
-                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/work_pc/configuration.nix
-                        home-manager.nixosModules.home-manager
-                        {
-                            home-manager.useGlobalPkgs = true;
-                            home-manager.useUserPackages = true;
-                            home-manager.extraSpecialArgs = {inherit inputs;};
-                            home-manager.users.kmedrish = import ./hosts/work_pc/home.nix;
-                        }
+                    inputs.home-manager.nixosModules.home-manager
+                    inputs.nix-index-database.nixosModules.nix-index
                 ];
             };
 
@@ -84,15 +66,9 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
-                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/home_desktop/configuration.nix
-                        home-manager.nixosModules.home-manager
-                        {
-                            home-manager.useGlobalPkgs = true;
-                            home-manager.useUserPackages = true;
-                            home-manager.extraSpecialArgs = {inherit inputs;};
-                            home-manager.users.kmedrish = import ./hosts/home_desktop/home.nix;
-                        }
+                    inputs.home-manager.nixosModules.home-manager
+                    inputs.nix-index-database.nixosModules.nix-index
                 ];
             };
         };
@@ -103,12 +79,12 @@
         # 1. The host name on the existing system needs to match the one on ./hosts/work_pc/home.nix and ./meta/meta.nix
         # 2. The username on the existing system most match the one defined in homeConfigurations.
         homeConfigurations = {
-            kmedrish = home-manager.lib.homeManagerConfiguration {
+            kmedrish = inputs.home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
                 extraSpecialArgs = {inherit inputs;}; #Needs to be tested
                 modules = [
-                    inputs.nix-index-database.hmModules.nix-index #Needs to be tested
                     ./hosts/work_pc/home.nix
+                    inputs.nix-index-database.hmModules.nix-index #Needs to be tested
                 ];
             };
         };
