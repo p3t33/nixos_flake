@@ -53,9 +53,9 @@ programs.starship = {
             "$git_branch"
             "$git_status"
             "$fill" # This will push the right prompt to the right edge
+            "$status"
             "$cmd_duration"
             "$time"
-            "$status"
             "$line_break"
             "$character"
         ];
