@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   imports =
@@ -31,6 +31,7 @@
       ../../meta/meta.nix
       ../../os/security/nitrokey.nix
       ../../os/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
+      ../../home/home-manager-configuration.nix
     ];
 
   # Bootloader.

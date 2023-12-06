@@ -96,6 +96,12 @@
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
     };
 
+    home_manger_import_path = mkOption {
+        default = ../hosts/${config.userDefinedGlobalVariables.hostTag}/home.nix;
+        type = path;
+        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+    };
+
 
     font = mkOption {
         type = attrsOf str;
