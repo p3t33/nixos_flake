@@ -33,6 +33,7 @@
       ../../meta/meta.nix
       ../../os/security/nitrokey.nix
       ../../os/services/adb.nix
+      ../../os/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
     ];
 
   # Bootloader.

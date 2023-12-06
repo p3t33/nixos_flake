@@ -12,6 +12,11 @@
             url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+
+        nix-index-database = {
+            url = "github:Mic92/nix-index-database";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
     };
 
 
@@ -31,6 +36,7 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
+                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/vm_server/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
@@ -46,6 +52,7 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
+                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/vm_gui/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
@@ -61,6 +68,7 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
+                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/work_pc/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
@@ -76,6 +84,7 @@
                 inherit system;
                 specialArgs = { inherit inputs; };
                 modules = [
+                    inputs.nix-index-database.nixosModules.nix-index
                     ./hosts/home_desktop/configuration.nix
                         home-manager.nixosModules.home-manager
                         {
@@ -98,6 +107,7 @@
                 inherit pkgs;
                 extraSpecialArgs = {inherit inputs;}; #Needs to be tested
                 modules = [
+                    inputs.nix-index-database.hmModules.nix-index #Needs to be tested
                     ./hosts/work_pc/home.nix
                 ];
             };
