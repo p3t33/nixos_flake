@@ -52,7 +52,7 @@ to achieve code reuse.
         with ssh-agent. This is a very low priority.
 
 - [ ] Move more variables into the meta.nix
-- [ ] Eliminate the error that is caused by terminal command not found.
+- [x] Eliminate the error that is caused by terminal command not found.
 
 
 <!-- variables -->
