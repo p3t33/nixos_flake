@@ -83,8 +83,7 @@
                 inherit pkgs;
                 extraSpecialArgs = {inherit inputs;}; #Needs to be tested
                 modules = [
-                    ./hosts/work_pc/home.nix
-                    inputs.nix-index-database.hmModules.nix-index #Needs to be tested
+                    ./hosts/generic_linux_distro/home.nix
                 ];
             };
         };
