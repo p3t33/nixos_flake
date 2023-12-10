@@ -17,6 +17,12 @@
             url = "github:Mic92/nix-index-database";
             inputs.nixpkgs.follows = "nixpkgs";
         };
+
+        sops-nix = {
+            url = "github:Mic92/sops-nix";
+            inputs.nixpkgs.follows = "nixpkgs";
+        };
+
     };
 
 
@@ -39,6 +45,7 @@
                     ./hosts/vm_server/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
                     inputs.nix-index-database.nixosModules.nix-index
+                    inputs.sops-nix.nixosModules.sops
                 ];
             };
 
@@ -49,6 +56,7 @@
                     ./hosts/vm_gui/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
                     inputs.nix-index-database.nixosModules.nix-index
+                    inputs.sops-nix.nixosModules.sops
                 ];
             };
 
@@ -59,6 +67,7 @@
                     ./hosts/work_pc/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
                     inputs.nix-index-database.nixosModules.nix-index
+                    inputs.sops-nix.nixosModules.sops
                 ];
             };
 
@@ -69,6 +78,7 @@
                     ./hosts/home_desktop/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
                     inputs.nix-index-database.nixosModules.nix-index
+                    inputs.sops-nix.nixosModules.sops
                 ];
             };
         };
@@ -84,6 +94,7 @@
                 extraSpecialArgs = {inherit inputs;}; #Needs to be tested
                 modules = [
                     ./hosts/generic_linux_distro/home.nix
+                    inputs.sops-nix.homeManagerModules.sops
                 ];
             };
         };
