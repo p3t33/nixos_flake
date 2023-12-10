@@ -13,6 +13,9 @@
       # Backup of local files to the cloud.
       cryptomator
       gocryptfs
+      sops
+      age
+      ssh-to-age
 
       # FIDO/FIDO(U2F) libraries
       libfido2 # webauto
