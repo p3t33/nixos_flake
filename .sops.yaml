@@ -1,0 +1,8 @@
+
+keys:
+  - &test_ssh_with_password_key age1960hm9pdxgckwey2t0ch8uzjd6v8jf07nuv84karpap4g3kqm3kqnqavew
+creation_rules:
+  - path_regex: secrets/secrets.yaml$
+    key_groups:
+    - age:
+      - *test_ssh_with_password_key

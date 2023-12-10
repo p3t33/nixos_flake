@@ -4,6 +4,8 @@
   programs.ssh = {
     enable = true;
     extraConfig = "
+      Include ~/.ssh/extra_hosts
+
       Host 1-dev-wgv
           HostName 10.81.91.14
 	  User kmedrish
@@ -28,7 +30,7 @@
           HostName 10.81.91.44
           User kmedrish
 	  IdentityFile ~/.ssh/id_ed25519
-	
+
       Host usb_base_bwc
           HostName 192.168.99.2
           User root
@@ -38,6 +40,7 @@
           HostName 192.168.98.1
           User root
 	  IdentityFile ~/.ssh/devices_rsa_no_pass
+
        ";
   };
 }
