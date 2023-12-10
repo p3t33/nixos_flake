@@ -8,6 +8,7 @@
   zsh-syntax-highlighting
   zsh-autosuggestions
   zsh-fzf-tab
+  thefuck
   ];
 
   programs.zsh = {
@@ -17,25 +18,25 @@
     history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
 
     shellAliases = {
-      get_flake_repository_if_does_not_exit = "if [[ ! -d ${config.userDefinedGlobalVariables.pathToFlakeDirectory} ]]; then git clone ${config.userDefinedGlobalVariables.flakeRepositoryUrl} ${config.userDefinedGlobalVariables.pathToFlakeDirectory}; fi;";
+      get_flake_repository_if_does_not_exit = "if [[ ! -d ${config.userDefinedGlobalVariables.pathToFlakeDirectory} ]]; then ${pkgs.git}/bin/git clone ${config.userDefinedGlobalVariables.flakeRepositoryUrl} ${config.userDefinedGlobalVariables.pathToFlakeDirectory}; fi;";
       update = "get_flake_repository_if_does_not_exit; sudo nixos-rebuild switch --flake ${config.userDefinedGlobalVariables.pathToFlakeDirectory}#${config.userDefinedGlobalVariables.hostTag}";
       upgrade = "get_flake_repository_if_does_not_exit; sudo nix flake update ${config.userDefinedGlobalVariables.pathToFlakeDirectory} && update";
       list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
       cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
       rollback = "sudo nixos-rebuild switch --rollback";
-      ls = "eza --icons --color=always --group-directories-first";
-      ll = "eza -l --icons --color=always --group-directories-first";
-      lt = "eza -aT --icons --color=always --group-directories-first";
-      gc89 = "gcc -ansi -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
-      gc89d = "gcc -ansi -pedantic-errors -Wall -Wextra -g";
-      gc99 = "gcc -std=c99 -pedantic-errors -Wall -Wextra -g  -DNDEBUG -O3";
-      gc99d = "gcc -std=c99 -pedantic-errors -Wall -Wextra -g";
-      gpp17 = "g++ -std=c++17 -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
-      gpp17d = "g++ -std=c++17 -pedantic-errors -Wall -Wextra -g";
-      clpp17 = "clang++ -std=c++17 -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
-      clpp17d = "clang++ -std=c++17 -pedantic-errors -Wall -Wextra -g";
-      vlg = "valgrind --leak-check=yes --track-origins=yes";
-      grind = "rm callgrind.out.* && valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
+      ls = "${pkgs.eza}/bin/eza --icons --color=always --group-directories-first";
+      ll = "${pkgs.eza}/bin/eza -l --icons --color=always --group-directories-first";
+      lt = "${pkgs.eza}/bin/eza -aT --icons --color=always --group-directories-first";
+      gc89 = "${pkgs.gcc}/bin/gcc -ansi -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
+      gc89d = "${pkgs.gcc}/bin/gcc -ansi -pedantic-errors -Wall -Wextra -g";
+      gc99 = "${pkgs.gcc}/bin/gcc -std=c99 -pedantic-errors -Wall -Wextra -g  -DNDEBUG -O3";
+      gc99d = "${pkgs.gcc}/bin/gcc -std=c99 -pedantic-errors -Wall -Wextra -g";
+      gpp17 = "${pkgs.gcc}/bin/g++ -std=c++17 -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
+      gpp17d = "${pkgs.gcc}/bin/g++ -std=c++17 -pedantic-errors -Wall -Wextra -g";
+      clpp17 = "${pkgs.clang}/bin/clang++ -std=c++17 -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
+      clpp17d = "${pkgs.clang}/bin/clang++ -std=c++17 -pedantic-errors -Wall -Wextra -g";
+      vlg = "${pkgs.valgrind}/bin/valgrind --leak-check=yes --track-origins=yes";
+      grind = "rm callgrind.out.* && ${pkgs.valgrind}/bin/valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
       vi = "nvim";
      };
 
@@ -55,7 +56,12 @@
     syntaxHighlighting.enable = true;
     # This is also a non oh-my-zsh pluging but it doesn't have
     # a clean option(E.g enableFzfTab = true;)
-    plugins = [ { name = "fzf-tab"; src = "${pkgs.zsh-fzf-tab}/share/fzf-tab"; } ];
+    plugins = [
+        {
+            name = "fzf-tab";
+            src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+        }
+    ];
 
     oh-my-zsh = {
       enable = true;
