@@ -48,6 +48,7 @@
     ../../home/modules/gpg.nix
     ../../home/modules/ssh/work/ssh.nix
     ../../home/modules/polybar.nix
+    ../../home/scripts/kobi.sh
     ../../home/scripts/rofi-firefox-bookmarks.nix
     ../../home/scripts/helloworld-python.nix
     ../../home/scripts/tmux-sessionizer.nix
