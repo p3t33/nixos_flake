@@ -84,6 +84,9 @@
 
             extensions = with inputs.firefox-addons.packages."x86_64-linux"; [
                 ublock-origin
+                hover-zoom-plus
+                vim-vixen
+
             ];
         };
 
