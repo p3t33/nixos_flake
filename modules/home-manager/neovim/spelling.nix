@@ -18,6 +18,8 @@
         i3wm
         xorg
         zsh
+        VirtualBox
+        KVM
     '';
    };
 

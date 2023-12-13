@@ -1,7 +1,19 @@
 { pkgs, config, ... }:
 
+# Understanding how the configuration gets generated.
+
+# All vim script from plugins settings and from extraConfig is generated into a single
+# file which get called at the top of init.lua that is generated from all plugins settings
+# that is written in lua and from extraLuaConfig. The order in which the plugins defined
+# is also reflected in both lua and vim script configuration files.
+
 {
-  imports = [./spelling.nix];
+  imports = [
+    ./spelling.nix
+    ./ui.nix
+    ./lsp.nix
+  ];
+
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -21,27 +33,8 @@
 
     plugins = with pkgs.vimPlugins; [
 
-
       # Utils
       # =====
-      {
-        plugin = rainbow-delimiters-nvim;
-        type = "lua";
-        config = ''
-
-            vim.g.rainbow_delimiters = {
-                highlight = {
-                    'RainbowDelimiterYellow',
-                    'RainbowDelimiterRed',
-                    'RainbowDelimiterBlue',
-                    'RainbowDelimiterOrange',
-                    'RainbowDelimiterGreen',
-                    'RainbowDelimiterViolet',
-                    'RainbowDelimiterCyan',
-                },
-            }
-        '';
-      }
       {
         plugin = gitsigns-nvim;
         type = "lua";
@@ -72,9 +65,6 @@
           config = ''
           require("nvim-autopairs").setup {}
           '';
-      }
-      {
-          plugin = indent-blankline-nvim;
       }
       {
           plugin = comment-nvim;
@@ -109,11 +99,9 @@
           '';
       }
 
-      # Adds actual color to hex value for that represtn colors.
-      colorizer
 
       # This is a vim session manager that I currently do not use because I am
-      # using X
+      # using startify
       vim-obsession
 
       # This is a dependencie for many other plugins and could be considered as
@@ -147,123 +135,6 @@
 
       # A pretty list for showing diagnostics, references and fixes.
       trouble-nvim
-
-      # LSP completion related capabilities
-      # -----------------------------------
-      # This plugin is responsible for code completion,
-      # code snippets(for function), and errors with explanations.
-      # This pluging depends on nvim-lspconfig plugin to have minimal
-      # functionality. It needs bunch of other plugins(added right below)
-      # to function properly.
-      {
-        plugin = nvim-cmp;
-        type = "lua";
-        config = ''
-        vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
-
-        require('luasnip.loaders.from_vscode').lazy_load()
-
-        local cmp = require('cmp')
-        local luasnip = require('luasnip')
-
-        local select_opts = {behavior = cmp.SelectBehavior.Select}
-
-        cmp.setup({
-          snippet = {
-            expand = function(args)
-            luasnip.lsp_expand(args.body)
-            end
-          },
-          sources = {
-            {name = 'path'},
-            {name = 'nvim_lsp', keyword_length = 3},
-            {name = 'buffer', keyword_length = 3},
-            {name = 'luasnip', keyword_length = 2},
-          },
-          window = {
-            documentation = cmp.config.window.bordered()
-          },
-          formatting = {
-            fields = {'menu', 'abbr', 'kind'},
-            format = function(entry, item)
-            local menu_icon = {
-              nvim_lsp = 'λ',
-              luasnip = '⋗',
-              buffer = 'Ω',
-              path = '🖫',
-            }
-
-            item.menu = menu_icon[entry.source.name]
-            return item
-            end,
-          },
-          mapping = {
-            ['<Up>'] = cmp.mapping.select_prev_item(select_opts),
-            ['<Down>'] = cmp.mapping.select_next_item(select_opts),
-
-            ['<C-p>'] = cmp.mapping.select_prev_item(select_opts),
-            ['<C-n>'] = cmp.mapping.select_next_item(select_opts),
-
-            ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-
-            ['<C-e>'] = cmp.mapping.abort(),
-            ['<CR>'] = cmp.mapping.confirm({select = false}),
-
-            ['<C-d>'] = cmp.mapping(function(fallback)
-            if luasnip.jumpable(1) then
-            luasnip.jump(1)
-            else
-            fallback()
-            end
-            end, {'i', 's'}),
-
-            ['<C-b>'] = cmp.mapping(function(fallback)
-            if luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-            else
-            fallback()
-            end
-            end, {'i', 's'}),
-
-            ['<Tab>'] = cmp.mapping(function(fallback)
-            local col = vim.fn.col('.') - 1
-
-            if cmp.visible() then
-            cmp.select_next_item(select_opts)
-            elseif col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-            fallback()
-            else
-            cmp.complete()
-            end
-            end, {'i', 's'}),
-
-            ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-            cmp.select_prev_item(select_opts)
-            else
-            fallback()
-            end
-            end, {'i', 's'}),
-          },
-        })
-        '';
-      }
-
-      # nvim-cmp dependencies
-      # ---------------------
-      cmp-nvim-lsp
-      cmp-buffer
-      cmp-path
-      cmp-cmdline
-
-      # users of luasnip
-      luasnip
-      cmp_luasnip
-
-      # This one wasn't on the list of nvim-cmp but in a reference
-      # and is used in require('luasnip.loaders.from_vscode').lazy_load().
-      friendly-snippets
 
       {
         plugin = telescope-nvim;
@@ -309,66 +180,6 @@
       # LSP clients
       # -----------
 
-      {
-        # This plugin is the base for all of the LSP functionality.
-        # It can work just fine wihtout nvim-cmp but not the
-        # other way around. But if nvim-cmp isn't installed and
-        # set the amount of default information will be very
-        # minimal.
-        plugin = nvim-lspconfig;
-        type = "lua";
-        config = ''
-            local opts = { noremap=true, silent=true }
-
-            -- Use an on_attach function to only map the following keys
-            -- after the language server attaches to the current buffer
-            local on_attach = function(client, bufnr)
-
-            -- Enable completion triggered by <c-x><c-o>
-            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-            -- Mappings.
-            -- See `:help vim.lsp.*` for documentation on any of the below functions
-            local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-            -- go to definition.
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-            vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, bufopts)
-            vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, bufopts)
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-            -- clang-tidy code actions
-            vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, bufopts)
-            vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, bufopts)
-            vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, bufopts)
-            vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, bufopts)
-
-            -- Can be used to replace plugin trouble-nvim(and dependencie nvim-web-devicons)
-            vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
-
-            -- clang format.
-            vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
-            end
-
-            local lsp_flags = {
-                -- This is the default in Nvim 0.7+
-                    debounce_text_changes = 150,
-            }
-          require('lspconfig').rust_analyzer.setup{}
-          require('lspconfig').rnix.setup{}
-          require('lspconfig').lua_ls.setup{}
-          require('lspconfig').clangd.setup{
-              on_attach = on_attach,
-              flags = lsp_flags,
-          }
-
-          require('lspconfig').pyright.setup{
-              on_attach = on_attach,
-              flags = lsp_flags,
-          }
-        '';
-      }
 
       # linter
       # ------
@@ -471,96 +282,6 @@
       # Look and feel
       # ======================
 
-      # Themes
-      # ------
-      vim-code-dark
-      dracula-vim
-      nord-vim
-      gruvbox
-
-      {
-        # Manages the start screen for vim and also sessions
-        plugin = vim-startify;
-        config = ''
-          let g:startify_session_persistence = 1
-          let g:startify_session_autoload = 1
-          let g:startify_custom_header = [
-          \' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-          \' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-          \' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-          \' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-          \' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-          \' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-          \]
-
-
-          let g:startify_lists = [
-             \ { 'type': 'sessions',  'header': ['   Sessions']       },
-             \ { 'type': 'files',     'header': ['   Recent files']            },
-             \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
-             \]
-
-
-        '';
-      }
-
-      # Status/tabline
-      # --------------
-      {
-          plugin = lualine-nvim;
-          type = "lua";
-          config = ''
-            require('lualine').setup {
-                options = {
-                    icons_enabled = true,
-                    theme = 'nord',
-                    component_separators = { left = '', right = ''},
-                    section_separators = { left = '', right = ''},
-                    disabled_filetypes = {
-                        statusline = {},
-                        winbar = {},
-                    },
-                    ignore_focus = {},
-                    always_divide_middle = true,
-                    globalstatus = false,
-                    refresh = {
-                        statusline = 1000,
-                        tabline = 1000,
-                        winbar = 1000,
-                    }
-                },
-                sections = {
-                    lualine_a = {'mode'},
-                    lualine_b = {'branch', 'diff', 'diagnostics'},
-                    lualine_c = {'filename'},
-                    lualine_x = {'filetype'},
-                    lualine_y = {'progress'},
-                    lualine_z = {'location'}
-                },
-                inactive_sections = {
-                    lualine_a = {},
-                    lualine_b = {},
-                    lualine_c = {'filename'},
-                    lualine_x = {'location'},
-                    lualine_y = {},
-                    lualine_z = {}
-                },
-                tabline = {},
-                winbar = {},
-                inactive_winbar = {},
-                extensions = {}
-            }
-          '';
-      }
-
-      # Icons
-      # -----
-      vim-devicons
-      # Required by trouble-nvim
-      nvim-web-devicons
-
-
-
       # Navigation
       # ==========
       {
@@ -568,6 +289,14 @@
           plugin = fzf-vim;
           config = ''
 
+              "I need to define leader key here because the order in which "
+              "nix generates the config"
+
+              let mapleader = " "
+              nnoremap <leader>ff :Files<CR>
+              nnoremap <leader>fs :Rg<CR>
+              nnoremap <leader>fd :BD<CR>
+              nnoremap <leader>fb :Buffers<CR>
 
               "some tweaks for the search and preview look and feel"
               "----------------------------------------------------"
@@ -605,9 +334,22 @@
         # Undotree visualizes the undo history and makes it easy to
         # browse and switch between different undo branches.
         plugin = undotree;
-        type = "lua";
         config = ''
-          vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+            "I need to define leader key here because the order in which "
+            "nix generates the config"
+            let mapleader = " "
+            nnoremap <leader>u :UndotreeToggle<CR>
+
+            if has("persistent_undo")
+                " Let's save undo info!
+                if !isdirectory($HOME."/.vim")
+                    call mkdir($HOME."/.vim", "", 0770)
+                endif
+
+                set undodir=~/.vim/undo-dir
+                set undofile
+            endif
+            "---------------------------"
         '';
       }
 
@@ -616,7 +358,6 @@
         plugin = harpoon;
         type = "lua";
         config = ''
-          vim.g.mapleader = " "
           local mark = require("harpoon.mark")
           local ui = require("harpoon.ui")
 
@@ -631,233 +372,230 @@
       }
     ];
 
+    extraLuaConfig = ''
+        -- ============
+        -- Editor setup
+        -- ============
+        vim.g.mapleader = " "
+
+        -- No timeout for leader key
+        vim.o.timeout = false
+        vim.o.ttimeout = false
+
+        -- Colorscheme
+        vim.cmd("colorscheme codedark")
+
+        -- Line numbers and relative lines
+        vim.wo.number = true
+        vim.wo.relativenumber = true
+
+        -- Indentation settings of 4 spaces
+        vim.o.tabstop = 4
+        vim.o.softtabstop = 4
+        vim.o.shiftwidth = 4
+        vim.o.expandtab = true
+
+        -- Use file type based indentation
+        vim.cmd("filetype plugin indent on")
+
+        -- Use cindent for C/C++
+        vim.api.nvim_create_autocmd("FileType", {
+                pattern = {"c", "cpp"},
+                callback = function()
+                vim.bo.cindent = true
+                end,
+                })
+
+        -- Set cursorline
+        vim.wo.cursorline = true
+
+        -- Disable wrap of text
+        vim.wo.wrap = false
+
+        -- incremental search, tarts searching as you type, immediately jumps to the closest match to the text you've entered so far
+        vim.o.incsearch = true
+
+        -- Enable true color support in the terminal
+        vim.o.termguicolors = true
+
+        -- set the number of lines to keep above and below the cursor when scrolling through a document
+        vim.o.scrolloff = 8
+
+        -- A column that is always displayed
+        -- A plugin is used to populate it with data
+        -- E.g erros, git information
+        vim.o.signcolumn = "yes"
+
+        -- Set update time for various features like diagnostics to appear
+        vim.o.updatetime = 50
+
+        -- Creates a ruler at 80 characters width
+        vim.wo.colorcolumn = "80"
+
+        -- Enable mouse support in all modes
+        vim.o.mouse = "a"
+
+        -- ------swap/backup file disable---
+        -- As I am using undotree I don't need this file
+        vim.o.swapfile = false
+        vim.o.backup = false
+        -- ---------------------------------
+
+       -- ================================
+       -- Costum functions
+       -- ================================
+
+       -- ----------------------------------------------------------
+       -- Remove white spaces at the end of the line on buffer write
+       -- ----------------------------------------------------------
+       -- Define the Lua function to trim whitespace
+       local function trim_whitespace()
+            local save = vim.fn.winsaveview()
+            vim.api.nvim_exec('%s/\\s\\+$//e', false)
+            vim.fn.winrestview(save)
+       end
+
+       -- Set up an autocmd to call the Lua function before buffer write
+       vim.api.nvim_create_autocmd("BufWritePre", {
+               pattern = "*",
+               callback = trim_whitespace,
+       })
+
+       -- ----------------------------------------------------------
+       -- spelling and costum dictrionary use
+       -- ----------------------------------------------------------
+       -- Define the custom command for nixen spell file compilation
+       vim.api.nvim_create_user_command('MakeNixSpell', function()
+               vim.cmd('mkspell! ~/.config/nvim/spell/nixen.utf-8.spl ~/.config/nvim/spell/nixen.utf-8.add')
+       end, {})
+
+       local function compile_nix_spell_file_if_needed()
+           local spellfile = vim.fn.expand("~/.config/nvim/spell/nixen.utf-8.spl")
+           local addfile = vim.fn.expand("~/.config/nvim/spell/nixen.utf-8.add")
+
+           if not vim.fn.filereadable(addfile) then
+               return
+           end
+
+           local spell_timestamp = vim.fn.system('stat -c %Y ' .. vim.fn.shellescape(spellfile))
+           local add_timestamp = vim.fn.system('stat -c %Y ' .. vim.fn.shellescape(addfile))
+
+           if not vim.fn.filereadable(spellfile) or add_timestamp > spell_timestamp then
+               vim.cmd('silent! MakeNixSpell')
+           end
+       end
+
+       -- Autocommand to call the function at Vim start
+       vim.api.nvim_create_autocmd("VimEnter", {
+            pattern = "*",
+            callback = compile_nix_spell_file_if_needed,
+       })
+
+       -- Spell checker key mapping and autocommands
+       vim.api.nvim_set_keymap('n', '<F5>', ":setlocal spell! spellsuggest=best,5 spelllang=en_us,nixen<CR>", { noremap = true, silent = true })
+
+       vim.api.nvim_create_autocmd("FileType", {
+            pattern = "gitcommit,markdown",
+            command = "setlocal spell spellsuggest=best,5 spelllang=en_us,nixen",
+       })
+       -- ------------------------------------
+
+       -- ================================
+
+       -- ================================
+       -- Key Mappings
+       -- ================================
+       -- General options for mappings
+       local opts = { noremap = true, silent = true }
+
+      -- Drag up and down selected lines in visual line mode
+      vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", opts)
+      vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", opts)
+
+      -- Up and down the page and stay in the middle
+      vim.keymap.set('n', '<C-u>', "<C-u>zz", opts)
+      vim.keymap.set('n', '<C-d>', "<C-d>zz", opts)
+
+     -- While in search screen stays in the middle
+     vim.keymap.set('n', 'n', "nzzzv", opts)
+     vim.keymap.set('n', 'N', "Nzzzv", opts)
+
+     -- Paste over and the deleted text will go into void register
+     vim.keymap.set('x', '<leader>p', '"_dP', opts)
+
+     -- Deleting into void register
+     vim.keymap.set('n', '<leader>d', '"_d', opts)
+     vim.keymap.set('v', '<leader>d', '"_d', opts)
+
+     -- Yanking into clipboard
+     vim.keymap.set('n', '<leader>y', '"+y', opts)
+     vim.keymap.set('v', '<leader>y', '"+y', opts)
+     vim.keymap.set('n', '<leader>Y', '"+Y', opts)
+
+     -- Column mode edit exit
+     vim.keymap.set('i', '<C-c>', '<Esc>', opts)
+
+     -- Replace the word you are on
+     vim.keymap.set('n', '<leader>s', ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts)
+
+     -- Make file executable
+     vim.keymap.set('n', '<leader>x', "<cmd>!chmod +x %<CR>", opts)
+
+     -- NvimTree toggle
+     vim.keymap.set('n', '<leader>.', ":NvimTreeToggle<Cr>", opts)
+
+
+     -- Save current buffer
+     vim.keymap.set('n', '<C-s>', ":w<CR>", opts)
+     vim.keymap.set('i', '<C-s>', "<Esc>:w<CR>", opts)
+
+     -- Save and exit file
+     vim.keymap.set('n', '<C-x>', ":wq<CR>", opts)
+     vim.keymap.set('i', '<C-x>', "<Esc>:wq<CR>", opts)
+
+     -- Generate ctags
+     vim.keymap.set('n', '<leader>gt', ":!ctags -R --exclude=.git<Cr><Cr>", opts)
+
+     -- Bookmarks (Add your bookmark functions in a similar way)
+
+     -- Buffer control
+     vim.keymap.set('n', '<leader>bn', ":bn<Cr>", opts)
+     vim.keymap.set('n', '<leader>bp', ":bp<Cr>", opts)
+     vim.keymap.set('n', '<leader>bd', ":bd<Cr>", opts)
+     vim.keymap.set('n', '<leader>bs', "<C-w>s", opts)
+     vim.keymap.set('n', '<leader>bv', "<C-w>v", opts)
+
+     -- Tagbar toggle
+     vim.keymap.set('n', '<F8>', ":TagbarToggle<CR>", opts)
+
+     -- Trouble toggle
+     vim.keymap.set('n', '<leader>xd', ":TroubleToggle<CR>", opts)
+
+     -- Disable arrow keys
+     vim.keymap.set('n', '<Up>', "<Nop>", opts)
+     vim.keymap.set('n', '<Down>', "<Nop>", opts)
+     vim.keymap.set('n', '<Left>', "<Nop>", opts)
+     vim.keymap.set('n', '<Right>', "<Nop>", opts)
+
+     -- Show current buffer absolute path and copy it
+     vim.keymap.set('n', '<F6>', function() vim.fn.setreg('+', vim.fn.expand('%:p')) print(vim.fn.getreg('+')) end, opts)
+
+     -- Apply clang-format
+     vim.keymap.set('n', '<leader>cf', ":%!clang-format<CR>", opts)
+
+     -- Jump to the next misspelled word and activate fix mode
+     vim.keymap.set('n', ']s', ']sz=', opts)
+
+     -- Jump to the previous misspelled word and activate fix mode
+     vim.keymap.set('n', '[s', '[sz=', opts)
+
+    '';
+
+    # this is generated into vim script and called at the top of init.lua
     extraConfig = ''
-      " path for treesitter"
-      " -------------------"
-      lua << EOF
-      local parser_install_dir = vim.fn.stdpath("cache") .. "~/treesitters"
-      vim.fn.mkdir(parser_install_dir, "p")
-      vim.opt.runtimepath:append("~/.config/nvim/treesitters")
-      EOF
-
-      " Editor setup"
-      " ============"
-      let mapleader = " "
-
-      "No timeout for leader key"
-      set notimeout nottimeout
+      cmap w!! w !sudo tee > /dev/null %
 
 
-      colorscheme codedark
-
-      "line numbers and relative lines"
-      set number
-      set relativenumber
-
-      "Indentation settings of 4 spaces"
-      set tabstop=4
-      set softtabstop=4
-      set shiftwidth=4
-      set expandtab
-
-      " Use file type based indentation
-      filetype plugin indent on
-
-      " Use cindent for C/C++
-      autocmd FileType c,cc,cpp setlocal cindent
-
-      :set cursorline
-
-      " Disable wrap of text"
-      " --------------------"
-      set nowrap
-
-      "--------------------------"
-      "Setting up backup of files"
-      "--------------------------"
-      set noswapfile
-      set nobackup
-      " Let's save undo info!
-      if !isdirectory($HOME."/.vim")
-          call mkdir($HOME."/.vim", "", 0770)
-      endif
-      if !isdirectory($HOME."/.vim/undo-dir")
-          call mkdir($HOME."/.vim/undo-dir", "", 0700)
-      endif
-
-      set undodir=~/.vim/undo-dir
-      set undofile
-      "---------------------------"
-
-      "Search related"
-      set incsearch
-
-      "set better colorscheme"
-      set termguicolors
-
-      "Scroll"
-      set scrolloff=8
-
-      "A column that is always displayed"
-      "A plugin is used to populate it with data"
-      " E.g erros, git information"
-      set signcolumn=yes
-
-      set updatetime=50
-
-      "Creates a ruler with 80 character wide"
-      set colorcolumn =80
-
-      set mouse=a
-
-      "----------------------------------------------------------"
-      "Remove white spaces at the end of the line on buffer write"
-      "----------------------------------------------------------"
-      fun! TrimWhitespace()
-          let l:save = winsaveview()
-          keeppatterns %s/\s\+$//e
-          call winrestview(l:save)
-      endfun
-      autocmd BufWritePre * call TrimWhitespace()
-      "----------------------------------------------------------"
-
-      "----------------------------------------------------------"
-      " Define the custom command for nixen spell file compilation
-      " This is user defined .nix English dictionary."
-      " This command is executed at the starting of vim."
-      "----------------------------------------------------------"
-      command! MakeNixSpell mkspell! ~/.config/nvim/spell/nixen.utf-8.spl ~/.config/nvim/spell/nixen.utf-8.add
-
-      function! CompileNixSpellFileIfNeeded()
-        let spellfile = expand("~/.config/nvim/spell/nixen.utf-8.spl")
-        let addfile = expand("~/.config/nvim/spell/nixen.utf-8.add")
-
-        if !filereadable(addfile)
-            return
-        endif
-
-        let spell_timestamp = system('stat -c %Y ' . shellescape(spellfile))
-        let add_timestamp = system('stat -c %Y ' . shellescape(addfile))
-
-        if !filereadable(spellfile) || add_timestamp > spell_timestamp
-            silent! MakeNixSpell
-        endif
-
-      endfunction
-
-      autocmd VimEnter * call CompileNixSpellFileIfNeeded()
-
-      "spell checker"
-      "------------"
-      map <F5> :setlocal spell! spellsuggest=best,5 spelllang=en_us,nixen<CR>
-      "will activate spell checker automatically once trying to create a new git commit or README.md file."
-      autocmd FileType gitcommit,markdown setlocal spell spellsuggest=best,5 spelllang=en_us,nixen
-      "------------"
-
-      " Jump to the next misspelled word and activate fix mode
-      nnoremap ]s ]sz=
-
-      " Jump to the previous misspelled word and activate fix mode
-      nnoremap [s [sz=
-      " go into spelling suggestions"
-      "----------------------------------------------------------"
-
-      "========"
-      "Mappings"
-      "========"
-
-      "drag up and down selected lines in visual line mode"
-      vnoremap J :m '>+1<CR>gv=gv
-      vnoremap K :m '<-2<CR>gv=gv
-
-      "up and down the page and stay in the middle"
-      nnoremap <C-u> <C-u>zz
-      nnoremap <C-d> <C-d>zz
-
-      "while in search screen stays in the middle"
-      nnoremap n nzzzv
-      nnoremap N Nzzzv
-
-      "pase over and the deleted text will go into void regester"
-      xnoremap <leader>p "_dP
-
-      "deleting into void regester"
-      nnoremap <leader>d "_d
-      vnoremap <leader>d "_d
-
-      "yanking into clipboard"
-      nnoremap <leader>y "+y
-      vnoremap <leader>y "+y
-      nnoremap <leader>Y "+Y
-
-      "column mode edit exis"
-      inoremap <C-c> <Esc>
-
-      "replace the word you are on"
-      nnoremap <leader>s :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
-
-      "make file executalbe"
-      nnoremap <silent> <leader>x <cmd>!chmod +x %<CR>
-
-      nnoremap <leader>. :NvimTreeToggle<Cr>
-
-      "fzf"
-      nnoremap <leader>ff :Files<Cr>
-      nnoremap <leader>fs :Rg<Cr>
-      nnoremap <leader>fb :Buffers<Cr>
-      nnoremap <leader>fd :BD<Cr>
-
-      "use of Ctrl-q to save current buffer in normal and insert mode."
-      nnoremap <c-s> :w<CR>
-      inoremap <c-s> <Esc>:w<CR>
-
-      "used for saving and exiting file - useful for git commits"
-      nnoremap <c-x> :wq<CR>
-      inoremap <c-x> <Esc>:wq<CR>
-
-
-      "Generate ctags"
-      nnoremap <leader>gt :!ctags -R --exclude=.git<Cr><Cr>
-
-      "bookmarks"
-      nnoremap <leader>mm :BookmarkToggle<Cr>
-      nnoremap <leader>mi :BookmarkAnnotate<Cr>
-      nnoremap <leader>mn :BookmarkNext<Cr>
-      nnoremap <leader>mp :BookmarkPrev<Cr>
-
-      nnoremap <leader>ma :BookmarkShowAll<Cr>
-
-      nnoremap <leader>mc :BookmarkClear<Cr>
-      nnoremap <leader>mx :BookmarkClearAll<Cr>
-
-
-      "make file executalbe"
-      nnoremap <leader>fx :!chmod +x %<Cr><Cr>
-
-      "boffer control"
-      nnoremap <leader>bn :bn<Cr>
-      nnoremap <leader>bp :bp<Cr>
-      nnoremap <leader>bd :bd<Cr>
-      nnoremap <leader>bs <C-w>s
-      nnoremap <leader>bv <C-w>v
-
-      nmap<F8> :TagbarToggle<CR>
-
-
-      noremap <leader>xd :TroubleToggle<CR>
-
-      noremap <Up> <Nop>
-      noremap <Down> <Nop>
-      noremap <Left> <Nop>
-      noremap <Right> <Nop>
-
-      "Used to show current buffer absolute path and copy it into system clipboard"
-      "Assumes that xclip is installed to copy into system clipboard"
-      nnoremap <F6> :let @+=expand('%:p')<CR>:echo @+<CR>
-
-      "will applay .clang-format file for style"
-      "requirs clang-forat to be installed"
-      nnoremap <leader>cf :%!clang-format<CR>
       '';
     };
 }
