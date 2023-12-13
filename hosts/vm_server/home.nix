@@ -29,21 +29,21 @@
   programs.home-manager.enable = true;
   imports = [
     ../../meta/meta.nix
-    ../../home/modules/starship.nix
-    ../../home/modules/fzf.nix
-    ../../home/modules/neovim/neovim.nix
-    ../../home/modules/git.nix
-    ../../home/modules/zoxide.nix
-    ../../home/modules/zsh.nix
-    ../../home/modules/bash.nix
-    ../../home/modules/taskwarrior.nix
-    ../../home/scripts/tmux-sessionizer.nix
-    ../../home/scripts/cheat-sh.nix
-    ../../home/modules/nix-index.nix
-    ../../home/modules/atuin.nix
-    ../../home/modules/lazygit.nix
-    ../../home/modules/emacs.nix
-    ../../home/xdg/mime_apps.nix
+    ../../modules/home-manager/starship.nix
+    ../../modules/home-manager/fzf.nix
+    ../../modules/home-manager/neovim/neovim.nix
+    ../../modules/home-manager/git.nix
+    ../../modules/home-manager/zoxide.nix
+    ../../modules/home-manager/zsh.nix
+    ../../modules/home-manager/bash.nix
+    ../../modules/home-manager/taskwarrior.nix
+    ../../modules/home-manager/scripts/tmux-sessionizer.nix
+    ../../modules/home-manager/scripts/cheat-sh.nix
+    ../../modules/home-manager/nix-index.nix
+    ../../modules/home-manager/atuin.nix
+    ../../modules/home-manager/lazygit.nix
+    ../../modules/home-manager/emacs.nix
+    ../../modules/home-manager/xdg/mime_apps.nix
   ];
 
   home.sessionVariables = {

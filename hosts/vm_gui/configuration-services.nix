@@ -2,13 +2,13 @@
 {
 
   imports = [
-    ../../os/services/xserver.nix
-    ../../os/services/user/tmux.nix
-    ../../os/services/system/moolticuted.nix
-    ../../os/services/avahi.nix # Used for CUPS to automatically discover IPP printers
-    ../../os/services/printer.nix
-    ../../os/services/sshd.nix
-    ../../os/services/user/watchman.nix
-    ../../os/services/user/emacs.nix
+    ../../modules/nixos/services/xserver.nix
+    ../../modules/nixos/services/user/tmux.nix
+    ../../modules/nixos/services/system/moolticuted.nix
+    ../../modules/nixos/services/avahi.nix # Used for CUPS to automatically discover IPP printers
+    ../../modules/nixos/services/printer.nix
+    ../../modules/nixos/services/sshd.nix
+    ../../modules/nixos/services/user/watchman.nix
+    ../../modules/nixos/services/user/emacs.nix
   ];
 }

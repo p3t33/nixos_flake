@@ -9,33 +9,33 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
-      ../../os/fonts.nix
-      ../../os/experimental-features.nix
-      ../../os/garbage_collection.nix
-      ../../os/system_version.nix
-      ../../os/non_free_software.nix
-      ../../os/locale.nix
-      ../../os/system_packages/development.nix
-      ../../os/system_packages/cli_utilities.nix
-      ../../os/system_packages/encryption.nix
-      ../../os/system_packages/gui.nix
-      ../../os/system_packages/iac.nix
-      ../../os/sound.nix
-      ../../os/bluetooth.nix
-      ../../os/networking.nix
-      ../../os/environment_variables.nix
-      ../../os/virtualization/docker.nix
-      ../../os/virtualization/kvm.nix
-      ../../os/virtualization/virtualbox.nix
-      ../../os/users.nix
-      ../../os/gui.nix
-      ../../os/dictionaries.nix
+      ../../modules/nixos/home-manager-as-nixos-module.nix
+      ../../modules/nixos/fonts.nix
+      ../../modules/nixos/experimental-features.nix
+      ../../modules/nixos/garbage_collection.nix
+      ../../modules/nixos/system_version.nix
+      ../../modules/nixos/non_free_software.nix
+      ../../modules/nixos/locale.nix
+      ../../modules/nixos/system_packages/development.nix
+      ../../modules/nixos/system_packages/cli_utilities.nix
+      ../../modules/nixos/system_packages/encryption.nix
+      ../../modules/nixos/system_packages/gui.nix
+      ../../modules/nixos/system_packages/iac.nix
+      ../../modules/nixos/sound.nix
+      ../../modules/nixos/bluetooth.nix
+      ../../modules/nixos/networking.nix
+      ../../modules/nixos/environment_variables.nix
+      ../../modules/nixos/virtualization/docker.nix
+      ../../modules/nixos/virtualization/kvm.nix
+      ../../modules/nixos/virtualization/virtualbox.nix
+      ../../modules/nixos/users.nix
+      ../../modules/nixos/gui.nix
+      ../../modules/nixos/dictionaries.nix
       ../../meta/meta.nix
-      ../../os/security/nitrokey.nix
-      ../../os/services/adb.nix
-      ../../os/security/sops.nix
-      ../../os/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
-      ../../home/home-manager-configuration.nix
+      ../../modules/nixos/security/nitrokey.nix
+      ../../modules/nixos/services/adb.nix
+      ../../modules/nixos/security/sops.nix
+      ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
     ];
 
 
