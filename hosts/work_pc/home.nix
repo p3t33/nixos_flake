@@ -64,6 +64,7 @@
     ../../modules/home-manager/xdg/mime_apps.nix
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/services/dnust.nix
+    ../../modules/home-manager/bat.nix
   ];
 
   # Variables that will be set "system wide" in the context of the user.
