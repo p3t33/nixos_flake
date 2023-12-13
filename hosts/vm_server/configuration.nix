@@ -9,23 +9,23 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
-      ../../os/fonts.nix
-      ../../os/experimental-features.nix
-      ../../os/garbage_collection.nix
-      ../../os/system_version.nix
-      ../../os/non_free_software.nix
-      ../../os/locale.nix
-      ../../os/system_packages/development.nix
-      ../../os/system_packages/cli_utilities.nix
-      ../../os/system_packages/encryption.nix
-      ../../os/environment_variables.nix
-      ../../os/virtualization/docker.nix
-      ../../os/networking.nix
+      ../../modules/nixos/home-manager-as-nixos-module.nix
+      ../../modules/nixos/fonts.nix
+      ../../modules/nixos/experimental-features.nix
+      ../../modules/nixos/garbage_collection.nix
+      ../../modules/nixos/system_version.nix
+      ../../modules/nixos/non_free_software.nix
+      ../../modules/nixos/locale.nix
+      ../../modules/nixos/system_packages/development.nix
+      ../../modules/nixos/system_packages/cli_utilities.nix
+      ../../modules/nixos/system_packages/encryption.nix
+      ../../modules/nixos/environment_variables.nix
+      ../../modules/nixos/virtualization/docker.nix
+      ../../modules/nixos/networking.nix
       ../../meta/meta.nix
-      ../../os/users.nix
-      ../../os/dictionaries.nix
-      ../../os/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
-      ../../home/home-manager-configuration.nix
+      ../../modules/nixos/users.nix
+      ../../modules/nixos/dictionaries.nix
+      ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
     ];
 
   # Bootloader.

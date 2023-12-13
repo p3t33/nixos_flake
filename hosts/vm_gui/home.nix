@@ -28,38 +28,38 @@
   programs.home-manager.enable = true;
   imports = [
     ../../meta/meta.nix
-    ../../home/modules/starship.nix
-    ../../home/modules/fzf.nix
-    ../../home/modules/neovim/neovim.nix
-    ../../home/modules/git.nix
-    ../../home/modules/zoxide.nix
-    ../../home/modules/zsh.nix
-    ../../home/modules/bash.nix
-    ../../home/modules/tmux.nix
-    ../../home/modules/sxhkd.nix
-    ../../home/modules/syncthing.nix
-    ../../home/modules/i3status.nix
-    ../../home/modules/alacritty.nix
-    ../../home/modules/picom.nix
-    ../../home/modules/i3.nix
-    ../../home/modules/rofi.nix
-    ../../home/modules/gpg.nix
-    ../../home/modules/ssh/work/ssh.nix
-    ../../home/modules/polybar.nix
-    ../../home/scripts/rofi-firefox-bookmarks.nix
-    ../../home/scripts/tmux-sessionizer.nix
-    ../../home/scripts/cheat-sh.nix
-    ../../home/modules/taskwarrior.nix
-    ../../home/modules/wallpaper.nix
-    ../../home/modules/nix-index.nix
-    ../../home/modules/atuin.nix
-    ../../home/modules/lazygit.nix
-    ../../home/modules/clipmenu.nix
-    ../../home/modules/emacs.nix
-    ../../home/xdg/mime_apps.nix
-    ../../home/modules/gtk.nix
-    ../../home/services/dnust.nix
-    ../../home/modules/firefox.nix
+    ../../modules/home-manager/starship.nix
+    ../../modules/home-manager/fzf.nix
+    ../../modules/home-manager/neovim/neovim.nix
+    ../../modules/home-manager/git.nix
+    ../../modules/home-manager/zoxide.nix
+    ../../modules/home-manager/zsh.nix
+    ../../modules/home-manager/bash.nix
+    ../../modules/home-manager/tmux.nix
+    ../../modules/home-manager/sxhkd.nix
+    ../../modules/home-manager/syncthing.nix
+    ../../modules/home-manager/i3status.nix
+    ../../modules/home-manager/alacritty.nix
+    ../../modules/home-manager/picom.nix
+    ../../modules/home-manager/i3.nix
+    ../../modules/home-manager/rofi.nix
+    ../../modules/home-manager/gpg.nix
+    ../../modules/home-manager/ssh/work/ssh.nix
+    ../../modules/home-manager/polybar.nix
+    ../../modules/home-manager/scripts/rofi-firefox-bookmarks.nix
+    ../../modules/home-manager/scripts/tmux-sessionizer.nix
+    ../../modules/home-manager/scripts/cheat-sh.nix
+    ../../modules/home-manager/taskwarrior.nix
+    ../../modules/home-manager/wallpaper.nix
+    ../../modules/home-manager/nix-index.nix
+    ../../modules/home-manager/atuin.nix
+    ../../modules/home-manager/lazygit.nix
+    ../../modules/home-manager/clipmenu.nix
+    ../../modules/home-manager/emacs.nix
+    ../../modules/home-manager/xdg/mime_apps.nix
+    ../../modules/home-manager/gtk.nix
+    ../../modules/home-manager/services/dnust.nix
+    ../../modules/home-manager/firefox.nix
   ];
 
     home.sessionVariables = {

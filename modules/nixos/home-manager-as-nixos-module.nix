@@ -1,3 +1,5 @@
+# This file can only be included if home-manger is imported to nixos
+# as flake input.
 { inputs, config, ... }:
 {
     home-manager = {

@@ -2,11 +2,11 @@
 {
 
   imports = [
-    ../../os/services/sshd.nix
-    ../../os/services/user/tmux.nix
-    ../../os/services/system/moolticuted.nix
-    ../../os/services/user/watchman.nix
-    ../../os/services/user/emacs.nix
+    ../../modules/nixos/services/sshd.nix
+    ../../modules/nixos/services/user/tmux.nix
+    ../../modules/nixos/services/system/moolticuted.nix
+    ../../modules/nixos/services/user/watchman.nix
+    ../../modules/nixos/services/user/emacs.nix
   ];
 
 }
