@@ -1,8 +1,13 @@
-
 keys:
   - &work_pc age1960hm9pdxgckwey2t0ch8uzjd6v8jf07nuv84karpap4g3kqm3kqnqavew
+  - &home_desktop age1203qrs9tl0nuc94jq3pvk38n6cmuu947a489jf7y6n3xfwq3mqhq2rcajv
 creation_rules:
   - path_regex: hosts/work_pc/secrets.yaml$
     key_groups:
     - age:
       - *work_pc
+  - path_regex: hosts/home_desktop/secrets.yaml$
+    key_groups:
+    - age:
+      - *home_desktop
+
