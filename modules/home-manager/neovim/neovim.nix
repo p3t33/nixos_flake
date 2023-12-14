@@ -114,6 +114,16 @@
           config = ''
             let g:bookmark_save_per_working_dir = 1
             let g:bookmark_no_default_key_mappings = 1
+
+            "I need to define leader key here because the order in which "
+            "nix generates the config"
+            let mapleader = " "
+            nnoremap <leader>mm :BookmarkToggle<CR>
+            nnoremap <leader>mi :BookmarkAnnotate<CR>
+            nnoremap <leader>ma :BookmarkShowAll<CR>
+            nnoremap <leader>md :BookmarkClearAll<CR>
+            nnoremap <leader>mn :BookmarkNext<CR>
+            nnoremap <leader>mp :BookmarkPrev<CR>
           '';
       }
 
