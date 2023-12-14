@@ -4,6 +4,7 @@
         ../../modules/nixos/security/sops/sops-common.nix
         ../../modules/nixos/security/sops/sops-syncthing.nix
         ../../modules/nixos/security/sops/sops-extra-ssh-hosts.nix
+        ../../modules/nixos/security/sops/sops-git-credentials.nix
     ];
 
     sops.secrets.ssh_id_ed25519_vm_key = {

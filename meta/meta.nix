@@ -38,11 +38,6 @@
       description = "used to define host hostname";
     };
 
-    email = mkOption {
-        type = str;
-        default = "kobi.medrish@gmail.com";
-    };
-
     username = mkOption {
         type = str;
         default = "kmedrish";
@@ -56,11 +51,6 @@
     manPager = mkOption {
         type = str;
         default = "nvim +Man!";
-    };
-
-    gitUser = mkOption {
-        type =  str;
-        default = "Kobi Medrish";
     };
 
     hostTag = mkOption {
@@ -202,7 +192,6 @@
 
   config = lib.mkMerge [
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "HP-Zbook"){
-          userDefinedGlobalVariables.email = "kobi.medrish@motorolasolutions.com";
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "work_pc";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
