@@ -102,6 +102,12 @@
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
     };
 
+    NixOSSecretsPath = mkOption {
+        default = ../hosts/${config.userDefinedGlobalVariables.hostTag}/secrets.yaml;
+        type = path;
+        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+    };
+
 
     font = mkOption {
         type = attrsOf str;
