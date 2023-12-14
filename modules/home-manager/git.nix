@@ -14,8 +14,14 @@
       };
     };
 
-    userName = config.userDefinedGlobalVariables.gitUser;
-    userEmail = config.userDefinedGlobalVariables.email;
+    # User and email defined in this file that is generated using sops
+    # For some reason git config --global user.[name/email] shows empty but
+    # executing git config user.[name/email] inside of a repo works just fine.
+    extraConfig = {
+    include = {
+      path = "${config.userDefinedGlobalVariables.homeDirectory}/.config/git/credentials";
+    };
+  };
 
     aliases = {
         cp = "cherry-pick";
