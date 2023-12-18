@@ -44,7 +44,7 @@
     ../../modules/home-manager/i3.nix
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/gpg.nix
-    ../../modules/home-manager/ssh/work/ssh.nix
+    ../../modules/home-manager/ssh.nix
     ../../modules/home-manager/polybar.nix
     ../../modules/home-manager/scripts/rofi-firefox-bookmarks.nix
     ../../modules/home-manager/scripts/tmux-sessionizer.nix
