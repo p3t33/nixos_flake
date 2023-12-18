@@ -46,6 +46,7 @@
     ../../modules/home-manager/syncthing.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/bat.nix
+    ../../modules/home-manager/ssh.nix
   ];
 
   home.sessionVariables = {
