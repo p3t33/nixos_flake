@@ -217,6 +217,12 @@
           userDefinedGlobalVariables.initialPassword = "q";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
+     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "homelab"){
+          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.hostTag = "homelab";
+          userDefinedGlobalVariables.initialPassword = "q";
+          userDefinedGlobalVariables.systemStateVersion = "23.11";
+      })
    ];
 }
 
