@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ./sops-configuration.nix
       ./disko-config.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../modules/nixos/fonts.nix
