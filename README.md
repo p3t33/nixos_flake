@@ -1,4 +1,4 @@
-Personal [NixOs] configurations defined with [Home Manager] in a flake.
+Personal [NixOS] configurations defined with [Home Manager] in a flake.
 This repo is a work in progress, containing configuration files for my
 various machines.
 
@@ -18,9 +18,11 @@ dot files to the possible extent.
   all reusing configuration.
 - Stand alone home-manger configuration to be used on top of a
   generic Linux host such as Ubuntu.
-- Secrets deployment using sops-nix.
+- Secrets deployment using [sops-nix].
 - Extensively configured xorg and terminal environment.
 - Configuration for KVM, VirtualBox, and docker.
+- Integration of [disko] to partition hard drives during NixOS installing
+  and to create /etc/fstab.
 
 ## Daily driver software
 - **Desktop**: xorg with i3 and polybar.
@@ -57,7 +59,12 @@ then be including by the various hosts to achieve code reuse.
 - **wallpaper**: self explanatory :)
 
 # ToDo
-- [ ] Generic way to mount hard drives that is not based on UUID but on labels instead.
+- [ ] Look into streamlining installation process of NixOS on a new host.
+  - [x] ~~Use [disko] to partition hard drives during installation.~~
+  - [ ] Create a bootstrap script for installing NixOS.
+- [ ] Replace default way to mount hard drives with a generic one in the form of [disko].
+  - [x] ~~Integrate disko into the next host to be created.~~
+  - [ ] Update all hosts to use disko.
 - [x] ~~tmux save and restore sessions(using resurrect and continuum) not working.~~
   - [x] ~~Make tmux start as a systemd service after reboot in server mode.~~
   - [x] ~~Make tmux to restore saved sessions after reboot automatically.~~
@@ -75,13 +82,13 @@ then be including by the various hosts to achieve code reuse.
         with ssh-agent. This is a very low priority.
 - [x] ~~Move more variables into the meta.nix~~
 - [x] ~~Eliminate the error that is caused by terminal command not found.~~
-- [ ] Solve secret management
+- [ ] Add secret management
   - [x] ~~Integrate sops-nix into as nixos and home-manger module.~~
-  - [ ] Hide sensitive data such as email and IP address from configuration files
+  - [x] Hide sensitive data such as email and IP address from configuration files
     using sops.template.
   - [ ] Define user passwords as sops secrets.
   - [ ] Use sops for private keys storage.
-  - [ ] Use sops for syncthing.
+  - [x] Use sops for syncthing.
 
 - [ ] Using standalone home-manger bring generic_linux_distro host which is
       intended for Ubuntu to be as close as possible to other hosts.
@@ -93,3 +100,5 @@ then be including by the various hosts to achieve code reuse.
 [NixOS]: <https://nixos.org>
 [Home Manager]: <https://github.com/nix-community/home-manager/>
 [my Adv360-Pro-ZMK repo]: <https://github.com/p3t33/Adv360-Pro-ZMK/tree/V3.0/>
+[disko]: <https://github.com/nix-community/disko>
+[sops-nix]: <https://github.com/Mic92/sops-nix>
