@@ -16,7 +16,7 @@ let
 
 in
 {
-  # uncomment if you would like to use the i3status bar
+  # un-comment if you would like to use the i3status bar
   #imports = [./i3/bars.nix];
 
   xsession.windowManager.i3 = {
@@ -28,14 +28,14 @@ in
 
       fonts = {
         names = [ config.userDefinedGlobalVariables.font.sansSerif ];
-        # There is also an optin to set style for the font
+        # There is also an option to set style for the font
         # style = "Bold Italic";
         size = 20.0;
       };
 
       # using polybar so this isn't required.
-      # if the imports varible is commented in then the bars = [] needs
-      # to be commented out or there will be conflicts. and nixos will
+      # if the imports variable is commented in then the bars = [] needs
+      # to be commented out or there will be conflicts. And nixos will
       # fail to build.
       bars = [];
 
@@ -181,7 +181,7 @@ in
         # reload the configuration file
         "${mod}+Shift+r" = "reload";
 
-        ## restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+        ## restart i3 in place (preserves your layout/session, can be used to upgrade i3)
         "${mod}+q" = "restart";
 
         # exit i3 (logs you out of your X session)
@@ -222,11 +222,11 @@ in
       # i3wm like other tiling window managers defines where and how bars are
       # set(position, font...). i3wm has a builtin status bar called i3bar.
       #
-      # i3wm isn't responsible for what informtion is displayed inside the bar
+      # i3wm isn't responsible for what information is displayed inside the bar
       # that is defined at the status bar level(E.g i3status). i3bar might be
       # an exception to the rule.
       #
-      # nixOS specifics:
+      # NixOS specifics:
       #
       # If a standalone bar such as i3status has home-manger configuration and
       # it is enabled but no bars option is set for it, it will be present

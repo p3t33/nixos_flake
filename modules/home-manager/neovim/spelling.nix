@@ -20,6 +20,13 @@
         zsh
         VirtualBox
         KVM
+        rsync
+        gpg
+        autosave
+        lua
+        syncthing
+        autostart
+        sxhkd
     '';
    };
 

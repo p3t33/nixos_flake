@@ -17,19 +17,19 @@ programs.starship = {
         #
         # Creating elements that blend
         # ----------------------------
-        # The idia is to set a backgroung for an element
+        # The idea is to set a background for an element
         # then use the triangle which will have the foreground of the
-        # previus elemnt and the background of the following elment.
-        # and put the triangle as an elemnt in the order, for example
+        # previous element and the background of the following element.
+        # and put the triangle as an element in the order, for example
         # "directory"
         # "[](fg:#3B76F0 bg:#FCF392)"
         # "git_branch"
         # with directory background being #3B76F0 and the git_branch background
         # being #FCF392
         #
-        # Another cool trick is to creat rounded corners using the same principle
-        # for example: "[](bg:#030B16 fg:#7DF9AA)" that you put in the begining of the
-        # format order here is a commentedf out more detalied example:
+        # Another cool trick is to create rounded corners using the same principle
+        # for example: "[](bg:#030B16 fg:#7DF9AA)" that you put in the beginning of the
+        # format order here is a commented out more detailed example:
         # format = lib.concatStrings [
         #    "[](bg:#030B16 fg:#7DF9AA)"
         #    "$directory"
@@ -60,7 +60,7 @@ programs.starship = {
             "$character"
         ];
 
-        # Only used when setting a single left side prompt, otherwise fill moudle
+        # Only used when setting a single left side prompt, otherwise fill module
         # should be used.
         #
         # Order of right side modules of the prompt

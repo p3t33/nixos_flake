@@ -12,18 +12,18 @@ in
   services.gpg-agent = {
     enableSshSupport = true;
 
-    # maxCacheTtl* is the overall cache timeout, 
-    # it overides any other. By default it is set 
-    # to 2 hours.  Which means that even if 
-    # defaultCacheTtlSsh is set for more then 2 hours 
-    # it will be ignored by the 
+    # maxCacheTtl* is the overall cache timeout,
+    # it overrides any other. By default it is set
+    # to 2 hours. Which means that even if
+    # defaultCacheTtlSsh is set for more then 2 hours
+    # it will be ignored by the
     # value in maxCachedTtl*
     maxCacheTtl = timeout;
     maxCacheTtlSsh = timeout;
 
     # default values
     # --------------
-    # Each time a  cache  entry  is  accessed,  the 
+    # Each time a  cache  entry  is  accessed,  the
     # entry's timer is rest to the default set value.
     # this reset will go as long as the overall time
     # for the cache doesn't exceed the max cache time.
