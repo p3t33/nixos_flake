@@ -30,6 +30,7 @@
   imports = [
     ../../meta/meta.nix
     ../../modules/home-manager/starship.nix
+    ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/fzf.nix
     ../../modules/home-manager/neovim/neovim.nix
     ../../modules/home-manager/git.nix
@@ -42,8 +43,10 @@
     ../../modules/home-manager/nix-index.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/lazygit.nix
-    ../../modules/home-manager/emacs.nix
-    ../../modules/home-manager/xdg/mime_apps.nix
+    ../../modules/home-manager/syncthing.nix
+    ../../modules/home-manager/gpg.nix
+    ../../modules/home-manager/bat.nix
+    ../../modules/home-manager/ssh.nix
   ];
 
   home.sessionVariables = {
