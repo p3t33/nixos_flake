@@ -77,21 +77,21 @@
           # vim-tmux-navigator plugin has a dual function(although name implies only
           # vim integration )
           #
-          # This plugin adds smart movments between vim windows and tmux panes, By using
+          # This plugin adds smart movements between vim windows and tmux panes, By using
           # Ctrl+h/j/k/l you will be able to move across tmux pane into pane with
           # vim inside it and then move inside the vim windows and back seamlessly
           # For this integration to work counterpart plugin needs to be added to tmux.
           #
-          # If the conterpart isn't installed the only functionality that will be added
-          # is the aability to move between windows using Ctr+h/j/k/l in vim.
+          # If the counterpart isn't installed the only functionality that will be added
+          # is the ability to move between windows using Ctr+h/j/k/l in vim.
           plugin = vim-tmux-navigator;
       }
 
       {
           # A tree file explore.
 
-          # Without the require'nvim-tree'.setup {} this plugin doesn't work
-          # the commands won't be recognised.
+          # Without the require 'nvim-tree'.setup {} this plugin doesn't work
+          # the commands won't be recognized.
           plugin = nvim-tree-lua;
           type = "lua";
           config = ''
@@ -104,7 +104,7 @@
       # using startify
       vim-obsession
 
-      # This is a dependencie for many other plugins and could be considered as
+      # This is a dependence for many other plugins and could be considered as
       # a "library"
       plenary-nvim
 
@@ -285,7 +285,7 @@
         '';
       }
 
-      # Dependeed on nvim-treesitter
+      # Depended on nvim-treesitter
       # and provides syntax aware text-objects, select, move, swap, and peek support.
       nvim-treesitter-textobjects
 

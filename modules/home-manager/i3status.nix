@@ -3,7 +3,7 @@
 
   programs.i3status = {
     enable = true;
-    # Enables display of defult data
+    # Enables display of default data
     # can work along with set modules
     enableDefault = false;
 
@@ -15,7 +15,7 @@
     # so for example "volume master" is a "name"
     #
     # by default each "name" that is defined is
-    # enabled implicitly. 
+    # enabled implicitly.
     # programs.i3status.modules.<name>.enable
     modules = {
       "volume master" = {
@@ -26,7 +26,7 @@
          device = "default";
          };
       };
-      
+
       "disk /" = {
         position = 2;
         settings = {

@@ -87,7 +87,7 @@
           '';
       }
 
-      # creats indednt lines
+      # creates indent lines
       {
           plugin = indent-blankline-nvim;
           type = "lua";

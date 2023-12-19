@@ -4,7 +4,7 @@
     # =======================
     {
         # This plugin is the base for all of the LSP functionality.
-        # It can work just fine wihtout nvim-cmp but not the
+        # It can work just fine without nvim-cmp but not the
         # other way around. But if nvim-cmp isn't installed and
         # set the amount of default information will be very
         # minimal.
@@ -67,7 +67,7 @@
       # -----------------------------------
       # This plugin is responsible for code completion,
       # code snippets(for function), and errors with explanations.
-      # This pluging depends on nvim-lspconfig plugin to have minimal
+      # This plugin is depended on nvim-lspconfig plugin to have minimal
       # functionality. It needs bunch of other plugins(added right below)
       # to function properly.
       {
