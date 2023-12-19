@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ./disko-config.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
@@ -31,7 +32,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # IMPORTANT: hostname must be defined!
   # All of the global variables are defined based on the value set for it. Many
