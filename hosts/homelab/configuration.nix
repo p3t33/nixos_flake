@@ -40,6 +40,13 @@
   # default values which may cause all kind of issues.
   userDefinedGlobalVariables.hostname = "homelab";
   networking.hostName = config.userDefinedGlobalVariables.hostname;
+  networking.interfaces.eno1.ipv4.addresses = [ {
+      address = "10.100.102.73";
+      prefixLength = 24;
+} ];
+
+  networking.defaultGateway = "10.100.102.1";
+  networking.nameservers = [ "8.8.8.8" ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
