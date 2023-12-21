@@ -30,6 +30,11 @@
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
     ];
 
+  systemd.tmpfiles.rules = [
+      "d /mnt/data 0755 kmedrish kmedrish -"
+      "d /mnt/media 0755 kmedrish media -"
+  ];
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
