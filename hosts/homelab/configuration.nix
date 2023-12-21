@@ -76,9 +76,6 @@
     ];
   };
 
-  # Enable automatic login for the user.
-  services.getty.autologinUser = config.userDefinedGlobalVariables.username;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
