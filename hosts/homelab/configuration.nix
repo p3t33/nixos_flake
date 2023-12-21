@@ -11,6 +11,7 @@
       ./configuration-services.nix
       ./sops-configuration.nix
       ./disko-config.nix
+      ./disko-config-extra-hard-dirves.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
