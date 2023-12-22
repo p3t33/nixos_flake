@@ -43,7 +43,6 @@
     ../../modules/home-manager/nix-index.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/lazygit.nix
-    ../../modules/home-manager/syncthing.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/bat.nix
     ../../modules/home-manager/ssh.nix

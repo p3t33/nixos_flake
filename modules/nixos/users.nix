@@ -19,4 +19,8 @@
   users.groups.media = {
     members = [ config.userDefinedGlobalVariables.username ];
   };
+
+  users.groups.data = {
+    members = [ config.userDefinedGlobalVariables.username ];
+  };
 }

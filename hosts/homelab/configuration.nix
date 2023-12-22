@@ -33,8 +33,8 @@
     ];
 
   systemd.tmpfiles.rules = [
-      "d /mnt/data 0755 kmedrish kmedrish -"
-      "d /mnt/media 0755 kmedrish media -"
+      "d /mnt/data 0770 kmedrish data -"
+      "d /mnt/media 0770 kmedrish media -"
   ];
 
   # Bootloader.
