@@ -8,6 +8,7 @@
     ../../modules/nixos/services/user/watchman.nix
     ../../modules/nixos/services/user/torrent/qbittorrent-nox.nix # not enabled
     ../../modules/nixos/services/user/torrent/deluge.nix
+    ../../modules/nixos/services/syncthing.nix
   ];
 
 }
