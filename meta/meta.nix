@@ -63,6 +63,15 @@
         default = "/home/${config.userDefinedGlobalVariables.username}";
     };
 
+    syncthingConfigDirectory = mkOption {
+        type = str;
+        default = "${config.userDefinedGlobalVariables.homeDirectory}/.config/syncthing";
+    };
+    syncthingUser = mkOption {
+        type = str;
+        default = "${config.userDefinedGlobalVariables.username}";
+    };
+
     initialPassword = mkOption {
         type = str;
         default = "changeme";
@@ -217,6 +226,13 @@
           userDefinedGlobalVariables.initialPassword = "q";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
+     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "homelab"){
+          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.hostTag = "homelab";
+          userDefinedGlobalVariables.initialPassword = "q";
+          userDefinedGlobalVariables.systemStateVersion = "23.11";
+          userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
+          userDefinedGlobalVariables.syncthingUser = "syncthing";
+      })
    ];
 }
-

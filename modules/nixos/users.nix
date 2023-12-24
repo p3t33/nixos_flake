@@ -11,4 +11,16 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
+
+  users.groups.${config.userDefinedGlobalVariables.username} = {
+    members = [ config.userDefinedGlobalVariables.username ];
+  };
+
+  users.groups.media = {
+    members = [ config.userDefinedGlobalVariables.username ];
+  };
+
+  users.groups.data = {
+    members = [ config.userDefinedGlobalVariables.username ];
+  };
 }

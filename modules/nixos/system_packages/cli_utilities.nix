@@ -29,6 +29,10 @@
       du-dust
       duf
 
+    # disk utils
+      gptfdisk
+      ntfs3g
+
     # general
       sshfs
       sshpass
