@@ -9,7 +9,9 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ./sops-configuration.nix
       ./disko-config.nix
+      ./disko-config-extra-hard-dirves.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
@@ -27,7 +29,13 @@
       ../../modules/nixos/users.nix
       ../../modules/nixos/dictionaries.nix
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
+      ../../modules/nixos/services/jellyfin.nix
     ];
+
+  systemd.tmpfiles.rules = [
+      "d /mnt/data 0770 kmedrish data -"
+      "d /mnt/media 0770 kmedrish media -"
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -37,8 +45,15 @@
   # All of the global variables are defined based on the value set for it. Many
   # files use them and by not setting the hostname they will be using thier
   # default values which may cause all kind of issues.
-  userDefinedGlobalVariables.hostname = "kvm-nixos-server";
+  userDefinedGlobalVariables.hostname = "homelab";
   networking.hostName = config.userDefinedGlobalVariables.hostname;
+  networking.interfaces.eno1.ipv4.addresses = [ {
+      address = "10.100.102.73";
+      prefixLength = 24;
+} ];
+
+  networking.defaultGateway = "10.100.102.1";
+  networking.nameservers = [ "8.8.8.8" ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -58,11 +73,9 @@
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
+     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA0IIPAhZlBjAdMQcS+kVUDN8snx8EHP03+nTLRgzA3m personal use"
     ];
   };
-
-  # Enable automatic login for the user.
-  services.getty.autologinUser = config.userDefinedGlobalVariables.username;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

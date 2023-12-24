@@ -7,7 +7,7 @@
   # files use them and by not setting the hostname they will be using thier
   # default values which may cause all kind of issues.
   userDefinedGlobalVariables = {
-      hostname = "kvm-nixos-server";
+      hostname = "homelab";
   };
 
   # Home Manager needs a bit of information about you and the
@@ -43,7 +43,6 @@
     ../../modules/home-manager/nix-index.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/lazygit.nix
-    ../../modules/home-manager/syncthing.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/bat.nix
     ../../modules/home-manager/ssh.nix
