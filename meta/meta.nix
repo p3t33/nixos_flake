@@ -27,7 +27,7 @@
     };
 
     flakeRepositoryUrl = mkOption {
-      default = "git@github.com:p3t33/nixos_flake.git";
+      default = "https://github.com/p3t33/nixos_flake.git";
       type = str;
       description = "used to define host hostname";
     };
