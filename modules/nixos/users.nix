@@ -6,7 +6,9 @@
   users.defaultUserShell = pkgs.zsh;
   users.users.${config.userDefinedGlobalVariables.username} = {
     isNormalUser = true;
-    initialPassword = config.userDefinedGlobalVariables.initialPassword;
+    # The hash, as a string or as a file need to be sutiable for suitable for the chpasswd -e command
+    # which means that at least at the moment argon2 will not work for now.
+    initialHashedPassword = config.userDefinedGlobalVariables.initialHashedPassword;
     description = config.userDefinedGlobalVariables.username;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];

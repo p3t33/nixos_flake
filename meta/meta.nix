@@ -72,9 +72,9 @@
         default = "${config.userDefinedGlobalVariables.username}";
     };
 
-    initialPassword = mkOption {
+    initialHashedPassword = mkOption {
         type = str;
-        default = "changeme";
+        default = "6$1R0D6ghbKpPOPY6I$UoGLPJbvOvE4ZEPs/Qq/JG9WLMUU9H8lTgIEi4vIwV1fdNfgdX1uYOZNGWYQmlDo84vUmEILEqc.BaRzvYXyB1";
     };
 
     wallpaperName = mkOption {
@@ -216,20 +216,19 @@
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-gui"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "vm_gui";
-          userDefinedGlobalVariables.initialPassword = "q";
+          userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-server"){
           userDefinedGlobalVariables.username = "drone";
           userDefinedGlobalVariables.hostTag = "vm_server";
-          userDefinedGlobalVariables.initialPassword = "q";
+          userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
      (lib.mkIf (config.userDefinedGlobalVariables.hostname == "homelab"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "homelab";
-          userDefinedGlobalVariables.initialPassword = "q";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
           userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
           userDefinedGlobalVariables.syncthingUser = "syncthing";
