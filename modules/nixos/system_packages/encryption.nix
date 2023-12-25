@@ -17,6 +17,9 @@
       age
       ssh-to-age
 
+      # argon2 support
+      libargon2
+
       # FIDO/FIDO(U2F) libraries
       libfido2 # webauto
       pam_u2f #linux(sudo, display manager, console login...)
