@@ -1,5 +1,6 @@
 { pkgs, ... }:
 let
+  resurrectDirPath = "~/.config/tmux/resurrect";
   tmux-nerd-font-window-name = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-nerd-font-window-name.tmux";
     version = "unstable-2023-08-22";
@@ -76,9 +77,8 @@ programs.tmux = {
           # tmux_resurrect_* files can't be parsed and restored. This addition
           # makes sure to fix the tmux_resurrect_* files so they can be parsed by
           # the tmux-resurrect plugin and successfully restored.
-          resurrect_dir="$HOME/.tmux/resurrect"
-          set -g @resurrect-dir $resurrect_dir
-          set -g @resurrect-hook-post-save-all 'target=$(readlink -f $resurrect_dir/last); sed "s| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g" $target | sponge $target'
+          set -g @resurrect-dir ${resurrectDirPath}
+          set -g @resurrect-hook-post-save-all 'target=$(readlink -f ${resurrectDirPath}/last); sed "s| --cmd .*-vim-pack-dir||g; s|/etc/profiles/per-user/$USER/bin/||g" $target | sponge $target'
         '';
     }
 
@@ -173,6 +173,22 @@ programs.tmux = {
   ];
 
   extraConfig = ''
+    # This command is executed to address an edge case where after a fresh install of the OS no resurrect
+    # directory exist which means that the continuum plugin will not work. And so without user
+    # manually saving the first session(prfix + Ctrl+s) no resurrect-continuum will occur.
+    #
+    # And in case user does not remember to save his work for the first time and tmux daemon gets
+    # restarted next time user will try to attach, there will be no state to attach to and user will
+    # be scratching his head as to why.
+    #
+    # Saving right after fresh install on first boot of the tmux daemon with no sessions will create an
+    # empty "last" session file which might cause all kind of issues if tmux gets restarted before
+    # the user had the chance to work in it and let continuum plugin to take over and create
+    # at least one valid "snapshot" from which tmux will be able to resurrect. This is why an initial
+    # session named init-resurrect is created for resurrect plugin to create a valid "last" file for
+    # continuum plugin to work off of.
+    run-shell "if [ ! -d ~/.config/tmux/resurrect ]; then tmux new-session -d -s init-resurrect; ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh; fi"
+
     # kill a session
     bind-key X kill-session
     # sets the length of session name
