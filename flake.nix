@@ -91,7 +91,7 @@
 
             home_desktop = lib.nixosSystem {
                 inherit system;
-                specialArgs = { inherit inputs; };
+                specialArgs = { inherit inputs; machineName = "home-desktop"; };
                 modules = [
                     ./hosts/home_desktop/configuration.nix
                     inputs.home-manager.nixosModules.home-manager

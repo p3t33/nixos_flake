@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ inputs, config, pkgs, ... }:
+{ inputs, machineName, config, pkgs, ... }:
 
 {
   imports =
@@ -46,8 +46,7 @@
   # All of the global variables are defined based on the value set for it. Many
   # files use them and by not setting the hostname they will be using thier
   # default values which may cause all kind of issues.
-  userDefinedGlobalVariables.hostname = "home-desktop";
-  networking.hostName = config.userDefinedGlobalVariables.hostname;
+  networking.hostName = machineName;
 
 
   # Setup keyfile

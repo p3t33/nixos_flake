@@ -1,4 +1,4 @@
-{config, pkgs,lib,  ...}:
+{config, pkgs, lib, machineName, ...}:
 
 {
 
@@ -206,7 +206,7 @@
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
-     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "home-desktop"){
+     (lib.mkIf (machineName  == "home-desktop"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "home_desktop";
           userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
