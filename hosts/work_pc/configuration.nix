@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ config, pkgs, ... }:
+{ config, machineName, pkgs, ... }:
 
 {
   imports =
@@ -50,12 +50,7 @@
     "/crypto_keyfile.bin" = null;
   };
 
-  # IMPORTANT: hostname must be defined!
-  # All of the global variables are defined based on the value set for it. Many
-  # files use them and by not setting the hostname they will be using their
-  # default values which may cause all kind of issues.
-  userDefinedGlobalVariables.hostname = "HP-Zbook";
-  networking.hostName = config.userDefinedGlobalVariables.hostname;
+  networking.hostName = machineName;
 
   # Nvidia PRIME(technology used to manage hybrid graphics) settings
   # Note: non hybrid Nvidia graphics have a bit different configurations.

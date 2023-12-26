@@ -80,7 +80,7 @@
 
             work_pc = lib.nixosSystem {
                 inherit system;
-                specialArgs = { inherit inputs; };
+                specialArgs = { inherit inputs; machineName = "HP-Zbook"; };
                 modules = [
                     ./hosts/work_pc/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
