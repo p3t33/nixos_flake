@@ -46,7 +46,7 @@
         nixosConfigurations = {
             vm_server = lib.nixosSystem {
                 inherit system;
-                specialArgs = { inherit inputs; };
+                specialArgs = { inherit inputs; machineName = "kvm-nixos-server"; };
                 modules = [
                     ./hosts/vm_server/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
