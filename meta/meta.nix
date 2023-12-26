@@ -213,7 +213,7 @@
           userDefinedGlobalVariables.systemStateVersion = "23.11";
       })
 
-     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-gui"){
+     (lib.mkIf (machineName == "kvm-nixos-gui"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "vm_gui";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
