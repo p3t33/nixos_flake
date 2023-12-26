@@ -200,7 +200,7 @@
   };
 
   config = lib.mkMerge [
-     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "HP-Zbook"){
+     (lib.mkIf (machineName == "HP-Zbook"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "work_pc";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
