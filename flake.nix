@@ -57,7 +57,7 @@
             };
             homelab = lib.nixosSystem {
                 inherit system;
-                specialArgs = { inherit inputs; };
+                specialArgs = { inherit inputs; machineName = "homelab"; };
                 modules = [
                     ./hosts/homelab/configuration.nix
                     inputs.home-manager.nixosModules.home-manager
