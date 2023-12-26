@@ -55,7 +55,6 @@ and include code that can be shared with other hosts.
 to mange user configuration and into nixos modules which are mostly configurations
 I found in /etc/nixos/configuration.nix and refactored into responsibilities that can
 then be including by the various hosts to achieve code reuse.
-- **meta**: Global variables that are set per host.
 - **wallpaper**: self explanatory :)
 
 # ToDo

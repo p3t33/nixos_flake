@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./configuration-services.nix
       ./disko-config.nix
+      ../../modules/meta.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
@@ -23,7 +24,6 @@
       ../../modules/nixos/environment_variables.nix
       ../../modules/nixos/virtualization/docker.nix
       ../../modules/nixos/networking.nix
-      ../../meta/meta.nix
       ../../modules/nixos/users.nix
       ../../modules/nixos/dictionaries.nix
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
