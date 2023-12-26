@@ -105,12 +105,11 @@
         # Created for the case I would like to apply home manger settings on non NixOS
         # OS such as Lubuntu.
         # For this to work:
-        # 1. The host name on the existing system needs to match the one on ./hosts/work_pc/home.nix and ./meta/meta.nix
-        # 2. The username on the existing system most match the one defined in homeConfigurations.
+        # The username on the existing system most match the one defined in homeConfigurations.
         homeConfigurations = {
             kmedrish = inputs.home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
-                extraSpecialArgs = {inherit inputs;}; #Needs to be tested
+                extraSpecialArgs = {inherit inputs; machineName = "HP-Zbook";};
                 modules = [
                     ./hosts/generic_linux_distro/home.nix
                     inputs.sops-nix.homeManagerModules.sops

@@ -2,19 +2,10 @@
 
 {
 
-  # IMPORTANT: hostname must be defined!
-  # All of the global variables are defined based on the value set for it. Many
-  # files use them and by not setting the hostname they will be using thier
-  # default values which may cause all kind of issues.
-  userDefinedGlobalVariables = {
-      hostname = "HP-Zbook";
-  };
-
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = config.userDefinedGlobalVariables.username;
   home.homeDirectory = config.userDefinedGlobalVariables.homeDirectory;
-  #home.homeDirectory = "/home/kmedrish";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -46,7 +37,7 @@
     ../../modules/home-manager/i3.nix
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/gpg.nix
-    ../../modules/home-manager/ssh/work/ssh.nix
+    ../../modules/home-manager/ssh.nix
     ../../modules/home-manager/polybar.nix
     ../../modules/home-manager/scripts/rofi-firefox-bookmarks.nix
     ../../modules/home-manager/scripts/helloworld-python.nix
