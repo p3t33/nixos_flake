@@ -32,12 +32,6 @@
       description = "used to define host hostname";
     };
 
-    hostname = mkOption {
-      default = "";
-      type = str;
-      description = "used to define host hostname";
-    };
-
     username = mkOption {
         type = str;
         default = "kmedrish";

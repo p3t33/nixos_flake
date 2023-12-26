@@ -9,6 +9,7 @@
   zsh-autosuggestions
   zsh-fzf-tab
   thefuck
+  eza
   ];
 
   programs.zsh = {
