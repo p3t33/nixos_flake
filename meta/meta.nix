@@ -226,7 +226,7 @@
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
-     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "homelab"){
+     (lib.mkIf (machineName == "homelab"){
           userDefinedGlobalVariables.username = "kmedrish";
           userDefinedGlobalVariables.hostTag = "homelab";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
