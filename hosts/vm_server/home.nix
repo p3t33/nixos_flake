@@ -20,7 +20,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   imports = [
-    ../../meta/meta.nix
+    ../../modules/meta.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/fzf.nix

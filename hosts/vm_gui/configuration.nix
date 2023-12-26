@@ -10,8 +10,8 @@
       ./hardware-configuration.nix
       ./configuration-services.nix
       ./disko-config.nix
+      ../../modules/meta.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
-      ../../meta/meta.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
       ../../modules/nixos/garbage_collection.nix

@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./configuration-services.nix
       ./sops-configuration.nix
+      ../../modules/meta.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
@@ -30,7 +31,6 @@
       ../../modules/nixos/users.nix
       ../../modules/nixos/gui.nix
       ../../modules/nixos/dictionaries.nix
-      ../../meta/meta.nix
       ../../modules/nixos/security/nitrokey.nix
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
     ];
