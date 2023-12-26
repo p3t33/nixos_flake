@@ -1,11 +1,11 @@
 # This file can only be included if home-manger is imported to nixos
 # as flake input.
-{ inputs, config, ... }:
+{ inputs, machineName, config, ... }:
 {
     home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        extraSpecialArgs = {inherit inputs;};
+        extraSpecialArgs = {inherit inputs; inherit machineName;};
         users.${config.userDefinedGlobalVariables.username} = import config.userDefinedGlobalVariables.home_manger_import_path;
         # will be available to all users managed by home manager
         sharedModules = [
