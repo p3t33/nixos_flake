@@ -220,7 +220,7 @@
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
-     (lib.mkIf (config.userDefinedGlobalVariables.hostname == "kvm-nixos-server"){
+     (lib.mkIf (machineName == "kvm-nixos-server"){
           userDefinedGlobalVariables.username = "drone";
           userDefinedGlobalVariables.hostTag = "vm_server";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
