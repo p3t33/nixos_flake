@@ -2,13 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ inputs, config, pkgs, ... }:
+{ inputs, machineName, config, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ./disko-config.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
       ../../meta/meta.nix
       ../../modules/nixos/fonts.nix
@@ -37,14 +38,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  # IMPORTANT: hostname must be defined!
-  # All of the global variables are defined based on the value set for it. Many
-  # files use them and by not setting the hostname they will be using thier
-  # default values which may cause all kind of issues.
-  userDefinedGlobalVariables.hostname = "kvm-nixos-gui";
-  networking.hostName = config.userDefinedGlobalVariables.hostname;
+  networking.hostName = machineName;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
