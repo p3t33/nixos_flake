@@ -3,8 +3,11 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    permitRootLogin = "no";
-    passwordAuthentication = false;
-    challengeResponseAuthentication = false;
+    settings = {
+        PasswordAuthentication = false;
+        PermitRootLogin = "no";
+        # migh need to enable it for fido/fido2
+        KbdInteractiveAuthentication = false;
+    };
   };
 }
