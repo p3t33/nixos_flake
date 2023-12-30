@@ -31,6 +31,7 @@
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
       ../../modules/nixos/services/jellyfin.nix
       ../../modules/nixos/defaults_for_system_build.nix
+      ../../modules/nixos/auto_upgrade.nix
     ];
 
   systemd.tmpfiles.rules = [
