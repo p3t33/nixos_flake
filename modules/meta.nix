@@ -57,9 +57,9 @@
             default = "nvim +Man!";
         };
 
-        hostTag = mkOption {
+        hostConfigurationName = mkOption {
             type = str;
-            default = "used as an argument for flake update";
+            default = "used as an argument for flake configuration.";
         };
 
         homeDirectory = mkOption {
@@ -100,13 +100,13 @@
         };
 
         home_manger_import_path = mkOption {
-            default = ../hosts/${config.userDefinedGlobalVariables.hostTag}/home.nix;
+            default = ../hosts/${config.userDefinedGlobalVariables.hostConfigurationName}/home.nix;
             type = path;
             description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
         };
 
         NixOSSecretsPath = mkOption {
-            default = ../hosts/${config.userDefinedGlobalVariables.hostTag}/secrets.yaml;
+            default = ../hosts/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets.yaml;
             type = path;
             description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
         };
@@ -206,33 +206,33 @@
   config = lib.mkMerge [
      (lib.mkIf (machineName == "HP-Zbook"){
           userDefinedGlobalVariables.username = "kmedrish";
-          userDefinedGlobalVariables.hostTag = "work_pc";
+          userDefinedGlobalVariables.hostConfigurationName = "work_pc";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
      (lib.mkIf (machineName  == "home-desktop"){
           userDefinedGlobalVariables.username = "kmedrish";
-          userDefinedGlobalVariables.hostTag = "home_desktop";
+          userDefinedGlobalVariables.hostConfigurationName = "home_desktop";
           userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
       })
 
      (lib.mkIf (machineName == "kvm-nixos-gui"){
           userDefinedGlobalVariables.username = "kmedrish";
-          userDefinedGlobalVariables.hostTag = "vm_gui";
+          userDefinedGlobalVariables.hostConfigurationName = "vm_gui";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
      (lib.mkIf (machineName == "kvm-nixos-server"){
           userDefinedGlobalVariables.username = "drone";
-          userDefinedGlobalVariables.hostTag = "vm_server";
+          userDefinedGlobalVariables.hostConfigurationName = "vm_server";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
      (lib.mkIf (machineName == "homelab"){
           userDefinedGlobalVariables.username = "kmedrish";
-          userDefinedGlobalVariables.hostTag = "homelab";
+          userDefinedGlobalVariables.hostConfigurationName = "homelab";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
           userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
           userDefinedGlobalVariables.syncthingUser = "syncthing";
