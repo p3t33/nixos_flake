@@ -33,6 +33,7 @@
       ../../modules/nixos/defaults_for_system_build.nix
       ../../modules/nixos/auto_upgrade.nix
       ../../modules/nixos/services/nginx.nix
+      ../../modules/nixos/services/fail2ban.nix
     ];
 
   systemd.tmpfiles.rules = [
