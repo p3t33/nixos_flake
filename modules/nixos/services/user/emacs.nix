@@ -61,6 +61,7 @@
             epkgs.magit
             epkgs.hl-todo
             epkgs.tldr
+            epkgs.fzf
     ]));
   };
 }
