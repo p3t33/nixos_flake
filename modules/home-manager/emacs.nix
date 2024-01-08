@@ -295,6 +295,8 @@
                   "m b -" '(org-table-insert-hline :wk "Insert hline in table")
                   "m d" '(:ignore t :wk "Date/deadline")
                   "m d t" '(org-time-stamp :wk "Org time stamp")
+                  "m l" '(org-insert-link :wk "Insert Org link")
+                  "m h" '(org-toggle-heading :wk "Org toggle heading")
 
                   ;; dired
                   ;; -----
@@ -421,6 +423,22 @@
             (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
             ;; =============================
 
+            ;; Org mode Meta keybinding
+            ;; ==============================
+
+            (with-eval-after-load 'org
+             ;; Ensure "M-h" is unbound in org-mode specifically
+             (define-key org-mode-map (kbd "M-h") nil)
+             (define-key org-mode-map (kbd "M-h") 'org-promote-subtree)
+
+             ;; Set "M-l" for demoting subtree globally
+             (define-key org-mode-map (kbd "M-l") 'org-demote-subtree)
+
+             ;; Bind keys for moving headings up and down in Org mode
+             (define-key org-mode-map (kbd "M-j") 'org-move-subtree-down)
+             (define-key org-mode-map (kbd "M-k") 'org-move-subtree-up))
+            ;; ==============================
+
             ;; ivy settings
             ;; ============
             (use-package counsel
@@ -534,6 +552,7 @@
 
             ;; org-mode enhancement
             ;; ====================
+            (setq org-startup-with-inline-images t)
             (use-package toc-org
                 :commands toc-org-enable
                 :init (add-hook 'org-mode-hook 'toc-org-enable))
