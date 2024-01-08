@@ -82,6 +82,17 @@
             (setq package-menu-async nil)
             (setq package-load-list '(all))
 
+            ;; setup spell checker
+            ;; ===================
+            (setq ispell-program-name "aspell")
+            ;; For text modes(md, txt, org):
+            (add-hook 'text-mode-hook 'flyspell-mode)
+
+            ;; Specifically for programming modes to check comments and strings:
+            (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+
+            ;; ===================
 
             ;; By default, Emacs creates automatic backups of files in their
             ;; original directories, such “file.el” and the backup “file.el~”.
