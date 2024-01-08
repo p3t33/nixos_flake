@@ -4,6 +4,8 @@
       # presentation
       present
       slides
+      haskellPackages.patat
+      w3m
 
     # web
       wget
