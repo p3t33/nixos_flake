@@ -62,6 +62,7 @@
             epkgs.hl-todo
             epkgs.tldr
             epkgs.fzf
+            epkgs.org-roam
     ]));
   };
 }
