@@ -59,6 +59,7 @@
             epkgs.hl-todo
             epkgs.tldr
             epkgs.fzf
+            epkgs.org-roam
         ];
     };
 
@@ -82,6 +83,24 @@
             (setq package-quickstart nil)
             (setq package-menu-async nil)
             (setq package-load-list '(all))
+
+            (use-package org-roam
+             :ensure t
+             :custom
+             (org-roam-directory (file-truename "~/roam_notes/"))
+             :bind (("C-c n l" . org-roam-buffer-toggle)
+                    ("C-c n f" . org-roam-node-find)
+                    ("C-c n g" . org-roam-graph)
+                    ("C-c n i" . org-roam-node-insert)
+                    ("C-c n c" . org-roam-capture)
+                    ;; Dailies
+                    ("C-c n j" . org-roam-dailies-capture-today))
+             :config
+             ;; If you're using a vertical completion framework, you might want a more informative completion interface
+             (setq org-roam-node-display-template (concat "''${title:*} " (propertize "''${tags:10}" 'face 'org-tag)))
+             (org-roam-db-autosync-mode)
+             ;; If using org-roam-protocol
+             (require 'org-roam-protocol))
 
             ;; setup spell checker
             ;; ===================
@@ -195,6 +214,14 @@
                   ;; -------------
                   "fu" '(sudo-edit-find-file :wk "Sudo find file")
                   "fU" '(sudo-edit :wk "Sudo edit file")
+
+                  ;; Org-roam
+                  "r l" '(org-roam-buffer-toggle :which-key "org-roam buffer toggle")
+                  "r f" '(org-roam-node-find :which-key "org-roam node find")
+                  "r g" '(org-roam-graph :which-key "org-roam graph")
+                  "r i" '(org-roam-node-insert :which-key "org-roam node insert")
+                  "r c" '(org-roam-capture :which-key "org-roam capture")
+                  "r j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
 
                   ;; Buffer/bookmarks
                   ;; -----
