@@ -201,8 +201,6 @@
             (use-package magit)
             ;; ============
 
-            (use-package magit)
-
             (use-package sudo-edit)
 
             (use-package general
@@ -312,6 +310,8 @@
                   "h v" '(describe-variable :wk "Describe variable")
                   "h w" '(where-is :wk "Prints keybinding for command if set")
                   "h x" '(describe-command :wk "Display full documentation for command")
+                  ;; For the time being the wk(which key) will not work and "lambda" will be displayed.
+                  "h r c" '(lambda () (interactive) (load-file user-init-file)) :wk "Reload config"
 
                   ;;
                   ;; Toggle
