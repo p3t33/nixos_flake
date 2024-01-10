@@ -84,10 +84,11 @@
             (setq package-menu-async nil)
             (setq package-load-list '(all))
 
+
             (use-package org-roam
              :ensure t
              :custom
-             (org-roam-directory (file-truename "~/roam_notes/"))
+             (org-roam-directory (file-truename "~/Sync/dev_resources/roam_notes/"))
              :bind (("C-c n l" . org-roam-buffer-toggle)
                     ("C-c n f" . org-roam-node-find)
                     ("C-c n g" . org-roam-graph)
@@ -142,6 +143,7 @@
               fzf/position-bottom t
               fzf/window-height 15))
 
+
             ;; Configure and initialize evil-mode
             ;; =================================
             (use-package evil
@@ -156,7 +158,18 @@
                 (setq evil-vsplit-window-right t)
                 (setq evil-split-window-below t)
                 :config
-                (evil-mode 1))
+                (evil-mode 1)
+
+                ;; Define the custom function
+                (defun save-and-switch-to-normal-mode ()
+                 "Save the current buffer and switch to normal mode."
+                 (interactive)
+                 (save-buffer)
+                 (evil-normal-state))
+
+                ;; Set the key bindings for normal and insert modes
+                (define-key evil-normal-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
+                (define-key evil-insert-state-map (kbd "C-s") 'save-and-switch-to-normal-mode))
 
             (use-package evil-collection
                 :after evil
