@@ -85,6 +85,8 @@
             (setq package-load-list '(all))
 
 
+            (setq org-todo-keywords '((sequence "TODO" "|" "DONE")))
+
             (use-package org-roam
              :ensure t
              :custom
