@@ -86,6 +86,8 @@
 
 
             (setq org-todo-keywords '((sequence "TODO" "|" "DONE")))
+            (with-eval-after-load 'org
+                (setq org-agenda-files '("~/Sync/dev_resources/roam_notes/")))
 
             (use-package org-roam
              :ensure t
