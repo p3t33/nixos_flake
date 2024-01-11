@@ -238,13 +238,6 @@
                   "fu" '(sudo-edit-find-file :wk "Sudo find file")
                   "fU" '(sudo-edit :wk "Sudo edit file")
 
-                  ;; Org-roam
-                  "r l" '(org-roam-buffer-toggle :which-key "org-roam buffer toggle")
-                  "r f" '(org-roam-node-find :which-key "org-roam node find")
-                  "r g" '(org-roam-graph :which-key "org-roam graph")
-                  "r i" '(org-roam-node-insert :which-key "org-roam node insert")
-                  "r c" '(org-roam-capture :which-key "org-roam capture")
-                  "r j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
 
                   ;; Buffer/bookmarks
                   ;; -----
@@ -323,7 +316,7 @@
                   "h w" '(where-is :wk "Prints keybinding for command if set")
                   "h x" '(describe-command :wk "Display full documentation for command")
                   ;; For the time being the wk(which key) will not work and "lambda" will be displayed.
-                  "h r c" '(lambda () (interactive) (load-file user-init-file)) :wk "Reload config"
+                  "h r r" '(lambda () (interactive) (load-file user-init-file)) :wk "Reload config"
 
                   ;;
                   ;; Toggle
@@ -366,7 +359,7 @@
                   "m" '(:ignore t :wk "Org")
                   "m a" '(org-agenda :wk "Org agenda")
                   "m e" '(org-export-dispatch :wk "Org export dispatch")
-                  "m i" '(org-toggle-item :wk "Org toggle item")
+                  "m l" '(org-toggle-item :wk "Org toggle list item")
                   "m t" '(org-todo :wk "Org todo")
                   "m B" '(org-babel-tangle :wk "Org babel tangle")
                   "m T" '(org-todo-list :wk "Org todo list")
@@ -375,8 +368,20 @@
                   "m d" '(:ignore t :wk "Date/deadline")
                   "m d t" '(insert-inactive-timestamp :which-key "Insert inactive timestamp")
                   "m d a" '(insert-active-timestamp :which-key "Insert active timestamp")
-                  "m l" '(org-insert-link :wk "Insert Org link")
                   "m h" '(org-toggle-heading :wk "Org toggle heading")
+                  "m i" '(:ignore t :wk "Org insert")
+                  "m i l" '(org-insert-link :wk "Insert Org link")
+                  "m i n" '(org-roam-node-insert :which-key "org-roam node insert")
+                  "m i i" '(org-id-get-create :which-key "assign Org-roam ID to heading")
+
+
+
+                  ;; Org-roam
+                  "m r" '(org-roam-buffer-toggle :which-key "list node refernces")
+                  "m f" '(org-roam-node-find :which-key "org-roam node find")
+                  "m g" '(org-roam-graph :which-key "org-roam graph")
+                  "m c" '(org-roam-capture :which-key "org-roam capture")
+                  "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
 
                   ;; dired
                   ;; -----
