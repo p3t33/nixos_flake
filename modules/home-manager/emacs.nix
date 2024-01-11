@@ -205,6 +205,16 @@
 
             (use-package sudo-edit)
 
+            (defun insert-active-timestamp ()
+             "Inserts an active timestamp with the current date and time up to minutes."
+             (interactive)
+             (insert (format-time-string "<%Y-%m-%d %a %H:%M>")))
+
+            (defun insert-inactive-timestamp ()
+             "Inserts an inactive timestamp with the current date and time up to minutes."
+             (interactive)
+             (insert (format-time-string "[%Y-%m-%d %a %H:%M]")))
+
             (use-package general
                  :config
                  (general-evil-setup)
@@ -363,7 +373,8 @@
                   "m b" '(:ignore t :wk "Tables")
                   "m b -" '(org-table-insert-hline :wk "Insert hline in table")
                   "m d" '(:ignore t :wk "Date/deadline")
-                  "m d t" '(org-time-stamp :wk "Org time stamp")
+                  "m d t" '(insert-inactive-timestamp :which-key "Insert inactive timestamp")
+                  "m d a" '(insert-active-timestamp :which-key "Insert active timestamp")
                   "m l" '(org-insert-link :wk "Insert Org link")
                   "m h" '(org-toggle-heading :wk "Org toggle heading")
 
