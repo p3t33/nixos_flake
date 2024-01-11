@@ -104,6 +104,17 @@
                     ;; Dailies
                     ("C-c n j" . org-roam-dailies-capture-today))
              :config
+             ;; puting the remplate setitngs under :costum did not work for me.
+             (setq org-roam-capture-templates
+              '(
+                  ("d" "default" plain "%?"
+                   :target (file+head "%<%Y%m%d%H%M%S>-''${slug}.org"
+                       "#+title: ''${title}\n#+date:%U\n") :unnarrowed t)
+                  ("c" "class" plain "* Category\n\n- Class: \n- Topic: %?\n\n"
+                   :target (file+head "class/%<%Y%m%d%H%M%S>-''${slug}.org"
+                       "#+title: ''${title}\n#+date:%U\n") :unnarrowed t)
+                  )
+                  )
              ;; If you're using a vertical completion framework, you might want a more informative completion interface
              (setq org-roam-node-display-template (concat "''${title:*} " (propertize "''${tags:10}" 'face 'org-tag)))
              (org-roam-db-autosync-mode)
