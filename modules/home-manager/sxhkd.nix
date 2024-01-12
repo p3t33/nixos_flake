@@ -54,6 +54,9 @@
        super + b
          rofi -modi firefox-bookmarks:rofi-firefox-bookmakrs -show firefox-bookmarks
 
+       super + m
+          emacsclient -c -e "(org-roam-dailies-capture-today)"
+
        Print
          flameshot gui
 
