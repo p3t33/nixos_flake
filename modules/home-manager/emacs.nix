@@ -109,10 +109,10 @@
               '(
                   ("d" "default" plain "%?"
                    :target (file+head "%<%Y%m%d%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date:%U\n") :unnarrowed t)
+                       "#+title: ''${title}\n#+date:%U\n#+filetags:\n") :unnarrowed t)
                   ("c" "class" plain "* Category\n\n- Class: \n- Topic: %?\n\n"
                    :target (file+head "class/%<%Y%m%d%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date:%U\n") :unnarrowed t)
+                       "#+title: ''${title}\n#+date:%U\n#+filetags:\n") :unnarrowed t)
                   )
                   )
              ;; Daily notes (journals) templates
