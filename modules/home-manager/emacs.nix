@@ -176,11 +176,11 @@
             ;; =================================
             (use-package evil
                 :init
-                ;; by default evil has some basic intergration with other
-                ;; packages and modes but as I am delegating the intergration
-                ;; to evil-collection this basic intergration should be
-                ;; disabled.
-                (setq evil-want-integration nil)
+                ;; evil-collection assumes evil-want-keybinding is set to nil and
+                ;; evil-want-integration is set to t before loading evil and evil-collection.
+                ;; Note some other packages may load evil (e.g. evil-leader) so bear that
+                ;; in mind when determining when to set the variables.
+                (setq evil-want-integration t) ;; This is optional since it's already set to t by default
                 (setq evil-want-keybinding nil)
 
                 (setq evil-vsplit-window-right t)
