@@ -62,6 +62,7 @@
             epkgs.hl-todo
             epkgs.tldr
             epkgs.org-roam
+            epkgs.org-download
         ];
     };
 
@@ -90,6 +91,26 @@
                            (org-redisplay-inline-images)))
 
 
+
+            (use-package org-download
+             :ensure t
+             :config
+             ;; where to save files?
+             ;; when  org-download-method is set to "attach"
+             ;; then org-roam will handle where to store the
+             ;; file and creat place for it.
+             ;; is you want to specify the directory then
+             ;; org-download-method needs to be chagned to directory
+             ;; and you will need to set org-download-image-dir, E.g:
+             ;; Set the default directory where images will be downloaded
+             ;;(setq-default org-download-image-dir "~/Sync/dev_resources/roam_notes/images/")
+
+             ;; Set the method for handling downloaded images
+             ;; 'attach integrates with Org's attachment system
+             (setq org-download-method 'attach)
+
+             ;; Ensure the org-download package is loaded
+             (require 'org-download))
 
             (with-eval-after-load 'org
                 (setq org-agenda-files '("~/Sync/dev_resources/roam_notes/")))
@@ -385,6 +406,7 @@
                   "m i l" '(org-insert-link :wk "Insert Org link")
                   "m i n" '(org-roam-node-insert :which-key "org-roam node insert")
                   "m i i" '(org-id-get-create :which-key "assign Org-roam ID to heading")
+                  "m i c" '(org-download-clipboard :which-key "insert clipboard")
 
 
 
