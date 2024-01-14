@@ -63,6 +63,7 @@
             epkgs.hl-todo
             epkgs.tldr
             epkgs.org-roam
+            epkgs.org-download
     ]));
   };
 }
