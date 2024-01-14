@@ -30,6 +30,7 @@
             epkgs.ivy
             epkgs.all-the-icons-ivy-rich
             epkgs.ivy-rich
+            epkgs.counsel
             epkgs.all-the-icons
             epkgs.all-the-icons-dired
             epkgs.dired-open
@@ -109,10 +110,10 @@
               '(
                   ("d" "default" plain "%?"
                    :target (file+head "%<%Y%m%d%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date:%U\n#+filetags:\n") :unnarrowed t)
+                       "#+title: ''${title}\n#+date:%U\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
                   ("c" "class" plain "* Category\n\n- Class: \n- Topic: %?\n\n"
                    :target (file+head "class/%<%Y%m%d%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date:%U\n#+filetags:\n") :unnarrowed t)
+                       "#+title: ''${title}\n#+date:%U\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
                   )
                   )
              ;; Daily notes (journals) templates
@@ -555,9 +556,6 @@
 
             ;; ivy settings
             ;; ============
-            (use-package counsel
-                :after ivy
-                :config (counsel-mode))
 
             (use-package ivy
                 :bind
@@ -570,6 +568,17 @@
                 (setq enable-recursive-minibuffers t)
                 :config
                 (ivy-mode))
+
+
+                 (use-package counsel
+                  :ensure t
+                  :after ivy
+                  :config
+                  (ivy-mode 1)
+                  (setq ivy-use-virtual-buffers t)
+                  (setq enable-recursive-minibuffers t)
+                  ;; Bind `counsel-M-x' to M-x
+                  (global-set-key (kbd "M-x") 'counsel-M-x))
 
             (use-package all-the-icons-ivy-rich
                 :ensure t
