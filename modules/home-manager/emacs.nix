@@ -254,6 +254,8 @@
                   "SPC" '(counsel-M-x :wk "Counsel M-x")
                   "." '(find-file :wk "Find file")
                   "f r" '(counsel-recentf :wk "Find recent files")
+                  "f f" '(counsel-fzf :wk "Find files")
+                  "f s" '(counsel-rg :wk "Find string")
                   "TAB TAB" '(comment-line :wk "Comment lines")
                   ;;
                   ;; sudo on files
