@@ -84,6 +84,9 @@
             (setq package-quickstart nil)
             (setq package-menu-async nil)
             (setq package-load-list '(all))
+            (add-hook 'org-mode-hook (lambda ()
+                           (message "org-mode hook executed")
+                           (org-redisplay-inline-images)))
 
 
 
@@ -576,7 +579,6 @@
                   :ensure t
                   :after ivy
                   :config
-                  (ivy-mode 1)
                   (setq ivy-use-virtual-buffers t)
                   (setq enable-recursive-minibuffers t)
                   ;; Bind `counsel-M-x' to M-x
@@ -587,16 +589,16 @@
                 :init (all-the-icons-ivy-rich-mode 1))
 
             (use-package ivy-rich
-                :after ivy
-                :ensure t
-                :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
-                :custom
-                (ivy-virtual-abbreviate 'full
-                 ivy-rich-switch-buffer-align-virtual-buffer t
-                 ivy-rich-path-style 'abbrev)
-                :config
-                (ivy-set-display-transformer 'ivy-switch-buffer
-                 'ivy-rich-switch-buffer-transformer))
+             :after ivy
+             :ensure t
+             :init
+             (ivy-rich-mode 1)  ;; Enable ivy-rich-mode
+             :config
+             ;; Recommended setting
+             (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+             ;; Customize path style
+             (setq ivy-rich-path-style 'abbrev))
+
             ;; ====================
 
             ;; RSS feed
