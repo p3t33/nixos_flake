@@ -63,6 +63,7 @@
             epkgs.tldr
             epkgs.org-roam
             epkgs.org-download
+            epkgs.org-tree-slide
         ];
     };
 
@@ -91,6 +92,27 @@
                            (org-redisplay-inline-images)))
 
 
+
+            (require 'org-tree-slide)
+
+            ;; Custom keybindings for navigating slides
+            (with-eval-after-load "org-tree-slide"
+             (define-key org-tree-slide-mode-map (kbd "<f8>") 'org-tree-slide-mode)
+             (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+             (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree))
+
+            ;; Start or stop the slide mode with F8
+            (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+
+            ;; Move to the previous slide with F9
+            (global-set-key (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+
+            ;; Move to the next slide with F10
+            (global-set-key (kbd "<f10>") 'org-tree-slide-move-next-tree)
+
+            ;; Optional: Start with a simple profile
+            ;; Uncomment the following line if you want to use the simple profile by default
+            ;; (org-tree-slide-simple-profile)
 
             (use-package org-download
              :ensure t
