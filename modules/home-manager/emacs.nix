@@ -93,6 +93,7 @@
 
 
 
+            (setq org-image-actual-width nil)
             (require 'org-tree-slide)
 
             ;; Custom keybindings for navigating slides
@@ -287,6 +288,7 @@
                   "f r" '(counsel-recentf :wk "Find recent files")
                   "f f" '(counsel-fzf :wk "Find files")
                   "f s" '(counsel-rg :wk "Find string")
+                  "f b" '(counsel-switch-buffer :wk "Find buffer")
                   "TAB TAB" '(comment-line :wk "Comment lines")
                   ;;
                   ;; sudo on files
