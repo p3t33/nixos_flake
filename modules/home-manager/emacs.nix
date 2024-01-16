@@ -33,6 +33,8 @@
             epkgs.all-the-icons-ivy-rich
             epkgs.ivy-rich
             epkgs.counsel
+            epkgs.prescient
+            epkgs.ivy-prescient
             epkgs.all-the-icons
             epkgs.all-the-icons-dired
             epkgs.dired-open
@@ -600,6 +602,16 @@
 
             ;; ivy settings
             ;; ============
+
+            (use-package prescient
+             :config
+             (prescient-persist-mode 1))  ; Remember usage statistics across Emacs sessions
+
+            (use-package ivy-prescient
+             :after ivy
+             :config
+             (ivy-prescient-mode 1)  ; Enable ivy-prescient
+             (setq ivy-prescient-retain-classic-highlighting t))  ; Optional: retain Ivy's highlighting style
 
             (use-package ivy
                 :bind
