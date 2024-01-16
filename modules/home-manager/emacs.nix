@@ -156,12 +156,12 @@
              ;; puting the remplate setitngs under :costum did not work for me.
              (setq org-roam-capture-templates
               '(
-                  ("d" "default" plain "%?"
-                   :target (file+head "%<%Y%m%d%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date:%U\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
-                  ("c" "class" plain "* Category\n\n- Class: \n- Topic: %?\n\n"
-                   :target (file+head "class/%<%Y%m%d%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date:%U\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
+                  ("d" "default" plain "* Table of Contents :toc:\n\n%?"
+                   :target (file+head "%<%d%m%Y%H%M%S>-''${slug}.org"
+                       "#+title: ''${title}\n#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
+                  ("s" "story" plain "* Table of Contents :toc:\n\n* resources\n** [%?[][jira]]"
+                   :target (file+head "class/%<%d%m%Y%H%M%S>-''${slug}.org"
+                       "#+title: ''${title}\n#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
                   )
                   )
              ;; Daily notes (journals) templates
