@@ -34,6 +34,8 @@
             epkgs.all-the-icons-ivy-rich
             epkgs.ivy-rich
             epkgs.counsel
+            epkgs.prescient
+            epkgs.ivy-prescient
             epkgs.all-the-icons
             epkgs.all-the-icons-dired
             epkgs.dired-open
