@@ -299,6 +299,7 @@
                   "f f" '(counsel-fzf :wk "Find files")
                   "f s" '(counsel-rg :wk "Find string")
                   "f b" '(counsel-switch-buffer :wk "Find buffer")
+                  "f h" '(counsel-org-goto :wk "Find org file header")
                   "TAB TAB" '(comment-line :wk "Comment lines")
                   ;;
                   ;; sudo on files
