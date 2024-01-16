@@ -65,6 +65,7 @@
             epkgs.org-roam
             epkgs.org-download
             epkgs.org-tree-slide
+            epkgs.undo-tree
     ]));
   };
 }

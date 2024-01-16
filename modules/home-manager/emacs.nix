@@ -64,6 +64,7 @@
             epkgs.org-roam
             epkgs.org-download
             epkgs.org-tree-slide
+            epkgs.undo-tree
         ];
     };
 
@@ -92,6 +93,13 @@
                            (org-redisplay-inline-images)))
 
 
+
+            (use-package undo-tree
+             :ensure t)
+             (global-undo-tree-mode)
+
+            ;; Set evil-undo-system to use undo-tree
+            (setq evil-undo-system 'undo-tree)
 
             (setq org-image-actual-width nil)
             (require 'org-tree-slide)
