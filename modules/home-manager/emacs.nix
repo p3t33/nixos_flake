@@ -107,6 +107,7 @@
 
 
 
+
             ;; smoth scroll with mergin of lines
             ;; =================================
             (setq scroll-margin 8)
@@ -256,6 +257,19 @@
                 ;; Set the key bindings for normal and insert modes
                 (define-key evil-normal-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
                 (define-key evil-insert-state-map (kbd "C-s") 'save-and-switch-to-normal-mode))
+
+                ;; recenter org around search string
+                ;; same as:
+                ;;vim.keymap.set('n', 'n', "nzzzv", opts)
+                ;; --------------------------------------
+                (defadvice evil-search-next
+                 (after advice-for-evil-search-next activate)
+                 (evil-scroll-line-to-center (line-number-at-pos)))
+
+                (defadvice evil-search-previous
+                 (after advice-for-evil-search-previous activate)
+                 (evil-scroll-line-to-center (line-number-at-pos)))
+                ;; --------------------------------------
 
             (use-package evil-collection
                 :after evil
