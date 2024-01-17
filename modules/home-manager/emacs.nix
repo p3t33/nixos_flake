@@ -105,6 +105,16 @@
 
 
 
+
+
+            ;; smoth scroll with mergin of lines
+            ;; =================================
+            (setq scroll-margin 8)
+            (setq-default scroll-conservatively 100 scroll-up-aggressively 0.01 scroll-down-aggressively 0.01)
+            (pixel-scroll-mode 1)
+            (pixel-scroll-precision-mode 1)
+            ;; =================================
+
             (use-package undo-tree
              :ensure t)
              (global-undo-tree-mode)
