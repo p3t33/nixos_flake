@@ -11,6 +11,15 @@
     # ctags.
     home.packages = with pkgs; [
         universal-ctags
+
+        # support for LaTeX
+        texlive.combined.scheme-full
+
+        # search
+        ripgrep
+        fd
+        fzf
+
     ];
 
     services.emacs.enable = true;
@@ -166,10 +175,10 @@
              ;; puting the remplate setitngs under :costum did not work for me.
              (setq org-roam-capture-templates
               '(
-                  ("d" "default" plain "* Table of Contents :toc:\n\n%?"
+                  ("d" "default" plain "* Table of Contents :toc:noexport:\n\n%?"
                    :target (file+head "%<%d%m%Y%H%M%S>-''${slug}.org"
                        "#+title: ''${title}\n#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
-                  ("s" "story" plain "* Table of Contents :toc:\n\n* resources\n** [%?[][jira]]"
+                  ("s" "story" plain "* Table of Contents :toc:noexport:\n\n* resources\n** [%?[][jira]]"
                    :target (file+head "class/%<%d%m%Y%H%M%S>-''${slug}.org"
                        "#+title: ''${title}\n#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
                   )
