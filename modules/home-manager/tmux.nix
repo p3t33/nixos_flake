@@ -187,7 +187,7 @@ programs.tmux = {
     # at least one valid "snapshot" from which tmux will be able to resurrect. This is why an initial
     # session named init-resurrect is created for resurrect plugin to create a valid "last" file for
     # continuum plugin to work off of.
-    run-shell "if [ ! -d ~/.config/tmux/resurrect ]; then tmux new-session -d -s init-resurrect; ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh; fi"
+    run-shell "if [ ! -d ${resurrectDirPath} ]; then tmux new-session -d -s init-resurrect; ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh; fi"
 
     # kill a session
     bind-key X kill-session
