@@ -287,6 +287,9 @@
                 (define-key evil-motion-state-map (kbd "TAB") nil))
             ;; Setting RETURN key in org-mode to follow links
             (setq org-return-follows-link  t)
+
+            (with-eval-after-load 'evil-maps
+             (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
             ;; =================================
 
             ;; git
