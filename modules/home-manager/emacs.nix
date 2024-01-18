@@ -746,16 +746,18 @@
             ;; company can be used to provide the frontend for code
             ;; completions that the Language Server (like clangd for C++)
             ;; sends to the client (in this case, lsp-mode in Emacs).
+            ;; in in essence this is the popup box with completion suggestions.
             (use-package company
-                :defer 2
-                :diminish
-                :custom
-                (company-begin-commands '(self-insert-command))
-                (company-idle-delay .1)
-                (company-minimum-prefix-length 2)
-                (company-show-numbers t)
-                (company-tooltip-align-annotations 't)
-                (global-company-mode t))
+             :defer 2
+             :diminish
+             :custom
+             (company-begin-commands '(self-insert-command))
+             (company-idle-delay .1)
+             (company-minimum-prefix-length 2)
+             (company-show-numbers t)
+             (company-tooltip-align-annotations 't)
+             (global-company-mode t))
+
 
             ;; company-box is an extension for company that provides a visually
             ;; enhanced dropdown for completions. It makes the completion menu
@@ -763,9 +765,25 @@
             ;; such as icons for different types of completion
             ;; candidates (e.g., a function, variable, or class).
             (use-package company-box
-                :after company
-                :diminish
-                :hook (company-mode . company-box-mode))
+             :after company
+             :diminish
+             :hook (company-mode . company-box-mode))
+
+            ;; Make company-mode work with org-mode's org-self-insert-command
+            (with-eval-after-load 'company
+             (add-to-list 'company-begin-commands 'org-self-insert-command))
+
+            ;; Function to integrate pcomplete with company-capf
+            (defun add-pcomplete-to-capf ()
+             (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+            ;; Adding pcomplete integration to org-mode
+            (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+
+            ;; Specific company backends setup for org-mode
+            (add-hook 'org-mode-hook (lambda ()
+                                      (setq-local company-backends '(company-capf company-dabbrev))))
+
             ;; ====================
 
             ;; org-mode enhancement
