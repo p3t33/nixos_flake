@@ -645,7 +645,10 @@
              :after ivy
              :config
              (ivy-prescient-mode 1)  ; Enable ivy-prescient
-             (setq ivy-prescient-retain-classic-highlighting t))  ; Optional: retain Ivy's highlighting style
+             (setq ivy-prescient-retain-classic-highlighting t)  ; Optional: retain Ivy's highlighting style
+             ;; Set regex builder for counsel-rg to ivy--regex-plus
+             ;; without this I was getting error code: 2 when using counsel-rg with ivy-prescient
+             (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
 
             (use-package ivy
                 :bind
