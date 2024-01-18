@@ -188,10 +188,10 @@
               '(
                   ("d" "default" plain "* Table of Contents :toc:noexport:\n\n%?"
                    :target (file+head "%<%d%m%Y%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
+                       "#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n#+title: ''${title}\n") :unnarrowed t)
                   ("s" "story" plain "* Table of Contents :toc:noexport:\n\n* resources\n** [%?[][jira]]"
                    :target (file+head "class/%<%d%m%Y%H%M%S>-''${slug}.org"
-                       "#+title: ''${title}\n#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n") :unnarrowed t)
+                       "#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n#+title: ''${title}\n") :unnarrowed t)
                   )
                   )
              ;; Daily notes (journals) templates
