@@ -316,6 +316,29 @@
              (interactive)
              (insert (format-time-string "[%Y-%m-%d %a %H:%M]")))
 
+
+            ;; A more vim like keybindis for flyspell
+            ;;---------------------------------------
+            ;; dependence on evil/evil-collection
+            (defun costum-flyspell-previous-and-correct ()
+             "Correct previous misspelling or current if already on a misspelled word."
+             (interactive)
+             (unless (flyspell-overlay-p (point))
+              (evil-prev-flyspell-error))
+             (flyspell-correct-word-before-point))
+
+            (defun costum-flyspell-next-and-correct ()
+             "Correct next misspelling or current if already on a misspelled word."
+             (interactive)
+             (unless (flyspell-overlay-p (point))
+              (evil-next-flyspell-error))
+             (flyspell-correct-word-before-point))
+
+            (general-def :states 'normal
+             "]s" 'costum-flyspell-next-and-correct
+             "[s" 'costum-flyspell-previous-and-correct)
+            ;;---------------------------------------
+
             (use-package general
                  :config
                  (general-evil-setup)
@@ -342,6 +365,8 @@
                   ;; -------------
                   "fu" '(sudo-edit-find-file :wk "Sudo find file")
                   "fU" '(sudo-edit :wk "Sudo edit file")
+
+
 
 
                   ;; Buffer/bookmarks
