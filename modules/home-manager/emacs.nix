@@ -11,7 +11,18 @@
     # ctags.
     home.packages = with pkgs; [
         universal-ctags
+
+        # support for LaTeX
+        texlive.combined.scheme-full
+
+        # search
+        ripgrep
+        fd
+        fzf
+
     ];
+
+    services.emacs.enable = true;
 
     programs.emacs = {
         enable = true;
@@ -30,6 +41,9 @@
             epkgs.ivy
             epkgs.all-the-icons-ivy-rich
             epkgs.ivy-rich
+            epkgs.counsel
+            epkgs.prescient
+            epkgs.ivy-prescient
             epkgs.all-the-icons
             epkgs.all-the-icons-dired
             epkgs.dired-open
@@ -58,6 +72,10 @@
             epkgs.magit
             epkgs.hl-todo
             epkgs.tldr
+            epkgs.org-roam
+            epkgs.org-download
+            epkgs.org-tree-slide
+            epkgs.undo-tree
         ];
     };
 
@@ -81,7 +99,125 @@
             (setq package-quickstart nil)
             (setq package-menu-async nil)
             (setq package-load-list '(all))
+            (add-hook 'org-mode-hook (lambda ()
+                           (message "org-mode hook executed")
+                           (org-redisplay-inline-images)))
 
+            ;; Set UTF-8 as the default encoding
+            (prefer-coding-system 'utf-8)
+            (set-default-coding-systems 'utf-8)
+            (set-terminal-coding-system 'utf-8)
+            (set-keyboard-coding-system 'utf-8)
+
+            ;; smoth scroll with mergin of lines
+            ;; =================================
+            (setq scroll-margin 8)
+            (setq-default scroll-conservatively 100 scroll-up-aggressively 0.01 scroll-down-aggressively 0.01)
+            (pixel-scroll-mode 1)
+            (pixel-scroll-precision-mode 1)
+            ;; =================================
+
+            (use-package undo-tree
+             :ensure t)
+             (global-undo-tree-mode)
+
+            ;; Set evil-undo-system to use undo-tree
+            (setq evil-undo-system 'undo-tree)
+
+            (setq org-image-actual-width nil)
+            (require 'org-tree-slide)
+
+            ;; Custom keybindings for navigating slides
+            (with-eval-after-load "org-tree-slide"
+             (define-key org-tree-slide-mode-map (kbd "<f8>") 'org-tree-slide-mode)
+             (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+             (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree))
+
+            ;; Start or stop the slide mode with F8
+            (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+
+            ;; Move to the previous slide with F9
+            (global-set-key (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+
+            ;; Move to the next slide with F10
+            (global-set-key (kbd "<f10>") 'org-tree-slide-move-next-tree)
+
+            ;; Optional: Start with a simple profile
+            ;; Uncomment the following line if you want to use the simple profile by default
+            ;; (org-tree-slide-simple-profile)
+
+            (use-package org-download
+             :ensure t
+             :config
+             ;; where to save files?
+             ;; when  org-download-method is set to "attach"
+             ;; then org-roam will handle where to store the
+             ;; file and creat place for it.
+             ;; is you want to specify the directory then
+             ;; org-download-method needs to be chagned to directory
+             ;; and you will need to set org-download-image-dir, E.g:
+             ;; Set the default directory where images will be downloaded
+             ;;(setq-default org-download-image-dir "~/Sync/dev_resources/roam_notes/images/")
+
+             ;; Set the method for handling downloaded images
+             ;; 'attach integrates with Org's attachment system
+             (setq org-download-method 'attach)
+
+             ;; Ensure the org-download package is loaded
+             (require 'org-download))
+
+            (with-eval-after-load 'org
+                (setq org-agenda-files '("~/Sync/dev_resources/roam_notes/")))
+            (setq org-todo-keywords
+                '((sequence "TODO" "|" "DONE")
+                  (sequence "QUESTION" "|" "ANSWERED")))
+
+            (use-package org-roam
+             :ensure t
+             :custom
+             (org-roam-directory (file-truename "~/Sync/dev_resources/roam_notes/"))
+             :bind (("C-c n l" . org-roam-buffer-toggle)
+                    ("C-c n f" . org-roam-node-find)
+                    ("C-c n g" . org-roam-graph)
+                    ("C-c n i" . org-roam-node-insert)
+                    ("C-c n c" . org-roam-capture)
+                    ;; Dailies
+                    ("C-c n j" . org-roam-dailies-capture-today))
+             :config
+             ;; puting the remplate setitngs under :costum did not work for me.
+             (setq org-roam-capture-templates
+              '(
+                  ("d" "default" plain "* Table of Contents :toc:noexport:\n\n%?"
+                   :target (file+head "%<%d%m%Y%H%M%S>-''${slug}.org"
+                       "#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n#+title: ''${title}\n") :unnarrowed t)
+                  ("s" "story" plain "* Table of Contents :toc:noexport:\n\n* resources\n** [%?[][jira]]"
+                   :target (file+head "class/%<%d%m%Y%H%M%S>-''${slug}.org"
+                       "#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n#+title: ''${title}\n") :unnarrowed t)
+                  )
+                  )
+             ;; Daily notes (journals) templates
+             (setq org-roam-dailies-capture-templates
+              '(("j" "journal" entry "* %<%I:%M %p> - %?"
+                      :target (file+head "%<%d-%m-%Y>.org"
+                          "#+title: %<%d-%m-%Y>\n"))))
+
+             ;; If you're using a vertical completion framework, you might want a more informative completion interface
+             (setq org-roam-node-display-template (concat "''${title:*} " (propertize "''${tags:10}" 'face 'org-tag)))
+             (org-roam-db-autosync-mode)
+             ;; If using org-roam-protocol
+             (require 'org-roam-protocol))
+
+            ;; setup spell checker
+            ;; ===================
+            (setq ispell-program-name "aspell")
+            ;; For text modes(md, txt, org):
+            (add-hook 'text-mode-hook 'flyspell-mode)
+
+            ;; Specifically for programming modes to check comments and strings:
+            (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+
+
+            ;; ===================
 
             ;; By default, Emacs creates automatic backups of files in their
             ;; original directories, such “file.el” and the backup “file.el~”.
@@ -100,17 +236,41 @@
             ;; =================================
             (use-package evil
                 :init
-                ;; by default evil has some basic intergration with other
-                ;; packages and modes but as I am delegating the intergration
-                ;; to evil-collection this basic intergration should be
-                ;; disabled.
-                (setq evil-want-integration nil)
+                ;; evil-collection assumes evil-want-keybinding is set to nil and
+                ;; evil-want-integration is set to t before loading evil and evil-collection.
+                ;; Note some other packages may load evil (e.g. evil-leader) so bear that
+                ;; in mind when determining when to set the variables.
+                (setq evil-want-integration t) ;; This is optional since it's already set to t by default
                 (setq evil-want-keybinding nil)
 
                 (setq evil-vsplit-window-right t)
                 (setq evil-split-window-below t)
                 :config
-                (evil-mode 1))
+                (evil-mode 1)
+
+                ;; Define the custom function
+                (defun save-and-switch-to-normal-mode ()
+                 "Save the current buffer and switch to normal mode."
+                 (interactive)
+                 (save-buffer)
+                 (evil-normal-state))
+
+                ;; Set the key bindings for normal and insert modes
+                (define-key evil-normal-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
+                (define-key evil-insert-state-map (kbd "C-s") 'save-and-switch-to-normal-mode))
+
+                ;; recenter org around search string
+                ;; same as:
+                ;;vim.keymap.set('n', 'n', "nzzzv", opts)
+                ;; --------------------------------------
+                (defadvice evil-search-next
+                 (after advice-for-evil-search-next activate)
+                 (evil-scroll-line-to-center (line-number-at-pos)))
+
+                (defadvice evil-search-previous
+                 (after advice-for-evil-search-previous activate)
+                 (evil-scroll-line-to-center (line-number-at-pos)))
+                ;; --------------------------------------
 
             (use-package evil-collection
                 :after evil
@@ -128,6 +288,9 @@
                 (define-key evil-motion-state-map (kbd "TAB") nil))
             ;; Setting RETURN key in org-mode to follow links
             (setq org-return-follows-link  t)
+
+            (with-eval-after-load 'evil-maps
+             (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
             ;; =================================
 
             ;; git
@@ -142,9 +305,40 @@
             (use-package magit)
             ;; ============
 
-            (use-package magit)
-
             (use-package sudo-edit)
+
+            (defun insert-active-timestamp ()
+             "Inserts an active timestamp with the current date and time up to minutes."
+             (interactive)
+             (insert (format-time-string "<%Y-%m-%d %a %H:%M>")))
+
+            (defun insert-inactive-timestamp ()
+             "Inserts an inactive timestamp with the current date and time up to minutes."
+             (interactive)
+             (insert (format-time-string "[%Y-%m-%d %a %H:%M]")))
+
+
+            ;; A more vim like keybindis for flyspell
+            ;;---------------------------------------
+            ;; dependence on evil/evil-collection
+            (defun costum-flyspell-previous-and-correct ()
+             "Correct previous misspelling or current if already on a misspelled word."
+             (interactive)
+             (unless (flyspell-overlay-p (point))
+              (evil-prev-flyspell-error))
+             (flyspell-correct-word-before-point))
+
+            (defun costum-flyspell-next-and-correct ()
+             "Correct next misspelling or current if already on a misspelled word."
+             (interactive)
+             (unless (flyspell-overlay-p (point))
+              (evil-next-flyspell-error))
+             (flyspell-correct-word-before-point))
+
+            (general-def :states 'normal
+             "]s" 'costum-flyspell-next-and-correct
+             "[s" 'costum-flyspell-previous-and-correct)
+            ;;---------------------------------------
 
             (use-package general
                  :config
@@ -162,12 +356,19 @@
                   "SPC" '(counsel-M-x :wk "Counsel M-x")
                   "." '(find-file :wk "Find file")
                   "f r" '(counsel-recentf :wk "Find recent files")
+                  "f f" '(counsel-fzf :wk "Find files")
+                  "f s" '(counsel-rg :wk "Find string")
+                  "f b" '(counsel-switch-buffer :wk "Find buffer")
+                  "f h" '(counsel-org-goto :wk "Find org file header")
                   "TAB TAB" '(comment-line :wk "Comment lines")
                   ;;
                   ;; sudo on files
                   ;; -------------
                   "fu" '(sudo-edit-find-file :wk "Sudo find file")
                   "fU" '(sudo-edit :wk "Sudo edit file")
+
+
+
 
                   ;; Buffer/bookmarks
                   ;; -----
@@ -245,6 +446,7 @@
                   "h v" '(describe-variable :wk "Describe variable")
                   "h w" '(where-is :wk "Prints keybinding for command if set")
                   "h x" '(describe-command :wk "Display full documentation for command")
+                  ;; For the time being the wk(which key) will not work and "lambda" will be displayed.
 
                   ;;
                   ;; Toggle
@@ -287,14 +489,30 @@
                   "m" '(:ignore t :wk "Org")
                   "m a" '(org-agenda :wk "Org agenda")
                   "m e" '(org-export-dispatch :wk "Org export dispatch")
-                  "m i" '(org-toggle-item :wk "Org toggle item")
+                  "m l" '(org-toggle-item :wk "Org toggle list item")
                   "m t" '(org-todo :wk "Org todo")
                   "m B" '(org-babel-tangle :wk "Org babel tangle")
                   "m T" '(org-todo-list :wk "Org todo list")
                   "m b" '(:ignore t :wk "Tables")
                   "m b -" '(org-table-insert-hline :wk "Insert hline in table")
                   "m d" '(:ignore t :wk "Date/deadline")
-                  "m d t" '(org-time-stamp :wk "Org time stamp")
+                  "m d t" '(insert-inactive-timestamp :which-key "Insert inactive timestamp")
+                  "m d a" '(insert-active-timestamp :which-key "Insert active timestamp")
+                  "m h" '(org-toggle-heading :wk "Org toggle heading")
+                  "m i" '(:ignore t :wk "Org insert")
+                  "m i l" '(org-insert-link :wk "Insert Org link")
+                  "m i n" '(org-roam-node-insert :which-key "org-roam node insert")
+                  "m i i" '(org-id-get-create :which-key "assign Org-roam ID to heading")
+                  "m i c" '(org-download-clipboard :which-key "insert clipboard")
+
+
+
+                  ;; Org-roam
+                  "m r" '(org-roam-buffer-toggle :which-key "list node refernces")
+                  "m f" '(org-roam-node-find :which-key "org-roam node find")
+                  "m g" '(org-roam-graph :which-key "org-roam graph")
+                  "m c" '(org-roam-capture :which-key "org-roam capture")
+                  "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
 
                   ;; dired
                   ;; -----
@@ -316,6 +534,7 @@
                   ;; -------
                   "e" '(:ignore t :wk "Eshell/Evaluate")
                   "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
+                  "ec" '(lambda () (interactive) (load-file user-init-file)) :wk "Reload config"
                   "ed" '(eval-defun :wk "Evaluate defun containing or after point")
                   "ee" '(eval-expression :wk "Evaluate and elisp expression")
                   "eh" '(counsel-esh-history :which-key "Eshell history")
@@ -323,6 +542,13 @@
                   "er" '(eval-region :wk "Evaluate elisp in region")
                   "es" '(eshell :which-key "Eshell"))
             )
+
+            (global-set-key (kbd "C-c c") 'org-capture)
+            (setq org-capture-templates
+             '(("t" "Todo" entry (file+headline "~/org/tasks.org" "Tasks")
+                     "* TODO %?\n  %i\n  %a")
+                 ("j" "Journal" entry (file+datetree "~/org/journal.org")
+                  "* %?\nEntered on %U\n  %i\n  %a")))
 
             ;; Iconns
             ;; ======
@@ -421,11 +647,37 @@
             (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
             ;; =============================
 
+            ;; Org mode Meta keybinding
+            ;; ==============================
+
+            (with-eval-after-load 'org
+             ;; Ensure "M-h" is unbound in org-mode specifically
+             (define-key org-mode-map (kbd "M-h") nil)
+             (define-key org-mode-map (kbd "M-h") 'org-promote-subtree)
+
+             ;; Set "M-l" for demoting subtree globally
+             (define-key org-mode-map (kbd "M-l") 'org-demote-subtree)
+
+             ;; Bind keys for moving headings up and down in Org mode
+             (define-key org-mode-map (kbd "M-j") 'org-move-subtree-down)
+             (define-key org-mode-map (kbd "M-k") 'org-move-subtree-up))
+            ;; ==============================
+
             ;; ivy settings
             ;; ============
-            (use-package counsel
-                :after ivy
-                :config (counsel-mode))
+
+            (use-package prescient
+             :config
+             (prescient-persist-mode 1))  ; Remember usage statistics across Emacs sessions
+
+            (use-package ivy-prescient
+             :after ivy
+             :config
+             (ivy-prescient-mode 1)  ; Enable ivy-prescient
+             (setq ivy-prescient-retain-classic-highlighting t)  ; Optional: retain Ivy's highlighting style
+             ;; Set regex builder for counsel-rg to ivy--regex-plus
+             ;; without this I was getting error code: 2 when using counsel-rg with ivy-prescient
+             (setf (alist-get 'counsel-rg ivy-re-builders-alist) #'ivy--regex-plus))
 
             (use-package ivy
                 :bind
@@ -439,21 +691,31 @@
                 :config
                 (ivy-mode))
 
+
+                 (use-package counsel
+                  :ensure t
+                  :after ivy
+                  :config
+                  (setq ivy-use-virtual-buffers t)
+                  (setq enable-recursive-minibuffers t)
+                  ;; Bind `counsel-M-x' to M-x
+                  (global-set-key (kbd "M-x") 'counsel-M-x))
+
             (use-package all-the-icons-ivy-rich
                 :ensure t
                 :init (all-the-icons-ivy-rich-mode 1))
 
             (use-package ivy-rich
-                :after ivy
-                :ensure t
-                :init (ivy-rich-mode 1) ;; this gets us descriptions in M-x.
-                :custom
-                (ivy-virtual-abbreviate 'full
-                 ivy-rich-switch-buffer-align-virtual-buffer t
-                 ivy-rich-path-style 'abbrev)
-                :config
-                (ivy-set-display-transformer 'ivy-switch-buffer
-                 'ivy-rich-switch-buffer-transformer))
+             :after ivy
+             :ensure t
+             :init
+             (ivy-rich-mode 1)  ;; Enable ivy-rich-mode
+             :config
+             ;; Recommended setting
+             (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+             ;; Customize path style
+             (setq ivy-rich-path-style 'abbrev))
+
             ;; ====================
 
             ;; RSS feed
@@ -510,16 +772,18 @@
             ;; company can be used to provide the frontend for code
             ;; completions that the Language Server (like clangd for C++)
             ;; sends to the client (in this case, lsp-mode in Emacs).
+            ;; in in essence this is the popup box with completion suggestions.
             (use-package company
-                :defer 2
-                :diminish
-                :custom
-                (company-begin-commands '(self-insert-command))
-                (company-idle-delay .1)
-                (company-minimum-prefix-length 2)
-                (company-show-numbers t)
-                (company-tooltip-align-annotations 't)
-                (global-company-mode t))
+             :defer 2
+             :diminish
+             :custom
+             (company-begin-commands '(self-insert-command))
+             (company-idle-delay .1)
+             (company-minimum-prefix-length 2)
+             (company-show-numbers t)
+             (company-tooltip-align-annotations 't)
+             (global-company-mode t))
+
 
             ;; company-box is an extension for company that provides a visually
             ;; enhanced dropdown for completions. It makes the completion menu
@@ -527,13 +791,30 @@
             ;; such as icons for different types of completion
             ;; candidates (e.g., a function, variable, or class).
             (use-package company-box
-                :after company
-                :diminish
-                :hook (company-mode . company-box-mode))
+             :after company
+             :diminish
+             :hook (company-mode . company-box-mode))
+
+            ;; Make company-mode work with org-mode's org-self-insert-command
+            (with-eval-after-load 'company
+             (add-to-list 'company-begin-commands 'org-self-insert-command))
+
+            ;; Function to integrate pcomplete with company-capf
+            (defun add-pcomplete-to-capf ()
+             (add-hook 'completion-at-point-functions 'pcomplete-completions-at-point nil t))
+
+            ;; Adding pcomplete integration to org-mode
+            (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
+
+            ;; Specific company backends setup for org-mode
+            (add-hook 'org-mode-hook (lambda ()
+                                      (setq-local company-backends '(company-capf company-dabbrev))))
+
             ;; ====================
 
             ;; org-mode enhancement
             ;; ====================
+            (setq org-startup-with-inline-images t)
             (use-package toc-org
                 :commands toc-org-enable
                 :init (add-hook 'org-mode-hook 'toc-org-enable))
