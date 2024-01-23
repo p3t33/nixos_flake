@@ -55,6 +55,7 @@
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/services/dnust.nix
     ../../modules/home-manager/firefox.nix
+    ../../modules/home-manager/generic_linux_fonts.nix
   ];
 
   targets.genericLinux.enable = true;
