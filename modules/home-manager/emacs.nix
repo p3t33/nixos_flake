@@ -76,6 +76,7 @@
             epkgs.org-download
             epkgs.org-tree-slide
             epkgs.undo-tree
+            epkgs.ox-jira
         ];
     };
 
@@ -117,6 +118,7 @@
             (pixel-scroll-precision-mode 1)
             ;; =================================
 
+            (use-package ox-jira)
             (use-package undo-tree
              :ensure t)
              (global-undo-tree-mode)
