@@ -192,7 +192,7 @@
                   ("d" "default" plain "* Table of Contents :toc:noexport:\n\n%?"
                    :target (file+head "%<%d%m%Y%H%M%S>-''${slug}.org"
                        "#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n#+title: ''${title}\n") :unnarrowed t)
-                  ("s" "story" plain "* Table of Contents :toc:noexport:\n\n* resources\n** [%?[][jira]]"
+                  ("s" "story" plain "* Table of Contents :toc:noexport:\n\n* Resources\n** [%?[][jira]]\n\n* Overview\n\n* AC\n\n* Testing\n\n"
                    :target (file+head "class/%<%d%m%Y%H%M%S>-''${slug}.org"
                        "#+date: [%<%d-%m-%Y %a %H:%M>]\n#+category: ''${title}\n#+filetags:\n#+title: ''${title}\n") :unnarrowed t)
                   )
