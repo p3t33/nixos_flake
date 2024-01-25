@@ -21,6 +21,7 @@
   programs.home-manager.enable = true;
   imports = [
     ../../modules/meta.nix
+    ./sops-configuration.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/fzf.nix
     ../../modules/home-manager/neovim/neovim.nix

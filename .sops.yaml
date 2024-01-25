@@ -2,6 +2,7 @@ keys:
   - &work_pc age1960hm9pdxgckwey2t0ch8uzjd6v8jf07nuv84karpap4g3kqm3kqnqavew
   - &home_desktop age1203qrs9tl0nuc94jq3pvk38n6cmuu947a489jf7y6n3xfwq3mqhq2rcajv
   - &homelab age16dp952aecvxguqj8xz4mh2akakfe7py5l7j77akx6zhygt3mefls2ex4vy
+  - &generic_linux_distro age1jukh2jtz084zgvzkq398frz73qjr9cjnljhsdsw70ywy5kxp7pnsls0eja
 creation_rules:
   - path_regex: hosts/work_pc/secrets.yaml$
     key_groups:
@@ -15,4 +16,8 @@ creation_rules:
     key_groups:
     - age:
       - *homelab
+  - path_regex: hosts/generic_linux_distro/secrets.yaml$
+    key_groups:
+    - age:
+      - *generic_linux_distro
 
