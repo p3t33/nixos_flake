@@ -109,7 +109,7 @@
         homeConfigurations = {
             kmedrish = inputs.home-manager.lib.homeManagerConfiguration {
                 inherit pkgs;
-                extraSpecialArgs = {inherit inputs; machineName = "HP-Zbook";};
+                extraSpecialArgs = {inherit inputs; machineName = "generic_linux_distro";};
                 modules = [
                     ./hosts/generic_linux_distro/home.nix
                     inputs.sops-nix.homeManagerModules.sops

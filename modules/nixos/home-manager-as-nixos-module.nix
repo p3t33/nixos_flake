@@ -21,6 +21,5 @@
             # one that is in this file and is used as NixOS module.
             inputs.sops-nix.homeManagerModules.sops
         ];
-
     };
 }

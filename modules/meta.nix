@@ -237,5 +237,10 @@
           userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
           userDefinedGlobalVariables.syncthingUser = "syncthing";
       })
+     (lib.mkIf (machineName == "generic_linux_distro"){
+          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.hostConfigurationName = "generic_linux_distro";
+          userDefinedGlobalVariables.systemStateVersion = "23.11";
+      })
    ];
 }
