@@ -314,6 +314,12 @@ in
 
             (with-eval-after-load 'evil-maps
              (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
+
+
+            (evil-define-key 'normal 'global (kbd "C-h") 'evil-window-left)
+            (evil-define-key 'normal 'global (kbd "C-j") 'evil-window-down)
+            (evil-define-key 'normal 'global (kbd "C-k") 'evil-window-up)
+            (evil-define-key 'normal 'global (kbd "C-l") 'evil-window-right)
             ;; =================================
 
             ;; git
