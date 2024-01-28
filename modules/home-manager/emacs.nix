@@ -1,4 +1,13 @@
 { pkgs, config, ... }:
+let
+    #xdg.dataHome used ro specify a path while xdg.dataFile used for creating files
+    # in the same path.
+    autoSaveDirectoryName = "emacs_autosave";
+    autoSaveDirectoryPath = "${config.xdg.dataHome}/${autoSaveDirectoryName}";
+    autoBackupDirectoryPatch = "${config.xdg.dataHome}/Trash/files";
+    orgRoamDirctoryPath = "~/Sync/dev_resources/roam_notes";
+
+in
 {
 
     # This is a fix to make the system use universal-ctags package instead
@@ -21,6 +30,10 @@
         fzf
 
     ];
+
+    # Will create the dedined path for emacs auto save
+    # an empty .keep file is a workaround to create an empty directory.
+    xdg.dataFile."${autoSaveDirectoryName}/.keep".text = "";
 
     services.emacs.enable = true;
 
@@ -159,7 +172,7 @@
              ;; org-download-method needs to be chagned to directory
              ;; and you will need to set org-download-image-dir, E.g:
              ;; Set the default directory where images will be downloaded
-             ;;(setq-default org-download-image-dir "~/Sync/dev_resources/roam_notes/images/")
+             ;;(setq-default org-download-image-dir "${orgRoamDirctoryPath}/images/")
 
              ;; Set the method for handling downloaded images
              ;; 'attach integrates with Org's attachment system
@@ -169,7 +182,7 @@
              (require 'org-download))
 
             (with-eval-after-load 'org
-                (setq org-agenda-files '("~/Sync/dev_resources/roam_notes/")))
+                (setq org-agenda-files '("${orgRoamDirctoryPath}")))
             (setq org-todo-keywords
                 '((sequence "TODO" "|" "DONE")
                   (sequence "QUESTION" "|" "ANSWERED")))
@@ -177,7 +190,7 @@
             (use-package org-roam
              :ensure t
              :custom
-             (org-roam-directory (file-truename "~/Sync/dev_resources/roam_notes/"))
+             (org-roam-directory (file-truename "${orgRoamDirctoryPath}"))
              :bind (("C-c n l" . org-roam-buffer-toggle)
                     ("C-c n f" . org-roam-node-find)
                     ("C-c n g" . org-roam-graph)
@@ -225,7 +238,15 @@
             ;; original directories, such “file.el” and the backup “file.el~”.
             ;; This leads to a lot of clutter, so this setting defines a single
             ;; path to put all the backup into.
-            (setq backup-directory-alist '((".*" . "~/.local/share/Trash/files")))
+            (setq backup-directory-alist '((".*" . "${autoBackupDirectoryPatch}")))
+
+
+
+            ;; By default, Emacs creates automatic saves of files in their
+            ;; original directories, such “file.el” and the autosave “#file.el#”.
+            ;; This leads to a lot of clutter, so this setting defines a single
+            ;; path to put all the autosave files.
+            (setq auto-save-file-name-transforms '((".*" "${autoSaveDirectoryPath}" t)))
 
             ;; Ensure the use-package macro is available
             ;; This needs to be the first plugin related settings as
@@ -602,6 +623,8 @@
                 :config
                 (dashboard-setup-startup-hook))
 
+            ;; When used by other plugins, can hide thier
+            ;; abbreviation from the modeline.
             (use-package diminish)
 
             (use-package projectile
@@ -826,6 +849,7 @@
             (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
             ;; provides support for "easy org mode templates".
+            ;; this is what makes <s (among other things) to work.
             (require 'org-tempo)
 
             ;;=======================
