@@ -94,10 +94,10 @@ in
 
       keybindings = lib.mkOptionDefault {
         # lunch alacritty.
-        "${mod}+Return" = "exec --no-startup-id ${pkgs.alacritty}/bin/alacritty";
+        "${mod}+Return" = "exec --no-startup-id alacritty";
 
         # lunch alacritty with tmux attach.
-        "${mod}+Shift+Return" = "exec --no-startup-id ${pkgs.alacritty}/bin/alacritty -e  zsh -i -c 'tmux a || tmux new'";
+        "${mod}+Shift+Return" = "exec --no-startup-id alacritty -e  zsh -i -c 'tmux a || tmux new'";
 
         # kill window.
         "${mod}+Shift+c" = "kill";
