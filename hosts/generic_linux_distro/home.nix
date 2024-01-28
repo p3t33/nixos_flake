@@ -17,6 +17,11 @@
   # changes in each release.
   home.stateVersion = config.userDefinedGlobalVariables.homeManagerStateVersion;
 
+  home.packages = with pkgs; [
+    arandr
+    xorg.xrandr
+  ];
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
   imports = [
@@ -33,7 +38,6 @@
     ../../modules/home-manager/sxhkd.nix
     ../../modules/home-manager/syncthing.nix
     ../../modules/home-manager/i3status.nix
-    ../../modules/home-manager/alacritty.nix
     ../../modules/home-manager/picom.nix
     ../../modules/home-manager/i3.nix
     ../../modules/home-manager/rofi.nix
