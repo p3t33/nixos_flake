@@ -70,7 +70,24 @@
           plugin = comment-nvim;
           type = "lua";
           config = ''
-            require('Comment').setup()
+            require('Comment').setup ({
+                toggler = {
+                    line = '<leader><tab><tab>'
+                },
+
+                opleader = {
+                    line = '<leader><tab><tab>'
+                },
+
+                extra = {
+                    ---Add comment on the line above
+                        above = '<leader><tab>O',
+                    ---Add comment on the line below
+                        below = '<leader><tab>o',
+                    ---Add comment at the end of line
+                        eol = '<leader><tab>A',
+                },
+            })
           '';
       }
       {
@@ -598,7 +615,6 @@
 
      -- Jump to the previous misspelled word and activate fix mode
      vim.keymap.set('n', '[s', '[sz=', opts)
-
     '';
 
     # this is generated into vim script and called at the top of init.lua
