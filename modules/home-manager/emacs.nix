@@ -909,7 +909,13 @@ in
             (setq org-startup-with-inline-images t)
             (use-package toc-org
                 :commands toc-org-enable
-                :init (add-hook 'org-mode-hook 'toc-org-enable))
+                :init
+                (add-hook 'org-mode-hook 'toc-org-enable)
+                :config
+                (setq toc-org-max-depth 6)) ;; Set the default TOC depth
+
+
+            (setq org-hide-emphasis-markers t)
 
             (add-hook 'org-mode-hook 'org-indent-mode)
             (use-package org-bullets)
