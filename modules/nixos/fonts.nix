@@ -4,11 +4,7 @@
     # fonts.fontconfig.enable directive.
     fonts = {
         enableDefaultPackages = true;
-        packages = with pkgs; [
-            nerdfonts
-            powerline-fonts
-            font-awesome
-        ];
+        packages = config.userDefinedGlobalVariables.fontPackages;
         fontconfig = {
             defaultFonts = {
                 # Each character in a monospace font takes up the same amount of horizontal space

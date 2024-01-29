@@ -10,6 +10,12 @@
 
     userDefinedGlobalVariables = {
 
+        fontPackages = mkOption {
+            default = with pkgs; [ nerdfonts powerline-fonts font-awesome ];
+            type = listOf package;
+            description = "List of font packages to be used";
+        };
+
         systemStateVersion = mkOption {
             default = "";
             type = str;
