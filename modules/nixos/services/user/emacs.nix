@@ -70,6 +70,8 @@
             epkgs.undo-tree
             epkgs.ox-jira
             epkgs.plantuml-mode
+            epkgs.websocket
+            epkgs.org-roam-ui
     ]));
   };
 }
