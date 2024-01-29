@@ -217,22 +217,24 @@
 
       # Tree-sitter is a parsing library for programming languages that
       # can be used to analyze, edit, and transform code.
+      # This setting replaced:
+      #
+      # "ensure_installed = { "c", "cpp"..}" that was part
+      # of the config = ''... and made vim install treesitter
+      # packages dynamically instaed of using the declarative
+      # nature of nix.
+      #
+      # By using withAllGrammars I am installing all of the packages
+      # that can are avaliable to treesitter. This single setting
+      # replaced.
+      # plugin = (nvim-treesitter.withPlugins (p: [
+      #     p.tree-sitter-nix
+      #     p.tree-sitter-bash
+      #     ....
+      #     ]));
+
       {
-        plugin = (nvim-treesitter.withPlugins (p: [
-          # this replaces the ensure_installed = { "c", "cpp"..}
-          p.tree-sitter-nix
-          p.tree-sitter-vim
-          p.tree-sitter-bash
-          p.tree-sitter-lua
-          p.tree-sitter-python
-          p.tree-sitter-json
-          p.tree-sitter-c
-          p.tree-sitter-cpp
-          p.tree-sitter-go
-          p.tree-sitter-make
-          p.tree-sitter-markdown
-          p.tree-sitter-yaml
-        ]));
+        plugin = nvim-treesitter.withAllGrammars;
         type = "lua";
         config = ''
           require('nvim-treesitter.configs').setup {
