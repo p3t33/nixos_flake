@@ -298,7 +298,7 @@
 
            highlight = {
              enable = true,
-             additional_vim_regex_highlighting = false,
+             additional_vim_regex_highlighting = {'org'},
            },
           }
         '';
@@ -307,6 +307,22 @@
       # Depended on nvim-treesitter
       # and provides syntax aware text-objects, select, move, swap, and peek support.
       nvim-treesitter-textobjects
+
+      # org-mode support
+      {
+          plugin = orgmode;
+          type = "lua";
+          config = ''
+              -- Load custom treesitter grammar for org filetype
+              require('orgmode').setup_ts_grammar()
+
+              -- Orgmode setup
+              require('orgmode').setup({
+                      org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
+                      org_default_notes_file = '~/Dropbox/org/refile.org',
+                      });
+          '';
+      }
 
       # Look and feel
       # ======================
