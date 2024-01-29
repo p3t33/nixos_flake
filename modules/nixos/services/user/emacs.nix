@@ -68,6 +68,8 @@
             epkgs.org-download
             epkgs.org-tree-slide
             epkgs.undo-tree
+            epkgs.ox-jira
+            epkgs.plantuml-mode
     ]));
   };
 }

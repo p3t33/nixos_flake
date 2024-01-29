@@ -29,6 +29,9 @@ in
         fd
         fzf
 
+        plantuml
+        graphviz
+        jdk11
     ];
 
     # Will create the dedined path for emacs auto save
@@ -90,6 +93,7 @@ in
             epkgs.org-tree-slide
             epkgs.undo-tree
             epkgs.ox-jira
+            epkgs.plantuml-mode
         ];
     };
 
@@ -129,6 +133,43 @@ in
             (setq-default scroll-conservatively 100 scroll-up-aggressively 0.01 scroll-down-aggressively 0.01)
             (pixel-scroll-mode 1)
             (pixel-scroll-precision-mode 1)
+            ;; =================================
+
+            ;; plantuml setitngs
+            ;; =================================
+
+            ;; general settings for plantuml
+            ;; mostly used for standalone work with .plantuml files.
+            ;; -------------------------------------
+            (use-package plantuml-mode
+             :ensure t
+             :mode ("\\.plantuml\\'" . plantuml-mode)
+             :config
+             ;; If you have the PlantUML executable instead of a jar file, set the command
+
+             (setq plantuml-executable-path "${pkgs.plantuml}/bin/plantuml")
+             (setq plantuml-default-exec-mode 'executable))
+
+            ;; function to show preview of diagram on every save of .plantuml file.
+            (defun plantuml-preview-on-save ()
+             (when (eq major-mode 'plantuml-mode)
+              (plantuml-preview-buffer 4)))
+
+            (add-hook 'after-save-hook 'plantuml-preview-on-save)
+            ;; -------------------------------------
+
+            ;; org-mode integration
+            ;; -------------------------------------
+            (org-babel-do-load-languages
+             'org-babel-load-languages
+             '((plantuml . t)))
+
+            ;; note that org-mode only supports the use of plantuml.jar
+            ;; and there is no org-* variable to set plantuml like I did for standalone .plantuml
+            ;; Set the command for Org-mode to use PlantUML
+            (setq org-plantuml-jar-path "${pkgs.plantuml}/lib/plantuml.jar")
+            ;; Tell Org-mode to use the jar method
+            (setq org-plantuml-exec-mode 'jar)
             ;; =================================
 
             (use-package ox-jira)
@@ -221,6 +262,8 @@ in
              (org-roam-db-autosync-mode)
              ;; If using org-roam-protocol
              (require 'org-roam-protocol))
+
+
 
             ;; setup spell checker
             ;; ===================
