@@ -60,6 +60,24 @@
         '';
       }
       {
+
+         plugin = fzf-lua;
+         type = "lua";
+         config = ''
+             require('fzf-lua').setup({
+             })
+
+             vim.keymap.set('n', '<leader>ff', ':FzfLua files<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fb', ':FzfLua buffers<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fs', ':FzfLua live_grep<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fr', ':FzfLua resume<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fw', ':FzfLua grep_cword<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fW', ':FzfLua grep_cWORD<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fg', ':FzfLua git_bcommits<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fv', ':FzfLua grep_visual<CR>', { noremap = true, silent = true })
+         '';
+      }
+      {
           plugin = nvim-autopairs;
           type = "lua";
           config = ''
@@ -338,10 +356,10 @@
               "nix generates the config"
 
               let mapleader = " "
-              nnoremap <leader>ff :Files<CR>
-              nnoremap <leader>fs :Rg<CR>
-              nnoremap <leader>fd :BD<CR>
-              nnoremap <leader>fb :Buffers<CR>
+              nnoremap <leader>zf :Files<CR>
+              nnoremap <leader>zs :Rg<CR>
+              nnoremap <leader>zd :BD<CR>
+              nnoremap <leader>zb :Buffers<CR>
 
               "some tweaks for the search and preview look and feel"
               "----------------------------------------------------"
