@@ -11,7 +11,7 @@
   imports = [
     ./spelling.nix
     ./ui.nix
-    ./lsp.nix
+    ./completion.nix
   ];
 
   programs.neovim = {
@@ -23,12 +23,6 @@
         # required by neovim/vim for copy/paste
         # to work with system clipboard on x11.
         xclip
-
-        #LSP servers
-        sumneko-lua-language-server
-        clang-tools
-        rnix-lsp
-        nodePackages.pyright # language server.
     ];
 
     plugins = with pkgs.vimPlugins; [
@@ -575,13 +569,19 @@
       vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", opts)
       vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", opts)
 
-      -- Up and down the page and stay in the middle
+      -- Centered movements
+      -- ------------------
       vim.keymap.set('n', '<C-u>', "<C-u>zz", opts)
       vim.keymap.set('n', '<C-d>', "<C-d>zz", opts)
-
-     -- While in search screen stays in the middle
-     vim.keymap.set('n', 'n', "nzzzv", opts)
-     vim.keymap.set('n', 'N', "Nzzzv", opts)
+      vim.keymap.set('n', 'n', "nzzzv", opts)
+      vim.keymap.set('n', 'N', "Nzzzv", opts)
+      vim.keymap.set('n', '{', '{zz', opts)
+      vim.keymap.set('n', '}', '}zz', opts)
+      vim.keymap.set('n', '<C-i>', '<C-i>zz', opts)
+      vim.keymap.set('n', '<C-o>', '<C-o>zz', opts)
+      vim.keymap.set('n', '%', '%zz', opts)
+      vim.keymap.set('n', '*', '*zz', opts)
+      vim.keymap.set('n', '#', '#zz', opts)
 
      -- Paste over and the deleted text will go into void register
      vim.keymap.set('x', '<leader>p', '"_dP', opts)
