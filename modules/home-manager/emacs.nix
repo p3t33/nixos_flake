@@ -446,6 +446,7 @@ in
                   "." '(find-file :wk "Find file")
                   "f r" '(counsel-recentf :wk "Find recent files")
                   "f f" '(counsel-fzf :wk "Find files")
+                  "f n" '(org-roam-node-find :which-key "find org-roam node")
                   "f s" '(counsel-rg :wk "Find string")
                   "f b" '(counsel-switch-buffer :wk "Find buffer")
                   "f h" '(counsel-org-goto :wk "Find org file header")
@@ -598,8 +599,8 @@ in
 
 
                   ;; Org-roam
+                  ;; find is bound under find
                   "m r" '(org-roam-buffer-toggle :which-key "list node refernces")
-                  "m f" '(org-roam-node-find :which-key "org-roam node find")
                   "m g" '(org-roam-graph :which-key "org-roam graph")
                   "m c" '(org-roam-capture :which-key "org-roam capture")
                   "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
