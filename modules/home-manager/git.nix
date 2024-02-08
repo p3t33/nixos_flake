@@ -56,6 +56,7 @@
     Session.vim
     tags
     .clang-format
+    .ccls-cache
   '';
 
 }
