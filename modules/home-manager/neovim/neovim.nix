@@ -69,6 +69,7 @@
              vim.keymap.set('n', '<leader>fW', ':FzfLua grep_cWORD<CR>', { noremap = true, silent = true })
              vim.keymap.set('n', '<leader>fg', ':FzfLua git_bcommits<CR>', { noremap = true, silent = true })
              vim.keymap.set('n', '<leader>fv', ':FzfLua grep_visual<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fc', ':FzfLua git_status<CR>', { noremap = true, silent = true })
          '';
       }
       {
@@ -207,6 +208,7 @@
             vim.keymap.set('n', '<leader>xg', builtin.grep_string, {})
             vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
             vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
+            vim.keymap.set('n', '<leader>xc', builtin.git_status, {})
         '';
       }
       {
