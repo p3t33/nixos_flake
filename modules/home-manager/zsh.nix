@@ -49,14 +49,43 @@
         }
         zle -N tmux-sesssion
         bindkey '^f' tmux-sesssion
+
+        # The default behavior of postponing the initialization of the zsh-vi-mode
+        # plugin until the first command line prompt appears is designed to minimize conflicts
+        # with other plugins(can be disabled using ZVM_INIT_MODE=sourcing). that might
+        # alter keybindings or other settings that zsh-vi-mode relies on. This approach
+        # helps ensure that zsh-vi-mode can apply its configurations without being overridden
+        # by the subsequent loading of other plugins or scripts. this is also refered as
+        # lazy binding.
+        #
+        # THis means that this plugis initialization is done on first use after all of .zshrc
+        # had done loading.
+        #
+        # This was confilction with my use of atuin for history on C-r.
+        # The function bellow makes sure to rebind this key(that vim uses to redo chagge)
+        # back to the use of atuin.
+        source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+        function zvm_custom_bindings() {
+            bindkey '^R' _atuin_search_widget
+        }
+
+        # Ensure custom bindings are applied after zsh-vi-mode initializes
+        zvm_after_init_commands+=(zvm_custom_bindings)
     '';
-    # There are two types of plugins.
-    # the one that are part of the shell(like the once bellow),
-    # and then one that are part of oh-my-zsh.
+
+    # There are four types of plugins in this config
+    # ==============================================
+    # And the one that I installed with initExtra, although it can be
+    # installled using oh-my-zsh but the documentation suggested using initExtra
+    # for nix installtion.
+    #
+    # the one that are part of the zsh shell and home-manger has "clean"
+    # configurations(like the once bellow), for them:
     enableAutosuggestions = true;
     syntaxHighlighting.enable = true;
-    # This is also a non oh-my-zsh pluging but it doesn't have
-    # a clean option(E.g enableFzfTab = true;)
+    #
+    # plugins that are installed without  plugin manager:
+    # without a "clean" option(E.g enableFzfTab = true;)
     plugins = [
         {
             name = "fzf-tab";
@@ -64,6 +93,7 @@
         }
     ];
 
+    # the one that are part of oh-my-zsh plugin manager:
     oh-my-zsh = {
       enable = true;
       plugins = [
@@ -75,13 +105,8 @@
         "last-working-dir"
         "sudo"
         "web-search"
-        "vi-mode"
       ];
-      # Not used because I am using starship prompt.
-      #theme = "agnoster";
-      #theme = "avit";
    };
   };
-
 }
 
