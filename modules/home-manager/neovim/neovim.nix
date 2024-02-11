@@ -59,6 +59,23 @@
          type = "lua";
          config = ''
              require('fzf-lua').setup({
+                'default', -- the profile to be used.
+                winopts = {
+                    height = 0.90,  -- Adjust as needed
+                    width = 0.90,   -- Adjust as needed
+                    row = 0.50,     -- Center vertically
+                    col = 0.50,     -- Center horizontally
+
+                    preview = {
+                        layout = "vertical",
+                        vertical = "up:70%",
+                        default="builtin"
+                      },
+                },
+
+                fzf_opts = {
+                ['--layout'] = 'reverse-list',
+                },
              })
 
              vim.keymap.set('n', '<leader>ff', ':FzfLua files<CR>', { noremap = true, silent = true })
@@ -70,6 +87,7 @@
              vim.keymap.set('n', '<leader>fg', ':FzfLua git_bcommits<CR>', { noremap = true, silent = true })
              vim.keymap.set('n', '<leader>fv', ':FzfLua grep_visual<CR>', { noremap = true, silent = true })
              vim.keymap.set('n', '<leader>fc', ':FzfLua git_status<CR>', { noremap = true, silent = true })
+             vim.keymap.set('n', '<leader>fl', ':FzfLua lsp_finder<CR>', { noremap = true, silent = true })
          '';
       }
       {
@@ -175,40 +193,120 @@
 
       # A pretty list for showing diagnostics, references and fixes.
       trouble-nvim
+      telescope-vim-bookmarks-nvim
+      telescope-ui-select-nvim
 
       {
         plugin = telescope-nvim;
         type = "lua";
         config = ''
+            local actions = require("telescope.actions")
+            local trouble = require("trouble.providers.telescope")
             require('telescope').setup {
                 defaults = {
                     mappings = {
                         i = {
                             ['<C-u>'] = false,
                             ['<C-d>'] = false,
+                            ["<c-t>"] = trouble.open_with_trouble,
+                        },
+                        n = {
+                            ["<c-t>"] = trouble.open_with_trouble,
                         },
                     },
+                    dynamic_preview_title = true,
+                    wrap_results = true,
+
                     layout_config = {
-                        vertical = { width = 0.9, prompt_position = "bottom", mirror = true, }
-                        -- other layout configuration here
+                        prompt_position = "top",
+                        horizontal = {
+                            preview_width = 0.65,
+                            width = 0.75,
+                        },
+                        vertical = {
+                            width = 0.9,  -- Adjusts the width of the Telescope window as a percentage of the total screen width
+                            height = 0.95,  -- Adjusts the height as a percentage of the total screen height
+                            mirror = false,  -- If true, flips the layout vertically (preview at bottom)
+                            preview_height = 0.6,
+                            preview_cutoff = 20,
+                            prompt_position = "bottom",
+                        },
+                        center = {
+                            mirror = false,
+                            height = 0.40,  -- Height of the Telescope window as a percentage of the total screen height
+                            width = 0.50,  -- Width of the Telescope window as a percentage of the total screen width
+                            preview_cutoff = 40,  -- Minimum width of the Telescope window to show the preview pane
+                        },
+                        cursor = {
+                            width = 0.80,  -- Width of the Telescope window as a percentage of the total screen width
+                            height = 0.40,  -- Height of the Telescope window as a percentage of the total screen height
+                            preview_cutoff = 40,  -- Minimum width of the Telescope window to show the preview pane
+                        },
                     },
 
                 },
                 pickers = {
                     find_files = {
-                        theme = "dropdown",
-                    }
+                        layout_strategy = 'vertical',
+                    },
+                    live_grep = {
+                        layout_strategy = 'vertical',
+                    },
+                    grep_string = {
+                        layout_strategy = 'vertical',
+                    },
+                    buffers = {
+                        layout_strategy = 'vertical',
+                    },
+                    help_tags = {
+                        layout_strategy = 'vertical',
+                    },
+                    git_status = {
+                        layout_strategy = 'vertical',
+                    },
                 },
+                extensions = {
+                    -- telescope-fzf-native-nvim pluginreplaces native lua search
+                    fzf = {
+                        fuzzy = true,                    -- false will only do exact matching
+                        override_generic_sorter = true,  -- override the generic sorter
+                        override_file_sorter = true,     -- override the file sorter
+                        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                    },
+                    ["ui-select"] = {
+                        require("telescope.themes").get_cursor(),
+                    },
+                }
             }
 
+            -- for the use of telescope-fzf-native.nvim
             require('telescope').load_extension('fzf')
+            -- for the use of telescope-vim-bookmarks-nvim
+            require('telescope').load_extension('vim_bookmarks')
+            require("telescope").load_extension("ui-select")
+
             local builtin = require('telescope.builtin')
             vim.keymap.set('n', '<leader>xf', builtin.find_files, {})
             vim.keymap.set('n', '<leader>xs', builtin.live_grep, {})
-            vim.keymap.set('n', '<leader>xg', builtin.grep_string, {})
+            vim.keymap.set('n', '<leader>xw', builtin.grep_string, {})
             vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
             vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
             vim.keymap.set('n', '<leader>xc', builtin.git_status, {})
+            vim.keymap.set('n', '<leader>xr', builtin.resume, {})
+            vim.keymap.set('n', '<leader>xm', function()
+                require('telescope').extensions.vim_bookmarks.all()
+            end, {desc = 'Telescope: All Vim Bookmarks'})
+
+            vim.keymap.set('n', '<leader>ka', function()
+                    require("telescope.builtin").find_files({
+                        results_title = "Config Files Results",
+                        layout_strategy = "horizontal",
+                        layout_config = {
+                        preview_width = 0.65,
+                        width = 0.75,
+                        },
+                    })
+            end, {desc = "Find Config Files"})
         '';
       }
       {
@@ -343,52 +441,6 @@
 
       # Navigation
       # ==========
-      {
-          # fuzzy finder for files/string/open buffers...
-          plugin = fzf-vim;
-          config = ''
-
-              "I need to define leader key here because the order in which "
-              "nix generates the config"
-
-              let mapleader = " "
-              nnoremap <leader>zf :Files<CR>
-              nnoremap <leader>zs :Rg<CR>
-              nnoremap <leader>zd :BD<CR>
-              nnoremap <leader>zb :Buffers<CR>
-
-              "some tweaks for the search and preview look and feel"
-              "----------------------------------------------------"
-              "the ~ means that the size will be up to 60% depending on"
-              "the number of results"
-              let g:fzf_layout = { 'down': '~61%' }
-
-              "fzf_layout can also be defined with 'window' which is the"
-              "defautl view but can only accept vim command such as enew"
-              "E.g let g:fzf_layout = { 'window': 'enew' }"
-              "but window can't work with %"
-              let g:fzf_preview_window = ['up:75%']
-
-              "FZF Buffer Delete
-              function! s:list_buffers()
-              redir => list
-              silent ls
-              redir END
-              return split(list, "\n")
-              endfunction
-
-              function! s:delete_buffers(lines)
-              execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
-              endfunction
-
-              command! BD call fzf#run(fzf#wrap({
-                          \ 'source': s:list_buffers(),
-                          \ 'sink*': { lines -> s:delete_buffers(lines) },
-                          \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
-                          \ }))
-          '';
-      }
-
       {
         # Undotree visualizes the undo history and makes it easy to
         # browse and switch between different undo branches.
