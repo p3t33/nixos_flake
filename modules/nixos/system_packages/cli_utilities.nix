@@ -19,6 +19,7 @@
       nmap
       whois
       openconnect
+      gp-saml-gui
 
     # search
       ripgrep
