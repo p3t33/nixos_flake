@@ -14,13 +14,27 @@
       };
     };
 
+    # will create ~/.config/git/ingore file
+    # This file will be used as a global ignore file for git
+    ignores = [
+        ".vim-bookmarks"
+        "Session.vim"
+        "tags"
+        ".clang-format"
+        ".ccls-cache"
+   ];
+
     # User and email defined in this file that is generated using sops
     # For some reason git config --global user.[name/email] shows empty but
     # executing git config user.[name/email] inside of a repo works just fine.
     extraConfig = {
-    include = {
-      path = "${config.userDefinedGlobalVariables.homeDirectory}/.config/git/credentials";
-    };
+
+        merge = {
+            conflictStyle = "zdiff3";
+        };
+        include = {
+            path = "${config.userDefinedGlobalVariables.homeDirectory}/.config/git/credentials";
+        };
   };
 
     aliases = {
@@ -48,15 +62,5 @@
     };
 
    };
-
-   # will create ~/.config/git/ingore file
-   # This file will be used as a global ignore file for git
-   xdg.configFile."git/ignore".text = ''
-    .vim-bookmarks
-    Session.vim
-    tags
-    .clang-format
-    .ccls-cache
-  '';
 
 }
