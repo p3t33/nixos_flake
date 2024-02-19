@@ -20,20 +20,23 @@
     delta
     lazygit
 
-
     # lua
     sumneko-lua-language-server
     lua
-
 
     # C/C++
     valgrind
     gcc
     ccls # LSP for C/CPP
-    clang-tools # has clangd as part of it
+    clang-tools # has clangd as part of it, and clang-format.
     clang
     cmake
     gnumake
+
+    # debug
+    gdb
+    cgdb
+    lldb
 
     # nix devlepoment
     rnix-lsp

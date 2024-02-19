@@ -27,6 +27,7 @@
         syncthing
         autostart
         sxhkd
+        neovim
     '';
    };
 
