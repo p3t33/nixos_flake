@@ -12,6 +12,8 @@
     ./spelling.nix
     ./ui.nix
     ./completion.nix
+    ./debugger.nix
+    ./search_and_select.nix
   ];
 
   programs.neovim = {
@@ -27,100 +29,13 @@
 
     plugins = with pkgs.vimPlugins; [
 
+      #
       # Utils
-      # =====
-      {
-        plugin = gitsigns-nvim;
-        type = "lua";
-        config = ''
-            require('gitsigns').setup {
-                on_attach = function(bufnr)
-                local gs = package.loaded.gitsigns
-                    vim.keymap.set('n', "<leader>gd", gs.reset_hunk)
-                    vim.keymap.set('v', "<leader>gd", function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-                    vim.keymap.set('n', "<leader>gb", gs.toggle_current_line_blame)
-                    vim.keymap.set('n', "]g", function()
-                            if vim.wo.diff then return ']c' end
-                            vim.schedule(function() gs.next_hunk() end)
-                            return '<Ignore>'
-                            end, {expr=true})
-                    vim.keymap.set('n', "[g", function()
-                            if vim.wo.diff then return '[c' end
-                            vim.schedule(function() gs.prev_hunk() end)
-                            return '<Ignore>'
-                            end, {expr=true})
-            end
-            }
-        '';
-      }
-      {
+      # ========================
 
-         plugin = fzf-lua;
-         type = "lua";
-         config = ''
-             require('fzf-lua').setup({
-                'default', -- the profile to be used.
-                winopts = {
-                    height = 0.90,  -- Adjust as needed
-                    width = 0.90,   -- Adjust as needed
-                    row = 0.50,     -- Center vertically
-                    col = 0.50,     -- Center horizontally
-
-                    preview = {
-                        layout = "vertical",
-                        vertical = "up:70%",
-                        default="builtin"
-                      },
-                },
-
-                fzf_opts = {
-                ['--layout'] = 'reverse-list',
-                },
-             })
-
-             vim.keymap.set('n', '<leader>ff', ':FzfLua files<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fb', ':FzfLua buffers<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fs', ':FzfLua live_grep<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fr', ':FzfLua resume<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fw', ':FzfLua grep_cword<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fW', ':FzfLua grep_cWORD<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fg', ':FzfLua git_bcommits<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fv', ':FzfLua grep_visual<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fc', ':FzfLua git_status<CR>', { noremap = true, silent = true })
-             vim.keymap.set('n', '<leader>fl', ':FzfLua lsp_finder<CR>', { noremap = true, silent = true })
-         '';
-      }
-      {
-          plugin = nvim-autopairs;
-          type = "lua";
-          config = ''
-          require("nvim-autopairs").setup {}
-          '';
-      }
-      {
-          plugin = comment-nvim;
-          type = "lua";
-          config = ''
-            require('Comment').setup ({
-                toggler = {
-                    line = '<leader><tab><tab>'
-                },
-
-                opleader = {
-                    line = '<leader><tab><tab>'
-                },
-
-                extra = {
-                    ---Add comment on the line above
-                        above = '<leader><tab>O',
-                    ---Add comment on the line below
-                        below = '<leader><tab>o',
-                    ---Add comment at the end of line
-                        eol = '<leader><tab>A',
-                },
-            })
-          '';
-      }
+      # This is a dependence for many other plugins and could be considered as
+      # a "library"
+      plenary-nvim
       {
           # vim-tmux-navigator plugin has a dual function(although name implies only
           # vim integration )
@@ -137,25 +52,12 @@
 
       {
           # A tree file explore.
-
-          # Without the require 'nvim-tree'.setup {} this plugin doesn't work
-          # the commands won't be recognized.
           plugin = nvim-tree-lua;
           type = "lua";
           config = ''
           require'nvim-tree'.setup {}
           '';
       }
-
-
-      # This is a vim session manager that I currently do not use because I am
-      # using startify
-      vim-obsession
-
-      # This is a dependence for many other plugins and could be considered as
-      # a "library"
-      plenary-nvim
-
       {
           # a vim bookmarks manager
           plugin = vim-bookmarks;
@@ -174,159 +76,8 @@
             nnoremap <leader>mp :BookmarkPrev<CR>
           '';
       }
-
-      {
-        # A git wrapper for vim
-           plugin = vim-fugitive;
-           type = "lua";
-           config = ''
-               vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
-          '';
-      }
-
-
-      # Code completion and LSP
-      # =======================
-
-      # Automatic closing of quotes, parenthesis, brackets...
-      delimitMate
-
-      # A pretty list for showing diagnostics, references and fixes.
-      trouble-nvim
-      telescope-vim-bookmarks-nvim
-      telescope-ui-select-nvim
-
-      {
-        plugin = telescope-nvim;
-        type = "lua";
-        config = ''
-            local actions = require("telescope.actions")
-            local trouble = require("trouble.providers.telescope")
-            require('telescope').setup {
-                defaults = {
-                    mappings = {
-                        i = {
-                            ['<C-u>'] = false,
-                            ['<C-d>'] = false,
-                            ["<c-t>"] = trouble.open_with_trouble,
-                        },
-                        n = {
-                            ["<c-t>"] = trouble.open_with_trouble,
-                        },
-                    },
-                    dynamic_preview_title = true,
-                    wrap_results = true,
-
-                    layout_config = {
-                        prompt_position = "top",
-                        horizontal = {
-                            preview_width = 0.65,
-                            width = 0.75,
-                        },
-                        vertical = {
-                            width = 0.9,  -- Adjusts the width of the Telescope window as a percentage of the total screen width
-                            height = 0.95,  -- Adjusts the height as a percentage of the total screen height
-                            mirror = false,  -- If true, flips the layout vertically (preview at bottom)
-                            preview_height = 0.6,
-                            preview_cutoff = 20,
-                            prompt_position = "bottom",
-                        },
-                        center = {
-                            mirror = false,
-                            height = 0.40,  -- Height of the Telescope window as a percentage of the total screen height
-                            width = 0.50,  -- Width of the Telescope window as a percentage of the total screen width
-                            preview_cutoff = 40,  -- Minimum width of the Telescope window to show the preview pane
-                        },
-                        cursor = {
-                            width = 0.80,  -- Width of the Telescope window as a percentage of the total screen width
-                            height = 0.40,  -- Height of the Telescope window as a percentage of the total screen height
-                            preview_cutoff = 40,  -- Minimum width of the Telescope window to show the preview pane
-                        },
-                    },
-
-                },
-                pickers = {
-                    find_files = {
-                        layout_strategy = 'vertical',
-                    },
-                    live_grep = {
-                        layout_strategy = 'vertical',
-                    },
-                    grep_string = {
-                        layout_strategy = 'vertical',
-                    },
-                    buffers = {
-                        layout_strategy = 'vertical',
-                    },
-                    help_tags = {
-                        layout_strategy = 'vertical',
-                    },
-                    git_status = {
-                        layout_strategy = 'vertical',
-                    },
-                },
-                extensions = {
-                    -- telescope-fzf-native-nvim pluginreplaces native lua search
-                    fzf = {
-                        fuzzy = true,                    -- false will only do exact matching
-                        override_generic_sorter = true,  -- override the generic sorter
-                        override_file_sorter = true,     -- override the file sorter
-                        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                    },
-                    ["ui-select"] = {
-                        require("telescope.themes").get_cursor(),
-                    },
-                }
-            }
-
-            -- for the use of telescope-fzf-native.nvim
-            require('telescope').load_extension('fzf')
-            -- for the use of telescope-vim-bookmarks-nvim
-            require('telescope').load_extension('vim_bookmarks')
-            require("telescope").load_extension("ui-select")
-
-            local builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<leader>xf', builtin.find_files, {})
-            vim.keymap.set('n', '<leader>xs', builtin.live_grep, {})
-            vim.keymap.set('n', '<leader>xw', builtin.grep_string, {})
-            vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
-            vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
-            vim.keymap.set('n', '<leader>xc', builtin.git_status, {})
-            vim.keymap.set('n', '<leader>xr', builtin.resume, {})
-            vim.keymap.set('n', '<leader>xm', function()
-                require('telescope').extensions.vim_bookmarks.all()
-            end, {desc = 'Telescope: All Vim Bookmarks'})
-
-            vim.keymap.set('n', '<leader>ka', function()
-                    require("telescope.builtin").find_files({
-                        results_title = "Config Files Results",
-                        layout_strategy = "horizontal",
-                        layout_config = {
-                        preview_width = 0.65,
-                        width = 0.75,
-                        },
-                    })
-            end, {desc = "Find Config Files"})
-        '';
-      }
-      {
-        plugin = telescope-fzf-native-nvim;
-        type = "lua";
-        config = ''
-        '';
-      }
-
-      # LSP clients
-      # -----------
-
-
-      # linter
-      # ------
-
-      # List all the tag objects in a file
-      # Depends on universal-ctags
-      tagbar
-
+      # Tree-sitter
+      # ----------
       # Tree-sitter is a parsing library for programming languages that
       # can be used to analyze, edit, and transform code.
       # This setting replaced:
@@ -404,8 +155,6 @@
                       -- and should return true of false
                       include_surrounding_whitespace = true,
               },
-
-
           },
 
            highlight = {
@@ -415,32 +164,11 @@
           }
         '';
       }
-
       # Depended on nvim-treesitter
       # and provides syntax aware text-objects, select, move, swap, and peek support.
       nvim-treesitter-textobjects
+      # --------------------------------
 
-      # org-mode support
-      {
-          plugin = orgmode;
-          type = "lua";
-          config = ''
-              -- Load custom treesitter grammar for org filetype
-              require('orgmode').setup_ts_grammar()
-
-              -- Orgmode setup
-              require('orgmode').setup({
-                      org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
-                      org_default_notes_file = '~/Dropbox/org/refile.org',
-                      });
-          '';
-      }
-
-      # Look and feel
-      # ======================
-
-      # Navigation
-      # ==========
       {
         # Undotree visualizes the undo history and makes it easy to
         # browse and switch between different undo branches.
@@ -463,23 +191,89 @@
             "---------------------------"
         '';
       }
+      # ========================
 
+      #
+      # git
+      # ========================
       {
-        # specify marks on the file and then manage them.
-        plugin = harpoon;
+        plugin = gitsigns-nvim;
         type = "lua";
         config = ''
-          local mark = require("harpoon.mark")
-          local ui = require("harpoon.ui")
-
-          vim.keymap.set("n", "<leader>a", mark.add_file)
-          vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
-
-          vim.keymap.set("n", "<leader>1", function() ui.nav_file(1) end)
-          vim.keymap.set("n", "<leader>2", function() ui.nav_file(2) end)
-          vim.keymap.set("n", "<leader>3", function() ui.nav_file(3) end)
-          vim.keymap.set("n", "<leader>4", function() ui.nav_file(4) end)
+            require('gitsigns').setup {
+                on_attach = function(bufnr)
+                local gs = package.loaded.gitsigns
+                    vim.keymap.set('n', "<leader>gd", gs.reset_hunk)
+                    vim.keymap.set('v', "<leader>gd", function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+                    vim.keymap.set('n', "<leader>gb", gs.toggle_current_line_blame)
+                    vim.keymap.set('n', "]g", function()
+                            if vim.wo.diff then return ']c' end
+                            vim.schedule(function() gs.next_hunk() end)
+                            return '<Ignore>'
+                            end, {expr=true})
+                    vim.keymap.set('n', "[g", function()
+                            if vim.wo.diff then return '[c' end
+                            vim.schedule(function() gs.prev_hunk() end)
+                            return '<Ignore>'
+                            end, {expr=true})
+            end
+            }
         '';
+      }
+      # ========================
+
+      #
+      # Miscellaneous
+      # =================================
+      {
+          plugin = nvim-autopairs;
+          type = "lua";
+          config = ''
+          require("nvim-autopairs").setup {}
+          '';
+      }
+      {
+          plugin = comment-nvim;
+          type = "lua";
+          config = ''
+            require('Comment').setup ({
+                toggler = {
+                    line = '<leader><tab><tab>'
+                },
+
+                opleader = {
+                    line = '<leader><tab><tab>'
+                },
+
+                extra = {
+                    ---Add comment on the line above
+                        above = '<leader><tab>O',
+                    ---Add comment on the line below
+                        below = '<leader><tab>o',
+                    ---Add comment at the end of line
+                        eol = '<leader><tab>A',
+                },
+            })
+          '';
+      }
+
+      # Automatic closing of quotes, parenthesis, brackets...
+      delimitMate
+
+      # org-mode support
+      {
+          plugin = orgmode;
+          type = "lua";
+          config = ''
+              -- Load custom treesitter grammar for org filetype
+              require('orgmode').setup_ts_grammar()
+
+              -- Orgmode setup
+              require('orgmode').setup({
+                      org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
+                      org_default_notes_file = '~/Dropbox/org/refile.org',
+                      });
+          '';
       }
     ];
 
@@ -670,6 +464,10 @@
      vim.keymap.set('n', '<C-x>', ":wq<CR>", opts)
      vim.keymap.set('i', '<C-x>', "<Esc>:wq<CR>", opts)
 
+     -- Exit vim wihtout saving
+     vim.keymap.set('n', '<C-q>', ":q!<CR>", opts)
+     vim.keymap.set('i', '<C-q>', "<Esc>:q!<CR>", opts)
+
      -- Generate ctags
      vim.keymap.set('n', '<leader>gt', ":!ctags -R --exclude=.git<Cr><Cr>", opts)
 
@@ -682,12 +480,6 @@
      vim.keymap.set('n', '<leader>bs', "<C-w>s", opts)
      vim.keymap.set('n', '<leader>bv', "<C-w>v", opts)
 
-     -- Tagbar toggle
-     vim.keymap.set('n', '<F8>', ":TagbarToggle<CR>", opts)
-
-     -- Trouble toggle
-     vim.keymap.set('n', '<leader>xd', ":TroubleToggle<CR>", opts)
-
      -- Disable arrow keys
      vim.keymap.set('n', '<Up>', "<Nop>", opts)
      vim.keymap.set('n', '<Down>', "<Nop>", opts)
@@ -697,8 +489,8 @@
      -- Show current buffer absolute path and copy it
      vim.keymap.set('n', '<F6>', function() vim.fn.setreg('+', vim.fn.expand('%:p')) print(vim.fn.getreg('+')) end, opts)
 
-     -- Apply clang-format
-     vim.keymap.set('n', '<leader>cf', ":%!clang-format<CR>", opts)
+     -- Apply lsp server formating
+     vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ async = true }) end, opts)
 
      -- Jump to the next misspelled word and activate fix mode
      vim.keymap.set('n', ']s', ']sz=', opts)

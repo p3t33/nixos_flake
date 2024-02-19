@@ -20,13 +20,8 @@
         '';
       }
 
-      # Themes
-      # ------
+      # Theme
       vim-code-dark
-      dracula-vim
-      nord-vim
-      gruvbox
-
 
       # Adds actual color to hex value.
       colorizer
@@ -35,7 +30,6 @@
       # Icons
       # -----
       vim-devicons
-      # Required by trouble-nvim
       nvim-web-devicons
 
      # Status/tabline
@@ -110,17 +104,12 @@
           \' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
           \]
 
-
           let g:startify_lists = [
              \ { 'type': 'sessions',  'header': ['   Sessions']       },
              \ { 'type': 'files',     'header': ['   Recent files']            },
              \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
              \]
-
-
         '';
       }
-
     ];
-
 }

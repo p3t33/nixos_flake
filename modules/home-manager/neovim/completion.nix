@@ -106,11 +106,19 @@
                 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
                 local function setup_lsp_server(server_name)
-                    require('lspconfig')[server_name].setup{
+                    local setup_table = {
                         on_attach = on_attach,
                         flags = lsp_flags,
                         capabilities = capabilities,
                     }
+                    -- Fix for warning multiple different client offset encodings detected for buffer this is not support ed yet
+                    if server_name == 'clangd' then
+                        setup_table.cmd = { 'clangd', '--offset-encoding=utf-16' }
+                    else
+                        setup_table.cmd = nil
+                            end
+                    require('lspconfig')[server_name].setup(setup_table)
+                    -- ------------
                 end
 
                 setup_lsp_server('rnix')
