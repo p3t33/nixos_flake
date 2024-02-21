@@ -49,17 +49,11 @@ in
           notification = false;
         }
         {
-          command = "${pkgs.vscode}/bin/code";
-
+          command = "${pkgs.cherrytree}/bin/cherrytree";
           # always = true --> exec_always
           # always = false --> exec
           always = false;
           # notification = false --> --no-startup-id
-          notification = false;
-        }
-        {
-          command = "${pkgs.cherrytree}/bin/cherrytree";
-          always = false;
           notification = false;
         }
         {

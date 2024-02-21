@@ -165,7 +165,7 @@
             type = attrsOf str;
             default = {
                 firefox = "";
-                vscode = "";
+                code = "";
                 cherrytree = "";
                 chrome = "";
                 terminal = "";
@@ -180,7 +180,7 @@
             type = attrsOf str;
             default = {
                 ws1 = "1: ${config.userDefinedGlobalVariables.workspaces_icons.firefox} Firefox";
-                ws2 = "2: ${config.userDefinedGlobalVariables.workspaces_icons.vscode} VSCode";
+                ws2 = "2: ${config.userDefinedGlobalVariables.workspaces_icons.code} Code";
                 ws3 = "3: ${config.userDefinedGlobalVariables.workspaces_icons.cherrytree} Cherrytree";
                 ws4 = "4: ${config.userDefinedGlobalVariables.workspaces_icons.chrome} Chrome";
                 ws6 = "5: ${config.userDefinedGlobalVariables.workspaces_icons.terminal} terminal";
