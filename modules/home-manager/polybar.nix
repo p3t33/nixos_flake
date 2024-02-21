@@ -13,7 +13,7 @@ let
      ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
 
      ws1_icon = "${config.userDefinedGlobalVariables.workspaces_icons.firefox}";
-     ws2_icon = "${config.userDefinedGlobalVariables.workspaces_icons.vscode}";
+     ws2_icon = "${config.userDefinedGlobalVariables.workspaces_icons.code}";
      ws3_icon = "${config.userDefinedGlobalVariables.workspaces_icons.cherrytree}";
      ws4_icon = "${config.userDefinedGlobalVariables.workspaces_icons.chrome}";
      ws5_icon = "${config.userDefinedGlobalVariables.workspaces_icons.terminal}";
