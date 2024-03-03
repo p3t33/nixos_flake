@@ -57,6 +57,7 @@
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/services/dnust.nix
     ../../modules/home-manager/bat.nix
+    ../../modules/home-manager/firefox.nix
   ];
 
   # Variables that will be set "system wide" in the context of the user.

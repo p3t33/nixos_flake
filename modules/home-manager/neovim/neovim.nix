@@ -14,6 +14,7 @@
     ./completion.nix
     ./debugger.nix
     ./search_and_select.nix
+    ./firefox_integration.nix
   ];
 
   programs.neovim = {
@@ -49,7 +50,6 @@
           # is the ability to move between windows using Ctr+h/j/k/l in vim.
           plugin = vim-tmux-navigator;
       }
-
       {
           # A tree file explore.
           plugin = nvim-tree-lua;
