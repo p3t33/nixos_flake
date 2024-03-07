@@ -207,6 +207,10 @@ in
             (use-package org-download
              :ensure t
              :config
+
+             ;; Set the method for handling downloaded images
+             ;; 'attach integrates with Org's attachment system
+             (setq org-download-method 'directory)
              ;; where to save files?
              ;; when  org-download-method is set to "attach"
              ;; then org-roam will handle where to store the
@@ -215,11 +219,10 @@ in
              ;; org-download-method needs to be chagned to directory
              ;; and you will need to set org-download-image-dir, E.g:
              ;; Set the default directory where images will be downloaded
-             ;;(setq-default org-download-image-dir "${orgRoamDirctoryPath}/images/")
+             ;; ONLY WORKS WITH org-download-method set to directory
+             (setq-default org-download-image-dir "${orgRoamDirctoryPath}/images/")
 
-             ;; Set the method for handling downloaded images
-             ;; 'attach integrates with Org's attachment system
-             (setq org-download-method 'attach)
+             (setq org-download-image-org-width 600)
 
              ;; Ensure the org-download package is loaded
              (require 'org-download))
