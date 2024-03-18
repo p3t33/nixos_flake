@@ -72,6 +72,7 @@
             epkgs.plantuml-mode
             epkgs.websocket
             epkgs.org-roam-ui
+            epkgs.org-transclusion
     ]));
   };
 }
