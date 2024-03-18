@@ -39,7 +39,7 @@
     lldb
 
     # nix devlepoment
-    rnix-lsp
+    #rnix-lsp
 
     # python devlepoment
     # ------------------

@@ -7,7 +7,7 @@
             # ----------------
             sumneko-lua-language-server #lua
             clang-tools # c/c++
-            rnix-lsp # nix
+            #rnix-lsp # nix
             nodePackages.pyright # python
             # ----------------
 
@@ -121,7 +121,6 @@
                     -- ------------
                 end
 
-                setup_lsp_server('rnix')
                 setup_lsp_server('lua_ls')
                 setup_lsp_server('clangd')
                 setup_lsp_server('pyright')
