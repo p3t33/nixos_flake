@@ -96,6 +96,7 @@ in
             plantuml-mode
             websocket
             org-roam-ui
+            org-transclusion
         ];
     };
 
@@ -135,6 +136,14 @@ in
             (setq-default scroll-conservatively 100 scroll-up-aggressively 0.01 scroll-down-aggressively 0.01)
             (pixel-scroll-mode 1)
             (pixel-scroll-precision-mode 1)
+            ;; =================================
+
+            ;; org-transclusion
+            ;; =================================
+            (use-package org-transclusion
+             :ensure t
+             :config
+             (add-hook 'org-mode-hook 'org-transclusion-mode))
             ;; =================================
 
             ;; plantuml setitngs
@@ -211,6 +220,7 @@ in
              ;; Set the method for handling downloaded images
              ;; 'attach integrates with Org's attachment system
              (setq org-download-method 'directory)
+
              ;; where to save files?
              ;; when  org-download-method is set to "attach"
              ;; then org-roam will handle where to store the
@@ -220,12 +230,10 @@ in
              ;; and you will need to set org-download-image-dir, E.g:
              ;; Set the default directory where images will be downloaded
              ;; ONLY WORKS WITH org-download-method set to directory
-             (setq-default org-download-image-dir "${orgRoamDirctoryPath}/images/")
+             (setq org-download-image-dir "${orgRoamDirctoryPath}/images/")
 
-             (setq org-download-image-org-width 600)
+             (setq org-download-image-org-width 600))
 
-             ;; Ensure the org-download package is loaded
-             (require 'org-download))
 
             (with-eval-after-load 'org
                 (setq org-agenda-files '("${orgRoamDirctoryPath}")))
@@ -727,7 +735,7 @@ in
             ;; This sets the default font on all graphical frames created after restarting Emacs.
             ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
             ;; are not right unless I also add this method of setting the default font.
-            (add-to-list 'default-frame-alist '(font . "JetBrainsMono Nerd Font-11"))
+            (add-to-list 'default-frame-alist '(font . "${config.userDefinedGlobalVariables.font.mono}-16"))
 
             ;; Uncomment the following line if line spacing needs adjusting.
             (setq-default line-spacing 0.12)
