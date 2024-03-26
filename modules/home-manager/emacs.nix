@@ -793,7 +793,8 @@ in
                 (setq ivy-count-format "(%d/%d) ")
                 (setq enable-recursive-minibuffers t)
                 :config
-                (ivy-mode))
+                (ivy-mode)
+                (setq ivy-use-selectable-prompt t))
 
 
                  (use-package counsel
