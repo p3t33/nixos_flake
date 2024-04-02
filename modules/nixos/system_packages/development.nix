@@ -26,6 +26,9 @@
 
     # C/C++
     valgrind
+    libsForQt5.kcachegrind # front end for callgrind and cachegrind.
+    linuxPackages.perf # profiling tool.
+    cppcheck # static analysis tool for c/c++
     gcc
     ccls # LSP for C/CPP
     clang-tools # has clangd as part of it, and clang-format.
