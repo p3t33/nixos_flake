@@ -10,6 +10,10 @@
 
     # Sound control
     pavucontrol
+
+    obs-studio # video recorder / live streming.
+    audacity # audio editing
+    libsForQt5.kdenlive # video editing.
   ];
 
 }
