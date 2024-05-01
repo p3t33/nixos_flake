@@ -58,6 +58,7 @@
     ../../modules/home-manager/services/dnust.nix
     ../../modules/home-manager/bat.nix
     ../../modules/home-manager/firefox.nix
+    ../../modules/home-manager/zellij.nix
   ];
 
   # Variables that will be set "system wide" in the context of the user.
