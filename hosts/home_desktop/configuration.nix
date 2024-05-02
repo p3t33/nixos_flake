@@ -35,13 +35,13 @@
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
       ../../modules/nixos/defaults_for_system_build.nix
       ../../modules/nixos/opengl.nix
+      ../../modules/nixos/gpu/amd.nix
     ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
-  boot.initrd.kernelModules = [ "amdgpu" ];
 
 
   # IMPORTANT: hostname must be defined!
@@ -83,15 +83,7 @@
     git-review
     ntfs3g
     calibre
-
-    mesa.drivers # For Vulkan support
-    rocm-opencl-icd # For OpenCL support
   ];
-
-  services.xserver = {
-  enable = true;
-  videoDrivers = [ "amdgpu" ]; # Enables the AMDGPU driver
-};
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
