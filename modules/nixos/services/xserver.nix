@@ -14,7 +14,7 @@
             defaultSession = "none+i3";
             autoLogin = {
                 enable = true;
-                user = config.userDefinedGlobalVariables.username;
+                user = config.userDefinedGlobalVariables.primeUsername;
             };
         };
 

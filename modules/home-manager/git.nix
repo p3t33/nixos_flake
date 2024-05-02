@@ -41,7 +41,7 @@
         # For some reason git config --global user.[name/email] shows empty but
         # executing git config user.[name/email] inside of a repo works just fine.
         include = {
-            path = "${config.userDefinedGlobalVariables.homeDirectory}/.config/git/credentials";
+            path = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/git/credentials";
         };
   };
 

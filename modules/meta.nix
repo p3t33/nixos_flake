@@ -48,7 +48,7 @@
             description = "Used as part of the zsh update/upgrade aliases.";
         };
 
-        username = mkOption {
+        primeUsername = mkOption {
             type = str;
             default = "kmedrish";
         };
@@ -68,18 +68,18 @@
             default = "used as an argument for flake configuration.";
         };
 
-        homeDirectory = mkOption {
+        primeUserHomeDirectory = mkOption {
             type = str;
-            default = "/home/${config.userDefinedGlobalVariables.username}";
+            default = "/home/${config.userDefinedGlobalVariables.primeUsername}";
         };
 
         syncthingConfigDirectory = mkOption {
             type = str;
-            default = "${config.userDefinedGlobalVariables.homeDirectory}/.config/syncthing";
+            default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/syncthing";
         };
         syncthingUser = mkOption {
             type = str;
-            default = "${config.userDefinedGlobalVariables.username}";
+            default = "${config.userDefinedGlobalVariables.primeUsername}";
         };
 
         initialHashedPassword = mkOption {
@@ -219,7 +219,7 @@
 
   config = lib.mkMerge [
      (lib.mkIf (machineName == "HP-Zbook"){
-          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "work_pc";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
           userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
@@ -227,34 +227,34 @@
       })
 
      (lib.mkIf (machineName  == "home-desktop"){
-          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "home_desktop";
           userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
       })
 
      (lib.mkIf (machineName == "kvm-nixos-gui"){
-          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "vm_gui";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
 
      (lib.mkIf (machineName == "kvm-nixos-server"){
-          userDefinedGlobalVariables.username = "drone";
+          userDefinedGlobalVariables.primeUsername = "drone";
           userDefinedGlobalVariables.hostConfigurationName = "vm_server";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.systemStateVersion = "23.05";
       })
      (lib.mkIf (machineName == "homelab"){
-          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "homelab";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
           userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
           userDefinedGlobalVariables.syncthingUser = "syncthing";
       })
      (lib.mkIf (machineName == "generic_linux_distro"){
-          userDefinedGlobalVariables.username = "kmedrish";
+          userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "generic_linux_distro";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
       })

@@ -1,7 +1,7 @@
 { config, ... }:
 {
       virtualisation.docker.enable = true;
-      users.users.${config.userDefinedGlobalVariables.username} = {
+      users.users.${config.userDefinedGlobalVariables.primeUsername} = {
           extraGroups = [ "docker" ];
       };
 

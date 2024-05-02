@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = config.userDefinedGlobalVariables.username;
-  home.homeDirectory = config.userDefinedGlobalVariables.homeDirectory;
+  home.username = config.userDefinedGlobalVariables.primeUsername;
+  home.homeDirectory = config.userDefinedGlobalVariables.primeUserHomeDirectory;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

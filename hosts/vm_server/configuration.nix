@@ -53,7 +53,7 @@
     xkbVariant = "";
   };
 
-  users.users.${config.userDefinedGlobalVariables.username} = {
+  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
@@ -63,7 +63,7 @@
   };
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = config.userDefinedGlobalVariables.username;
+  services.getty.autologinUser = config.userDefinedGlobalVariables.primeUsername;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
