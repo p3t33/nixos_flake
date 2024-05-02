@@ -30,10 +30,10 @@
             ];
         };
 
-        profiles.${config.userDefinedGlobalVariables.username} = {
+        profiles.${config.userDefinedGlobalVariables.primeUsername} = {
             # to verify inter into the search bar about:profiles
             id = 0;
-            name = "${config.userDefinedGlobalVariables.username}";
+            name = "${config.userDefinedGlobalVariables.primeUsername}";
             isDefault = true;
             # The list bellow reflects the configuration that are available from
             # the search bar using about:config

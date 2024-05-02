@@ -9,7 +9,7 @@
 
     sops.secrets.ssh_id_ed25519_vm_key = {
         mode = "0600";
-        owner = "${config.userDefinedGlobalVariables.username}";
-        path = "${config.userDefinedGlobalVariables.homeDirectory}/.ssh/id_ed25519_vm_key";
+        owner = "${config.userDefinedGlobalVariables.primeUsername}";
+        path = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.ssh/id_ed25519_vm_key";
     };
 }

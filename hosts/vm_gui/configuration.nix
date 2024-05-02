@@ -50,7 +50,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${config.userDefinedGlobalVariables.username} = {
+  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only

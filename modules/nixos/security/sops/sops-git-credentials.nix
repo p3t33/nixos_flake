@@ -10,8 +10,8 @@
 
     sops.templates."git_credentials" = {
         mode = "0600";
-        owner = "${config.userDefinedGlobalVariables.username}";
-        path = "${config.userDefinedGlobalVariables.homeDirectory}/.config/git/credentials";
+        owner = "${config.userDefinedGlobalVariables.primeUsername}";
+        path = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/git/credentials";
         content = ''
             [user]
                     email = "${config.sops.placeholder."git/userEmail"}"
