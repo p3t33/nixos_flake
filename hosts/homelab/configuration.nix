@@ -34,6 +34,7 @@
       ../../modules/nixos/auto_upgrade.nix
       ../../modules/nixos/services/nginx.nix
       ../../modules/nixos/services/fail2ban.nix
+      ../../modules/nixos/opengl.nix
     ];
 
   systemd.tmpfiles.rules = [
