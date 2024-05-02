@@ -38,6 +38,7 @@
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
       ../../modules/nixos/defaults_for_system_build.nix
       ../../modules/nixos/opengl.nix
+      ../../modules/nixos/gpu/nvidia_hybrid_with_intel_offload_mode.nix
     ];
 
 
@@ -54,27 +55,6 @@
 
   networking.hostName = machineName;
 
-  # Nvidia PRIME(technology used to manage hybrid graphics) settings
-  # Note: non hybrid Nvidia graphics have a bit different configurations.
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.prime = {
-
-    # In this mode the Nvidia card is only activated on demand
-    # There is also the sync mode in which In this mode the Nvidia card is
-    # turned on constantly, having impact on laptop battery and health.
-    # And in this mode there might be some issues.
-    # In any case it is always a good idia to keep an eye on the official documentation.
-    offload = {
-      enable = true;
-      enableOffloadCmd = true;
-    };
-
-    # found by executing lspci | grep -E 'VGA|3D'
-    nvidiaBusId = "PCI:01:00:0";
-    intelBusId = "PCI:00:02:0";
-  };
-
-
   programs.dconf.enable = true;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -89,9 +69,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    moolticute
-    syncthing
-    git-review # cli tool to interact with gerrit.
+      moolticute
+      syncthing
+      git-review # cli tool to interact with gerrit.
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
