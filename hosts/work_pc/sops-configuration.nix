@@ -5,11 +5,6 @@
         ../../modules/nixos/security/sops/sops-syncthing.nix
         ../../modules/nixos/security/sops/sops-extra-ssh-hosts.nix
         ../../modules/nixos/security/sops/sops-git-credentials.nix
+        ../../modules/nixos/security/sops/ssh_development_keys_for_vm.nix
     ];
-
-    sops.secrets.ssh_id_ed25519_vm_key = {
-        mode = "0600";
-        owner = "${config.userDefinedGlobalVariables.primeUsername}";
-        path = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.ssh/id_ed25519_vm_key";
-    };
 }
