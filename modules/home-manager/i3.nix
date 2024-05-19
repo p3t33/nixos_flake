@@ -66,11 +66,19 @@ in
           always = false;
           notification = false;
         }
+        # wall papaer.
         {
           command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.userDefinedGlobalVariables.wallpaperOut} --head=-1";
           always = true;
           notification = false;
         }
+        # togheter with udisks2 provides auto mount of thumb drives.
+        {
+          command = "${pkgs.udiskie}/bin/udiskie";
+          always = true;
+          notification = false;
+        }
+        # hotkey daemon.
         {
           command = "pgrep sxhkd || ${pkgs.sxhkd}/bin/sxhkd";
           always = true;

@@ -9,5 +9,6 @@
     ../../modules/nixos/services/printer.nix
     ../../modules/nixos/services/sshd.nix
     ../../modules/nixos/services/user/watchman.nix
+    ../../modules/nixos/services/udisks2.nix
   ];
 }
