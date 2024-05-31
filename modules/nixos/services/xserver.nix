@@ -1,21 +1,17 @@
 {config, pkgs, ...}:
 
 {
-
     services.xserver = {
         enable = true;
         logFile = "/var/log/Xorg.0.log"; # Enables logging to this file
-        layout = "us,il";
-        xkbVariant = "";
-        xkbOptions = "grp:win_space_toggle";
+        xkb = {
+            layout = "us,il";
+            variant = "";
+            options = "grp:win_space_toggle";
+        };
 
         displayManager = {
             lightdm.enable = true;
-            defaultSession = "none+i3";
-            autoLogin = {
-                enable = true;
-                user = config.userDefinedGlobalVariables.primeUsername;
-            };
         };
 
         desktopManager = {

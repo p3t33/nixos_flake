@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 let
   # 12 hours in seconds
   timeout = 43200;
@@ -39,7 +39,7 @@ in
     # "corses" caveat:
     # A minimum window size is required for it to work
     # inside a terminal.
-    pinentryFlavor = "qt";
+    pinentryPackage = pkgs.pinentry-qt;
   };
 
 }

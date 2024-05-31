@@ -81,7 +81,7 @@
     #
     # the one that are part of the zsh shell and home-manger has "clean"
     # configurations(like the once bellow), for them:
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     #
     # plugins that are installed without  plugin manager:
