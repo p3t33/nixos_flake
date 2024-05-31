@@ -7,7 +7,7 @@ various machines.
 in order to achieve consistency and to avoid code repeat where possible.
 - Work flow is heavily skewed towards the use of the keyboard and the terminal.
 Some keyboard bindings may look strange but they are effected by the fact
-that I use a programmable keyboard(configurations can be located in
+that I am using a programmable keyboard(configurations can be located in
 [my Adv360-Pro-ZMK repo]).
 - Lacking functionality is extended by scripts(such as Firefox bookmarks for rofi).
 - Effort has been made to define everything using nix, including the $HOME
@@ -30,7 +30,7 @@ dot files to the possible extent.
 - **Shell**: zsh + starship with fzf and atuin integration.
 - **Editor**: neovim.
 - **Terminal**: alacritty(with tmux).
-- **Second brain**: cherrytree.
+- **Second brain**: emacs(org-roam).
 
 ## Some of the services I use
 - **ssh-agnet(via gpg-agnet)**: For all my ssh needs.
@@ -83,13 +83,11 @@ then be including by the various hosts to achieve code reuse.
 - [x] ~~Eliminate the error that is caused by terminal command not found.~~
 - [ ] Add secret management
   - [x] ~~Integrate sops-nix into as nixos and home-manger module.~~
-  - [x] Hide sensitive data such as email and IP address from configuration files
-    using sops.template.
+  - [x] ~~Hide sensitive data such as email and IP address from configuration files using sops.template.
   - [ ] Define user passwords as sops secrets.
-  - [ ] Use sops for private keys storage.
-  - [x] Use sops for syncthing.
-
-- [ ] Using standalone home-manger bring generic_linux_distro host which is
+  - [x] ~~Use sops for private keys storage.
+  - [x] ~~Use sops for syncthing.
+- [ ] Using standalone home-manger to bring generic_linux_distro host which is
       intended for Ubuntu to be as close as possible to other hosts.
 
 

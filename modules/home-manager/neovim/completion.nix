@@ -12,7 +12,7 @@
             # ----------------
 
             # copilot dependencie
-            nodejs_21
+            nodejs_22
         ];
 
         plugins = with pkgs.vimPlugins; [

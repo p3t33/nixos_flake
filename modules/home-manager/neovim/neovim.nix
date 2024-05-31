@@ -265,9 +265,6 @@
           plugin = orgmode;
           type = "lua";
           config = ''
-              -- Load custom treesitter grammar for org filetype
-              require('orgmode').setup_ts_grammar()
-
               -- Orgmode setup
               require('orgmode').setup({
                       org_agenda_files = {'~/Dropbox/org/*', '~/my-orgs/**/*'},
