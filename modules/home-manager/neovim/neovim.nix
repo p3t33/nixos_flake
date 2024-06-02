@@ -50,6 +50,15 @@
           # is the ability to move between windows using Ctr+h/j/k/l in vim.
           plugin = vim-tmux-navigator;
       }
+
+      {
+        plugin = nvim-surround;
+        type = "lua";
+        config = ''
+          require("nvim-surround").setup ({
+          })
+        '';
+      }
       {
           # A tree file explore.
           plugin = nvim-tree-lua;
