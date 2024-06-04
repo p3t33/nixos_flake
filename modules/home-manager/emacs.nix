@@ -253,6 +253,17 @@ in
                     ;; Dailies
                     ("C-c n j" . org-roam-dailies-capture-today))
              :config
+             ;; Define the delete and sync function
+             (defun custom-org-roam-delete-node-and-sync ()
+              "Delete the current Org-roam node file with confirmation, then sync database."
+              (interactive)
+              (when (and (buffer-file-name) (y-or-n-p "Are you sure you want to delete this node?"))
+               (let ((file-to-delete (buffer-file-name)))
+                (delete-file file-to-delete)
+                (message "Deleted file %s" file-to-delete)
+                (kill-buffer)
+                (org-roam-db-sync))))
+
              ;; puting the remplate setitngs under :costum did not work for me.
              (setq org-roam-capture-templates
               '(
@@ -615,6 +626,8 @@ in
                   "m g" '(org-roam-graph :which-key "org-roam graph")
                   "m c" '(org-roam-capture :which-key "org-roam capture")
                   "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
+                  "m n" '(:ignore t :wk "org-roam node")
+                  "m n d" '(custom-org-roam-delete-node-and-sync :wk "Delete and sync Org-roam node")
 
                   ;; dired
                   ;; -----
