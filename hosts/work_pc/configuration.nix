@@ -29,7 +29,6 @@
       ../../modules/nixos/environment_variables.nix
       ../../modules/nixos/virtualization/docker.nix
       ../../modules/nixos/virtualization/kvm.nix
-      ../../modules/nixos/virtualization/virtualbox.nix
       ../../modules/nixos/users.nix
       ../../modules/nixos/gui.nix
       ../../modules/nixos/dictionaries.nix
