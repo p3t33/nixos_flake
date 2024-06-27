@@ -35,6 +35,7 @@
     ../../modules/home-manager/alacritty.nix
     ../../modules/home-manager/picom.nix
     ../../modules/home-manager/i3.nix
+    ../../modules/home-manager/scripts/i3-monitor.nix
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/ssh.nix
