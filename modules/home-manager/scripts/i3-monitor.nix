@@ -1,6 +1,6 @@
 { lib, pkgs, ... }:
 let
-  kobi = pkgs.writeShellScriptBin "kobi" ''
+  i3-monitor = pkgs.writeShellScriptBin "i3-monitor" ''
     builtin_display="eDP-1" # Replace with your actual built-in display identifier
 
     # Get the list of connected monitors except the built-in one
@@ -21,6 +21,6 @@ let
   '';
 in
 {
-    home.packages = [ kobi ];
+    home.packages = [ i3-monitor ];
 }
 
