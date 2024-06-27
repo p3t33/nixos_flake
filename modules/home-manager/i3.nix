@@ -112,6 +112,16 @@ in
         "${mod}+k" = "focus up";
         "${mod}+l" = "focus right";
 
+        # Go to mark
+        "${mod}+Mod1+1" = "[con_mark=\\\"one\\\"] focus";
+        "${mod}+Mod1+2" = "[con_mark=\\\"two\\\"] focus";
+        "${mod}+Mod1+3" = "[con_mark=\\\"three\\\"] focus";
+        "${mod}+Mod1+4" = "[con_mark=\\\"four\\\"] focus";
+        "${mod}+Mod1+Shift+1" = "mark one";
+        "${mod}+Mod1+Shift+2" = "mark two";
+        "${mod}+Mod1+Shift+3" = "mark three";
+        "${mod}+Mod1+Shift+4" = "mark four";
+
         # Move focused window
         "${mod}+Shift+h" = "move left";
         "${mod}+Shift+j" = "move down";
