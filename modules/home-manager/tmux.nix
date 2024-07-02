@@ -287,7 +287,7 @@ programs.tmux = {
 
     # Creating new windows and sessions
     # ==================================
-    bind Enter new-window
+    bind Enter new-window -a
     bind-key -r o command-prompt -p "Name of new session:" "new-session -s '%%'"
     # ==================================
 
