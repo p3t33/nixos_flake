@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ inputs, machineName, config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   imports =
@@ -25,7 +25,8 @@
       ../../modules/nixos/system_packages/encryption.nix
       ../../modules/nixos/environment_variables.nix
       ../../modules/nixos/virtualization/docker.nix
-      ../../modules/nixos/networking.nix
+      ../../modules/nixos/networking/networkmanager.nix
+      ../../modules/nixos/networking/hostname.nix
       ../../modules/nixos/users.nix
       ../../modules/nixos/dictionaries.nix
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
@@ -46,7 +47,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = machineName;
   networking.interfaces.eno1.ipv4.addresses = [ {
       address = "10.100.102.73";
       prefixLength = 24;

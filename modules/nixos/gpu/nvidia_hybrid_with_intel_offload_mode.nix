@@ -1,4 +1,4 @@
-{ config, machineName, pkgs, ... }:
+{ config, pkgs, ... }:
 {
     imports = [
         ./nvidia.nix
