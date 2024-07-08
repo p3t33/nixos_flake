@@ -55,7 +55,7 @@
 
       eza
       tree
-      taskwarrior
+      #taskwarrior3
 
       zsh
 
