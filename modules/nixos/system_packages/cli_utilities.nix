@@ -33,6 +33,7 @@
       ncdu
       du-dust
       duf
+      gdu
 
     # disk utils
       gptfdisk
