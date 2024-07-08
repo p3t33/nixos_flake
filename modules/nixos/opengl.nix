@@ -1,4 +1,4 @@
-{ config, machineName, pkgs, ... }:
+{ config, pkgs, ... }:
 {
     hardware.opengl = {
         enable = true;

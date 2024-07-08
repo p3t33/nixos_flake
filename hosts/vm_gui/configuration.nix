@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ inputs, machineName, config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   imports =
@@ -24,7 +24,8 @@
       ../../modules/nixos/system_packages/gui.nix
       ../../modules/nixos/system_packages/iac.nix
       ../../modules/nixos/sound.nix
-      ../../modules/nixos/networking.nix
+      ../../modules/nixos/networking/networkmanager.nix
+      ../../modules/nixos/networking/hostname.nix
       ../../modules/nixos/environment_variables.nix
       ../../modules/nixos/virtualization/docker.nix
       ../../modules/nixos/virtualization/kvm.nix
@@ -40,8 +41,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = machineName;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

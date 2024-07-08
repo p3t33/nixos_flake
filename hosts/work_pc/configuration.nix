@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ config, machineName, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -25,7 +25,8 @@
       ../../modules/nixos/system_packages/iac.nix
       ../../modules/nixos/sound.nix
       ../../modules/nixos/bluetooth.nix
-      ../../modules/nixos/networking.nix
+      ../../modules/nixos/networking/networkmanager.nix
+      ../../modules/nixos/networking/hostname.nix
       ../../modules/nixos/environment_variables.nix
       ../../modules/nixos/virtualization/docker.nix
       ../../modules/nixos/virtualization/kvm.nix
@@ -52,8 +53,6 @@
   boot.initrd.secrets = {
     "/crypto_keyfile.bin" = null;
   };
-
-  networking.hostName = machineName;
 
   programs.dconf.enable = true;
 
