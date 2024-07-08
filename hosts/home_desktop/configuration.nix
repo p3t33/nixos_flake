@@ -34,6 +34,7 @@
       ../../modules/nixos/dictionaries.nix
       ../../modules/nixos/security/nitrokey.nix
       ../../modules/nixos/security/solokey2.nix
+      ../../modules/nixos/security/trezor.nix
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
       ../../modules/nixos/defaults_for_system_build.nix
       ../../modules/nixos/opengl.nix
