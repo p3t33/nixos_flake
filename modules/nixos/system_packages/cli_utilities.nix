@@ -13,6 +13,8 @@
 
     # process monitor
       htop
+      yazi
+      ueberzugpp
 
     # networking
       tcpdump
