@@ -1,5 +1,10 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
+
+    home.packages = with pkgs; [
+        # Image preview in the terminal
+        ueberzugpp
+    ];
 
   programs.alacritty = {
     enable = true;
