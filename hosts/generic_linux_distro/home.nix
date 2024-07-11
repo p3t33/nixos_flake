@@ -44,6 +44,7 @@
         ../../modules/home-manager/services/dnust.nix
         ../../modules/home-manager/firefox.nix
         ../../modules/home-manager/generic_linux_fonts.nix
+        ../../modules/home-manager/yazi.nix
     ];
 
   targets.genericLinux.enable = true;

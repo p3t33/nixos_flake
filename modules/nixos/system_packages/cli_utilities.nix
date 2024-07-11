@@ -13,7 +13,6 @@
 
     # process monitor
       htop
-      yazi
 
     # networking
       tcpdump

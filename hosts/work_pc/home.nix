@@ -41,5 +41,6 @@
         ../../modules/home-manager/bat.nix
         ../../modules/home-manager/firefox.nix
         ../../modules/home-manager/zellij.nix
+        ../../modules/home-manager/yazi.nix
     ];
 }
