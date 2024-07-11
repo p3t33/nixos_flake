@@ -16,6 +16,9 @@
             alias."@" = "context";
             context."work" = "project:work";
             context."personal" = "project:personal";
+            color = {
+                active = "rgb450";
+            };
         };
     };
 }
