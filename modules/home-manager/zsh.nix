@@ -1,16 +1,16 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [
+    home.packages = with pkgs; [
 
-  # This are plugins that are installed directly with no
-  # plugin manager.
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  zsh-fzf-tab
-  thefuck
-  eza
-  ];
+        # This are plugins that are installed directly with no
+        # plugin manager.
+        zsh-syntax-highlighting
+        zsh-autosuggestions
+        zsh-fzf-tab
+        thefuck
+        eza
+    ];
 
   programs.zsh = {
 
