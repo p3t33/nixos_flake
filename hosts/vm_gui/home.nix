@@ -36,5 +36,6 @@
         ../../modules/home-manager/gtk.nix
         ../../modules/home-manager/services/dnust.nix
         ../../modules/home-manager/firefox.nix
+        ../../modules/home-manager/yazi.nix
     ];
 }
