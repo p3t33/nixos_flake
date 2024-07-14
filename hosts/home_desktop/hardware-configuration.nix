@@ -5,7 +5,10 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+        (modulesPath + "/installer/scan/not-detected.nix")
+        ../../modules/nixos/gpu/amd.nix
+        ../../modules/nixos/gpu/amd_hardware_decoding.nix
     ];
 
   boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
