@@ -1,9 +1,5 @@
 { config, pkgs, ... }:
 {
-    imports = [
-        ./nvidia.nix
-    ];
-
     # Nvidia PRIME(technology used to manage hybrid graphics) settings
     # Note: non hybrid Nvidia graphics don't need this part and should be
     # only using the nvidia.nix file.
