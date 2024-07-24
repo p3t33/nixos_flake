@@ -44,8 +44,10 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+        layout = "us,il";
+        variant = "";
+    };
   };
 
   users.users.${config.userDefinedGlobalVariables.primeUsername} = {
