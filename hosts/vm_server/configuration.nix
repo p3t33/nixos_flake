@@ -9,10 +9,10 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./configuration-services.nix
+      ./sops-configuration.nix
       ./disko-config.nix
       ../../modules/meta.nix
       ../../modules/nixos/home-manager-as-nixos-module.nix
-      ../../modules/nixos/fonts.nix
       ../../modules/nixos/experimental-features.nix
       ../../modules/nixos/garbage_collection.nix
       ../../modules/nixos/system_version.nix
@@ -58,6 +58,10 @@
      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
     ];
   };
+
+# users.users.root.openssh.authorizedKeys.keys = [
+#     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
+# ];
 
   # Enable automatic login for the user.
   services.getty.autologinUser = config.userDefinedGlobalVariables.primeUsername;
