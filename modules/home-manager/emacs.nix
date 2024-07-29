@@ -353,11 +353,18 @@ in
                 :config
                 (evil-mode 1)
 
-                ;; Define the custom function
                 (defun save-and-switch-to-normal-mode ()
-                 "Save the current buffer and switch to normal mode."
+                 "Save the current buffer and switch to normal mode, preserving cursor position."
                  (interactive)
-                 (save-buffer)
+                 ;; Save the current point as a marker so it moves with buffer changes
+                 (let ((pos (point-marker)))
+                  ;; Save the buffer
+                  (save-buffer)
+                  ;; Restore the cursor position
+                  (goto-char pos)
+                  ;; Clean up the marker to avoid a potential resource leak
+                  (set-marker pos nil))
+                 ;; Switch to normal mode
                  (evil-normal-state))
 
                 ;; Set the key bindings for normal and insert modes
