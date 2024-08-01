@@ -253,7 +253,7 @@ in
                     ;; Dailies
                     ("C-c n j" . org-roam-dailies-capture-today))
              :config
-             ;; Define the delete and sync function
+             ;; Define the costum function to delete nodes and sync database.
              (defun custom-org-roam-delete-node-and-sync ()
               "Delete the current Org-roam node file with confirmation, then sync database."
               (interactive)
@@ -263,6 +263,38 @@ in
                 (message "Deleted file %s" file-to-delete)
                 (kill-buffer)
                 (org-roam-db-sync))))
+
+             ;; Define the costum function to rename existing node and sync database.
+             ;; This function will preserve timestamp, update the name of the file and the name of the title in it.
+             (defun custom-org-roam-rename-node ()
+              "Rename the current org-roam file and update the #+title."
+              (interactive)
+              (let* ((old-file (buffer-file-name))
+                     (old-title (org-roam-node-title (org-roam-node-at-point)))
+                     (file-dir (file-name-directory old-file))
+                     (file-base (file-name-base old-file))
+                     (file-ext (file-name-extension old-file))
+                     ;; Extract the timestamp or number at the beginning
+                     (timestamp (car (split-string file-base "-")))
+                     ;; Get the current title part
+                     (current-title (mapconcat 'identity (cdr (split-string file-base "-")) " "))
+                     ;; Prompt for new title
+                     (new-title (read-string "New title: " current-title))
+                     ;; Construct the new file name
+                     (new-file (concat file-dir timestamp "-" new-title "." file-ext)))
+               (when (and new-title (not (string= new-title "")))
+                ;; Rename the file
+                (rename-file old-file new-file)
+                ;; Update buffer name
+                (set-visited-file-name new-file)
+                ;; Update #+title
+                (goto-char (point-min))
+                (when (re-search-forward "^#\\+title:.*$" nil t)
+                 (replace-match (concat "#+title: " new-title)))
+                (save-buffer)
+                ;; Update org-roam cache
+                (org-roam-db-sync)
+                (message "Renamed to %s and updated #+title." new-title))))
 
              ;; puting the remplate setitngs under :costum did not work for me.
              (setq org-roam-capture-templates
@@ -635,6 +667,7 @@ in
                   "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
                   "m n" '(:ignore t :wk "org-roam node")
                   "m n d" '(custom-org-roam-delete-node-and-sync :wk "Delete and sync Org-roam node")
+                  "m n r" '(custom-org-roam-rename-node  :wk "Rename node and sync Org-roam node")
 
                   ;; dired
                   ;; -----
