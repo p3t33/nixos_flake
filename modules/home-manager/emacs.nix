@@ -597,7 +597,6 @@ in
                   "h v" '(describe-variable :wk "Describe variable")
                   "h w" '(where-is :wk "Prints keybinding for command if set")
                   "h x" '(describe-command :wk "Display full documentation for command")
-                  ;; For the time being the wk(which key) will not work and "lambda" will be displayed.
 
                   ;;
                   ;; Toggle
@@ -689,7 +688,7 @@ in
                   ;; -------
                   "e" '(:ignore t :wk "Eshell/Evaluate")
                   "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
-                  "ec" '(lambda () (interactive) (load-file user-init-file)) :wk "Reload config"
+                  "ec" '((lambda () (interactive) (load-file user-init-file)) :wk "Evaluate config")
                   "ed" '(eval-defun :wk "Evaluate defun containing or after point")
                   "ee" '(eval-expression :wk "Evaluate and elisp expression")
                   "eh" '(counsel-esh-history :which-key "Eshell history")
