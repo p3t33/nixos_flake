@@ -39,6 +39,7 @@
       vlg = "${pkgs.valgrind}/bin/valgrind --leak-check=yes --track-origins=yes";
       grind = "rm callgrind.out.* && ${pkgs.valgrind}/bin/valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
       vi = "nvim";
+      f = "fuck";
      };
 
     initExtra = ''
