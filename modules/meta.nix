@@ -117,6 +117,12 @@
             description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
         };
 
+        sopsKeyPath = mkOption {
+            default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
+            type = str;
+            description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        };
+
         font = mkOption {
             type = attrsOf str;
             default = {
@@ -244,14 +250,15 @@
           userDefinedGlobalVariables.primeUsername = "drone";
           userDefinedGlobalVariables.hostConfigurationName = "vm_server";
           userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
-          userDefinedGlobalVariables.systemStateVersion = "23.05";
+          userDefinedGlobalVariables.systemStateVersion = "24.05";
       })
      (lib.mkIf (machineName == "homelab"){
           userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "homelab";
-          userDefinedGlobalVariables.systemStateVersion = "23.11";
+          userDefinedGlobalVariables.systemStateVersion = "24.05";
           userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
           userDefinedGlobalVariables.syncthingUser = "syncthing";
+          userDefinedGlobalVariables.sopsKeyPath = "/keys.txt";
       })
      (lib.mkIf (machineName == "generic_linux_distro"){
           userDefinedGlobalVariables.primeUsername = "kmedrish";
