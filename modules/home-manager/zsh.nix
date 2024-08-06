@@ -26,7 +26,7 @@
       cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
       rollback = "sudo nixos-rebuild switch --rollback";
       ls = "${pkgs.eza}/bin/eza --icons --color=always --group-directories-first";
-      ll = "${pkgs.eza}/bin/eza -l --icons --color=always --group-directories-first";
+      ll = "${pkgs.eza}/bin/eza -l --group --icons --color=always --group-directories-first";
       lt = "${pkgs.eza}/bin/eza -aT --icons --color=always --group-directories-first";
       gc89 = "${pkgs.gcc}/bin/gcc -ansi -pedantic-errors -Wall -Wextra -DNDEBUG -O3";
       gc89d = "${pkgs.gcc}/bin/gcc -ansi -pedantic-errors -Wall -Wextra -g";
