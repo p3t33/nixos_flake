@@ -84,7 +84,7 @@
 
         initialHashedPassword = mkOption {
             type = str;
-            default = "6$1R0D6ghbKpPOPY6I$UoGLPJbvOvE4ZEPs/Qq/JG9WLMUU9H8lTgIEi4vIwV1fdNfgdX1uYOZNGWYQmlDo84vUmEILEqc.BaRzvYXyB1";
+            default = "6$b0udlQ4Ug4hK5LRx$nz7brrztXJQVpFrn6M7HvmojK/.7U60IWlPElnIIppYR1IxvSXG0doq5bSvFTi1Br8mPJan90/tZxBZgm8Dwr/";
         };
 
         wallpaperName = mkOption {
@@ -256,6 +256,7 @@
           userDefinedGlobalVariables.primeUsername = "kmedrish";
           userDefinedGlobalVariables.hostConfigurationName = "homelab";
           userDefinedGlobalVariables.systemStateVersion = "24.05";
+          userDefinedGlobalVariables.initialHashedPassword = "$6$8jJvz/BcLMaK4yEN$tZ.bzF13N9i9deD8GkfROIkJ874.w2GPKN0xBeQ5RlZ40XpVPiUIi85Z/mkcq97y9qKnwyfujPZuxFhaDZTid0";
           userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
           userDefinedGlobalVariables.syncthingUser = "syncthing";
           userDefinedGlobalVariables.sopsKeyPath = "/keys.txt";
