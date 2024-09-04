@@ -237,9 +237,15 @@ in
 
             (with-eval-after-load 'org
                 (setq org-agenda-files '("${orgRoamDirctoryPath}")))
+
+
             (setq org-todo-keywords
                 '((sequence "TODO" "|" "DONE")
                   (sequence "QUESTION" "|" "ANSWERED")))
+
+            (setq org-todo-keyword-faces
+     '(("QUESTION" . (:foreground "red" :weight bold))
+       ("ANSWERED" . (:foreground "green" :weight bold))))
 
             (use-package org-roam
              :ensure t
@@ -642,6 +648,7 @@ in
                   "m l" '(org-toggle-item :wk "Org toggle list item")
                   "m u" '(org-roam-ui-mode :wk "toggle org-roam-ui-mode")
                   "m t" '(org-todo :wk "Org todo")
+                  "m q" '(lambda () (interactive) (if (org-entry-is-todo-p) (org-todo) (org-todo "QUESTION")))
                   "m B" '(org-babel-tangle :wk "Org babel tangle")
                   "m T" '(org-todo-list :wk "Org todo list")
                   "m b" '(:ignore t :wk "Tables")
