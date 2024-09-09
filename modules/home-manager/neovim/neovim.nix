@@ -281,6 +281,12 @@
                       });
           '';
       }
+      {
+        plugin = vim-suda;
+        config = ''
+            cnoremap w!! :SudaWrite<CR>
+        '';
+      }
     ];
 
     extraLuaConfig = ''
@@ -505,11 +511,5 @@
      vim.keymap.set('n', '[s', '[sz=', opts)
     '';
 
-    # this is generated into vim script and called at the top of init.lua
-    extraConfig = ''
-      cmap w!! w !sudo tee > /dev/null %
-
-
-      '';
     };
 }
