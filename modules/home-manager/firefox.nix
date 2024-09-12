@@ -41,6 +41,7 @@
               (extension "shortkeys" "Shortkeys@Shortkeys.com")
               (extension "simple-tab-groups" "simple-tab-groups@drive4ik") # conflicts with "Tab Session Manager"
               (extension "session-boss" "sessionboss@william.wong")
+              (extension "keepa" "amptra@keepa.com")
             ];
         };
 
