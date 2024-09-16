@@ -36,6 +36,7 @@
       ../../modules/nixos/services/nginx.nix
       ../../modules/nixos/services/fail2ban.nix
       ../../modules/nixos/opengl.nix
+      ../../modules/nixos/services/envfs.nix
     ];
 
   systemd.tmpfiles.rules = [
