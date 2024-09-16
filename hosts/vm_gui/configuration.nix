@@ -30,7 +30,7 @@
       ../../modules/nixos/virtualization/docker.nix
       ../../modules/nixos/virtualization/kvm.nix
       ../../modules/nixos/virtualization/virtualbox.nix
-      ../../modules/nixos/gui.nix
+      ../../modules/nixos/desktop_environment.nix
       ../../modules/nixos/users.nix
       ../../modules/nixos/dictionaries.nix
       ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index

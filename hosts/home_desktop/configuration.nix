@@ -30,7 +30,7 @@
       ../../modules/nixos/virtualization/docker.nix
       ../../modules/nixos/virtualization/kvm.nix
       ../../modules/nixos/users.nix
-      ../../modules/nixos/gui.nix
+      ../../modules/nixos/desktop_environment.nix
       ../../modules/nixos/dictionaries.nix
       ../../modules/nixos/security/nitrokey.nix
       ../../modules/nixos/security/solokey2.nix
