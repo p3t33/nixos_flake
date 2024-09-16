@@ -7,12 +7,18 @@
       haskellPackages.patat
       w3m
 
+    # media
+      mpv
+      ffmpeg_7-full # video editing.
+
     # web
       wget
       speedtest-cli
+      pkg-config # helper tool for more information during the update of nix.
+
 
     # process monitor
-      htop
+      htop-vim
 
     # networking
       tcpdump
@@ -36,6 +42,7 @@
     # disk utils
       gptfdisk
       ntfs3g
+      geteltorito # extract boot image from CD/DVD/ISO. I used it to uprade bios.
 
     # general
       sshfs
@@ -46,6 +53,7 @@
       restic
       bat
       unzip
+      zip
       tmux
       smug # Session manager for tmux.
       moreutils # I need the sponge appliction to be used as part of tmux configuration.
@@ -56,7 +64,6 @@
 
       eza
       tree
-      #taskwarrior3
 
       zsh
 

@@ -35,11 +35,13 @@
     clang
     cmake
     gnumake
+    pkg-config # Used to get compile/linking flags(E.g gcc myprogram.c $(pkg-config --cflags --libs libpng) -o myprogram)
 
     # debug
     gdb
     cgdb
     lldb
+    rr # record and replay to be used with gdb.
 
     # nix devlepoment
     #rnix-lsp
@@ -70,5 +72,8 @@
 
     # encryption
     openssl
+
+    # message bus system
+    dbus
  ];
 }
