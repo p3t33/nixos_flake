@@ -100,6 +100,9 @@
       # evalute key and mouse presses for xorg
       xorg.xev
 
+      # Searching nix packages
+      nix-search-cli # uses as "nix-search <name of package>"
+
     ];
 
 }
