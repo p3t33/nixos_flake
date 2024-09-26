@@ -75,5 +75,6 @@
 
     # message bus system
     dbus
+    hugo
  ];
 }
