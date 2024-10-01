@@ -4,6 +4,11 @@
 {
     home-manager = {
         useGlobalPkgs = true;
+
+        # in case of conflict between existing file in ~/ and one managed by home-manager,
+        # a .backup fle will be created automatically.
+        backupFileExtension = "backup";
+
         useUserPackages = true;
         extraSpecialArgs = {inherit inputs; inherit machineName;};
         users.${config.userDefinedGlobalVariables.primeUsername} = import config.userDefinedGlobalVariables.home_manger_import_path;
