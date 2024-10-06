@@ -504,11 +504,29 @@
      -- Apply lsp server formating
      vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ async = true }) end, opts)
 
-     -- Jump to the next misspelled word and activate fix mode
-     vim.keymap.set('n', ']s', ']sz=', opts)
+     -- Jump to misspelled words
+     -- ------------------------
+     -- There is a need in the second function with thd delay or the kebiding won't jumpt to the end
+     -- of the word.
+     --
+     -- Jump to the next misspelled word, activate fix mode, and move to the end of the word after correction
+    vim.keymap.set('n', ']s', function()
+        vim.api.nvim_feedkeys("]s", "n", false)  -- Jump to the next misspelled word
+        vim.api.nvim_feedkeys("z=", "n", false)  -- Trigger spell correction
+        vim.defer_fn(function()                  -- Wait for you to select a correction
+            vim.api.nvim_feedkeys("e", "n", false) -- Move to the end of the word
+        end, 100)                                -- Adjust this delay if necessary
+    end, opts)
 
-     -- Jump to the previous misspelled word and activate fix mode
-     vim.keymap.set('n', '[s', '[sz=', opts)
+    -- Jump to the previous misspelled word, activate fix mode, and move to the end of the word after correction
+    vim.keymap.set('n', '[s', function()
+        vim.api.nvim_feedkeys("[s", "n", false)  -- Jump to the previous misspelled word
+        vim.api.nvim_feedkeys("z=", "n", false)  -- Trigger spell correction
+        vim.defer_fn(function()                  -- Wait for you to select a correction
+            vim.api.nvim_feedkeys("e", "n", false) -- Move to the end of the word
+        end, 100)                                -- Adjust this delay if necessary
+    end, opts)
+    -- ------------------------
     '';
 
     };

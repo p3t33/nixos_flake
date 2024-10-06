@@ -60,7 +60,7 @@ programs.tmux = {
           # Session.vim in it but vim was not open at the time of the save of the sessions then when
           # tmux-resurrect restore the window with the path with Session.vim nothing will happen.
 
-          # Furthermore I currently using vim-startify which among other things is able to restore
+          # Furthermore I am currently using vim-startify which among other things is able to restore
           # from Session.vim if neovim is opened from the path where Session.vim exist. So in a
           # sense I don't really need tmux resurrect to restore the session as this already
           # taken care of and this functionality becomes redundant. But as I am not sure if I keep
@@ -104,7 +104,7 @@ programs.tmux = {
     # instead.
     #
     # The reason that this plugin is still included because it provides a quick way to copy what
-    # what is on the command line and once in copy mode to copy the PWD. I might just replace the
+    # is on the command line and once in copy mode to copy the PWD. I might just replace the
     # plugin with keybindings(based on send-keys).
     {
         plugin = yank;
@@ -276,8 +276,8 @@ programs.tmux = {
     # Yanking
     # -------
     # This is the action that tapping the Enter key will do by default for tmux
-    # The only reason this is here is because this is how yanking is done
-    # vim.
+    # The only reason this is here is because this is how yanking is done in vim.
+    #
     # I created costume keybinding that removes \n when coping a line.
     # not sure if it might break some flow and it requires perl and xclip.
     # so I left the version that adds \n and has no dependencies in comment.
