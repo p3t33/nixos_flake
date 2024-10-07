@@ -75,20 +75,20 @@ then be including by the various hosts to achieve code reuse.
   - [x] ~~Adjust Emacs settings to work with server-client mode. This is~~
         ~~a stretch goal as I installed Emacs for evaluation and right now~~
         ~~I am not sure I will be using it over neovim.~~
-  - [ ] There is code duplication between the settings from Emacs and Emacs
-        server in the forum of packages used. This needs to be eliminated.
+  - [x] ~~There is code duplication between the settings from Emacs and Emacs~~
+        ~~server in the forum of packages used. This needs to be eliminated.~~
   - [ ] I am not sure that the systemd for the Emacs server can communicate
         with ssh-agent. This is a very low priority.
 - [x] ~~Move more variables into the meta.nix~~
-- [x] ~~Eliminate the error that is caused by terminal command not found.~~
-- [ ] Add secret management
+- [x] ~~Eliminate the error that is caused by terminal command not found~~
+- [x] Add secret management
   - [x] ~~Integrate sops-nix into as nixos and home-manger module.~~
   - [x] ~~Hide sensitive data such as email and IP address from configuration files using sops.template.
-  - [ ] Define user passwords as sops secrets.
-  - [x] ~~Use sops for private keys storage.
-  - [x] ~~Use sops for syncthing.
-- [ ] Using standalone home-manger to bring generic_linux_distro host which is
-      intended for Ubuntu to be as close as possible to other hosts.
+  - [x] ~~Define user passwords as sops secrets.~~
+  - [x] ~~Use sops for private keys storage~~.
+  - [x] ~~Use sops for syncthing.~~~
+- [x] ~~Using standalone home-manger to bring generic_linux_distro host which is~~
+      ~~intended for Ubuntu to be as close as possible to other hosts.~~
 
 
 <!-- variables -->
