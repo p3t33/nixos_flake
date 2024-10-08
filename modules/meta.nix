@@ -233,13 +233,6 @@
           userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
           userDefinedGlobalVariables.systemStateVersion = "23.11";
       })
-
-     (lib.mkIf (machineName == "kvm-nixos-gui"){
-          userDefinedGlobalVariables.primeUsername = "kmedrish";
-          userDefinedGlobalVariables.hostConfigurationName = "vm_gui";
-          userDefinedGlobalVariables.systemStateVersion = "23.05";
-      })
-
      (lib.mkIf (machineName == "kvm-nixos-server"){
           userDefinedGlobalVariables.primeUsername = "drone";
           userDefinedGlobalVariables.hostConfigurationName = "vm_server";
