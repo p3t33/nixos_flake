@@ -102,6 +102,7 @@
 
       # Searching nix packages
       nix-search-cli # uses as "nix-search <name of package>"
+      git-filter-repo
 
     ];
 
