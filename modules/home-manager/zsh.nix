@@ -40,6 +40,7 @@
       grind = "rm callgrind.out.* && ${pkgs.valgrind}/bin/valgrind --tool=callgrind ./a.out &&  callgrind.out.*";
       vi = "nvim";
       f = "fuck";
+      t = "tmux-sessionizer";
      };
 
     initExtra = ''
