@@ -97,6 +97,7 @@ in
             websocket
             org-roam-ui
             org-transclusion
+            ox-hugo
         ];
     };
 
@@ -212,6 +213,10 @@ in
             ;; Optional: Start with a simple profile
             ;; Uncomment the following line if you want to use the simple profile by default
             ;; (org-tree-slide-simple-profile)
+
+            (use-package ox-hugo
+             :ensure t
+             :after ox)
 
             (use-package org-download
              :ensure t
