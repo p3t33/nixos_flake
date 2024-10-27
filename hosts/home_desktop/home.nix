@@ -30,7 +30,6 @@
         ../../modules/home-manager/redshift.nix
         ../../modules/home-manager/taskwarrior.nix
         ../../modules/home-manager/wallpaper.nix
-        ../../modules/home-manager/nix-index.nix
         ../../modules/home-manager/atuin.nix
         ../../modules/home-manager/lazygit.nix
         ../../modules/home-manager/clipmenu.nix

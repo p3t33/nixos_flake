@@ -27,7 +27,6 @@
       ../../modules/nixos/networking/hostname.nix
       ../../modules/nixos/users.nix
       ../../modules/nixos/dictionaries.nix
-      ../../modules/nixos/command_not_found.nix # needs to be set to false as it is mutually exclusive with nix-index
       ../../modules/nixos/defaults_for_system_build.nix
       ../../modules/nixos/opengl.nix
       ../../modules/nixos/services/envfs.nix

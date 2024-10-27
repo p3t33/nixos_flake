@@ -15,7 +15,6 @@
         ../../modules/home-manager/taskwarrior.nix
         ../../modules/home-manager/scripts/tmux-sessionizer.nix
         ../../modules/home-manager/scripts/cheat-sh.nix
-        ../../modules/home-manager/nix-index.nix
         ../../modules/home-manager/atuin.nix
         ../../modules/home-manager/lazygit.nix
         ../../modules/home-manager/gpg.nix
