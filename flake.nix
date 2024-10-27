@@ -9,6 +9,7 @@
             inputs.nixpkgs.follows = "nixpkgs";
         };
 
+        # implicitly sets programs.command-not-found.enable = false;
         nix-index-database = {
             url = "github:Mic92/nix-index-database";
             inputs.nixpkgs.follows = "nixpkgs";
@@ -20,7 +21,6 @@
         };
 
         disko = {
-
             url = "github:nix-community/disko";
             inputs.nixpkgs.follows = "nixpkgs";
         };
