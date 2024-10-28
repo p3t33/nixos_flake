@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-    environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     rofi-power-menu
     polybar
     nitrogen # A wallpaper browser and setter for X11

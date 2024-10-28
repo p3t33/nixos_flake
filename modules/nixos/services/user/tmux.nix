@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
 
@@ -13,8 +13,8 @@
     serviceConfig = {
       Type = "forking";
       Restart = "always";
-      ExecStart="${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; exec ${pkgs.tmux}/bin/tmux start-server'";
-      ExecStop="${pkgs.tmux}/bin/tmux kill-server";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; exec ${pkgs.tmux}/bin/tmux start-server'";
+      ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
     };
 
     wantedBy = [ "default.target" ];

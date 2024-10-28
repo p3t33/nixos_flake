@@ -1,22 +1,28 @@
 { config, pkgs, ... }:
 
 {
-    home.packages = with pkgs; [
+  home.packages = with pkgs; [
 
-        # This are plugins that are installed directly with no
-        # plugin manager.
-        zsh-syntax-highlighting
-        zsh-autosuggestions
-        zsh-fzf-tab
-        thefuck
-        eza
-    ];
+    # This are plugins that are installed directly with no
+    # plugin manager.
+    zsh-syntax-highlighting
+    zsh-autosuggestions
+    zsh-fzf-tab
+    thefuck
+    eza
+  ];
 
   programs.zsh = {
 
     enable = true;
 
-    history.ignorePatterns = [ "ls" "cd *" "pwd" "reboot" "history" ];
+    history.ignorePatterns = [
+      "ls"
+      "cd *"
+      "pwd"
+      "reboot"
+      "history"
+    ];
 
     shellAliases = {
       get_flake_repository_if_does_not_exit = "if [[ ! -d ${config.userDefinedGlobalVariables.pathToFlakeDirectory} ]]; then ${pkgs.git}/bin/git clone ${config.userDefinedGlobalVariables.flakeRepositoryUrl} ${config.userDefinedGlobalVariables.pathToFlakeDirectory}; fi;";
@@ -41,38 +47,38 @@
       vi = "nvim";
       f = "fuck";
       t = "tmux-sessionizer";
-     };
+    };
 
     initExtra = ''
-        export LANG="en_US.UTF-8";
-        function tmux-sesssion {
-        BUFFER='tmux-sessionizer'
-            zle accept-line
-        }
-        zle -N tmux-sesssion
-        bindkey '^f' tmux-sesssion
+      export LANG="en_US.UTF-8";
+      function tmux-sesssion {
+      BUFFER='tmux-sessionizer'
+          zle accept-line
+      }
+      zle -N tmux-sesssion
+      bindkey '^f' tmux-sesssion
 
-        # The default behavior of postponing the initialization of the zsh-vi-mode
-        # plugin until the first command line prompt appears is designed to minimize conflicts
-        # with other plugins(can be disabled using ZVM_INIT_MODE=sourcing). that might
-        # alter keybindings or other settings that zsh-vi-mode relies on. This approach
-        # helps ensure that zsh-vi-mode can apply its configurations without being overridden
-        # by the subsequent loading of other plugins or scripts. this is also refered as
-        # lazy binding.
-        #
-        # THis means that this plugis initialization is done on first use after all of .zshrc
-        # had done loading.
-        #
-        # This was confilction with my use of atuin for history on C-r.
-        # The function bellow makes sure to rebind this key(that vim uses to redo chagge)
-        # back to the use of atuin.
-        source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
-        function zvm_custom_bindings() {
-            bindkey '^R' _atuin_search_widget
-        }
+      # The default behavior of postponing the initialization of the zsh-vi-mode
+      # plugin until the first command line prompt appears is designed to minimize conflicts
+      # with other plugins(can be disabled using ZVM_INIT_MODE=sourcing). that might
+      # alter keybindings or other settings that zsh-vi-mode relies on. This approach
+      # helps ensure that zsh-vi-mode can apply its configurations without being overridden
+      # by the subsequent loading of other plugins or scripts. this is also refered as
+      # lazy binding.
+      #
+      # THis means that this plugis initialization is done on first use after all of .zshrc
+      # had done loading.
+      #
+      # This was confilction with my use of atuin for history on C-r.
+      # The function bellow makes sure to rebind this key(that vim uses to redo chagge)
+      # back to the use of atuin.
+      source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+      function zvm_custom_bindings() {
+          bindkey '^R' _atuin_search_widget
+      }
 
-        # Ensure custom bindings are applied after zsh-vi-mode initializes
-        zvm_after_init_commands+=(zvm_custom_bindings)
+      # Ensure custom bindings are applied after zsh-vi-mode initializes
+      zvm_after_init_commands+=(zvm_custom_bindings)
     '';
 
     # There are four types of plugins in this config
@@ -89,10 +95,10 @@
     # plugins that are installed without  plugin manager:
     # without a "clean" option(E.g enableFzfTab = true;)
     plugins = [
-        {
-            name = "fzf-tab";
-            src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
-        }
+      {
+        name = "fzf-tab";
+        src = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+      }
     ];
 
     # the one that are part of oh-my-zsh plugin manager:
@@ -108,7 +114,6 @@
         "sudo"
         "web-search"
       ];
-   };
+    };
   };
 }
-

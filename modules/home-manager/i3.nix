@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   mod = "Mod4";
@@ -12,7 +17,6 @@ let
   ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
   ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
   ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
-
 
 in
 {
@@ -37,7 +41,7 @@ in
       # if the imports variable is commented in then the bars = [] needs
       # to be commented out or there will be conflicts. And nixos will
       # fail to build.
-      bars = [];
+      bars = [ ];
 
       # mod + d
       menu = "${pkgs.rofi}/bin/rofi -modi drun -show drun";
@@ -87,12 +91,14 @@ in
       ];
 
       assigns = {
-        "${ws1}" = [{ class = "firefox"; }];
-        "${ws2}" = [{ class = "Code"; }];
-        "${ws3}" = [{ class = "Cherrytree"; }];
-        "${ws4}" = [{ class = "Google-chrome"; } { class = "Slack"; }];
+        "${ws1}" = [ { class = "firefox"; } ];
+        "${ws2}" = [ { class = "Code"; } ];
+        "${ws3}" = [ { class = "Cherrytree"; } ];
+        "${ws4}" = [
+          { class = "Google-chrome"; }
+          { class = "Slack"; }
+        ];
       };
-
 
       keybindings = lib.mkOptionDefault {
         # lunch alacritty.
@@ -186,7 +192,6 @@ in
         "${mod}+Shift+bracketleft" = "move workspace to output left";
         "${mod}+Shift+bracketright" = "move workspace to output right";
 
-
         # Alternating between two most recent workspaces
         "${mod}+Tab" = "workspace back_and_forth";
 
@@ -228,8 +233,8 @@ in
           border = config.userDefinedGlobalVariables.colors.background;
           childBorder = config.userDefinedGlobalVariables.colors.background;
           indicator = config.userDefinedGlobalVariables.colors.alert;
-          };
         };
+      };
 
       # i3wm like other tiling window managers defines where and how bars are
       # set(position, font...). i3wm has a builtin status bar called i3bar.
@@ -247,18 +252,18 @@ in
       modes = {
         resize = {
 
-            "h" = "resize shrink width 10 px or 10 ppt";
-            "j" = "resize grow height 10 px or 10 ppt";
-            "k" = "resize shrink height 10 px or 10 ppt";
-            "l" = "resize grow width 10 px or 10 ppt";
+          "h" = "resize shrink width 10 px or 10 ppt";
+          "j" = "resize grow height 10 px or 10 ppt";
+          "k" = "resize shrink height 10 px or 10 ppt";
+          "l" = "resize grow width 10 px or 10 ppt";
 
-            "Left" = "resize shrink width 10 px or 10 ppt";
-            "Down" = "resize grow height 10 px or 10 ppt";
-            "Up" = "resize shrink height 10 px or 10 ppt";
-            "Right" = "resize grow width 10 px or 10 ppt";
+          "Left" = "resize shrink width 10 px or 10 ppt";
+          "Down" = "resize grow height 10 px or 10 ppt";
+          "Up" = "resize shrink height 10 px or 10 ppt";
+          "Right" = "resize grow width 10 px or 10 ppt";
 
-            "Escape" = "mode default";
-            "Return" = "mode default";
+          "Escape" = "mode default";
+          "Return" = "mode default";
         };
       };
 

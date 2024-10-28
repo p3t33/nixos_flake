@@ -6,43 +6,43 @@
 # disko will format everything it is presented with and so the disks that
 # are only meant to be mounted by NixOS must be separated in their own file.
 {
-    disko.devices = {
-        disk = {
-            sdb = {
-                device = "/dev/sdb";
-                type = "disk";
-                content = {
-                    type = "gpt";
-                    partitions = {
-                        media = {
-                            size = "100%";
-                            content = {
-                                type = "filesystem";
-                                format = "ext4";
-                                mountpoint = "/mnt/media";
-                            };
-                        };
-                    };
-                };
+  disko.devices = {
+    disk = {
+      sdb = {
+        device = "/dev/sdb";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            media = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/mnt/media";
+              };
             };
-
-            sdc = {
-                device = "/dev/sdc";
-                type = "disk";
-                content = {
-                    type = "gpt";
-                    partitions = {
-                        data = {
-                            size = "100%";
-                            content = {
-                                type = "filesystem";
-                                format = "ext4";
-                                mountpoint = "/mnt/data";
-                            };
-                        };
-                    };
-                };
-            };
+          };
         };
+      };
+
+      sdc = {
+        device = "/dev/sdc";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/mnt/data";
+              };
+            };
+          };
+        };
+      };
     };
+  };
 }

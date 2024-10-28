@@ -20,7 +20,7 @@
   # This recognition often depends on being a member of the lp group,
   # as you've found. I was having issues without this setting.
   users.users.${config.userDefinedGlobalVariables.primeUsername} = {
-      extraGroups = [ "lp" ];
+    extraGroups = [ "lp" ];
   };
 
 }

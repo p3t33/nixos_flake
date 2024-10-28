@@ -3,7 +3,7 @@
 
 { pkgs, config, ... }:
 {
-    home.packages = config.userDefinedGlobalVariables.fontPackages;
-    # Required to autoload fonts from packages for the system to use.
-    fonts.fontconfig.enable = true;
+  home.packages = config.userDefinedGlobalVariables.fontPackages;
+  # Required to autoload fonts from packages for the system to use.
+  fonts.fontconfig.enable = true;
 }

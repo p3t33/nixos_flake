@@ -16,8 +16,11 @@
     # By default Yescrypt is used for hasing.
     hashedPasswordFile = config.sops.secrets.initial_hashed_password.path;
     description = config.userDefinedGlobalVariables.primeUsername;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [ ];
   };
 
   users.groups.${config.userDefinedGlobalVariables.primeUsername} = {

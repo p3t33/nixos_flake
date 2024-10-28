@@ -52,10 +52,12 @@
     # For packages to be able to find each other they must be delared toghter
     # I installed there the bare minimum minimum to be able to use python
     # venv scheme.
-    (python3.withPackages (p: with p; [
-      python3Packages.pip
-      python3Packages.virtualenv
-    ]))
+    (python3.withPackages (
+      p: with p; [
+        python3Packages.pip
+        python3Packages.virtualenv
+      ]
+    ))
     nodePackages.pyright # language server.
 
     # networking
@@ -79,5 +81,5 @@
 
     # nix formator
     nixfmt-rfc-style
- ];
+  ];
 }

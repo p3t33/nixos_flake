@@ -1,4 +1,4 @@
-{ pkgs, ...}:
+{ pkgs, ... }:
 {
 
   systemd.services.moolticuted = {
@@ -8,18 +8,18 @@
     serviceConfig = {
       Type = "simple";
       ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
-      ExecStart="${pkgs.moolticute}/bin/moolticuted";
+      ExecStart = "${pkgs.moolticute}/bin/moolticuted";
       killMode = "process";
       Restart = "always";
-      User= "kmedrish";
+      User = "kmedrish";
 
       CapabilityBoundingSet = "";
       RuntimeDirectory = "moolticuted";
       RuntimeDirectoryMode = 750;
-      PrivateTmp= "yes";
-      RemoveIPC= true;
-      ProtectSystem= "strict";
-      ProtectHome= "read-only";
+      PrivateTmp = "yes";
+      RemoveIPC = true;
+      ProtectSystem = "strict";
+      ProtectHome = "read-only";
       MemoryDenyWriteExecute = true;
       ProtectKernelModules = true;
       ProtectKernelTunables = true;

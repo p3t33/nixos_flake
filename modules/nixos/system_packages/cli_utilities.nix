@@ -1,109 +1,107 @@
 { config, pkgs, ... }:
 {
-    environment.systemPackages = with pkgs; [
-      # presentation
-      present
-      slides
-      haskellPackages.patat
-      w3m
+  environment.systemPackages = with pkgs; [
+    # presentation
+    present
+    slides
+    haskellPackages.patat
+    w3m
 
     # media
-      mpv
-      ffmpeg_7-full # video editing.
+    mpv
+    ffmpeg_7-full # video editing.
 
     # web
-      wget
-      speedtest-cli
-      pkg-config # helper tool for more information during the update of nix.
-
+    wget
+    speedtest-cli
+    pkg-config # helper tool for more information during the update of nix.
 
     # process monitor
-      htop-vim
+    htop-vim
 
     # networking
-      tcpdump
-      nmap
-      whois
-      openconnect
-      gp-saml-gui
+    tcpdump
+    nmap
+    whois
+    openconnect
+    gp-saml-gui
 
     # search
-      ripgrep
-      fd
-      fzf
+    ripgrep
+    fd
+    fzf
 
-   # system information
-      inxi
-      ncdu
-      du-dust
-      duf
-      gdu
+    # system information
+    inxi
+    ncdu
+    du-dust
+    duf
+    gdu
 
     # disk utils
-      gptfdisk
-      ntfs3g
-      geteltorito # extract boot image from CD/DVD/ISO. I used it to uprade bios.
+    gptfdisk
+    ntfs3g
+    geteltorito # extract boot image from CD/DVD/ISO. I used it to uprade bios.
 
     # general
-      sshfs
-      sshpass
-      lsyncd
-      rclone
-      watchman
-      restic
-      bat
-      unzip
-      zip
-      tmux
-      smug # Session manager for tmux.
-      moreutils # I need the sponge appliction to be used as part of tmux configuration.
-      exfat # required by Ventoy installer.
+    sshfs
+    sshpass
+    lsyncd
+    rclone
+    watchman
+    restic
+    bat
+    unzip
+    zip
+    tmux
+    smug # Session manager for tmux.
+    moreutils # I need the sponge appliction to be used as part of tmux configuration.
+    exfat # required by Ventoy installer.
 
-      lshw
+    lshw
 
+    eza
+    tree
 
-      eza
-      tree
+    zsh
 
-      zsh
+    # A cross shell smarter cd command, inspired by z and autojump
+    zoxide
 
-      # A cross shell smarter cd command, inspired by z and autojump
-      zoxide
+    thefuck
+    expect
 
-      thefuck
-      expect
+    pciutils
 
-      pciutils
+    # command-line YAML processor, Used by the tmux
+    # tmux-nerd-font-window-name.tmux plugin.
+    yq
 
-      # command-line YAML processor, Used by the tmux
-      # tmux-nerd-font-window-name.tmux plugin.
-      yq
+    # Used for fetching source from github
+    # I used it to package tmux pluging that was not already available.
+    nix-prefetch-github
+    nix-prefetch-git
 
-      # Used for fetching source from github
-      # I used it to package tmux pluging that was not already available.
-      nix-prefetch-github
-      nix-prefetch-git
+    # added to get access to lsusb
+    usbutils
 
-      # added to get access to lsusb
-      usbutils
+    # Used to list the process that that open a file or using a path as
+    # a mounting point.
+    lsof
 
-      # Used to list the process that that open a file or using a path as
-      # a mounting point.
-      lsof
+    # Sound control
+    pulseaudio # installed for pactl(which is cli for pavucontrol) and uses alsa.
 
-      # Sound control
-      pulseaudio # installed for pactl(which is cli for pavucontrol) and uses alsa.
+    # Send notifications to the notification daemon, such as Dunst.
+    libnotify
 
-      # Send notifications to the notification daemon, such as Dunst.
-      libnotify
+    # evalute key and mouse presses for xorg
+    xorg.xev
 
-      # evalute key and mouse presses for xorg
-      xorg.xev
+    # Searching nix packages
+    nix-search-cli # uses as "nix-search <name of package>"
+    git-filter-repo
 
-      # Searching nix packages
-      nix-search-cli # uses as "nix-search <name of package>"
-      git-filter-repo
-
-    ];
+  ];
 
 }

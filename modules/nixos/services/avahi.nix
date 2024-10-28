@@ -6,4 +6,3 @@
   # for a WiFi printer
   services.avahi.openFirewall = true;
 }
-

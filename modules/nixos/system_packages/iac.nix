@@ -1,13 +1,10 @@
 { config, pkgs, ... }:
 {
-    environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
 
-      # infrastructure as code
-      packer
-      vagrant
-      ansible
-    ];
+    # infrastructure as code
+    packer
+    vagrant
+    ansible
+  ];
 }
-
-
-

@@ -1,34 +1,32 @@
 { config, ... }:
 {
-    sops.secrets."wifi/phone/ssid" = {
-        sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
-    };
+  sops.secrets."wifi/phone/ssid" = {
+    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
+  };
 
-    sops.secrets."wifi/phone/psk" = {
-        sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
-    };
+  sops.secrets."wifi/phone/psk" = {
+    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
+  };
 
-    sops.secrets."wifi/home/ssid" = {
-        sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
-    };
+  sops.secrets."wifi/home/ssid" = {
+    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
+  };
 
-    sops.secrets."wifi/home/psk" = {
-        sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
-    };
+  sops.secrets."wifi/home/psk" = {
+    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
+  };
 
   networking.networkmanager = {
-
-
 
     # generated in /run/NetworkManager/system-connections/
     ensureProfiles = {
 
-    environmentFiles = [
+      environmentFiles = [
         config.sops.secrets."wifi/phone/ssid".path
         config.sops.secrets."wifi/phone/psk".path
         config.sops.secrets."wifi/home/ssid".path
         config.sops.secrets."wifi/home/psk".path
-    ];
+      ];
 
       profiles = {
         "phone" = {
@@ -81,4 +79,3 @@
   };
 
 }
-

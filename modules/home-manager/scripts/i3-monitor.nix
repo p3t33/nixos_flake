@@ -21,6 +21,5 @@ let
   '';
 in
 {
-    home.packages = [ i3-monitor ];
+  home.packages = [ i3-monitor ];
 }
-

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.services.qbittorrent;
 in
@@ -35,9 +40,9 @@ in
       description = "qBittorrent service user";
     };
 
-    users.groups.qbittorrent = {};
+    users.groups.qbittorrent = { };
     users.users.${config.userDefinedGlobalVariables.primeUsername} = {
-        extraGroups = [ "qbittorrent" ];
+      extraGroups = [ "qbittorrent" ];
     };
 
     # Allows access to web-ui outside of localhost

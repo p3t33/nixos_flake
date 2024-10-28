@@ -1,5 +1,9 @@
-{ config, machineName, pkgs, ... }:
 {
-    networking.hostName = machineName;
+  config,
+  machineName,
+  pkgs,
+  ...
+}:
+{
+  networking.hostName = machineName;
 }
-

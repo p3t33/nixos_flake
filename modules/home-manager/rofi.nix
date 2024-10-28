@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   colors = rec {
@@ -14,42 +19,49 @@ in
   programs.rofi = {
     enable = true;
 
-    plugins = with pkgs; [ rofi-calc rofi-emoji rofi-power-menu];
+    plugins = with pkgs; [
+      rofi-calc
+      rofi-emoji
+      rofi-power-menu
+    ];
 
     font = "${config.userDefinedGlobalVariables.font.sansSerif} 20";
-  theme =
-    let
-      mkL = config.lib.formats.rasi.mkLiteral;
-    in
-    {
-      "*" = {
-        bg0 = mkL colors.bg0;
-        bg1 = mkL colors.bg1;
-        bg2 = mkL colors.bg2;
-        fg0 = mkL colors.fg0;
-        fg1 = mkL colors.fg1;
-        fg2 = mkL colors.fg2;
+    theme =
+      let
+        mkL = config.lib.formats.rasi.mkLiteral;
+      in
+      {
+        "*" = {
+          bg0 = mkL colors.bg0;
+          bg1 = mkL colors.bg1;
+          bg2 = mkL colors.bg2;
+          fg0 = mkL colors.fg0;
+          fg1 = mkL colors.fg1;
+          fg2 = mkL colors.fg2;
 
-        background-color = mkL "transparent";
-        text-color = mkL "@fg0";
+          background-color = mkL "transparent";
+          text-color = mkL "@fg0";
 
-        margin = 0;
-        padding = 0;
-        spacing = 0;
+          margin = 0;
+          padding = 0;
+          spacing = 0;
 
-      };
+        };
 
-      window = {
+        window = {
           background-color = mkL "@bg0";
           location = mkL "center";
           width = 640;
           border-radius = 8;
         };
 
-      inputbar = {
+        inputbar = {
           padding = mkL "12px";
           spacing = mkL "12px";
-          children = map mkL [ "icon-search" "entry" ];
+          children = map mkL [
+            "icon-search"
+            "entry"
+          ];
         };
 
         icon-search = {
@@ -112,7 +124,7 @@ in
           background-color = mkL "@bg2";
           text-color = mkL "@fg1";
         };
-    };
+      };
 
     extraConfig = {
       show-icons = true;
@@ -125,8 +137,5 @@ in
       tokenize = true;
     };
   };
-
-
-
 
 }

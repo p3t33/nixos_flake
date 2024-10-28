@@ -7,7 +7,6 @@
     # can work along with set modules
     enableDefault = false;
 
-
     # According to documentation the format for
     # setting the modules option is as follows:
     #
@@ -19,12 +18,12 @@
     # programs.i3status.modules.<name>.enable
     modules = {
       "volume master" = {
-         position = 1;
-         settings = {
-         format = "♪ %volume";
-         format_muted = "♪ muted (%volume)";
-         device = "default";
-         };
+        position = 1;
+        settings = {
+          format = "♪ %volume";
+          format_muted = "♪ muted (%volume)";
+          device = "default";
+        };
       };
 
       "disk /" = {
@@ -51,6 +50,6 @@
         };
       };
     };
- };
+  };
 
 }

@@ -5,9 +5,7 @@
     enable = true;
     enableZshIntegration = true;
 
-    flags = [
-        "--disable-up-arrow"
-    ];
+    flags = [ "--disable-up-arrow" ];
 
     settings = {
 
@@ -17,4 +15,3 @@
     };
   };
 }
-

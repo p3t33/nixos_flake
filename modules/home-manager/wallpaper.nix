@@ -1,5 +1,11 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  xdg.configFile."${config.userDefinedGlobalVariables.wallpaperOut}".source = config.userDefinedGlobalVariables.wallpaperIn;
+  xdg.configFile."${config.userDefinedGlobalVariables.wallpaperOut}".source =
+    config.userDefinedGlobalVariables.wallpaperIn;
 }

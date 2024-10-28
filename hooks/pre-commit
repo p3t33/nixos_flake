@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Get a list of staged .nix files
+staged_nix_files=$(git diff --cached --name-only --diff-filter=d | grep '\.nix$')
+
+# Format each staged .nix file
+for file in $staged_nix_files; do
+    nixfmt "$file"
+    git add "$file"  # Re-add the file after formatting
+done
+

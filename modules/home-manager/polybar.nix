@@ -1,27 +1,27 @@
-{ config, pkgs,  ... }:
+{ config, pkgs, ... }:
 
 let
-     ws1 = "${config.userDefinedGlobalVariables.workspaces.ws1}";
-     ws2 = "${config.userDefinedGlobalVariables.workspaces.ws2}";
-     ws3 = "${config.userDefinedGlobalVariables.workspaces.ws3}";
-     ws4 = "${config.userDefinedGlobalVariables.workspaces.ws4}";
-     ws5 = "${config.userDefinedGlobalVariables.workspaces.ws5}";
-     ws6 = "${config.userDefinedGlobalVariables.workspaces.ws6}";
-     ws7 = "${config.userDefinedGlobalVariables.workspaces.ws7}";
-     ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
-     ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
-     ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
+  ws1 = "${config.userDefinedGlobalVariables.workspaces.ws1}";
+  ws2 = "${config.userDefinedGlobalVariables.workspaces.ws2}";
+  ws3 = "${config.userDefinedGlobalVariables.workspaces.ws3}";
+  ws4 = "${config.userDefinedGlobalVariables.workspaces.ws4}";
+  ws5 = "${config.userDefinedGlobalVariables.workspaces.ws5}";
+  ws6 = "${config.userDefinedGlobalVariables.workspaces.ws6}";
+  ws7 = "${config.userDefinedGlobalVariables.workspaces.ws7}";
+  ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
+  ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
+  ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
 
-     ws1_icon = "${config.userDefinedGlobalVariables.workspaces_icons.firefox}";
-     ws2_icon = "${config.userDefinedGlobalVariables.workspaces_icons.code}";
-     ws3_icon = "${config.userDefinedGlobalVariables.workspaces_icons.cherrytree}";
-     ws4_icon = "${config.userDefinedGlobalVariables.workspaces_icons.chrome}";
-     ws5_icon = "${config.userDefinedGlobalVariables.workspaces_icons.terminal}";
-     ws6_icon = "${config.userDefinedGlobalVariables.workspaces_icons.buildserver}";
-     ws8_icon = "${config.userDefinedGlobalVariables.workspaces_icons.vm}";
+  ws1_icon = "${config.userDefinedGlobalVariables.workspaces_icons.firefox}";
+  ws2_icon = "${config.userDefinedGlobalVariables.workspaces_icons.code}";
+  ws3_icon = "${config.userDefinedGlobalVariables.workspaces_icons.cherrytree}";
+  ws4_icon = "${config.userDefinedGlobalVariables.workspaces_icons.chrome}";
+  ws5_icon = "${config.userDefinedGlobalVariables.workspaces_icons.terminal}";
+  ws6_icon = "${config.userDefinedGlobalVariables.workspaces_icons.buildserver}";
+  ws8_icon = "${config.userDefinedGlobalVariables.workspaces_icons.vm}";
 in
 {
-    services.polybar = {
+  services.polybar = {
     enable = true;
     package = pkgs.polybar.override {
       i3Support = true;
@@ -49,7 +49,6 @@ in
         padding = 0;
         module-margin = 1;
 
-
         # using patched mono font for the icons might change it later on.
         font-0 = "${config.userDefinedGlobalVariables.font.mono}:style=Regular:size=15;4";
         # Just sticking them together in the center for now
@@ -72,199 +71,199 @@ in
       };
 
       "module/oslogo" = {
-          type = "custom/text";
-          content = " NixOS";
-          content-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
-          content-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
-          content-padding = 2;
-        };
+        type = "custom/text";
+        content = " NixOS";
+        content-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+        content-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
+        content-padding = 2;
+      };
 
-        "module/xworkspaces" = {
+      "module/xworkspaces" = {
 
-          type = "internal/xworkspaces";
-          pin-workspaces = true;
-          enable-scroll = false;
+        type = "internal/xworkspaces";
+        pin-workspaces = true;
+        enable-scroll = false;
 
-          # Use fuzzy (partial) matching on labels when assigning
-          # icons to workspaces.
-          # Example: code;♚ will apply the icon to all workspaces
-          # containing 'code' in the label
-          # Default: false
-          fuzzy-match = true;
+        # Use fuzzy (partial) matching on labels when assigning
+        # icons to workspaces.
+        # Example: code;♚ will apply the icon to all workspaces
+        # containing 'code' in the label
+        # Default: false
+        fuzzy-match = true;
 
-          icon-0 = "${ws10};";
-          icon-1 = "${ws1};${ws1_icon}";
-          icon-2 = "${ws2};${ws2_icon}";
-          icon-3 = "${ws3};${ws3_icon}";
-          icon-4 = "${ws4};${ws4_icon}";
-          icon-5 = "${ws5};${ws5_icon}";
-          icon-6 = "${ws6};${ws6_icon}";
-          icon-7 = "${ws7};";
-          icon-8 = "${ws8};${ws8_icon}";
-          icon-9 = "${ws9};";
-          icon-default = "";
+        icon-0 = "${ws10};";
+        icon-1 = "${ws1};${ws1_icon}";
+        icon-2 = "${ws2};${ws2_icon}";
+        icon-3 = "${ws3};${ws3_icon}";
+        icon-4 = "${ws4};${ws4_icon}";
+        icon-5 = "${ws5};${ws5_icon}";
+        icon-6 = "${ws6};${ws6_icon}";
+        icon-7 = "${ws7};";
+        icon-8 = "${ws8};${ws8_icon}";
+        icon-9 = "${ws9};";
+        icon-default = "";
 
-          format = "<label-state>";
+        format = "<label-state>";
 
-          label-active = "%name%";
-          label-active-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          label-active-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
-          label-active-underline = "${config.userDefinedGlobalVariables.colors.primary}";
+        label-active = "%name%";
+        label-active-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        label-active-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
+        label-active-underline = "${config.userDefinedGlobalVariables.colors.primary}";
 
-          label-occupied = "%name%";
+        label-occupied = "%name%";
 
-          label-urgent = "%icon%";
-          label-urgent-foreground = "${config.userDefinedGlobalVariables.colors.alert}";
+        label-urgent = "%icon%";
+        label-urgent-foreground = "${config.userDefinedGlobalVariables.colors.alert}";
 
-          label-empty = "%icon%";
-          label-empty-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
+        label-empty = "%icon%";
+        label-empty-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
 
-          label-active-padding = 2;
-          label-occupied-padding = 2;
-          label-urgent-padding = 2;
-          label-empty-padding = 2;
-        };
+        label-active-padding = 2;
+        label-occupied-padding = 2;
+        label-urgent-padding = 2;
+        label-empty-padding = 2;
+      };
 
-        "module/xwindow" = {
-          type = "internal/xwindow";
-          label = "%title:0:40:...%";
-          format = "<label>";
-          format-prefix = "  ";
-          format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          label-empty = "NixOS";
-        };
+      "module/xwindow" = {
+        type = "internal/xwindow";
+        label = "%title:0:40:...%";
+        format = "<label>";
+        format-prefix = "  ";
+        format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        label-empty = "NixOS";
+      };
 
-        "module/filesystem" = {
-          type = "internal/fs";
-          interval = 25;
-          mount-0 = "/";
-          label-mounted = "%{F${config.userDefinedGlobalVariables.colors.primary}}󱛟 DISK:%{F-} %percentage_used:2%%";
-          label-unmounted = "%mountpoint% not mounted";
-          label-unmounted-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
-        };
+      "module/filesystem" = {
+        type = "internal/fs";
+        interval = 25;
+        mount-0 = "/";
+        label-mounted = "%{F${config.userDefinedGlobalVariables.colors.primary}}󱛟 DISK:%{F-} %percentage_used:2%%";
+        label-unmounted = "%mountpoint% not mounted";
+        label-unmounted-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
+      };
 
-        "module/memory" = {
-          type = "internal/memory";
-          interval = 2;
-          format-prefix = "󰍛 RAM:";
-          format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          label = "%percentage_used:2%%";
-        };
+      "module/memory" = {
+        type = "internal/memory";
+        interval = 2;
+        format-prefix = "󰍛 RAM:";
+        format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        label = "%percentage_used:2%%";
+      };
 
-        "module/cpu" = {
-          type = "internal/cpu";
-          interval = 2;
-          format-prefix = "󰻠 CPU:";
-          format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          label = "%percentage:2%%";
-        };
+      "module/cpu" = {
+        type = "internal/cpu";
+        interval = 2;
+        format-prefix = "󰻠 CPU:";
+        format-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        label = "%percentage:2%%";
+      };
 
-        "module/wlan" = {
-          # general
-          type = "internal/network";
-          interval = 5;
-          interface-type = "wireless";
+      "module/wlan" = {
+        # general
+        type = "internal/network";
+        interval = 5;
+        interface-type = "wireless";
 
-          # Format when connected
-          format-connected = "<ramp-signal> <label-connected>";
-          label-connected = "%signal%%"; # This will show signal strength as a percentage
+        # Format when connected
+        format-connected = "<ramp-signal> <label-connected>";
+        label-connected = "%signal%%"; # This will show signal strength as a percentage
 
-          # Define signal strength icons (can be customized)
-          ramp-signal-0 = "󰤟";
-          ramp-signal-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-signal-1 = "󰤟";
-          ramp-signal-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-signal-2 = "󰤢";
-          ramp-signal-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-signal-3 = "󰤥";
-          ramp-signal-3-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-signal-4 = "󰤨";
-          ramp-signal-4-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        # Define signal strength icons (can be customized)
+        ramp-signal-0 = "󰤟";
+        ramp-signal-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-signal-1 = "󰤟";
+        ramp-signal-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-signal-2 = "󰤢";
+        ramp-signal-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-signal-3 = "󰤥";
+        ramp-signal-3-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-signal-4 = "󰤨";
+        ramp-signal-4-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
 
-          format-disconnected = "<label-disconnected>";
-          label-disconnected = "󰖪";
-          format-disconnected-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
-        };
+        format-disconnected = "<label-disconnected>";
+        label-disconnected = "󰖪";
+        format-disconnected-foreground = "${config.userDefinedGlobalVariables.colors.disabled}";
+      };
 
-        "module/date" = {
-          type = "internal/date";
-          interval = 1;
-          date = "%d-%m-%Y  %H:%M" ;
-          label = "%date%";
-          format = "<label>";
-          format-prefix = " ";
-          format-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
-          format-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
-          format-padding = 2;
-        };
-        "module/volume" = {
-            type = "internal/volume";
+      "module/date" = {
+        type = "internal/date";
+        interval = 1;
+        date = "%d-%m-%Y  %H:%M";
+        label = "%date%";
+        format = "<label>";
+        format-prefix = " ";
+        format-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+        format-background = "${config.userDefinedGlobalVariables.colors.background-alt}";
+        format-padding = 2;
+      };
+      "module/volume" = {
+        type = "internal/volume";
 
-            #Volume display settings
-            format-volume = "<ramp-volume> <label-volume>";
-            format-muted = "<label-muted>";
-            label-volume = "%percentage%%";
-            label-muted = "󰝟";
-            ramp-volume-0 = "󰕿";  # Icon for low volume
-            ramp-volume-1 = "󰖀";  # Icon for medium volume
-            ramp-volume-2 = "󰕾";  # Icon for high volume
+        #Volume display settings
+        format-volume = "<ramp-volume> <label-volume>";
+        format-muted = "<label-muted>";
+        label-volume = "%percentage%%";
+        label-muted = "󰝟";
+        ramp-volume-0 = "󰕿"; # Icon for low volume
+        ramp-volume-1 = "󰖀"; # Icon for medium volume
+        ramp-volume-2 = "󰕾"; # Icon for high volume
 
-            # Define volume mixer control
-            master-mixer = "Master";
-            mixer = "default";
-            mixer-idx = 0;
+        # Define volume mixer control
+        master-mixer = "Master";
+        mixer = "default";
+        mixer-idx = 0;
 
-            #Color customization (optional)
-            label-volume-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
+        #Color customization (optional)
+        label-volume-foreground = "${config.userDefinedGlobalVariables.colors.foreground}";
 
-            label-muted-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-            ramp-volume-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-            ramp-volume-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-            ramp-volume-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-        };
+        label-muted-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-volume-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-volume-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-volume-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+      };
 
-        "module/battery" = {
-          type = "internal/battery";
-          # ls -1 /sys/class/power_supply/
-          battery = "BAT0";
-          adapter = "AC";
+      "module/battery" = {
+        type = "internal/battery";
+        # ls -1 /sys/class/power_supply/
+        battery = "BAT0";
+        adapter = "AC";
 
-          # This is useful in case the battery never
-          # reports 100% charge
-          full-at = 95;
+        # This is useful in case the battery never
+        # reports 100% charge
+        full-at = 95;
 
-          # Define different icons for different battery levels
-          ramp-capacity-0 = "󰁺" ; # replace with icon for battery <20%
-          ramp-capacity-1 = "󰁽" ; # replace with icon for battery between 20-40%
-          ramp-capacity-2 = "󰁾" ; # replace with icon for battery between 40-60%
-          ramp-capacity-3 = "󰂀" ; # replace with icon for battery between 60-80%
-          ramp-capacity-4 = "󰁹" ; # replace with icon for battery >80%
+        # Define different icons for different battery levels
+        ramp-capacity-0 = "󰁺"; # replace with icon for battery <20%
+        ramp-capacity-1 = "󰁽"; # replace with icon for battery between 20-40%
+        ramp-capacity-2 = "󰁾"; # replace with icon for battery between 40-60%
+        ramp-capacity-3 = "󰂀"; # replace with icon for battery between 60-80%
+        ramp-capacity-4 = "󰁹"; # replace with icon for battery >80%
 
-          # Define different icons when charging
-          ramp-capacity-0-charging = "󰢜" ; # replace with charging icon for battery <20%
-          ramp-capacity-1-charging = "󰂇" ; # replace with charging icon for battery between 20-40%
-          ramp-capacity-2-charging = "󰢝" ; # replace with charging icon for battery between 40-60%
-          ramp-capacity-3-charging = "󰢞" ; # replace with charging icon for battery between 60-80%
-          ramp-capacity-4-charging = "󰂅" ; # replace with charging icon for battery >80%
+        # Define different icons when charging
+        ramp-capacity-0-charging = "󰢜"; # replace with charging icon for battery <20%
+        ramp-capacity-1-charging = "󰂇"; # replace with charging icon for battery between 20-40%
+        ramp-capacity-2-charging = "󰢝"; # replace with charging icon for battery between 40-60%
+        ramp-capacity-3-charging = "󰢞"; # replace with charging icon for battery between 60-80%
+        ramp-capacity-4-charging = "󰂅"; # replace with charging icon for battery >80%
 
-          # Color customization (optional)
-          ramp-capacity-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-capacity-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-capacity-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-capacity-3-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          ramp-capacity-4-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        # Color customization (optional)
+        ramp-capacity-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-capacity-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-capacity-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-capacity-3-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        ramp-capacity-4-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
 
-          label-charging = "%percentage:3%%";
-          label-discharging = "%percentage:3%%";
-          label-full = "%percentage:3%%";
+        label-charging = "%percentage:3%%";
+        label-discharging = "%percentage:3%%";
+        label-full = "%percentage:3%%";
 
-          format-charging = "<ramp-capacity-charging> <label-charging>";
-          format-discharging = "<ramp-capacity> <label-discharging>";
-          format-full = "<ramp-capacity> <label-full>";
-          format-charging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          format-discharging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-          format-full-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-        };
+        format-charging = "<ramp-capacity-charging> <label-charging>";
+        format-discharging = "<ramp-capacity> <label-discharging>";
+        format-full = "<ramp-capacity> <label-full>";
+        format-charging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        format-discharging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+        format-full-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
+      };
 
       "module/i3" = {
         type = "internal/i3";
@@ -293,7 +292,7 @@ in
         ws-icon-default = "";
 
         format = "<label-state> <label-mode>";
-        label-dimmed-underline= "${config.userDefinedGlobalVariables.colors.background}";
+        label-dimmed-underline = "${config.userDefinedGlobalVariables.colors.background}";
 
         label-mode = "%mode%";
         label-mode-padding = 2;
@@ -313,7 +312,6 @@ in
         label-visible = "%icon%";
         label-visible-padding = 2;
 
-
         label-urgent = "%icon%";
         label-urgent-foreground = "${config.userDefinedGlobalVariables.colors.alert}";
         label-urgent-padding = 2;
@@ -321,11 +319,7 @@ in
         #label-separator = "|";
         #label-separator-padding = 0;
 
-
-
         # Neither <label> nor <icon> can contain a semicolon (;)
-
-
 
       };
 
