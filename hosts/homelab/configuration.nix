@@ -3,7 +3,6 @@
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
 {
-  inputs,
   config,
   pkgs,
   ...

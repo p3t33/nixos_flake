@@ -7,7 +7,9 @@
       # ----------------
       sumneko-lua-language-server # lua
       clang-tools # c/c++
-      #rnix-lsp # nix
+      nixd # nix
+      nixfmt-rfc-style #nix formator used by nixd
+
       nodePackages.pyright # python
       # ----------------
 
@@ -114,6 +116,15 @@
               -- Fix for warning multiple different client offset encodings detected for buffer this is not support ed yet
               if server_name == 'clangd' then
                   setup_table.cmd = { 'clangd', '--offset-encoding=utf-16' }
+              elseif server_name == 'nixd' then
+                  setup_table.cmd = { 'nixd' }
+                  setup_table.settings = {
+                      nixd = {
+                          formatting = {
+                              command = { "nixfmt" },
+                          },
+                      },
+                  }
               else
                   setup_table.cmd = nil
                       end
@@ -124,6 +135,7 @@
           setup_lsp_server('lua_ls')
           setup_lsp_server('clangd')
           setup_lsp_server('pyright')
+          setup_lsp_server('nixd')
         '';
       }
 

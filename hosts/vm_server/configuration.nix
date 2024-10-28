@@ -3,9 +3,7 @@
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
 {
-  inputs,
   config,
-  pkgs,
   ...
 }:
 
@@ -70,10 +68,6 @@
 
   # Enable automatic login for the user.
   services.getty.autologinUser = config.userDefinedGlobalVariables.primeUsername;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [ ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
