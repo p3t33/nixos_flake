@@ -76,5 +76,8 @@
     # message bus system
     dbus
     hugo
+
+    # nix formator
+    nixfmt-rfc-style
  ];
 }
