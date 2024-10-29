@@ -18,7 +18,8 @@ configuration files for my various machines.
 
 # Design philosophy
 - Multiple machines are defined with emphasis on shared code between them
-in order to achieve consistency and to avoid code repeat where possible.
+in order to achieve consistency and to avoid code repeat where possible. With
+each machine having its own separate responsibility.
 - Work flow is heavily skewed towards the use of the keyboard and the terminal.
 Some keyboard bindings may look strange but they are effected by the fact
 that I am using a programmable keyboard(configurations in
@@ -28,9 +29,9 @@ that I am using a programmable keyboard(configurations in
 dotfiles to the possible extent.
 
 # Highlights
-- Multiple host configurations using [home-manager] as a NixOS module, allowing for
+- Multiple machines configurations using [home-manager] as a NixOS module, allowing for
   shared configurations across systems, with an option for standalone home-manager
-  configurations to be used on generic Linux hosts, such as Ubuntu.
+  configurations to be used on generic Linux machines, such as Ubuntu.
 - Secrets deployment using [sops-nix].
 - Extensively configured xorg and terminal environment.
 - Configuration for KVM, VirtualBox, and docker.
@@ -52,7 +53,7 @@ dotfiles to the possible extent.
 - **redshift**: Adjusts the color temperature of your screen according to your surroundings.
 - **dnust**: notification daemon.
 - **sxhkd**: A simple X hotkey daemon.
-- **syncthing**: sync files between all of my hosts.
+- **syncthing**: sync files between all of my machines.
 - **tmux**: Used to start tmux on boot and with the resurrect and continuum
             plugins my entire terminal environment is always ready for me.
 - **watchman**: Used to watch a directory and on any change in it to trigger actions.
@@ -60,20 +61,20 @@ dotfiles to the possible extent.
 - **moolticuted**: a daemon used to interact with mooltipass the hardware password manager.
 
 # Repo structure
-- **flake.nix**: The entry point for hosts and home configurations.
-- **hosts**: The machines that can be configured using this repository. With each
-host having its high level .nix configuration that define host specific settings
-and include code that can be shared with other hosts.
+- **flake.nix**: The entry point for machines and home configurations.
+- **machines**: The machines that can be configured using this repository. With each
+machine having its high level .nix configuration that define machine specific settings
+and include code that can be shared with other machines.
 - **modules**: Divided into modules to be used by home-manger(including user scripts)
 to mange user configuration and into nixos modules which are mostly configurations
 I found in /etc/nixos/configuration.nix and refactored into responsibilities that can
-then be including by the various hosts to achieve code reuse.
+then be including by the various machines to achieve code reuse.
 - **wallpaper**: self explanatory :)
 
 # ToDo
-- [ ] Look into streamlining installation process of NixOS on a new host with [nixos-anywhere].
+- [ ] Look into streamlining installation process of NixOS on a new machine with [nixos-anywhere].
 - [ ] Replace default way to mount hard drives with a generic one in the form of [disko].
-  - [ ] Update all hosts to use disko.
+  - [ ] Update all machines to use disko.
 - [ ] I am not sure that emacs systemd unit can communicate with ssh-agnet, this is a very low
       priority.
 - [x] ~~Stream line the use of nix-index.~~

@@ -1,4 +1,4 @@
-HOST_DIR_PATH="./hosts/"
+HOST_DIR_PATH="./machines/"
 HOST_TO_INSTALL_AS_PROVIDED_BY_USER=$1
 EXCLUSION_LIST=("work_pc" "home_desktop" "generic_linux_distro") # Add the hostnames to exclude
 HOSTS_TO_CHOSE_FROM=$(find "$HOST_DIR_PATH" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)

@@ -1,6 +1,6 @@
 # The meta.nix was created in order to encapsulate variables with same values
 # that are being set across multiple files. Some of the values are
-# evaluated "dynamically" via an if statement based on the value that host
+# evaluated "dynamically" via an if statement based on the value that machines
 # sets for its hostname.
 {
   config,
@@ -114,13 +114,13 @@
         };
 
         home_manger_import_path = mkOption {
-          default = ../hosts/${config.userDefinedGlobalVariables.hostConfigurationName}/home.nix;
+          default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/home.nix;
           type = path;
           description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
         };
 
         NixOSSecretsPath = mkOption {
-          default = ../hosts/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets.yaml;
+          default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets.yaml;
           type = path;
           description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
         };
@@ -233,7 +233,6 @@
 
   config = lib.mkMerge [
     (lib.mkIf (machineName == "HP-Zbook") {
-      userDefinedGlobalVariables.primeUsername = "kmedrish";
       userDefinedGlobalVariables.hostConfigurationName = "work_pc";
       userDefinedGlobalVariables.systemStateVersion = "23.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
@@ -241,7 +240,6 @@
     })
 
     (lib.mkIf (machineName == "home-desktop") {
-      userDefinedGlobalVariables.primeUsername = "kmedrish";
       userDefinedGlobalVariables.hostConfigurationName = "home_desktop";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "23.11";
@@ -252,14 +250,12 @@
       userDefinedGlobalVariables.systemStateVersion = "24.05";
     })
     (lib.mkIf (machineName == "homelab") {
-      userDefinedGlobalVariables.primeUsername = "kmedrish";
       userDefinedGlobalVariables.hostConfigurationName = "homelab";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
       userDefinedGlobalVariables.syncthingUser = "syncthing";
     })
     (lib.mkIf (machineName == "generic_linux_distro") {
-      userDefinedGlobalVariables.primeUsername = "kmedrish";
       userDefinedGlobalVariables.hostConfigurationName = "generic_linux_distro";
       userDefinedGlobalVariables.systemStateVersion = "23.11";
       userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";

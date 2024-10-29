@@ -5,23 +5,23 @@ keys:
   - &generic_linux_distro age1jukh2jtz084zgvzkq398frz73qjr9cjnljhsdsw70ywy5kxp7pnsls0eja
   - &vm_server age1lj7hv8aql2cepq3u5n2v280dqnlwztl8xgr5uz9pvpc59tfqqahq3kzz8x
 creation_rules:
-  - path_regex: hosts/work_pc/secrets.yaml$
+  - path_regex: machines/work_pc/secrets.yaml$
     key_groups:
     - age:
       - *work_pc
-  - path_regex: hosts/home_desktop/secrets.yaml$
+  - path_regex: machines/home_desktop/secrets.yaml$
     key_groups:
     - age:
       - *home_desktop
-  - path_regex: hosts/homelab/secrets.yaml$
+  - path_regex: machines/homelab/secrets.yaml$
     key_groups:
     - age:
       - *homelab
-  - path_regex: hosts/generic_linux_distro/secrets.yaml$
+  - path_regex: machines/generic_linux_distro/secrets.yaml$
     key_groups:
     - age:
       - *generic_linux_distro
-  - path_regex: hosts/vm_server/secrets.yaml$
+  - path_regex: machines/vm_server/secrets.yaml$
     key_groups:
     - age:
       - *vm_server

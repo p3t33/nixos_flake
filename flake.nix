@@ -46,7 +46,7 @@
             machineName = "kvm-nixos-server";
           };
           modules = [
-            ./hosts/vm_server/configuration.nix
+            ./machines/vm_server/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -60,7 +60,7 @@
             machineName = "homelab";
           };
           modules = [
-            ./hosts/homelab/configuration.nix
+            ./machines/homelab/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -75,7 +75,7 @@
             machineName = "HP-Zbook";
           };
           modules = [
-            ./hosts/work_pc/configuration.nix
+            ./machines/work_pc/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -89,7 +89,7 @@
             machineName = "home-desktop";
           };
           modules = [
-            ./hosts/home_desktop/configuration.nix
+            ./machines/home_desktop/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -109,7 +109,7 @@
             machineName = "generic_linux_distro";
           };
           modules = [
-            ./hosts/generic_linux_distro/home.nix
+            ./machines/generic_linux_distro/home.nix
             inputs.sops-nix.homeManagerModules.sops
           ];
         };
