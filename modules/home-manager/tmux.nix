@@ -95,15 +95,13 @@ in
       # If the counterpart isn't installed the only functionality that will be added
       # is the ability to move between panes using Ctr+h/j/k/l in tmux.
       { plugin = vim-tmux-navigator; }
-      # The copy buffer for tmux is separate from the system one, in the past in
-      # order to sync the two there was a need to install tmux-yank but it looks like
-      # Tmux now sends the OSC52 escape code that tells the terminal(one that support this)
-      # to not display the following characters, but to copy them into the clipboard
-      # instead.
-      #
-      # The reason that this plugin is still included because it provides a quick way to copy what
-      # is on the command line and once in copy mode to copy the PWD. I might just replace the
-      # plugin with keybindings(based on send-keys).
+
+      # Some of the modern termenals can sync tmux clipbaord and system clopbard when set-option -g set-clipboard on
+      # is set. But most of the termenals need to use something like xclip.
+      # - provdes yanking to system copy buffer(using y in copy mode).
+      # - provides yanking to system prompt(using Y in copy mode).
+      # - yank the prompt.
+      # - yank the pwd.
       { plugin = yank; }
       # For some reason this plugin by default only copy into the Tmux copy buffer
       # and so I had to explicitly state the command to make it copy into the system
@@ -185,6 +183,19 @@ in
       # session named init-resurrect is created for resurrect plugin to create a valid "last" file for
       # continuum plugin to work off of.
       run-shell "if [ ! -d ${resurrectDirPath} ]; then tmux new-session -d -s init-resurrect; ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh; fi"
+
+      # Why I don't enable "set-option -g set-clipboard on"
+      # Some termenals are able to sync tmux internal copy buffer with the OS clipboard
+      # This options enables thus function. From what I see regadless most yank related
+      # plugins use tools like xclip so not to depend on the graces of the terminal.
+      # In order to avoid conflicts between the plugins and this option it should
+      # not be enabled.
+
+      # default scrollback buffer is 2000 lines.
+      set -g history-limit 50000
+
+      # The time a message gets displyed.
+      set -g display-time 4000
 
       # kill a session
       bind-key X kill-session
