@@ -43,6 +43,59 @@
           description = "Defines the realease that Home Manager has backwards compatibility with";
         };
 
+        mediaGroup = mkOption {
+          # Helps to avoid brakeage and as a best practice shoud be the same version
+          # as the reset of the system.
+          default = "media";
+          type = str;
+          description = "defies the media group";
+        };
+
+        dataGroup = mkOption {
+          # Helps to avoid brakeage and as a best practice shoud be the same version
+          # as the reset of the system.
+          default = "data";
+          type = str;
+          description = "defies the data group";
+        };
+
+        homeLabSubnetPrefix = mkOption {
+          # Helps to avoid brakeage and as a best practice shoud be the same version
+          # as the reset of the system.
+          default = "10.100.102.";
+          type = str;
+          description = "defines the static ip used by homelab machine";
+        };
+
+        homeLabIP = mkOption {
+          # Helps to avoid brakeage and as a best practice shoud be the same version
+          # as the reset of the system.
+          default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}73";
+          type = str;
+          description = "defines the static ip used by homelab machine";
+        };
+
+        homeLabGateway = mkOption {
+          # Helps to avoid brakeage and as a best practice shoud be the same version
+          # as the reset of the system.
+          default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
+          type = str;
+          description = "defines the static ip used by homelab machine";
+        };
+
+
+        pathToDataDirectory = mkOption {
+          default = "/mnt/data";
+          type = str;
+          description = "path of data directoy on homelab host";
+        };
+
+        pathToMediaDirectory = mkOption {
+          default = "/mnt/media";
+          type = str;
+          description = "path of media directoy on homelab host";
+        };
+
         pathToFlakeDirectory = mkOption {
           default = "${config.home.homeDirectory}/projects/nixos_flake";
           type = str;

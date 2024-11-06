@@ -5,6 +5,7 @@
 #
 # disko will format everything it is presented with and so the disks that
 # are only meant to be mounted by NixOS must be separated in their own file.
+{ config, ... }:
 {
   disko.devices = {
     disk = {
@@ -19,7 +20,7 @@
               content = {
                 type = "filesystem";
                 format = "ext4";
-                mountpoint = "/mnt/media";
+                mountpoint = "${config.userDefinedGlobalVariables.pathToMediaDirectory}";
               };
             };
           };
@@ -37,7 +38,7 @@
               content = {
                 type = "filesystem";
                 format = "ext4";
-                mountpoint = "/mnt/data";
+                mountpoint = "${config.userDefinedGlobalVariables.pathToDataDirectory}";
               };
             };
           };

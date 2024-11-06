@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   environment.systemPackages = with pkgs; [
     jellyfin
@@ -9,6 +9,6 @@
   services.jellyfin = {
     enable = true;
     openFirewall = true;
-    group = "media";
+    group = "${config.userDefinedGlobalVariables.mediaGroup}";
   };
 }

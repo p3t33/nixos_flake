@@ -15,7 +15,7 @@
       passwordFile = config.sops.secrets."restic/local/passwordFile".path;
 
       # Paths to backup.
-      paths = [ "/mnt/data/Sync" ];
+      paths = [ "${config.userDefinedGlobalVariables.pathToDataDirectory}/Sync" ];
 
       # Keep 7 daily, 4 weekly, and 3 annual backups.
       pruneOpts = [

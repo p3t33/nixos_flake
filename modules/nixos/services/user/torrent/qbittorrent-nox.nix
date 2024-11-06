@@ -34,7 +34,7 @@ in
   config = lib.mkIf cfg.enable {
     users.users.qbittorrent = {
       isSystemUser = true;
-      group = "media";
+      group = "${config.userDefinedGlobalVariables.mediaGroup}";
       home = cfg.dataDir;
       homeMode = "777";
       createHome = true;

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 {
   services.nginx = {
     enable = true;
@@ -14,7 +14,7 @@
     recommendedTlsSettings = true;
 
     virtualHosts = {
-      "10.100.102.73" = {
+      "${config.userDefinedGlobalVariables.homeLabIP}" = {
         locations."/deluge" = {
           proxyPass = "http://localhost:8112/"; # Reverse proxy to Deluge Web UI
           extraConfig = ''

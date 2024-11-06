@@ -27,11 +27,11 @@
     members = [ config.userDefinedGlobalVariables.primeUsername ];
   };
 
-  users.groups.media = {
+  users.groups.${config.userDefinedGlobalVariables.mediaGroup} = {
     members = [ config.userDefinedGlobalVariables.primeUsername ];
   };
 
-  users.groups.data = {
+  users.groups.${config.userDefinedGlobalVariables.dataGroup} = {
     members = [ config.userDefinedGlobalVariables.primeUsername ];
   };
 }

@@ -2,7 +2,7 @@
 {
   services.deluge = {
     enable = true;
-    group = "media";
+    group = "${config.userDefinedGlobalVariables.mediaGroup}";
     # Only works when declarative = true and only for non random ports.
     openFirewall = true;
     web = {
@@ -14,7 +14,7 @@
     config = {
       # /mnt/media is a mount point with defined owner, and permissions
       # so I was getting warning when NixOS was switching.
-      download_location = "/mnt/media/torrents";
+      download_location = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/torrents";
       max_active_seeding = 200;
       max_active_downloading = 200;
       max_active_limit = 200;
@@ -27,7 +27,7 @@
 
       # If this isn't set to false, deluge will ignore the ports
       # set by listen_ports and just pick a random port. meaning
-      # this randmo port  won't have firewall opened for it and so
+      # this randmo port won't have firewall opened for it and so
       # incoming traffic will not work.
       random_port = false;
       # Set a fixed range for P2P communication ports, minumum two so I used the same value.
@@ -41,7 +41,7 @@
 
   sops.secrets.deluge_auth_file = {
     mode = "0660";
-    group = "media";
+    group = "${config.userDefinedGlobalVariables.mediaGroup}";
   };
 
 }

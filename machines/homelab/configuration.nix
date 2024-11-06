@@ -44,22 +44,23 @@
   ];
 
   systemd.tmpfiles.rules = [
-    "d /mnt/data 0770 kmedrish data -"
-    "d /mnt/media 0770 kmedrish media -"
+    "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+
   networking.interfaces.eno1.ipv4.addresses = [
     {
-      address = "10.100.102.73";
+      address = "${config.userDefinedGlobalVariables.homeLabIP}";
       prefixLength = 24;
     }
   ];
 
-  networking.defaultGateway = "10.100.102.1";
+  networking.defaultGateway = "${config.userDefinedGlobalVariables.homeLabGateway}";
   networking.nameservers = [ "8.8.8.8" ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

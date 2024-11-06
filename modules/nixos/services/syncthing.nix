@@ -2,6 +2,6 @@
 {
   services.syncthing = {
     enable = true;
-    group = "data";
+    group = "${config.userDefinedGlobalVariables.dataGroup}";
   };
 }

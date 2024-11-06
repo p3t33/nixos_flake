@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
 
   systemd.services.moolticuted = {
@@ -11,7 +11,7 @@
       ExecStart = "${pkgs.moolticute}/bin/moolticuted";
       killMode = "process";
       Restart = "always";
-      User = "kmedrish";
+      User = "${config.userDefinedGlobalVariables.primeUsername}";
 
       CapabilityBoundingSet = "";
       RuntimeDirectory = "moolticuted";
