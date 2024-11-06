@@ -3,6 +3,7 @@
   services.deluge = {
     enable = true;
     group = "media";
+    # Only works when declarative = true and only for non random ports.
     openFirewall = true;
     web = {
       enable = true;
@@ -23,6 +24,15 @@
       natpmp = false;
       utpex = false;
       lsd = false;
+
+      # If this isn't set to false, deluge will ignore the ports
+      # set by listen_ports and just pick a random port. meaning
+      # this randmo port  won't have firewall opened for it and so
+      # incoming traffic will not work.
+      random_port = false;
+      # Set a fixed range for P2P communication ports, minumum two so I used the same value.
+      # Same ports need to be opened in the router firewall.
+      listen_ports = [ 6629 6629 ];
     };
     # has to be defined for "declarative = true"
     authFile = config.sops.secrets.deluge_auth_file.path;

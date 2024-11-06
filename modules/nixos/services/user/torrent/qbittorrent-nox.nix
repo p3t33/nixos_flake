@@ -1,3 +1,4 @@
+# Isn't configured for incoming connections.
 {
   config,
   lib,
