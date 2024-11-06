@@ -40,6 +40,7 @@
     ../../modules/nixos/services/fail2ban.nix
     ../../modules/nixos/opengl.nix
     ../../modules/nixos/services/envfs.nix
+    ../../modules/nixos/services/adguard_home.nix
   ];
 
   systemd.tmpfiles.rules = [

@@ -23,6 +23,10 @@
           '';
         };
 
+        locations."/adguard/" = {
+          proxyPass = "http://localhost:3000/"; # Reverse proxy to Deluge Web UI
+        };
+
         # This will not work by itself and will return "Host check error"
         # due to security reasons. The recommendation was to set:
         # gui.insecureSkipHostcheck in the advanced settings.
