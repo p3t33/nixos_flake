@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nicxos-help’).
 
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -53,6 +53,20 @@
 
   programs.dconf.enable = true;
 
+  networking = {
+  firewall.trustedInterfaces = ["br0"];
+  # Define the bridge interface without specifying DHCP here
+  bridges.br0.interfaces = [ "enp0s20f0u1" ]; # Add the physical interface to the bridge
+
+  # Enable DHCP on the bridge itself
+  interfaces.br0.useDHCP = true;
+
+  # Ensure the physical interface is free for the bridge to manage
+  interfaces.enp0s20f0u1 = {
+      ipv4.addresses = [ ];
+      useDHCP = false;
+  };
+};
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -68,6 +82,7 @@
     moolticute
     syncthing
     git-review # cli tool to interact with gerrit.
+    vim
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
