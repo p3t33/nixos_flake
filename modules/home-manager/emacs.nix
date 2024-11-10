@@ -980,6 +980,9 @@ in
              (add-hook 'org-mode-hook (lambda ()
                                        (setq-local company-backends '(company-capf company-dabbrev))))
 
+             ;; Adding custom org-structure-template-alist entry for <e to insert #+BEGIN_EXAMPLE
+             (with-eval-after-load 'org
+               (add-to-list 'org-structure-template-alist '("e" . "example")))  ;; Expands <e to #+BEGIN_EXAMPLE
              ;; ====================
 
              ;; org-mode enhancement
