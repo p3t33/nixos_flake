@@ -175,6 +175,18 @@
         description = "The relative path to the NixOS secrets file";
       };
 
+      secretsPath = lib.mkOption {
+          default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
+          type = lib.types.path;
+          description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        };
+
+        databaseSecret = lib.mkOption {
+          default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/prowlarr.db;
+          type = lib.types.path;
+          description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        };
+
       sopsKeyPath = lib.mkOption {
         default = "/keys.txt";
         type = lib.types.str;

@@ -7,22 +7,26 @@ keys:
 creation_rules:
   - path_regex: machines/work_pc/secrets.yaml$
     key_groups:
-    - age:
-      - *work_pc
+      - age:
+        - *work_pc
   - path_regex: machines/home_desktop/secrets.yaml$
     key_groups:
-    - age:
-      - *home_desktop
+      - age:
+        - *home_desktop
   - path_regex: machines/homelab/secrets.yaml$
     key_groups:
-    - age:
-      - *homelab
+      - age:
+        - *homelab
+  - path_regex: prowlarr\.db$
+    key_groups:
+      - age:
+        - *homelab
   - path_regex: machines/generic_linux_distro/secrets.yaml$
     key_groups:
-    - age:
-      - *generic_linux_distro
+      - age:
+        - *generic_linux_distro
   - path_regex: machines/vm_server/secrets.yaml$
     key_groups:
-    - age:
-      - *vm_server
+      - age:
+        - *vm_server
 
