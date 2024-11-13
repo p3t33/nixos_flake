@@ -41,6 +41,7 @@
     ../../modules/nixos/opengl.nix
     ../../modules/nixos/services/envfs.nix
     ../../modules/nixos/services/adguard_home.nix
+    ../../modules/nixos/services/prowlarr.nix
   ];
 
   systemd.tmpfiles.rules = [
