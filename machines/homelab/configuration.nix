@@ -42,6 +42,7 @@
     ../../modules/nixos/services/envfs.nix
     ../../modules/nixos/services/adguard_home.nix
     ../../modules/nixos/services/prowlarr.nix
+    ../../modules/nixos/services/jackett.nix
   ];
 
   systemd.tmpfiles.rules = [
