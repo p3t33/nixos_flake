@@ -17,6 +17,10 @@ creation_rules:
     key_groups:
       - age:
         - *homelab
+  - path_regex: machines/homelab/secrets.json$
+    key_groups:
+      - age:
+        - *homelab
   - path_regex: prowlarr\.db$
     key_groups:
       - age:
