@@ -250,6 +250,16 @@
           description = "Icon definitions";
         };
 
+        servicePort = mkOption {
+          type = attrsOf int;
+          default = {
+            deglue = 8112;
+            adguard = 3000;
+            syncthing = 8384;
+          };
+          description = "default ports used by services";
+        };
+
         #"${config.userDefinedGlobalVariables.workspaces.ws9}"
         workspaces = mkOption {
           type = attrsOf str;

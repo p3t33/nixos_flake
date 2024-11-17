@@ -8,6 +8,7 @@
     web = {
       enable = true;
       openFirewall = true;
+      port = config.userDefinedGlobalVariables.servicePort.deglue;
     };
 
     declarative = true;
