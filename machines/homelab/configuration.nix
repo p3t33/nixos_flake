@@ -44,12 +44,14 @@
     ../../modules/nixos/services/prowlarr.nix
     ../../modules/nixos/services/jackett.nix
     ../../modules/nixos/services/sonarr.nix
+    ../../modules/nixos/services/radarr.nix
   ];
 
   systemd.tmpfiles.rules = [
     "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/tv 0770 sonarr ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/movies 0770 radarr ${config.userDefinedGlobalVariables.mediaGroup} -"
   ];
 
   # Bootloader.
