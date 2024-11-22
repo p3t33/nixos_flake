@@ -185,6 +185,7 @@ in
              (setq org-plantuml-exec-mode 'jar)
              ;; =================================
 
+             (require 'ox-md)
              (use-package ox-jira)
              (use-package undo-tree
               :ensure t)
