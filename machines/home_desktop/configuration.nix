@@ -15,6 +15,7 @@
     ./hardware-configuration.nix
     ./configuration-services.nix
     ./sops-configuration.nix
+    ./disko-config.nix
     ../../modules/meta.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/fonts.nix
@@ -27,7 +28,6 @@
     ../../modules/nixos/system_packages/cli_utilities.nix
     ../../modules/nixos/system_packages/encryption.nix
     ../../modules/nixos/system_packages/gui.nix
-    ../../modules/nixos/system_packages/iac.nix
     ../../modules/nixos/sound.nix
     ../../modules/nixos/networking/networkmanager.nix
     ../../modules/nixos/networking/hostname.nix
@@ -46,19 +46,9 @@
   ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
-
-  # Enable grub cryptodisk
-  boot.loader.grub.enableCryptodisk = true;
-
-  boot.initrd.luks.devices."luks-663db9ae-4317-4f9d-8860-1414b4ef27ed".keyFile = "/crypto_keyfile.bin";
 
   programs.dconf.enable = true;
 
@@ -82,6 +72,7 @@
     git-review
     ntfs3g
     calibre
+    alacritty
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

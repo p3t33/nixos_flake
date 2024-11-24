@@ -14,7 +14,6 @@
     ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/sxhkd.nix
     ../../modules/home-manager/syncthing.nix
-    ../../modules/home-manager/i3status.nix
     ../../modules/home-manager/alacritty.nix
     ../../modules/home-manager/picom.nix
     ../../modules/home-manager/i3.nix

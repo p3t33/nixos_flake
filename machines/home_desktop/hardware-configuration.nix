@@ -16,36 +16,10 @@
     ../../modules/nixos/gpu/amd_hardware_decoding.nix
   ];
 
-  boot.initrd.availableKernelModules = [
-    "ehci_pci"
-    "ahci"
-    "xhci_pci"
-    "usb_storage"
-    "usbhid"
-    "sd_mod"
-  ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [
-    "kvm-intel"
-    "wl"
-  ];
+  boot.kernelModules = [ "kvm-amd" "wl" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/c9bfabf7-dd36-432e-b7fc-7f53d2018b21";
-    fsType = "ext4";
-  };
-
-  fileSystems."/media/data" = {
-    device = "/dev/disk/by-uuid/E694DE4994DE1BBD";
-    fsType = "ntfs";
-    options = [
-      "rw"
-      "umask=000"
-    ];
-  };
-
-  boot.initrd.luks.devices."luks-663db9ae-4317-4f9d-8860-1414b4ef27ed".device = "/dev/disk/by-uuid/663db9ae-4317-4f9d-8860-1414b4ef27ed";
 
   swapDevices = [ ];
 
@@ -57,5 +31,5 @@
   # networking.interfaces.enp6s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

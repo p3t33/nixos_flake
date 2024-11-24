@@ -38,7 +38,7 @@
         homeManagerStateVersion = mkOption {
           # Helps to avoid brakeage and as a best practice shoud be the same version
           # as the reset of the system.
-          default = "23.11";
+          default = "24.05";
           type = str;
           description = "Defines the realease that Home Manager has backwards compatibility with";
         };
@@ -305,7 +305,7 @@
     (lib.mkIf (machineName == "home-desktop") {
       userDefinedGlobalVariables.hostConfigurationName = "home_desktop";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
-      userDefinedGlobalVariables.systemStateVersion = "23.11";
+      userDefinedGlobalVariables.systemStateVersion = "24.05";
     })
     (lib.mkIf (machineName == "kvm-nixos-server") {
       userDefinedGlobalVariables.primeUsername = "drone";
