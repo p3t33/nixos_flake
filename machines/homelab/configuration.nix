@@ -83,7 +83,7 @@
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA0IIPAhZlBjAdMQcS+kVUDN8snx8EHP03+nTLRgzA3m personal use"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOF+RVbGn7hLFyOVSlniiY0mOxfqRCzMgYf8/b6Rbvs home_desktop on 2024-01-02"
     ];
   };
 
