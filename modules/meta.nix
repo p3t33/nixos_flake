@@ -32,7 +32,7 @@
       };
 
       neovimCustomDictionaryPathrelativeToHomeDirectory = lib.mkOption {
-        default = ".config/nvim/spell/nixen.utf-8.add";
+        default = ".config/nvim/spell/nixen.utf-8";
         type = lib.types.str;
         description = "Defines the relative path to dictionary";
       };

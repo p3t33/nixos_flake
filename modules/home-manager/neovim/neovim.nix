@@ -1,20 +1,49 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
-# Understanding how the configuration gets generated.
-
-# All vim script from plugins settings and from extraConfig is generated into a single
-# file which get called at the top of init.lua that is generated from all plugins settings
-# that is written in lua and from extraLuaConfig. The order in which the plugins defined
-# is also reflected in both lua and vim script configuration files.
+# As the order in which settings are being evaluate by neovim is important there
+# is a need to understand how nix generates the configurations for neovim.
+#
+# There are 4 types of configurations
+# - extraConfig: which is general vim script.
+# - extraLuaConfig: which is general lua configuration.
+# - plugin config: which can be of type lua or vim script.
+#
+# What is generated
+# - init.lua file which is located at ~/.config/nvim/init.lua
+# - vim script config file that is not located directly inside of ~/.config/nvim
+# but is also part of the /nix/store.
+#
+# init.lua is sourcing the vim script config at the very top. Meaning that
+# typescript configuration will be evaluated by neovim first and only then lua
+# configuration.
+#
+# How are the configuration files being constructed?
+# - for lua, everything in extraLuaConfig goes to the very top, then all the
+# configuration provided by the plugins from type lua.
+# - for vim type script everything in extraConfig goes to the very top then all the configuration
+# provided by the plugins that are not defined as lua.
+#
+#
+# There are two degrees of freedom when it comes to configuration(both plugins
+# and configuration in extraCofnig/extraLuaConfig).
+# - The order of imports at the top of the file.
+# - The order of plugins.
+#
+# Meaning:
+# - The first plugin in the first import will be the first
+# plugin configuration to be generated right after the configuration in
+# extraLuaConfig/extraConfig.
+# - The first extraConfig/extraLuaConfig in the first import will be at the very
+# top of init.lua or the vim typescript files.
 
 {
   imports = [
-    ./spelling.nix
     ./ui.nix
     ./completion.nix
     ./debugger.nix
     ./search_and_select.nix
     ./firefox_integration.nix
+    ./spelling.nix
   ];
 
   programs.neovim = {
@@ -378,51 +407,6 @@
                  callback = trim_whitespace,
          })
 
-         -- ----------------------------------------------------------
-         -- spelling and costum dictrionary use
-         -- ----------------------------------------------------------
-         -- Define the custom command for nixen spell file compilation
-         vim.api.nvim_create_user_command('MakeNixSpell', function()
-                 vim.cmd('mkspell! ~/.config/nvim/spell/nixen.utf-8.spl ~/.config/nvim/spell/nixen.utf-8.add')
-         end, {})
-
-         local function compile_nix_spell_file_if_needed()
-             local spellfile = vim.fn.expand("~/.config/nvim/spell/nixen.utf-8.spl")
-             local addfile = vim.fn.expand("~/.config/nvim/spell/nixen.utf-8.add")
-
-             if vim.fn.filereadable(addfile) == 0 then
-                 return
-             end
-
-             if vim.fn.filereadable(spellfile) == 0 then
-                vim.notify("Generating spell file...", vim.log.levels.INFO)
-                vim.cmd('silent! MakeNixSpell')
-                vim.loop.sleep(2000)
-                return
-             end
-
-             local spell_timestamp = vim.fn.system('stat -c %Y ' .. vim.fn.shellescape(spellfile))
-             local add_timestamp = vim.fn.system('stat -c %Y ' .. vim.fn.shellescape(addfile))
-
-             if not vim.fn.filereadable(spellfile) or add_timestamp > spell_timestamp then
-                 vim.cmd('silent! MakeNixSpell')
-             end
-         end
-
-         -- Autocommand to call the function at Vim start
-         vim.api.nvim_create_autocmd("VimEnter", {
-              pattern = "*",
-              callback = compile_nix_spell_file_if_needed,
-         })
-
-         -- Spell checker key mapping and autocommands
-         vim.api.nvim_set_keymap('n', '<F5>', ":setlocal spell! spellsuggest=best,5 spelllang=en_us,nixen<CR>", { noremap = true, silent = true })
-
-         vim.api.nvim_create_autocmd("FileType", {
-              pattern = "gitcommit,markdown",
-              command = "setlocal spell spellsuggest=best,5 spelllang=en_us,nixen",
-         })
-         -- ------------------------------------
 
          -- ================================
 
@@ -510,30 +494,6 @@
 
        -- Apply lsp server formating
        vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ async = true }) end, opts)
-
-       -- Jump to misspelled words
-       -- ------------------------
-       -- There is a need in the second function with thd delay or the kebiding won't jumpt to the end
-       -- of the word.
-       --
-       -- Jump to the next misspelled word, activate fix mode, and move to the end of the word after correction
-      vim.keymap.set('n', ']s', function()
-          vim.api.nvim_feedkeys("]s", "n", false)  -- Jump to the next misspelled word
-          vim.api.nvim_feedkeys("z=", "n", false)  -- Trigger spell correction
-          vim.defer_fn(function()                  -- Wait for you to select a correction
-              vim.api.nvim_feedkeys("e", "n", false) -- Move to the end of the word
-          end, 100)                                -- Adjust this delay if necessary
-      end, opts)
-
-      -- Jump to the previous misspelled word, activate fix mode, and move to the end of the word after correction
-      vim.keymap.set('n', '[s', function()
-          vim.api.nvim_feedkeys("[s", "n", false)  -- Jump to the previous misspelled word
-          vim.api.nvim_feedkeys("z=", "n", false)  -- Trigger spell correction
-          vim.defer_fn(function()                  -- Wait for you to select a correction
-              vim.api.nvim_feedkeys("e", "n", false) -- Move to the end of the word
-          end, 100)                                -- Adjust this delay if necessary
-      end, opts)
-      -- ------------------------
     '';
 
   };
