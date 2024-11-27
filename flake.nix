@@ -39,14 +39,14 @@
     in
     {
       nixosConfigurations = {
-        vm_server = lib.nixosSystem {
+        kvm-nixos-server = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
             machineName = "kvm-nixos-server";
           };
           modules = [
-            ./machines/vm_server/configuration.nix
+            ./machines/kvm-nixos-server/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops

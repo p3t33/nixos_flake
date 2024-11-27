@@ -133,6 +133,18 @@
         description = "Defines the primary user's home directory";
       };
 
+      syncthingDataDirectory = lib.mkOption {
+        default = "/var/lib/syncthing/";
+        type = lib.types.str;
+        description = "Defines the Syncthing configuration directory";
+      };
+
+      syncthingSyncDir = lib.mkOption {
+        default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
+        type = lib.types.str;
+        description = "Defines the Syncthing configuration directory";
+      };
+
       syncthingConfigDirectory = lib.mkOption {
         default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/syncthing";
         type = lib.types.str;
@@ -259,6 +271,26 @@
         type = lib.types.attrsOf lib.types.str;
         description = "Workspace definitions for i3wm";
       };
+
+      machines = lib.mkOption {
+        default = {
+          kvm-nixos-server = "kvm-nixos-server";
+          work-pc = "work-pc";
+          home-desktop = "home-desktop";
+          homelab = "homelab";
+          generic-linux-distro = "generic-linux-distro";
+        };
+
+        type = lib.types.attrsOf lib.types.str;
+        description = "avalible machines";
+      };
+
+      devicesToShareFolderWith = lib.mkOption {
+          default = [];
+          type = lib.types.listOf lib.types.str;
+          description = "List of devices to use for folder synchronization.";
+      };
+
     };
   };
 
@@ -279,8 +311,9 @@
 
     (lib.mkIf (machineName == "kvm-nixos-server") {
       userDefinedGlobalVariables.primeUsername = "drone";
-      userDefinedGlobalVariables.hostConfigurationName = "vm_server";
+      userDefinedGlobalVariables.hostConfigurationName = "kvm-nixos-server";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
+      userDefinedGlobalVariables.devicesToShareFolderWith = [ "${config.userDefinedGlobalVariables.machines.work-pc}" ];
     })
 
     (lib.mkIf (machineName == "homelab") {
