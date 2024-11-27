@@ -39,14 +39,14 @@
     in
     {
       nixosConfigurations = {
-        vm_server = lib.nixosSystem {
+        kvm-nixos-server = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
             machineName = "kvm-nixos-server";
           };
           modules = [
-            ./machines/vm_server/configuration.nix
+            ./machines/kvm-nixos-server/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
@@ -68,28 +68,28 @@
           ];
         };
 
-        work_pc = lib.nixosSystem {
+        work-pc = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "HP-Zbook";
+            machineName = "work-pc";
           };
           modules = [
-            ./machines/work_pc/configuration.nix
+            ./machines/work-pc/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops
           ];
         };
 
-        home_desktop = lib.nixosSystem {
+        home-desktop = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
             machineName = "home-desktop";
           };
           modules = [
-            ./machines/home_desktop/configuration.nix
+            ./machines/home-desktop/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops

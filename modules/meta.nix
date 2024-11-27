@@ -133,6 +133,18 @@
         description = "Defines the primary user's home directory";
       };
 
+      syncthingDataDirectory = lib.mkOption {
+        default = "/var/lib/syncthing/";
+        type = lib.types.str;
+        description = "Defines the Syncthing configuration directory";
+      };
+
+      syncthingSyncDir = lib.mkOption {
+        default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
+        type = lib.types.str;
+        description = "Defines the Syncthing configuration directory";
+      };
+
       syncthingConfigDirectory = lib.mkOption {
         default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/syncthing";
         type = lib.types.str;
@@ -271,35 +283,94 @@
         type = lib.types.attrsOf lib.types.str;
         description = "Workspace definitions for i3wm";
       };
+
+      machines = lib.mkOption {
+        default = {
+          kvm-nixos-server = "kvm-nixos-server";
+          work-pc = "work-pc";
+          home-desktop = "home-desktop";
+          homelab = "homelab";
+          generic-linux-distro = "generic-linux-distro";
+        };
+
+        type = lib.types.attrsOf lib.types.str;
+        description = "avalible machines";
+      };
+
+      devicesToShareTaskWarriorFolderWith = lib.mkOption {
+          default = [];
+          type = lib.types.listOf lib.types.str;
+          description = "List of devices to use for folder synchronization.";
+      };
+
+      devicesToShareDevResourcesFolderWith = lib.mkOption {
+          default = [];
+          type = lib.types.listOf lib.types.str;
+          description = "List of devices to use for folder synchronization.";
+      };
+
     };
   };
 
   config = lib.mkMerge [
     # Machine-specific configurations
-    (lib.mkIf (machineName == "HP-Zbook") {
-      userDefinedGlobalVariables.hostConfigurationName = "work_pc";
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc}";
       userDefinedGlobalVariables.systemStateVersion = "23.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
+      userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
     })
 
-    (lib.mkIf (machineName == "home-desktop") {
-      userDefinedGlobalVariables.hostConfigurationName = "home_desktop";
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop}";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
+      userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+      ];
     })
 
-    (lib.mkIf (machineName == "kvm-nixos-server") {
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
       userDefinedGlobalVariables.primeUsername = "drone";
-      userDefinedGlobalVariables.hostConfigurationName = "vm_server";
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
     })
 
-    (lib.mkIf (machineName == "homelab") {
-      userDefinedGlobalVariables.hostConfigurationName = "homelab";
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab}";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
+      userDefinedGlobalVariables.syncthingSyncDir = "/mnt/data/Sync";
       userDefinedGlobalVariables.syncthingUser = "syncthing";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
+      userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
     })
 
     (lib.mkIf (machineName == "generic_linux_distro") {
