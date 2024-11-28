@@ -68,14 +68,14 @@
           ];
         };
 
-        work_pc = lib.nixosSystem {
+        work-pc = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "HP-Zbook";
+            machineName = "work-pc";
           };
           modules = [
-            ./machines/work_pc/configuration.nix
+            ./machines/work-pc/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops

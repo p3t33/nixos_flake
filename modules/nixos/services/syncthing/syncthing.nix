@@ -4,6 +4,11 @@
      ++ lib.optionals (machineName == "kvm-nixos-server") [
       ./devices/work_laptop.nix
       ./folders/taskwarrior.nix
+    ]
+     ++ lib.optionals (machineName == "work-pc") [
+      ./devices/kvm-nixos-server.nix
+      ./devices/homelab.nix
+      ./folders/taskwarrior.nix
     ];
 
   systemd.tmpfiles.rules = [
@@ -29,15 +34,15 @@
     user = "${config.userDefinedGlobalVariables.syncthingUser}";
     key = config.sops.secrets."syncthing/key.pem".path;
     cert = config.sops.secrets."syncthing/cert.pem".path;
-    overrideDevices = true; # Deletes devices that are not configured declaratively
-    overrideFolders = true; # Deletes folders that are not configured declaratively
+    #overrideDevices = true; # Deletes devices that are not configured declaratively
+    #overrideFolders = true; # Deletes folders that are not configured declaratively
 
     settings = {
 
         options = {
             urAccepted = -1; # explicitly disabled usage reporting.
-            globalAnnounceEnabled = false;
-            relaysEnabled = false;
+            globalAnnounceEnabled = true;
+            relaysEnabled = true;
             localAnnounceEnabled = true;
         };
 

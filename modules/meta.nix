@@ -296,8 +296,8 @@
 
   config = lib.mkMerge [
     # Machine-specific configurations
-    (lib.mkIf (machineName == "HP-Zbook") {
-      userDefinedGlobalVariables.hostConfigurationName = "work_pc";
+    (lib.mkIf (machineName == "work-pc") {
+      userDefinedGlobalVariables.hostConfigurationName = "work-pc";
       userDefinedGlobalVariables.systemStateVersion = "23.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";

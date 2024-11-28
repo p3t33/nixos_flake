@@ -39,6 +39,7 @@
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/opengl.nix
     ../../modules/nixos/services/envfs.nix
+    ../../modules/nixos/services/syncthing/syncthing.nix
   ];
 
   # Bootloader.
