@@ -302,8 +302,8 @@
 
   config = lib.mkMerge [
     # Machine-specific configurations
-    (lib.mkIf (machineName == "work-pc") {
-      userDefinedGlobalVariables.hostConfigurationName = "work-pc";
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc}";
       userDefinedGlobalVariables.systemStateVersion = "23.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
@@ -318,8 +318,8 @@
       ];
     })
 
-    (lib.mkIf (machineName == "home-desktop") {
-      userDefinedGlobalVariables.hostConfigurationName = "home-desktop";
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop}";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
@@ -333,9 +333,9 @@
       ];
     })
 
-    (lib.mkIf (machineName == "kvm-nixos-server") {
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
       userDefinedGlobalVariables.primeUsername = "drone";
-      userDefinedGlobalVariables.hostConfigurationName = "kvm-nixos-server";
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
@@ -344,8 +344,8 @@
       ];
     })
 
-    (lib.mkIf (machineName == "homelab") {
-      userDefinedGlobalVariables.hostConfigurationName = "homelab";
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab}";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
       userDefinedGlobalVariables.syncthingSyncDir = "/mnt/data/Sync";
