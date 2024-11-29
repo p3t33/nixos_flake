@@ -291,6 +291,12 @@
           description = "List of devices to use for folder synchronization.";
       };
 
+      devicesToShareDevResourcesFolderWith = lib.mkOption {
+          default = [];
+          type = lib.types.listOf lib.types.str;
+          description = "List of devices to use for folder synchronization.";
+      };
+
     };
   };
 
@@ -306,6 +312,10 @@
         "${config.userDefinedGlobalVariables.machines.home-desktop}"
         "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
       ];
+      userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
     })
 
     (lib.mkIf (machineName == "home-desktop") {
@@ -316,6 +326,10 @@
         "${config.userDefinedGlobalVariables.machines.homelab}"
         "${config.userDefinedGlobalVariables.machines.work-pc}"
         "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
+      userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
       ];
     })
 
@@ -340,6 +354,10 @@
         "${config.userDefinedGlobalVariables.machines.work-pc}"
         "${config.userDefinedGlobalVariables.machines.home-desktop}"
         "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
+      userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
       ];
     })
 
