@@ -20,6 +20,7 @@
       ./devices/homelab.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
+      ./folders/database.nix
     ]
      ++ lib.optionals (machineName == "homelab") [
       ./devices/kvm-nixos-server.nix
@@ -27,6 +28,7 @@
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
+      ./folders/database.nix
     ];
 
   systemd.tmpfiles.rules = [
