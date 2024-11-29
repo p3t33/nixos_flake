@@ -6,7 +6,7 @@
             "taskwarrior" = {
                 id = "taskwarrior";
                 path = "${config.userDefinedGlobalVariables.syncthingSyncDir}/taskwarrior_data";
-                devices = [ "kvm-nixos-server" ];
+                devices = config.userDefinedGlobalVariables.devicesToShareFolderWith;
             };
         };
     };

@@ -3,6 +3,7 @@
   imports = []
      ++ lib.optionals (machineName == "kvm-nixos-server") [
       ./devices/work_laptop.nix
+      ./devices/homelab.nix
       ./folders/taskwarrior.nix
     ]
      ++ lib.optionals (machineName == "work-pc") [

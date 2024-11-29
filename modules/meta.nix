@@ -313,7 +313,10 @@
       userDefinedGlobalVariables.primeUsername = "drone";
       userDefinedGlobalVariables.hostConfigurationName = "kvm-nixos-server";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.devicesToShareFolderWith = [ "${config.userDefinedGlobalVariables.machines.work-pc}" ];
+      userDefinedGlobalVariables.devicesToShareFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
     })
 
     (lib.mkIf (machineName == "homelab") {
