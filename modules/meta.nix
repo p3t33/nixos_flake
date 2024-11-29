@@ -304,7 +304,7 @@
     })
 
     (lib.mkIf (machineName == "home-desktop") {
-      userDefinedGlobalVariables.hostConfigurationName = "home_desktop";
+      userDefinedGlobalVariables.hostConfigurationName = "home-desktop";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
     })

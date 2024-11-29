@@ -82,14 +82,14 @@
           ];
         };
 
-        home_desktop = lib.nixosSystem {
+        home-desktop = lib.nixosSystem {
           inherit system;
           specialArgs = {
             inherit inputs;
             machineName = "home-desktop";
           };
           modules = [
-            ./machines/home_desktop/configuration.nix
+            ./machines/home-desktop/configuration.nix
             inputs.home-manager.nixosModules.home-manager
             inputs.nix-index-database.nixosModules.nix-index
             inputs.sops-nix.nixosModules.sops

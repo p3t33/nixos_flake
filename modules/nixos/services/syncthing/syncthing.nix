@@ -4,12 +4,19 @@
      ++ lib.optionals (machineName == "kvm-nixos-server") [
       ./devices/work_laptop.nix
       ./devices/homelab.nix
+      ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
     ]
      ++ lib.optionals (machineName == "work-pc") [
       ./devices/kvm-nixos-server.nix
       ./devices/homelab.nix
+      ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
+    ]
+     ++ lib.optionals (machineName == "home-desktop") [
+      ./devices/kvm-nixos-server.nix
+      ./devices/work_laptop.nix
+      ./devices/homelab.nix
     ];
 
   systemd.tmpfiles.rules = [
