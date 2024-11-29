@@ -22,6 +22,7 @@
       ./devices/kvm-nixos-server.nix
       ./devices/work_laptop.nix
       ./devices/home-desktop.nix
+      ./folders/taskwarrior.nix
     ];
 
   systemd.tmpfiles.rules = [

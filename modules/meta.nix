@@ -285,7 +285,7 @@
         description = "avalible machines";
       };
 
-      devicesToShareFolderWith = lib.mkOption {
+      devicesToShareTaskWarriorFolderWith = lib.mkOption {
           default = [];
           type = lib.types.listOf lib.types.str;
           description = "List of devices to use for folder synchronization.";
@@ -307,15 +307,21 @@
       userDefinedGlobalVariables.hostConfigurationName = "home-desktop";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
     })
 
     (lib.mkIf (machineName == "kvm-nixos-server") {
       userDefinedGlobalVariables.primeUsername = "drone";
       userDefinedGlobalVariables.hostConfigurationName = "kvm-nixos-server";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.devicesToShareFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
       ];
     })
 
@@ -323,7 +329,13 @@
       userDefinedGlobalVariables.hostConfigurationName = "homelab";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
+      userDefinedGlobalVariables.syncthingSyncDir = "/mnt/data/Sync";
       userDefinedGlobalVariables.syncthingUser = "syncthing";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
     })
 
     (lib.mkIf (machineName == "generic_linux_distro") {
