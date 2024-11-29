@@ -17,6 +17,11 @@
       ./devices/kvm-nixos-server.nix
       ./devices/work_laptop.nix
       ./devices/homelab.nix
+    ]
+     ++ lib.optionals (machineName == "homelab") [
+      ./devices/kvm-nixos-server.nix
+      ./devices/work_laptop.nix
+      ./devices/home-desktop.nix
     ];
 
   systemd.tmpfiles.rules = [
