@@ -301,6 +301,11 @@
       userDefinedGlobalVariables.systemStateVersion = "23.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
+      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
+      ];
     })
 
     (lib.mkIf (machineName == "home-desktop") {
