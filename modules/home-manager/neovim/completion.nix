@@ -10,7 +10,7 @@
       nixd # nix
       nixfmt-rfc-style #nix formator used by nixd
 
-      nodePackages.pyright # python
+      pyright # python
       # ----------------
 
       # copilot dependencie

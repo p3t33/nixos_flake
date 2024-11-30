@@ -10,7 +10,7 @@
     veracrypt
 
     # Backup of local files to the cloud.
-    cryptomator
+    #cryptomator # is broken at the time of this commit(updating to 24.11).
     gocryptfs
     sops
     age

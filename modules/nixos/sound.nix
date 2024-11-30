@@ -1,7 +1,7 @@
 { ... }:
 {
   # Enable sound
-  sound.enable = true;
+  # sound.enable = true;
   #need to be false or it will conflict with PipeWire..
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;

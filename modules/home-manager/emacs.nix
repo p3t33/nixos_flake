@@ -42,7 +42,7 @@ in
 
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs29;
+    package = pkgs.emacs30;
 
     extraPackages =
       epkgs: with epkgs; [

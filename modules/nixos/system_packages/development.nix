@@ -58,7 +58,7 @@
         python3Packages.virtualenv
       ]
     ))
-    nodePackages.pyright # language server.
+    pyright # language server.
 
     # networking
     wireshark

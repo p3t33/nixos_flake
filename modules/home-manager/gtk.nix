@@ -1,6 +1,6 @@
 { pkgs, config, ... }:
 {
-  home.packages = with pkgs; [ gnome3.adwaita-icon-theme ];
+  home.packages = with pkgs; [ adwaita-icon-theme ];
 
   gtk = {
     enable = true;
