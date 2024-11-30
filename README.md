@@ -72,9 +72,9 @@ then be including by the various machines to achieve code reuse.
 - **wallpaper**: self explanatory :)
 
 # ToDo
-- [ ] Look into streamlining installation process of NixOS on a new machine with [nixos-anywhere].
-- [ ] Replace default way to mount hard drives with a generic one in the form of [disko].
-  - [ ] Update all machines to use disko.
+- [x] ~~Look into streamlining installation process of NixOS on a new machine with [nixos-anywhere].~~
+- [x] ~~Replace default way to mount hard drives with a generic one in the form of [disko].~~
+  - [x] ~~Update all machines to use disko.~~
 - [ ] I am not sure that emacs systemd unit can communicate with ssh-agnet, this is a very low
       priority.
 - [x] ~~Stream line the use of nix-index.~~

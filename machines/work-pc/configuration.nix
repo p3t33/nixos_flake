@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ./configuration-services.nix
     ./sops-configuration.nix
+    ./disko-config.nix
     ../../modules/meta.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/fonts.nix
@@ -45,12 +46,8 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  # Setup keyfile
-  boot.initrd.secrets = {
-    "/crypto_keyfile.bin" = null;
-  };
 
   programs.dconf.enable = true;
 
