@@ -43,7 +43,7 @@
     ../../modules/nixos/services/adguard_home.nix
     ../../modules/nixos/services/prowlarr.nix
     ../../modules/nixos/services/jackett.nix
-    ../../modules/nixos/services/sonarr.nix
+    # ../../modules/nixos/services/sonarr.nix
     ../../modules/nixos/services/radarr.nix
   ];
 
