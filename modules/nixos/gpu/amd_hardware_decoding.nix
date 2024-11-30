@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  hardware.opengl = {
+  hardware.graphics = {
     extraPackages = with pkgs; [
       # dependencies to provid use space apps hardware acceleration
       libva # (libarary for video acceleraion), its the core library for VA-API.

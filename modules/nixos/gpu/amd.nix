@@ -4,7 +4,7 @@
 
   environment.systemPackages = with pkgs; [
     mesa.drivers # For Vulkan support
-    rocm-opencl-icd # For OpenCL support
+    mesa.opencl
 
     # dependencies to provid use space apps hardware acceleration
     libva # (libarary for video acceleraion), its the core library for VA-API.
