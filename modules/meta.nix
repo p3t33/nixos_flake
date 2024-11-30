@@ -316,7 +316,7 @@
     # Machine-specific configurations
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc}";
-      userDefinedGlobalVariables.systemStateVersion = "23.05";
+      userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
