@@ -322,7 +322,6 @@
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
         "${config.userDefinedGlobalVariables.machines.home-desktop}"
-        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
       ];
       userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
@@ -337,7 +336,6 @@
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
         "${config.userDefinedGlobalVariables.machines.work-pc}"
-        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
       ];
       userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
@@ -348,12 +346,7 @@
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
       userDefinedGlobalVariables.primeUsername = "drone";
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
+      userDefinedGlobalVariables.systemStateVersion = "24.11";
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
@@ -365,7 +358,6 @@
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.work-pc}"
         "${config.userDefinedGlobalVariables.machines.home-desktop}"
-        "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}"
       ];
       userDefinedGlobalVariables.devicesToShareDevResourcesFolderWith = [
         "${config.userDefinedGlobalVariables.machines.work-pc}"

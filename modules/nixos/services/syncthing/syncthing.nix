@@ -1,21 +1,13 @@
 { config, lib, machineName, ... }:
 {
   imports = []
-     ++ lib.optionals (machineName == "kvm-nixos-server") [
-      ./devices/work_laptop.nix
-      ./devices/homelab.nix
-      ./devices/home-desktop.nix
-      ./folders/taskwarrior.nix
-    ]
      ++ lib.optionals (machineName == "work-pc") [
-      ./devices/kvm-nixos-server.nix
       ./devices/homelab.nix
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
     ]
      ++ lib.optionals (machineName == "home-desktop") [
-      ./devices/kvm-nixos-server.nix
       ./devices/work_laptop.nix
       ./devices/homelab.nix
       ./folders/taskwarrior.nix
@@ -25,7 +17,6 @@
       ./folders/study.nix
     ]
      ++ lib.optionals (machineName == "homelab") [
-      ./devices/kvm-nixos-server.nix
       ./devices/work_laptop.nix
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
