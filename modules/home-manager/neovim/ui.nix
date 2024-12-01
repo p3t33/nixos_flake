@@ -30,6 +30,17 @@
     # -----
     vim-devicons
     nvim-web-devicons
+    {
+        plugin = render-markdown-nvim;
+        type = "lua";
+        config = ''
+        require("render-markdown").setup({
+          -- Optional: Customize the plugin's settings
+          file_types = { "markdown", "vimwiki" },
+        })
+
+        '';
+    }
 
     # Status/tabline
     # --------------
@@ -109,6 +120,18 @@
            \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
            \]
       '';
+    }
+    {
+      plugin = mini-nvim;
+    }
+    {
+      plugin = markdown-nvim;
+      type = "lua";
+      config = ''
+      require('render-markdown').setup({})
+
+      '';
+
     }
   ];
 }
