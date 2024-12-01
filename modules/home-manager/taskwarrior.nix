@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   home.packages = with pkgs; [ taskwarrior-tui ];
   programs.taskwarrior = {
@@ -6,13 +6,13 @@
     package = pkgs.taskwarrior3;
 
     # Will be used to sync data across devices
-    dataLocation = "$HOME/Sync/taskwarrior_data/task";
+    dataLocation  = "${config.userDefinedGlobalVariables.syncthingSyncDir}/taskwarrior_data/task";
 
     config = {
       weekstart = "Sunday";
       confirmation = true;
       dateformat = "Y-M-D H:N";
-      news.version = "3.0.2"; # this settings supress the random news message.
+      news.version = "3.1.0"; # this settings supress the random news message.
 
       alias."@" = "context";
       context."work" = "project:work";
