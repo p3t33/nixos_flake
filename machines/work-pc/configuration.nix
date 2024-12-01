@@ -23,7 +23,6 @@
     ../../modules/nixos/system_packages/cli_utilities.nix
     ../../modules/nixos/system_packages/encryption.nix
     ../../modules/nixos/system_packages/gui.nix
-    ../../modules/nixos/system_packages/iac.nix
     ../../modules/nixos/sound.nix
     ../../modules/nixos/bluetooth.nix
     ../../modules/nixos/networking/networkmanager.nix
