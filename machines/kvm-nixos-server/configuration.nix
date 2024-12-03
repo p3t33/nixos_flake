@@ -26,6 +26,7 @@
     ../../modules/nixos/system_packages/encryption.nix
     ../../modules/nixos/environment_variables.nix
     ../../modules/nixos/virtualization/docker.nix
+    ../../modules/nixos/virtualization/qemu_guest_agent.nix
     ../../modules/nixos/networking/networkmanager.nix
     ../../modules/nixos/networking/hostname.nix
     ../../modules/nixos/users.nix
