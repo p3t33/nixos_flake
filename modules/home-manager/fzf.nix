@@ -14,7 +14,7 @@
     # isn't its primary function. Its primary function is to search files.
 
     # CTRL-T - $FZF_CTRL_T_COMMAND
-    fileWidgetCommand = "fd --type file --hidden --exclude .git";
+    fileWidgetCommand = ''fd --type file --type directory --hidden --exclude .git'';
 
     # ALT-C - $FZF_ALT_C_COMMAND
     changeDirWidgetCommand = "fd --type directory --hidden --exclude .git";
