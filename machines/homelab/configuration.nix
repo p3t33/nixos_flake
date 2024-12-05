@@ -88,8 +88,8 @@
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEOF+RVbGn7hLFyOVSlniiY0mOxfqRCzMgYf8/b6Rbvs home_desktop on 2024-01-02"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPA8Fbx91cQqosqb0P3WfOyxlCw/FMfeA7xv3uMbv4c0 work-pc"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPYfoN2VklpsgaFvSIX26ZZGbgNtri12NQVeJIVqgqTg home-desktop"
     ];
   };
 
