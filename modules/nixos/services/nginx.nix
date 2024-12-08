@@ -44,7 +44,20 @@ in
               add_header X-Frame-Options SAMEORIGIN;
             '';
           };
-        });
+        } // lib.optionalAttrs config.services.sonarr.enable {
+            "/sonarr" = {
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_redirect off;
+              '';
+            };
+          }
+
+
+        );
       };
 
       # Conditionally add virtual hosts based on enabled services
@@ -91,6 +104,29 @@ in
           '';
         };
       };
+
+      # Add Sonarr Virtual Host
+      "sonarr.${config.userDefinedGlobalVariables.hostConfigurationName}" = lib.optionalAttrs config.services.sonarr.enable {
+        listen = [
+          {
+            addr = "${allInterfaces}";
+            port = httpPort;
+          }
+        ];
+        locations."/" = {
+          proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+          extraConfig = ''
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_redirect off;
+          '';
+        };
+      };
+
+
+
+
     };
   };
 

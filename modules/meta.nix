@@ -262,6 +262,7 @@
           deglue = 8112;
           adguard = 3000;
           syncthing = 8384;
+          sonarr = 8989;
         };
         type = lib.types.attrsOf lib.types.int;
         description = "Default ports used by various services";

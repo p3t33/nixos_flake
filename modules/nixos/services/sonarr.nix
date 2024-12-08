@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  # Enable the Sonarr service
+  # Enable the Sonarr service(as of now there is no config for default sonarr port)
   services.sonarr = {
     enable = true;
     openFirewall = true;                      # Opens Sonarr's port on the firewall (default 8989)

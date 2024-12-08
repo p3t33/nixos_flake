@@ -41,6 +41,12 @@ in
               domain = "adguard.${config.userDefinedGlobalVariables.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
+          ]
+          ++ lib.optionals config.services.sonarr.enable [
+            {
+              domain = "sonarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
           ];
       };
       http = {
