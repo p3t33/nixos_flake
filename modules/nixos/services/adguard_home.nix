@@ -65,6 +65,12 @@ in
               domain = "jackett.${config.userDefinedGlobalVariables.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
+          ]
+          ++ lib.optionals config.services.jellyfin.enable [
+            {
+              domain = "jellyfin.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
           ];
       };
       http = {
