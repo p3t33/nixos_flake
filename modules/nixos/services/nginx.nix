@@ -84,17 +84,31 @@ in
                 proxy_redirect off;
                 '';
           };
-      } // lib.optionalAttrs config.services.jellyfin.enable {
-      "/jellyfin" = {
-          proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
-          extraConfig = ''
-            proxy_http_version 1.1;
+        } // lib.optionalAttrs config.services.jellyfin.enable {
+          "/jellyfin" = {
+            proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+            extraConfig = ''
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_redirect off;
+              '';
+          };
+          "/homepage/" = {
+          }// lib.optionalAttrs config.services.homepage-dashboard.enable {
+            proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.homepageDashboard}/";
+            extraConfig = ''
+             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
             proxy_set_header Connection "upgrade";
             proxy_redirect off;
             '';
-      };
-      }
+          };
+}
+
+
+
+
         );
       };
 
@@ -234,6 +248,26 @@ in
             '';
           };
       };
+
+
+      "homepage.${config.userDefinedGlobalVariables.hostConfigurationName}" = {
+  listen = [
+    {
+      addr = "${allInterfaces}";
+      port = httpPort;
+    }
+  ];
+  # Serve homepage at the root of this domain
+  locations."/" = {
+    proxyPass = "${localHost}:${toString config.userDefinedGlobalVariables.servicePort.homepageDashboard}";
+    extraConfig = ''
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_redirect off;
+    '';
+  };
+};
 
 
 

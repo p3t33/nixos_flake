@@ -87,6 +87,7 @@
   }
 ];
     settings = {
+      # base = "http://homepage.homelab";
       title = "My Dashboard";          # Set the title of your homepage
     };
   };

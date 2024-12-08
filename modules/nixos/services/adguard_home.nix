@@ -71,6 +71,12 @@ in
               domain = "jellyfin.${config.userDefinedGlobalVariables.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
+          ]
+          ++ lib.optionals config.services.homepage-dashboard.enable [
+            {
+              domain = "homepage.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
           ];
       };
       http = {
