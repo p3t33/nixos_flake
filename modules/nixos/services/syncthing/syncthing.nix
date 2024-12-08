@@ -65,6 +65,7 @@
             # user = config.sops.templates."syncuser".content;
             # password = config.sops.templates."syncpassword".content;
             theme = "black";
+            insecureSkipHostCheck = true;
         };
     };
   };
