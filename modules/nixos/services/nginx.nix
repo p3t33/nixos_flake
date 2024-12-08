@@ -74,7 +74,17 @@ in
                  proxy_redirect off;
                  '';
            };
-}
+         } // lib.optionalAttrs config.services.jackett.enable {
+          "/jackett" = {
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_redirect off;
+                '';
+          };
+      }
 
 
         );
@@ -179,6 +189,25 @@ in
                 '';
           };
       };
+
+      "jackett.${config.userDefinedGlobalVariables.hostConfigurationName}" = lib.optionalAttrs config.services.jackett.enable {
+          listen = [
+          {
+              addr = "${allInterfaces}";
+              port = httpPort;
+          }
+          ];
+          locations."/" = {
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
+              extraConfig = ''
+                  proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              proxy_redirect off;
+              '';
+          };
+      };
+
 
 
 

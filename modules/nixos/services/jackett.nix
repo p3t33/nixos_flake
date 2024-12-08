@@ -8,6 +8,7 @@
   services.jackett = {
     enable = true;                 # Starts the Jackett service
     openFirewall = true;           # Opens firewall for external access (optional) # 9117
+    port = config.userDefinedGlobalVariables.servicePort.jackett;
   };
 
   # Optional: Open firewall for Jackett's default port (9117) if needed

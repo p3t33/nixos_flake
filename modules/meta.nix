@@ -265,6 +265,7 @@
           sonarr = 8989;
           radarr = 7878;
           prowlarr = 9696;
+          jackett = 9117;
         };
         type = lib.types.attrsOf lib.types.int;
         description = "Default ports used by various services";

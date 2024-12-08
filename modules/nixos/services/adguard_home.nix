@@ -59,6 +59,12 @@ in
               domain = "prowlarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
+          ]
+          ++ lib.optionals config.services.jackett.enable [
+            {
+              domain = "jackett.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
           ];
       };
       http = {
