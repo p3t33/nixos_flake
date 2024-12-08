@@ -53,6 +53,12 @@ in
               domain = "radarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
+          ]
+          ++ lib.optionals config.services.prowlarr.enable [
+            {
+              domain = "prowlarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
           ];
       };
       http = {
