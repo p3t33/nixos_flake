@@ -10,6 +10,7 @@
     ../../modules/nixos/services/user/torrent/deluge.nix
     ../../modules/nixos/services/syncthing/syncthing.nix
     ../../modules/nixos/services/restic.nix
+    ../../modules/nixos/services/homepage_dashboard.nix
   ];
 
 }
