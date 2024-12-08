@@ -263,6 +263,7 @@
           adguard = 3000;
           syncthing = 8384;
           sonarr = 8989;
+          radarr = 7878;
         };
         type = lib.types.attrsOf lib.types.int;
         description = "Default ports used by various services";
