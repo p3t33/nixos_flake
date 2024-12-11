@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./sops-home.nix
     ../../modules/meta.nix
     ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
     ../../modules/home-manager/starship.nix

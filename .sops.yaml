@@ -1,19 +1,31 @@
 keys:
-  - &work_pc age1960hm9pdxgckwey2t0ch8uzjd6v8jf07nuv84karpap4g3kqm3kqnqavew
-  - &home_desktop age1203qrs9tl0nuc94jq3pvk38n6cmuu947a489jf7y6n3xfwq3mqhq2rcajv
+  - &work-pc age1960hm9pdxgckwey2t0ch8uzjd6v8jf07nuv84karpap4g3kqm3kqnqavew
+  - &home-desktop age1203qrs9tl0nuc94jq3pvk38n6cmuu947a489jf7y6n3xfwq3mqhq2rcajv
   - &homelab age16dp952aecvxguqj8xz4mh2akakfe7py5l7j77akx6zhygt3mefls2ex4vy
   - &generic_linux_distro age1jukh2jtz084zgvzkq398frz73qjr9cjnljhsdsw70ywy5kxp7pnsls0eja
-  - &vm_server age1lj7hv8aql2cepq3u5n2v280dqnlwztl8xgr5uz9pvpc59tfqqahq3kzz8x
+  - &kvm-nixos-server age1857y4m4fa3wwrut8uqfeculpq6m4lw05n3k6ky6s79nnh84raf8qvlm4aw
 creation_rules:
   - path_regex: machines/work-pc/secrets.yaml$
     key_groups:
       - age:
-        - *work_pc
+        - *work-pc
+  - path_regex: machines/work-pc/secrets_home.yaml$
+    key_groups:
+      - age:
+        - *work-pc
   - path_regex: machines/home-desktop/secrets.yaml$
     key_groups:
       - age:
-        - *home_desktop
+        - *home-desktop
+  - path_regex: machines/home-desktop/secrets_home.yaml$
+    key_groups:
+      - age:
+        - *home-desktop
   - path_regex: machines/homelab/secrets.yaml$
+    key_groups:
+      - age:
+        - *homelab
+  - path_regex: machines/homelab/secrets_home.yaml$
     key_groups:
       - age:
         - *homelab
@@ -32,5 +44,8 @@ creation_rules:
   - path_regex: machines/kvm-nixos-server/secrets.yaml$
     key_groups:
       - age:
-        - *vm_server
-
+        - *kvm-nixos-server
+  - path_regex: machines/kvm-nixos-server/secrets_home.yaml$
+    key_groups:
+      - age:
+        - *kvm-nixos-server

@@ -21,18 +21,21 @@
     };
     users.${config.userDefinedGlobalVariables.primeUsername} = import config.userDefinedGlobalVariables.home_manger_import_path;
     # will be available to all users managed by home manager
-    # sharedModules = [
+    sharedModules = [
       # allows to use sops-nix subset of NixOS module.
-      # as I am using this config file as part of NixOS and using home
-      # manager as NixOS module I don't really need this input as
-      # I can just use can just use the NixOS module that is more powerfull.
+      # This configuration is done in addition to sops-nix that is used system wide
+      # as part of the OS(inputs.sops-nix.nixosModules.sops). And is intended for handling
+      # secrets in user home directory.
       #
-      # The reason I decided to include this input is because I have
-      # stand alone home manger settings(as part of this flake) that I am
-      # using with a generic Linux such as Ubuntu and I might be able
-      # to share configurations between the stand alone home manger and the
-      # one that is in this file and is used as NixOS module.
-      # inputs.sops-nix.homeManagerModules.sops
-    # ];
+      # Before using sops-nix as home manger module, I used the system wide module to
+      # for secrets that are part of the home directory and it worked fine up to the
+      # point where I installed the configuration on a new machine and noticed that
+      # when using nixos-anywhere path in which I put the file(E.g ~/.config/git/my_extra_confg,
+      # ~/.ssh)
+      # the ownership of the top level directory where the secret got generated got messed up
+      # and was set as root which caused partial installation of the configuration, with
+      # home-manger failing to switch.
+      inputs.sops-nix.homeManagerModules.sops
+    ];
   };
 }

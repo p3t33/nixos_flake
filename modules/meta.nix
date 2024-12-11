@@ -187,6 +187,12 @@
         description = "The relative path to the NixOS secrets file";
       };
 
+      homeManagerAsNixOSModuleSecretsPath = lib.mkOption {
+        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets_home.yaml;
+        type = lib.types.path;
+        description = "The relative path to the NixOS secrets file";
+      };
+
       secretsPath = lib.mkOption {
           default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
           type = lib.types.path;

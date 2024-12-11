@@ -32,7 +32,7 @@ dotfiles to the possible extent.
 - Multiple machines configurations using [home-manager] as a NixOS module, allowing for
   shared configurations across systems, with an option for standalone home-manager
   configurations to be used on generic Linux machines, such as Ubuntu.
-- Secrets deployment using [sops-nix].
+- Secrets deployment using [sops-nix]. Handling secrets on OS level and on home-manger level.
 - Extensively configured xorg and terminal environment.
 - Configuration for KVM, VirtualBox, and docker.
 - Integration of [disko] to partition hard drives during NixOS installing
