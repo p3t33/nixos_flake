@@ -9,12 +9,15 @@
       clang-tools # c/c++
       nixd # nix
       nixfmt-rfc-style #nix formator used by nixd
+      jdt-language-server #java
 
       pyright # python
       # ----------------
 
       # copilot dependencie
       nodejs_22
+
+
     ];
 
     plugins = with pkgs.vimPlugins; [
@@ -136,6 +139,8 @@
           setup_lsp_server('clangd')
           setup_lsp_server('pyright')
           setup_lsp_server('nixd')
+          setup_lsp_server('jdtls')
+
         '';
       }
 
