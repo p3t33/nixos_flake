@@ -19,6 +19,7 @@
     git-crypt
     delta
     lazygit
+    lazydocker
 
     # lua
     sumneko-lua-language-server
