@@ -67,6 +67,18 @@
         description = "Defines the static IP used by the homelab machine";
       };
 
+      routerIP = lib.mkOption {
+        default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
+        type = lib.types.str;
+        description = "Defines the static IP used by the homelab machine";
+      };
+
+      proxmoxIP = lib.mkOption {
+        default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}74";
+        type = lib.types.str;
+        description = "Defines the static IP used by the homelab machine";
+      };
+
       homeLabGateway = lib.mkOption {
         default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
         type = lib.types.str;
