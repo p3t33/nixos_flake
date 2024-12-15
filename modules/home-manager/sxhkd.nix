@@ -30,7 +30,7 @@
   # brake.
   #
   # Also non builtin modes(just executable) need a bit of a different syntax
-  # ssh, emoji, and calc are builtin modes while power-menu and firefox-bookmarks
+  # ssh, emoji, and calc are builtin modes while power-menu and buku-bookmarks
   # are not.
 
   home.file = {
@@ -52,7 +52,7 @@
         rofi -modi power-menu:rofi-power-menu -show power-menu
 
       super + b
-        rofi -modi firefox-bookmarks:rofi-firefox-bookmakrs -show firefox-bookmarks
+        rofi -modi buku-bookmarks:rofi-buku-bookmakrs -show buku-bookmarks
 
       super + m
          emacsclient -c -e "(org-roam-dailies-capture-today)"

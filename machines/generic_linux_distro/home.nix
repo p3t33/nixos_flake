@@ -27,7 +27,7 @@
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/ssh.nix
     ../../modules/home-manager/polybar.nix
-    ../../modules/home-manager/scripts/rofi-firefox-bookmarks.nix
+    ../../modules/home-manager/scripts/rofi-buku-bookmarks.nix
     ../../modules/home-manager/scripts/helloworld-python.nix
     ../../modules/home-manager/scripts/tmux-sessionizer.nix
     ../../modules/home-manager/scripts/cheat-sh.nix
