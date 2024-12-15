@@ -1,9 +1,9 @@
 { ... }:
 {
-  # Redshift is a program that adjusts the color 
+  # Redshift is a program that adjusts the color
   # temperature of your screen.
 
-  # it is intended to be used with xorg only. 
+  # it is intended to be used with xorg only.
   # -----------------------------------------
 
   services.redshift = {

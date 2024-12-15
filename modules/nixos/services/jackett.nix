@@ -6,8 +6,8 @@
   #networking.firewall.allowedTCPPorts = [ 9171 ]; # Opens port 9696, Prowlarr's default port
 
   services.jackett = {
-    enable = true;                 # Starts the Jackett service
-    openFirewall = true;           # Opens firewall for external access (optional) # 9117
+    enable = true; # Starts the Jackett service
+    openFirewall = true; # Opens firewall for external access (optional) # 9117
     port = config.userDefinedGlobalVariables.servicePort.jackett;
   };
 

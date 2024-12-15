@@ -1,4 +1,4 @@
- {pkgs, ... }:
+{ pkgs, ... }:
 
 {
 
@@ -14,8 +14,7 @@
 
   # Ensures that steam can recognize and use custom proton versions(like GE-proton).
   environment.sessionVariables = {
-    STEAM_EXTRA_COMPAT_TOOLS_PATHS =
-      "\${HOME}/.steam/root/compatibilitytools.d";
+    STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
   };
 
 }

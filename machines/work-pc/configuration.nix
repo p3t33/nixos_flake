@@ -47,23 +47,22 @@
   boot.loader.efi.canTouchEfiVariables = true;
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-
   programs.dconf.enable = true;
 
   networking = {
-  firewall.trustedInterfaces = ["br0"];
-  # Define the bridge interface without specifying DHCP here
-  bridges.br0.interfaces = [ "enp0s20f0u1" ]; # Add the physical interface to the bridge
+    firewall.trustedInterfaces = [ "br0" ];
+    # Define the bridge interface without specifying DHCP here
+    bridges.br0.interfaces = [ "enp0s20f0u1" ]; # Add the physical interface to the bridge
 
-  # Enable DHCP on the bridge itself
-  interfaces.br0.useDHCP = true;
+    # Enable DHCP on the bridge itself
+    interfaces.br0.useDHCP = true;
 
-  # Ensure the physical interface is free for the bridge to manage
-  interfaces.enp0s20f0u1 = {
+    # Ensure the physical interface is free for the bridge to manage
+    interfaces.enp0s20f0u1 = {
       ipv4.addresses = [ ];
       useDHCP = false;
+    };
   };
-};
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

@@ -1,3 +1,3 @@
 {
-  sops.secrets.extra_hosts = {};
+  sops.secrets.extra_hosts = { };
 }

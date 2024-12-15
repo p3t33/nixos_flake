@@ -19,7 +19,8 @@
       inherit inputs;
       inherit machineName;
     };
-    users.${config.userDefinedGlobalVariables.primeUsername} = import config.userDefinedGlobalVariables.home_manger_import_path;
+    users.${config.userDefinedGlobalVariables.primeUsername} =
+      import config.userDefinedGlobalVariables.home_manger_import_path;
     # will be available to all users managed by home manager
     sharedModules = [
       # allows to use sops-nix subset of NixOS module.

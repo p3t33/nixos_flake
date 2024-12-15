@@ -8,15 +8,14 @@
       sumneko-lua-language-server # lua
       clang-tools # c/c++
       nixd # nix
-      nixfmt-rfc-style #nix formator used by nixd
-      jdt-language-server #java
+      nixfmt-rfc-style # nix formator used by nixd
+      jdt-language-server # java
 
       pyright # python
       # ----------------
 
       # copilot dependencie
       nodejs_22
-
 
     ];
 

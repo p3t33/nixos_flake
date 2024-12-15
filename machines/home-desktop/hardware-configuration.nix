@@ -16,9 +16,19 @@
     ../../modules/nixos/gpu/amd_hardware_decoding.nix
   ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "ahci"
+    "nvme"
+    "usbhid"
+    "usb_storage"
+    "sd_mod"
+  ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "wl" ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "wl"
+  ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
 
   swapDevices = [ ];

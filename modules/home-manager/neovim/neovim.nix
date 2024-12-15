@@ -319,181 +319,181 @@
     ];
 
     extraLuaConfig = ''
-          -- ============
-          -- Editor setup
-          -- ============
-          vim.g.mapleader = " "
+         -- ============
+         -- Editor setup
+         -- ============
+         vim.g.mapleader = " "
 
-          -- No timeout for leader key
-          vim.o.timeout = false
-          vim.o.ttimeout = false
+         -- No timeout for leader key
+         vim.o.timeout = false
+         vim.o.ttimeout = false
 
-          -- Colorscheme
-          vim.cmd("colorscheme codedark")
+         -- Colorscheme
+         vim.cmd("colorscheme codedark")
 
-          -- Line numbers and relative lines
-          vim.wo.number = true
-          vim.wo.relativenumber = true
+         -- Line numbers and relative lines
+         vim.wo.number = true
+         vim.wo.relativenumber = true
 
-          -- Indentation settings of 4 spaces
-          vim.o.tabstop = 4
-          vim.o.softtabstop = 4
-          vim.o.shiftwidth = 4
-          vim.o.expandtab = true
+         -- Indentation settings of 4 spaces
+         vim.o.tabstop = 4
+         vim.o.softtabstop = 4
+         vim.o.shiftwidth = 4
+         vim.o.expandtab = true
 
-          -- Use file type based indentation
-          vim.cmd("filetype plugin indent on")
+         -- Use file type based indentation
+         vim.cmd("filetype plugin indent on")
 
-          -- Use cindent for C/C++
-          vim.api.nvim_create_autocmd("FileType", {
-                  pattern = {"c", "cpp"},
-                  callback = function()
-                  vim.bo.cindent = true
-                  end,
-                  })
+         -- Use cindent for C/C++
+         vim.api.nvim_create_autocmd("FileType", {
+                 pattern = {"c", "cpp"},
+                 callback = function()
+                 vim.bo.cindent = true
+                 end,
+                 })
 
-          -- Set cursorline
-          vim.wo.cursorline = true
+         -- Set cursorline
+         vim.wo.cursorline = true
 
-          -- Disable wrap of text
-          vim.wo.wrap = false
+         -- Disable wrap of text
+         vim.wo.wrap = false
 
-          -- incremental search, tarts searching as you type, immediately jumps to the closest match to the text you've entered so far
-          vim.o.incsearch = true
+         -- incremental search, tarts searching as you type, immediately jumps to the closest match to the text you've entered so far
+         vim.o.incsearch = true
 
-          -- Enable true color support in the terminal
-          vim.o.termguicolors = true
+         -- Enable true color support in the terminal
+         vim.o.termguicolors = true
 
-          -- set the number of lines to keep above and below the cursor when scrolling through a document
-          vim.o.scrolloff = 8
+         -- set the number of lines to keep above and below the cursor when scrolling through a document
+         vim.o.scrolloff = 8
 
-          -- A column that is always displayed
-          -- A plugin is used to populate it with data
-          -- E.g erros, git information
-          vim.o.signcolumn = "yes"
+         -- A column that is always displayed
+         -- A plugin is used to populate it with data
+         -- E.g erros, git information
+         vim.o.signcolumn = "yes"
 
-          -- Set update time for various features like diagnostics to appear
-          vim.o.updatetime = 50
+         -- Set update time for various features like diagnostics to appear
+         vim.o.updatetime = 50
 
-          -- Creates a ruler at 80 characters width
-          vim.wo.colorcolumn = "80"
+         -- Creates a ruler at 80 characters width
+         vim.wo.colorcolumn = "80"
 
-          -- Enable mouse support in all modes
-          vim.o.mouse = "a"
+         -- Enable mouse support in all modes
+         vim.o.mouse = "a"
 
-          -- ------swap/backup file disable---
-          -- As I am using undotree I don't need this file
-          vim.o.swapfile = false
-          vim.o.backup = false
-          -- ---------------------------------
+         -- ------swap/backup file disable---
+         -- As I am using undotree I don't need this file
+         vim.o.swapfile = false
+         vim.o.backup = false
+         -- ---------------------------------
 
-         -- ================================
-         -- Costum functions
-         -- ================================
+        -- ================================
+        -- Costum functions
+        -- ================================
 
-         -- ----------------------------------------------------------
-         -- Remove white spaces at the end of the line on buffer write
-         -- ----------------------------------------------------------
-         -- Define the Lua function to trim whitespace
-         local function trim_whitespace()
-              local save = vim.fn.winsaveview()
-              vim.api.nvim_exec('%s/\\s\\+$//e', false)
-              vim.fn.winrestview(save)
-         end
+        -- ----------------------------------------------------------
+        -- Remove white spaces at the end of the line on buffer write
+        -- ----------------------------------------------------------
+        -- Define the Lua function to trim whitespace
+        local function trim_whitespace()
+             local save = vim.fn.winsaveview()
+             vim.api.nvim_exec('%s/\\s\\+$//e', false)
+             vim.fn.winrestview(save)
+        end
 
-         -- Set up an autocmd to call the Lua function before buffer write
-         vim.api.nvim_create_autocmd("BufWritePre", {
-                 pattern = "*",
-                 callback = trim_whitespace,
-         })
-
-
-         -- ================================
-
-         -- ================================
-         -- Key Mappings
-         -- ================================
-         -- General options for mappings
-         local opts = { noremap = true, silent = true }
-
-        -- Drag up and down selected lines in visual line mode
-        vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", opts)
-        vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", opts)
-
-        -- Centered movements
-        -- ------------------
-        vim.keymap.set('n', '<C-u>', "<C-u>zz", opts)
-        vim.keymap.set('n', '<C-d>', "<C-d>zz", opts)
-        vim.keymap.set('n', 'n', "nzzzv", opts)
-        vim.keymap.set('n', 'N', "Nzzzv", opts)
-        vim.keymap.set('n', '{', '{zz', opts)
-        vim.keymap.set('n', '}', '}zz', opts)
-        vim.keymap.set('n', '<C-i>', '<C-i>zz', opts)
-        vim.keymap.set('n', '<C-o>', '<C-o>zz', opts)
-        vim.keymap.set('n', '%', '%zz', opts)
-        vim.keymap.set('n', '*', '*zz', opts)
-        vim.keymap.set('n', '#', '#zz', opts)
-
-       -- Paste over and the deleted text will go into void register
-       vim.keymap.set('x', '<leader>p', '"_dP', opts)
-
-       -- Deleting into void register
-       vim.keymap.set('n', '<leader>d', '"_d', opts)
-       vim.keymap.set('v', '<leader>d', '"_d', opts)
-
-       -- Yanking into clipboard
-       vim.keymap.set('n', '<leader>y', '"+y', opts)
-       vim.keymap.set('v', '<leader>y', '"+y', opts)
-       vim.keymap.set('n', '<leader>Y', '"+Y', opts)
-
-       -- Column mode edit exit
-       vim.keymap.set('i', '<C-c>', '<Esc>', opts)
-
-       -- Replace the word you are on
-       vim.keymap.set('n', '<leader>s', ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts)
-
-       -- Make file executable
-       vim.keymap.set('n', '<leader>x', "<cmd>!chmod +x %<CR>", opts)
-
-       -- NvimTree toggle
-       vim.keymap.set('n', '<leader>.', ":NvimTreeToggle<Cr>", opts)
+        -- Set up an autocmd to call the Lua function before buffer write
+        vim.api.nvim_create_autocmd("BufWritePre", {
+                pattern = "*",
+                callback = trim_whitespace,
+        })
 
 
-       -- Save current buffer
-       vim.keymap.set('n', '<C-s>', ":w<CR>", opts)
-       vim.keymap.set('i', '<C-s>', "<Esc>:w<CR>", opts)
+        -- ================================
 
-       -- Save and exit file
-       vim.keymap.set('n', '<C-x>', ":wq<CR>", opts)
-       vim.keymap.set('i', '<C-x>', "<Esc>:wq<CR>", opts)
+        -- ================================
+        -- Key Mappings
+        -- ================================
+        -- General options for mappings
+        local opts = { noremap = true, silent = true }
 
-       -- Exit vim wihtout saving
-       vim.keymap.set('n', '<C-q>', ":q!<CR>", opts)
-       vim.keymap.set('i', '<C-q>', "<Esc>:q!<CR>", opts)
+       -- Drag up and down selected lines in visual line mode
+       vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", opts)
+       vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", opts)
 
-       -- Generate ctags
-       vim.keymap.set('n', '<leader>gt', ":!ctags -R --exclude=.git<Cr><Cr>", opts)
+       -- Centered movements
+       -- ------------------
+       vim.keymap.set('n', '<C-u>', "<C-u>zz", opts)
+       vim.keymap.set('n', '<C-d>', "<C-d>zz", opts)
+       vim.keymap.set('n', 'n', "nzzzv", opts)
+       vim.keymap.set('n', 'N', "Nzzzv", opts)
+       vim.keymap.set('n', '{', '{zz', opts)
+       vim.keymap.set('n', '}', '}zz', opts)
+       vim.keymap.set('n', '<C-i>', '<C-i>zz', opts)
+       vim.keymap.set('n', '<C-o>', '<C-o>zz', opts)
+       vim.keymap.set('n', '%', '%zz', opts)
+       vim.keymap.set('n', '*', '*zz', opts)
+       vim.keymap.set('n', '#', '#zz', opts)
 
-       -- Bookmarks (Add your bookmark functions in a similar way)
+      -- Paste over and the deleted text will go into void register
+      vim.keymap.set('x', '<leader>p', '"_dP', opts)
 
-       -- Buffer control
-       vim.keymap.set('n', '<leader>bn', ":bn<Cr>", opts)
-       vim.keymap.set('n', '<leader>bp', ":bp<Cr>", opts)
-       vim.keymap.set('n', '<leader>bd', ":bd<Cr>", opts)
-       vim.keymap.set('n', '<leader>bs', "<C-w>s", opts)
-       vim.keymap.set('n', '<leader>bv', "<C-w>v", opts)
+      -- Deleting into void register
+      vim.keymap.set('n', '<leader>d', '"_d', opts)
+      vim.keymap.set('v', '<leader>d', '"_d', opts)
 
-       -- Disable arrow keys
-       vim.keymap.set('n', '<Up>', "<Nop>", opts)
-       vim.keymap.set('n', '<Down>', "<Nop>", opts)
-       vim.keymap.set('n', '<Left>', "<Nop>", opts)
-       vim.keymap.set('n', '<Right>', "<Nop>", opts)
+      -- Yanking into clipboard
+      vim.keymap.set('n', '<leader>y', '"+y', opts)
+      vim.keymap.set('v', '<leader>y', '"+y', opts)
+      vim.keymap.set('n', '<leader>Y', '"+Y', opts)
 
-       -- Show current buffer absolute path and copy it
-       vim.keymap.set('n', '<F6>', function() vim.fn.setreg('+', vim.fn.expand('%:p')) print(vim.fn.getreg('+')) end, opts)
+      -- Column mode edit exit
+      vim.keymap.set('i', '<C-c>', '<Esc>', opts)
 
-       -- Apply lsp server formating
-       vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ async = true }) end, opts)
+      -- Replace the word you are on
+      vim.keymap.set('n', '<leader>s', ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts)
+
+      -- Make file executable
+      vim.keymap.set('n', '<leader>x', "<cmd>!chmod +x %<CR>", opts)
+
+      -- NvimTree toggle
+      vim.keymap.set('n', '<leader>.', ":NvimTreeToggle<Cr>", opts)
+
+
+      -- Save current buffer
+      vim.keymap.set('n', '<C-s>', ":w<CR>", opts)
+      vim.keymap.set('i', '<C-s>', "<Esc>:w<CR>", opts)
+
+      -- Save and exit file
+      vim.keymap.set('n', '<C-x>', ":wq<CR>", opts)
+      vim.keymap.set('i', '<C-x>', "<Esc>:wq<CR>", opts)
+
+      -- Exit vim wihtout saving
+      vim.keymap.set('n', '<C-q>', ":q!<CR>", opts)
+      vim.keymap.set('i', '<C-q>', "<Esc>:q!<CR>", opts)
+
+      -- Generate ctags
+      vim.keymap.set('n', '<leader>gt', ":!ctags -R --exclude=.git<Cr><Cr>", opts)
+
+      -- Bookmarks (Add your bookmark functions in a similar way)
+
+      -- Buffer control
+      vim.keymap.set('n', '<leader>bn', ":bn<Cr>", opts)
+      vim.keymap.set('n', '<leader>bp', ":bp<Cr>", opts)
+      vim.keymap.set('n', '<leader>bd', ":bd<Cr>", opts)
+      vim.keymap.set('n', '<leader>bs', "<C-w>s", opts)
+      vim.keymap.set('n', '<leader>bv', "<C-w>v", opts)
+
+      -- Disable arrow keys
+      vim.keymap.set('n', '<Up>', "<Nop>", opts)
+      vim.keymap.set('n', '<Down>', "<Nop>", opts)
+      vim.keymap.set('n', '<Left>', "<Nop>", opts)
+      vim.keymap.set('n', '<Right>', "<Nop>", opts)
+
+      -- Show current buffer absolute path and copy it
+      vim.keymap.set('n', '<F6>', function() vim.fn.setreg('+', vim.fn.expand('%:p')) print(vim.fn.getreg('+')) end, opts)
+
+      -- Apply lsp server formating
+      vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ async = true }) end, opts)
     '';
 
   };

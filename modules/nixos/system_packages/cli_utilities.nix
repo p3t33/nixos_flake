@@ -103,7 +103,7 @@
     git-filter-repo
     iperf3
     dig
-
+    buku
   ];
 
 }

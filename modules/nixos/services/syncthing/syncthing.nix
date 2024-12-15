@@ -1,13 +1,19 @@
-{ config, lib, machineName, ... }:
 {
-  imports = []
-     ++ lib.optionals (machineName == "work-pc") [
+  config,
+  lib,
+  machineName,
+  ...
+}:
+{
+  imports =
+    [ ]
+    ++ lib.optionals (machineName == "work-pc") [
       ./devices/homelab.nix
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
     ]
-     ++ lib.optionals (machineName == "home-desktop") [
+    ++ lib.optionals (machineName == "home-desktop") [
       ./devices/work_laptop.nix
       ./devices/homelab.nix
       ./folders/taskwarrior.nix
@@ -16,7 +22,7 @@
       ./folders/documents.nix
       ./folders/study.nix
     ]
-     ++ lib.optionals (machineName == "homelab") [
+    ++ lib.optionals (machineName == "homelab") [
       ./devices/work_laptop.nix
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
@@ -54,19 +60,19 @@
 
     settings = {
 
-        options = {
-            urAccepted = -1; # explicitly disabled usage reporting.
-            globalAnnounceEnabled = true;
-            relaysEnabled = true;
-            localAnnounceEnabled = true;
-        };
+      options = {
+        urAccepted = -1; # explicitly disabled usage reporting.
+        globalAnnounceEnabled = true;
+        relaysEnabled = true;
+        localAnnounceEnabled = true;
+      };
 
-        gui = {
-            # user = config.sops.templates."syncuser".content;
-            # password = config.sops.templates."syncpassword".content;
-            theme = "black";
-            insecureSkipHostCheck = true;
-        };
+      gui = {
+        # user = config.sops.templates."syncuser".content;
+        # password = config.sops.templates."syncpassword".content;
+        theme = "black";
+        insecureSkipHostCheck = true;
+      };
     };
   };
 }

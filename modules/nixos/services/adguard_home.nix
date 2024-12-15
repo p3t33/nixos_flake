@@ -23,7 +23,8 @@ in
       };
 
       filtering = {
-                rewrites = []
+        rewrites =
+          [ ]
           ++ lib.optionals config.services.deluge.enable [
             {
               domain = "deluge.${config.userDefinedGlobalVariables.hostConfigurationName}";

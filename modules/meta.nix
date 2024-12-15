@@ -206,16 +206,16 @@
       };
 
       secretsPath = lib.mkOption {
-          default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
-          type = lib.types.path;
-          description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
-        };
+        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
+        type = lib.types.path;
+        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+      };
 
-        databaseSecret = lib.mkOption {
-          default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/prowlarr.db;
-          type = lib.types.path;
-          description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
-        };
+      databaseSecret = lib.mkOption {
+        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/prowlarr.db;
+        type = lib.types.path;
+        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+      };
 
       sopsKeyPath = lib.mkOption {
         default = "/keys.txt";
@@ -322,15 +322,15 @@
       };
 
       devicesToShareTaskWarriorFolderWith = lib.mkOption {
-          default = [];
-          type = lib.types.listOf lib.types.str;
-          description = "List of devices to use for folder synchronization.";
+        default = [ ];
+        type = lib.types.listOf lib.types.str;
+        description = "List of devices to use for folder synchronization.";
       };
 
       devicesToShareDevResourcesFolderWith = lib.mkOption {
-          default = [];
-          type = lib.types.listOf lib.types.str;
-          description = "List of devices to use for folder synchronization.";
+        default = [ ];
+        type = lib.types.listOf lib.types.str;
+        description = "List of devices to use for folder synchronization.";
       };
 
     };
@@ -339,7 +339,8 @@
   config = lib.mkMerge [
     # Machine-specific configurations
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc}";
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc
+      }";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
@@ -354,7 +355,8 @@
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop}";
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop
+      }";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
@@ -369,12 +371,14 @@
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
       userDefinedGlobalVariables.primeUsername = "drone";
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}";
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
+      }";
       userDefinedGlobalVariables.systemStateVersion = "24.11";
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab}";
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab
+      }";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.syncthingConfigDirectory = "/var/lib/syncthing/.config/syncthing";
       userDefinedGlobalVariables.syncthingSyncDir = "/mnt/data/Sync";
@@ -396,4 +400,3 @@
     })
   ];
 }
-

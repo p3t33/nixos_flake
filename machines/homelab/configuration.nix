@@ -58,7 +58,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-
   networking.interfaces.eno1.ipv4.addresses = [
     {
       address = "${config.userDefinedGlobalVariables.homeLabIP}";

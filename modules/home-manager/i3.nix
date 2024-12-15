@@ -202,7 +202,8 @@ in
         "${mod}+q" = "exec --no-startup-id i3-msg restart && i3-monitor";
 
         # exit i3 (logs you out of your X session)
-        "${mod}+Shift+q" = "exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'\"";
+        "${mod}+Shift+q" =
+          "exec \"i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'\"";
 
         #"XF86AudioRaiseVolume" =  "exec --no-startup-id amixer sset Master 5%+";
         #"XF86AudioLowerVolume" = "exec --no-startup-id amixer sset Master 5%-";

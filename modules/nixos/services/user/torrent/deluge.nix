@@ -11,7 +11,12 @@
       port = config.userDefinedGlobalVariables.servicePort.deglue;
     };
     extraPackages = with pkgs; [
-        unzip gnutar xz bzip2 unrar p7zip # dependencies for Extractor plugin.
+      unzip
+      gnutar
+      xz
+      bzip2
+      unrar
+      p7zip # dependencies for Extractor plugin.
     ];
 
     declarative = true;
@@ -36,8 +41,14 @@
       random_port = false;
       # Set a fixed range for P2P communication ports, minumum two so I used the same value.
       # Same ports need to be opened in the router firewall.
-      listen_ports = [ 6629 6629 ];
-      enabled_plugins = [ "Extractor" "Label"];
+      listen_ports = [
+        6629
+        6629
+      ];
+      enabled_plugins = [
+        "Extractor"
+        "Label"
+      ];
     };
     # has to be defined for "declarative = true"
     authFile = config.sops.secrets.deluge_auth_file.path;
