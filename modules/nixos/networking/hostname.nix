@@ -1,7 +1,5 @@
 {
-  config,
   machineName,
-  pkgs,
   ...
 }:
 {

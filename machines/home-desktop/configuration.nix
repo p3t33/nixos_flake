@@ -21,7 +21,6 @@
     ../../modules/nixos/system_packages/cli_utilities.nix
     ../../modules/nixos/system_packages/encryption.nix
     ../../modules/nixos/system_packages/gui.nix
-    ../../modules/nixos/sound.nix
     ../../modules/nixos/networking/networkmanager.nix
     ../../modules/nixos/networking/hostname.nix
     ../../modules/nixos/environment_variables.nix
@@ -32,10 +31,8 @@
     ../../modules/nixos/dictionaries.nix
     ../../modules/nixos/security/nitrokey.nix
     ../../modules/nixos/security/solokey2.nix
-    ../../modules/nixos/security/trezor.nix
     ../../modules/nixos/defaults_for_system_build.nix
-    ../../modules/nixos/opengl.nix
-    ../../modules/nixos/services/envfs.nix
+    ../../modules/nixos/graphics.nix
     ../../modules/nixos/gaming/steam.nix
   ];
 

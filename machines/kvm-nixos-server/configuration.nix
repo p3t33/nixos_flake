@@ -27,8 +27,7 @@
     ../../modules/nixos/users.nix
     ../../modules/nixos/dictionaries.nix
     ../../modules/nixos/defaults_for_system_build.nix
-    ../../modules/nixos/opengl.nix
-    ../../modules/nixos/services/envfs.nix
+    ../../modules/nixos/graphics.nix
   ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

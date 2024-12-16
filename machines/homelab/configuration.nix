@@ -28,18 +28,9 @@
     ../../modules/nixos/networking/hostname.nix
     ../../modules/nixos/users.nix
     ../../modules/nixos/dictionaries.nix
-    ../../modules/nixos/services/jellyfin.nix
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/auto_upgrade.nix
-    ../../modules/nixos/services/nginx.nix
-    ../../modules/nixos/services/fail2ban.nix
-    ../../modules/nixos/opengl.nix
-    ../../modules/nixos/services/envfs.nix
-    ../../modules/nixos/services/adguard_home.nix
-    ../../modules/nixos/services/prowlarr.nix
-    ../../modules/nixos/services/jackett.nix
-    ../../modules/nixos/services/sonarr.nix
-    ../../modules/nixos/services/radarr.nix
+    ../../modules/nixos/graphics.nix
   ];
 
   systemd.tmpfiles.rules = [

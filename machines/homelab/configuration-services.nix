@@ -1,6 +1,5 @@
 { ... }:
 {
-
   imports = [
     ../../modules/nixos/services/sshd.nix
     ../../modules/nixos/services/user/tmux.nix
@@ -11,6 +10,14 @@
     ../../modules/nixos/services/syncthing/syncthing.nix
     ../../modules/nixos/services/restic.nix
     ../../modules/nixos/services/homepage_dashboard.nix
+    ../../modules/nixos/services/jellyfin.nix
+    ../../modules/nixos/services/nginx.nix
+    ../../modules/nixos/services/fail2ban.nix
+    ../../modules/nixos/services/envfs.nix
+    ../../modules/nixos/services/adguard_home.nix
+    ../../modules/nixos/services/prowlarr.nix
+    ../../modules/nixos/services/jackett.nix
+    ../../modules/nixos/services/sonarr.nix
+    ../../modules/nixos/services/radarr.nix
   ];
-
 }
