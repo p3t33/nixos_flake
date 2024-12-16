@@ -1,21 +1,14 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nicxos-help’).
-
 {
-  inputs,
-  config,
   pkgs,
   ...
 }:
-
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./configuration-services.nix
     ./sops-configuration.nix
     ./disko-config.nix
+    ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/fonts.nix
@@ -45,10 +38,6 @@
     ../../modules/nixos/services/envfs.nix
     ../../modules/nixos/gaming/steam.nix
   ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   programs.dconf.enable = true;
 

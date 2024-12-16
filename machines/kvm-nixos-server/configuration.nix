@@ -1,19 +1,14 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nicxos-help’).
-
 {
   config,
   ...
 }:
-
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./configuration-services.nix
     ./sops-configuration.nix
     ./disko-config.nix
+    ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/experimental-features.nix
@@ -35,10 +30,6 @@
     ../../modules/nixos/opengl.nix
     ../../modules/nixos/services/envfs.nix
   ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
