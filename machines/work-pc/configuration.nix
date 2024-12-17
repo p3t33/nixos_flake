@@ -30,10 +30,8 @@
     ../../modules/nixos/security/solokey2.nix
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/graphics.nix
+    ../../modules/nixos/dconf.nix
   ];
-
-
-  programs.dconf.enable = true;
 
   networking = {
     firewall.trustedInterfaces = [ "br0" ];

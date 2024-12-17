@@ -34,9 +34,8 @@
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/graphics.nix
     ../../modules/nixos/gaming/steam.nix
+    ../../modules/nixos/dconf.nix
   ];
-
-  programs.dconf.enable = true;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
