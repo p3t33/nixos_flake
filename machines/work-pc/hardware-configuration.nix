@@ -2,16 +2,16 @@
 # and may be overwritten by future invocations.  Please make changes
 # to /etc/nixos/configuration.nix instead.
 {
-  config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
-
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
+    ../../modules/nixos/hardware/host_platform.nix
+    ../../modules/nixos/hardware/dhcp-setup.nix
+    ../../modules/nixos/hardware/intel-microcode.nix
     ../../modules/nixos/gpu/nvidia.nix
     ../../modules/nixos/gpu/nvidia_hybrid_with_intel_offload_mode.nix
     # I am using interl hardware decoding as I am not sure my nvidia chip supports it, prime in offload mode is not working
@@ -35,14 +35,5 @@
 
   swapDevices = [ ];
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s20f0u6u4.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
-
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
