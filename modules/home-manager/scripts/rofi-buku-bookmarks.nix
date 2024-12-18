@@ -7,11 +7,20 @@ let
       buku -p -f 3 | sed 's/\t/ /g' | grep -v "buku: waiting for input"
     }
 
-    # Function to open a bookmark
+    # Function to open a bookmark and focus browser
     open_bookmark() {
       local bookmark_id=$(echo "$1" | cut -d ' ' -f 1)
        if [ -n "$bookmark_id" ]; then
          buku -o "$bookmark_id"
+
+         # Give the browser time to open the URL
+         sleep 0.1
+
+         # Find the browser window and focus it (using i3-msg or wmctrl)
+         windowid=$(wmctrl -lx | grep -i Navigator.Firefox | awk '{print $1}' | tail -1)
+         if [ -n "$windowid" ]; then
+           i3-msg "[id=\"$windowid\"] focus" > /dev/null &
+         fi
        fi
     }
 
@@ -27,3 +36,4 @@ in
 {
   home.packages = [ rofi-buku-bookmakrs ];
 }
+
