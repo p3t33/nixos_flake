@@ -292,6 +292,7 @@
           jackett = 9117;
           homepageDashboard = 8082;
           jellyfin = 8096;
+          bazarr = 6767;
         };
         type = lib.types.attrsOf lib.types.int;
         description = "Default ports used by various services";
