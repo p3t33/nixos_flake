@@ -19,5 +19,6 @@
     ../../modules/nixos/services/jackett.nix
     ../../modules/nixos/services/sonarr.nix
     ../../modules/nixos/services/radarr.nix
+    ../../modules/nixos/services/bazarr.nix
   ];
 }
