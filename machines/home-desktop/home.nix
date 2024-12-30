@@ -13,6 +13,7 @@
     ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/sxhkd.nix
     ../../modules/home-manager/alacritty.nix
+    ../../modules/home-manager/ghostty.nix
     ../../modules/home-manager/picom.nix
     ../../modules/home-manager/i3.nix
     ../../modules/home-manager/scripts/i3-monitor.nix
