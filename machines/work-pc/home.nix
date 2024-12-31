@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   imports = [
     ./sops-home.nix
@@ -17,6 +15,7 @@
     ../../modules/home-manager/i3status.nix
     ../../modules/home-manager/alacritty.nix
     ../../modules/home-manager/ghostty.nix
+    ../../modules/home-manager/kitty.nix
     ../../modules/home-manager/picom.nix
     ../../modules/home-manager/i3.nix
     ../../modules/home-manager/rofi.nix
