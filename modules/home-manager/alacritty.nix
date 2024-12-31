@@ -25,9 +25,35 @@
         };
       };
 
+      general = {
+        # live config reload
+        live_config_reload = true;
+      };
+
+      scrolling = {
+        history = 10000;
+        multiplier = 3;
+      };
+
+      mouse = {
+         hide_when_typing = true;
+      };
+
+      cursor = {
+        style = {
+          shape = "Block";
+          blinking = "Off";
+        };
+      };
+
       window = {
         opacity = 0.95;
         dynamic_padding = true;
+        decorations =  "full";
+      };
+
+      selection = {
+        save_to_clipboard = true;
       };
 
       colors = {
