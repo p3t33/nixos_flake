@@ -10,6 +10,6 @@
 
   sops.secrets.prowlarr-db = {
     format = "binary";
-    sopsFile = "${config.userDefinedGlobalVariables.secretsPath}/prowlarr/prowlarr.db";
+    sopsFile = "${config.userDefinedGlobalVariables.secretsPath}/nixos/prowlarr/prowlarr.db";
   };
 }

@@ -1,7 +1,7 @@
 {
   imports = [
-    ../../modules/nixos/security/sops/sops-common.nix
-    ../../modules/nixos/security/sops/sops_prime_user_hashed_password.nix
-    ../../modules/nixos/security/sops/sops-networkmanager.nix
+    ../../modules/nixos/secrets/sops-common.nix
+    ../../modules/nixos/secrets/sops-prime-user-hashed-password.nix
+    ../../modules/nixos/secrets/sops-networkmanager.nix
   ];
 }

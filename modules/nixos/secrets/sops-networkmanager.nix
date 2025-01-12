@@ -1,19 +1,15 @@
 { config, ... }:
 {
   sops.secrets."wifi/phone/ssid" = {
-    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
   };
 
   sops.secrets."wifi/phone/psk" = {
-    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
   };
 
   sops.secrets."wifi/home/ssid" = {
-    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
   };
 
   sops.secrets."wifi/home/psk" = {
-    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
   };
 
   networking.networkmanager = {

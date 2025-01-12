@@ -37,14 +37,12 @@
   ];
 
   sops.secrets."syncthing/cert.pem" = {
-    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
     owner = "${config.userDefinedGlobalVariables.syncthingUser}";
     mode = "0600";
 
   };
 
   sops.secrets."syncthing/key.pem" = {
-    sopsFile = config.userDefinedGlobalVariables.NixOSSecretsPath;
     owner = "${config.userDefinedGlobalVariables.syncthingUser}";
     mode = "0600";
   };
