@@ -8,12 +8,12 @@
 
   imports = [
     ../../modules/meta.nix
-    ./sops-configuration.nix
+    ./sops-home.nix
     ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/fzf.nix
     ../../modules/home-manager/neovim/neovim.nix
-    ../../modules/home-manager/git.nix
+    # ../../modules/home-manager/git.nix
     ../../modules/home-manager/zoxide.nix
     ../../modules/home-manager/zsh.nix
     ../../modules/home-manager/bash.nix

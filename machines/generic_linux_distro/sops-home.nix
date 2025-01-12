@@ -1,13 +1,15 @@
 { config, pkgs, ... }:
 {
 
-  imports = [ ../../modules/nixos/security/sops/sops-common.nix ];
+  imports = [
+    ../../modules/home-manager/secrets/sops-common.nix
+    ../../modules/home-manager/secrets/sops-ssh-development-keys-for-vm.nix
+    ../../modules/home-manager/secrets/sops-extra-ssh-hosts.nix
+    # ../../modules/home-manager/secrets/sops-git-credentials.nix
+  ];
 
   sops = {
     secrets = {
-      ssh_id_ed25519_vm_key = {
-        path = "/home/kmedrish/.ssh/test";
-      };
 
       "syncthing/key.pem" = {
         path = "${config.userDefinedGlobalVariables.syncthingConfigDirectory}/key.pem";

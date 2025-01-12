@@ -193,22 +193,28 @@
         description = "The relative path inside the repository to the home configuration file";
       };
 
-      NixOSSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets.yaml;
-        type = lib.types.path;
-        description = "The relative path to the NixOS secrets file";
-      };
-
-      homeManagerAsNixOSModuleSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets_home.yaml;
-        type = lib.types.path;
-        description = "The relative path to the NixOS secrets file";
-      };
-
       secretsPath = lib.mkOption {
         default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
         type = lib.types.path;
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+      };
+
+      NixOSDefaultSecretsPath = lib.mkOption {
+        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets/nixos/secrets.yaml;
+        type = lib.types.path;
+        description = "The relative path to the NixOS secrets file";
+      };
+
+      homeManagerAsNixOSModuleDefaultSecretsPath = lib.mkOption {
+        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets/home-manager/secrets.yaml;
+        type = lib.types.path;
+        description = "The relative path to the NixOS secrets file";
+      };
+
+      calibreAsNixOSModuleSecretsPath = lib.mkOption {
+        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/calibre.yaml;
+        type = lib.types.path;
+        description = "The relative path to the NixOS secrets file";
       };
 
       databaseSecret = lib.mkOption {

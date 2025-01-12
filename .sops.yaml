@@ -5,27 +5,31 @@ keys:
   - &generic_linux_distro age1jukh2jtz084zgvzkq398frz73qjr9cjnljhsdsw70ywy5kxp7pnsls0eja
   - &kvm-nixos-server age1857y4m4fa3wwrut8uqfeculpq6m4lw05n3k6ky6s79nnh84raf8qvlm4aw
 creation_rules:
-  - path_regex: machines/work-pc/secrets.yaml$
+  - path_regex: machines/work-pc/secrets/nixos/secrets.yaml$
     key_groups:
       - age:
         - *work-pc
-  - path_regex: machines/work-pc/secrets_home.yaml$
+  - path_regex: machines/work-pc/secrets/home-manager/secrets.yaml$
     key_groups:
       - age:
         - *work-pc
-  - path_regex: machines/home-desktop/secrets.yaml$
+  - path_regex: machines/home-desktop/secrets/nixos/secrets.yaml$
     key_groups:
       - age:
         - *home-desktop
-  - path_regex: machines/home-desktop/secrets_home.yaml$
+  - path_regex: machines/home-desktop/secrets/home-manager/secrets.yaml$
     key_groups:
       - age:
         - *home-desktop
-  - path_regex: machines/homelab/secrets.yaml$
+  - path_regex: machines/home-desktop/secrets/home-manager/calibre.json$
+    key_groups:
+      - age:
+        - *home-desktop
+  - path_regex: machines/homelab/secrets/nixos/secrets.yaml$
     key_groups:
       - age:
         - *homelab
-  - path_regex: machines/homelab/secrets_home.yaml$
+  - path_regex: machines/homelab/secrets/home-manager/secrets.yaml$
     key_groups:
       - age:
         - *homelab
@@ -37,15 +41,15 @@ creation_rules:
     key_groups:
       - age:
         - *homelab
-  - path_regex: machines/generic_linux_distro/secrets.yaml$
+  - path_regex: machines/generic_linux_distro/secrets/home-manager/secrets.yaml$
     key_groups:
       - age:
         - *generic_linux_distro
-  - path_regex: machines/kvm-nixos-server/secrets.yaml$
+  - path_regex: machines/kvm-nixos-server/secrets/nixos/secrets.yaml$
     key_groups:
       - age:
         - *kvm-nixos-server
-  - path_regex: machines/kvm-nixos-server/secrets_home.yaml$
+  - path_regex: machines/kvm-nixos-server/secrets/home-manager/secrets.yaml$
     key_groups:
       - age:
         - *kvm-nixos-server
