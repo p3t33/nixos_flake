@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
 
-  imports = [ ../../modules/nixos/security/sops/sops-common.nix ];
+  imports = [ ../../modules/home-manager/security/sops-common.nix ];
 
   sops = {
     secrets = {

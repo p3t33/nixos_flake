@@ -4,5 +4,6 @@
     ../../modules/home-manager/security/sops-git-credentials.nix
     ../../modules/home-manager/security/sops-extra-ssh-hosts.nix
     ../../modules/home-manager/security/ssh_development_keys_for_vm.nix
+    ../../modules/home-manager/security/sops-calibre.nix
   ];
 }
