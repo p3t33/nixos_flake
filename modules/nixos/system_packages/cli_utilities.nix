@@ -104,6 +104,7 @@
     iperf3
     dig
     buku
+    wireguard-tools
   ];
 
 }

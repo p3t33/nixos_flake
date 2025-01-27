@@ -281,6 +281,20 @@
         description = "Icon definitions for workspace labels";
       };
 
+      wireguard = lib.mkOption {
+        default = let
+          base = "10.100.0";
+        in {
+          networkName = "wg0";
+          externalInterface = "eno1";
+          baseSubnet = base;
+          gateway = "${base}.1";
+          network = "${base}.0/24";
+        };
+        type = lib.types.attrsOf lib.types.str;
+        description = "Default values used by wireguard";
+      };
+
       servicePort = lib.mkOption {
         default = {
           deglue = 8112;
@@ -293,6 +307,7 @@
           homepageDashboard = 8082;
           jellyfin = 8096;
           bazarr = 6767;
+          wireguard = 51820;
         };
         type = lib.types.attrsOf lib.types.int;
         description = "Default ports used by various services";
