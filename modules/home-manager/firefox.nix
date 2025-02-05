@@ -57,6 +57,11 @@
       # the search bar using about:config
       settings = {
         "browser.startup.page" = 3; # This line is added to automatically restore the session
+        "browser.tabs.insertRelatedAfterCurrent" = false; # Open new tabs immediately next to the current one
+        "browser.urlbar.switchTabs.adoptOpenTabs" = false; # Prevents switching to an open tab
+        "browser.urlbar.suggest.openpage" = false; # Disables suggestions for already open tabs
+        "browser.tabs.insertAfterCurrent" = true; # might make insertRelatedAfterCurrent redundant.
+
         # Disable Pocket Integration
         "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
         "extensions.pocket.enabled" = false;
