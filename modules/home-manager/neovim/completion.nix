@@ -127,9 +127,17 @@
                           },
                       },
                   }
+              elseif server_name == 'jdtls' then
+                  -- Ensure jdtls uses the correct workspace directory
+                  setup_table.cmd = {
+                      "jdtls",
+                      "-configuration", vim.fn.stdpath("cache") .. "/jdtls/config",
+                      "-data", vim.fn.stdpath("cache") .. "/jdtls/workspace"
+                  }
+                  setup_table.root_dir = require("lspconfig.util").root_pattern("pom.xml", "gradle.build", ".git")
               else
                   setup_table.cmd = nil
-                      end
+              end
               require('lspconfig')[server_name].setup(setup_table)
               -- ------------
           end
