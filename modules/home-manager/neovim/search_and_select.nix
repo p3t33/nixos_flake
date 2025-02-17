@@ -25,8 +25,17 @@
                  preview = {
                      layout = "vertical",
                      vertical = "up:70%",
+                     -- sets the preview to use the plugin's own built in previewer.
                      default="builtin"
                    },
+             },
+
+             keymap = {
+               -- keys for the built in previewer.
+               builtin = {
+                 ["<C-j>"] = "preview-down",
+                 ["<C-k>"] = "preview-up",
+               },
              },
 
              fzf_opts = {
@@ -75,6 +84,8 @@
                       i = {
                           ['<C-u>'] = false,
                           ['<C-d>'] = false,
+                          ["<C-k>"] = actions.preview_scrolling_up,
+                          ["<C-j>"] = actions.preview_scrolling_down,
                       },
                   },
                   dynamic_preview_title = true,
@@ -85,6 +96,7 @@
                       horizontal = {
                           preview_width = 0.65,
                           width = 0.75,
+                          scroll_speed = 0.1,
                       },
                       vertical = {
                           width = 0.9,  -- Adjusts the width of the Telescope window as a percentage of the total screen width
@@ -93,6 +105,7 @@
                           preview_height = 0.6,
                           preview_cutoff = 20,
                           prompt_position = "bottom",
+                          scroll_speed = 0.1,
                       },
                       center = {
                           mirror = false,
