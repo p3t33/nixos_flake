@@ -1,5 +1,3 @@
-{ config, ... }:
-
 {
   programs.lazygit = {
     enable = true;
@@ -23,8 +21,13 @@
 
       keybinding = {
         commits = {
-          moveUpCommit = "K";
-          moveDownCommit = "J";
+          moveUpCommit = "<c-k>"; # only works outside of tmux.
+          moveDownCommit = "<c-j>"; # only works outside of tmux.
+        };
+
+        universal = {
+          scrollUpMain-alt1 = "K";
+          scrollDownMain-alt1 = "J";
         };
       };
     };
