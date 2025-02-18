@@ -25,9 +25,24 @@
         };
       };
 
+      keyboard = {
+        bindings = [
+        # removes default binding for vi mode
+        {
+          key = "Space";
+          mods = "Control|Shift";
+          action = "None";
+        }
+        {
+          key = "Escape";
+          mods = "Control";
+          action = "ToggleViMode";
+        }
+        ];
+      };
+
       general = {
-        # live config reload
-        live_config_reload = true;
+        live_config_reload = true; # run time reolad for all open terminal windows.
       };
 
       scrolling = {
@@ -41,10 +56,14 @@
 
       cursor = {
         style = {
-          shape = "Block";
+          shape = "Beam";
           blinking = "Off";
         };
+
+        vi_mode_style = "Block";
       };
+
+
 
       window = {
         opacity = 0.95;
