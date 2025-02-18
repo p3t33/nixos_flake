@@ -7,7 +7,7 @@
     xkb = {
       layout = "us,il";
       variant = "";
-      options = "grp:win_space_toggle";
+      options = "grp:caps_toggle";
     };
 
     displayManager = {
