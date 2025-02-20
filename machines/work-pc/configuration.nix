@@ -33,10 +33,18 @@
     ../../modules/nixos/dconf.nix
   ];
 
+  # As the intel GPU in this machine is too new to be officially supported by the i915 driver
+  # it needs to be forced, if this is not done the main gpu won't work and this will cause bunch
+  # of bad things, including the external monitors connected via the dock not to work.
+  boot.kernelParams = [
+    "i915.force_probe=7d55"
+  ];
+
+
   networking = {
     firewall.trustedInterfaces = [ "br0" ];
     # Define the bridge interface without specifying DHCP here
-    bridges.br0.interfaces = [ "enp0s20f0u1" ]; # Add the physical interface to the bridge
+    bridges.br0.interfaces = [ "enp0s13f0u4" ]; # Add the physical interface to the bridge
 
     # Enable DHCP on the bridge itself
     interfaces.br0.useDHCP = true;
@@ -47,6 +55,7 @@
       useDHCP = false;
     };
   };
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

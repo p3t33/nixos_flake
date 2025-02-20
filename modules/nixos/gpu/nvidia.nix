@@ -6,7 +6,7 @@
 
   services.xserver = {
     enable = true;
-    videoDrivers = [ "nvidia" ];
+    videoDrivers = [ "modesetting" "nvidia" ];
   };
 
   hardware.nvidia = {
