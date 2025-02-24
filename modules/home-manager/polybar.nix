@@ -222,31 +222,22 @@ in
         ramp-volume-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
       };
 
+      # uses the upower service
       "module/battery" = {
         type = "internal/battery";
         # ls -1 /sys/class/power_supply/
         battery = "BAT0";
         adapter = "AC";
 
-        # This is useful in case the battery never
-        # reports 100% charge
         full-at = 95;
 
-        # Define different icons for different battery levels
-        ramp-capacity-0 = "󰁺"; # replace with icon for battery <20%
-        ramp-capacity-1 = "󰁽"; # replace with icon for battery between 20-40%
-        ramp-capacity-2 = "󰁾"; # replace with icon for battery between 40-60%
-        ramp-capacity-3 = "󰂀"; # replace with icon for battery between 60-80%
-        ramp-capacity-4 = "󰁹"; # replace with icon for battery >80%
+        ramp-capacity-0 = "󰁺";
+        ramp-capacity-1 = "󰁽";
+        ramp-capacity-2 = "󰁾";
+        ramp-capacity-3 = "󰂀";
+        ramp-capacity-4 = "󰁹";
 
-        # Define different icons when charging
-        ramp-capacity-0-charging = "󰢜"; # replace with charging icon for battery <20%
-        ramp-capacity-1-charging = "󰂇"; # replace with charging icon for battery between 20-40%
-        ramp-capacity-2-charging = "󰢝"; # replace with charging icon for battery between 40-60%
-        ramp-capacity-3-charging = "󰢞"; # replace with charging icon for battery between 60-80%
-        ramp-capacity-4-charging = "󰂅"; # replace with charging icon for battery >80%
-
-        # Color customization (optional)
+        # No specific charging icons, use the same as discharging
         ramp-capacity-0-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
         ramp-capacity-1-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
         ramp-capacity-2-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
@@ -257,13 +248,14 @@ in
         label-discharging = "%percentage:3%%";
         label-full = "%percentage:3%%";
 
-        format-charging = "<ramp-capacity-charging> <label-charging>";
+        format-charging = "<ramp-capacity> <label-charging>";
         format-discharging = "<ramp-capacity> <label-discharging>";
         format-full = "<ramp-capacity> <label-full>";
         format-charging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
         format-discharging-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
         format-full-prefix-foreground = "${config.userDefinedGlobalVariables.colors.primary}";
-      };
+    };
+
 
       "module/i3" = {
         type = "internal/i3";
