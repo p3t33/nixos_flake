@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
     # presentation
@@ -105,6 +105,7 @@
     dig
     buku
     wireguard-tools
+    upower
   ];
 
 }
