@@ -1,7 +1,5 @@
 { config, ... }:
-
 {
-
   programs.git = {
     enable = true;
     delta = {
@@ -45,6 +43,63 @@
         # implicitly makes "git push -f" into "git push --force-with-leas"
         # to explicitly use "git pushh -f" you will need to execute "git push --force".
         forceWithLease = true;
+
+        # Will only push the current branch if it is tracking a remote branch (e.g., origin/foo).
+        # If the current branch has no upstream set, `git push` will fail.
+        # This prevents accidentally pushing branches that are not explicitly linked to a remote.
+        default = "simple";
+
+        # Automatically sets an upstream remote when pushing a new local branch for the first time.
+        #
+        # Example: git checkout -b foo && git push
+        #
+        # This eliminates the need to manually run 'git push -u origin foo'
+        # by automatically linking 'foo' to 'origin/foo' upon first push.
+        #
+        # Unlike autosetupmerge, which only applies when checking out an existing remote branch
+        # (allowing 'git pull' to work immediately), this setting ensures that a completely
+        # new branch, one that does NOT yet exist on the remote that is correctly tracked after pushing.
+        #
+        # This means that future 'git pull' and 'git push' will work seamlessly without extra setup.
+        autoSetupRemote = true;
+
+        # Pushes only annotated tags related to the commits being pushed.
+        followTags = true;
+      };
+
+      rebase = {
+         # Automatically stashes changes that are not committed before a rebase, and restores them after the rebase completes.
+         autoStash = true;
+      };
+
+      fetch = {
+        # Automatically removes remote-tracking branches (origin/*) that no longer exist on the remote.
+        prune = true;
+
+        # Removes local tags that no longer exist on the remote when fetching.
+        pruneTags = true;
+        # Ensures git fetch always fetches from all remotes, not just origin, in case you have more then one.
+        all = true;
+      };
+
+      help = {
+        # tells Git to automatically suggest and (after a brief delay)
+        # correct a mistyped command
+        autocorrect = "prompt";
+      };
+
+      column =
+      {
+        # how git displays lists(E,g branches), with this config, git will use
+        # column based on termnial space.
+        ui = "auto";
+      };
+
+
+      commit = {
+        # when commit created wihtout -m "..." editor will have the changes inside the
+        # commit message.
+        verbose = true;
       };
 
       branch = {
@@ -57,11 +112,26 @@
         # config was added.
         autosetuprebase = "always";
 
-        # when creating a new branch(foo), will automatically linking it
-        # to thier correspondig remote branches(E.g origin/foo) if they exist
-        # on the remote so you can immediately use commands like git pull/push
-        # wihtout any additional setup.
+        # Automatically sets a remote branch to follow when checking out an existing remote branch.
+        #
+        # Example: git checkout -b dev origin/dev
+        #
+        # This allows 'git pull' to work immediately without needing --set-upstream.
+        # Since the branch is created from origin/dev, it is NOT a new branch in the repository.
+        # However, this does NOT affect 'git push' for completely new branches created with
+        #
+        # git checkout -b foo
+        #
+        # which are coverd with autoSetupRemote = true
         autosetupmerge = "always";
+
+
+        # sort branches by most recent commit, in descending order.
+        sort = "-committerdate";
+      };
+
+      tag = {
+        sort = "version:refname";
       };
 
       merge = {
@@ -96,9 +166,6 @@
 
       pl = "pull";
       ph = "push";
-
     };
-
   };
-
 }
