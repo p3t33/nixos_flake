@@ -52,7 +52,10 @@ in
       rcloneConfigFile = config.sops.secrets."restic/gdrive/rcloneConfigFile".path;
       passwordFile = config.sops.secrets."restic/gdrive/passwordFile".path; # <-- clearly points here
 
-      paths = [ "${config.userDefinedGlobalVariables.pathToDataDirectory}/Sync" ];
+      paths = [
+        "${config.userDefinedGlobalVariables.pathToDataDirectory}/Sync"
+        "${config.userDefinedGlobalVariables.pathToDataDirectory}/pictures"
+      ];
       pruneOpts = [
         pruneDaily
         pruneWeekly
@@ -75,7 +78,10 @@ in
       rcloneConfigFile = config.sops.secrets."restic/amazon/rcloneConfigFile".path;
       passwordFile = config.sops.secrets."restic/amazon/passwordFile".path;
 
-      paths = [ "${config.userDefinedGlobalVariables.pathToDataDirectory}/Sync" ];
+      paths = [
+        "${config.userDefinedGlobalVariables.pathToDataDirectory}/Sync"
+        "${config.userDefinedGlobalVariables.pathToDataDirectory}/pictures"
+      ];
 
       pruneOpts = [
         pruneDaily
