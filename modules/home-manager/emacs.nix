@@ -830,7 +830,25 @@ in
 
               ;; Bind keys for moving headings up and down in Org mode
               (define-key org-mode-map (kbd "M-j") 'org-move-subtree-down)
-              (define-key org-mode-map (kbd "M-k") 'org-move-subtree-up))
+              (define-key org-mode-map (kbd "M-k") 'org-move-subtree-up)
+
+
+
+              ;; Custom function to prevent M-RET from splitting list items
+              (defun my/org-meta-return-dwim ()
+               "Insert a new list item at the end of the current item without splitting the line.
+               If in Normal mode, switch to Insert mode automatically and place the cursor after the new bullet."
+               (interactive)
+               (if (org-at-item-p)
+                (progn
+                 (end-of-line)
+                 (org-meta-return)
+                 (when (evil-normal-state-p)
+                  (evil-append-line 1))) ;; Enters insert mode at end of new line
+                (org-meta-return)))
+
+              ;; Override M-RET behavior in Org Mode
+              (define-key org-mode-map (kbd "M-RET") 'my/org-meta-return-dwim))
              ;; ==============================
 
              ;; ivy settings
