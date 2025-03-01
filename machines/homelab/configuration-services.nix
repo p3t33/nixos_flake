@@ -23,5 +23,6 @@
     ../../modules/nixos/services/bazarr.nix
     ../../modules/nixos/services/inadyn.nix
     ../../modules/nixos/services/prometheus.nix
+    ../../modules/nixos/services/promtail.nix
   ];
 }
