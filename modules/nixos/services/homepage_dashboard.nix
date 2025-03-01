@@ -1,6 +1,6 @@
 { config, lib, ... }:
 {
-  # /etc/homepage-dashboard/services.yaml
+
   services.homepage-dashboard = {
     enable = true; # Enable the service
     listenPort = config.userDefinedGlobalVariables.servicePort.homepageDashboard;
@@ -26,6 +26,8 @@
                 description = "Deluge Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/deluge"; # URL to the Deluge service
                 icon = "deluge.png"; # Icon for Deluge
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deglue}";
+                statusStyle = "dot";
               };
             }
           ]
@@ -35,6 +37,13 @@
                 description = "Sonarr Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/sonarr"; # URL to the Sonarr service
                 icon = "sonarr.png"; # Icon for Sonarr
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+                statusStyle = "dot";
+                widget = lib.mkIf config.services.prometheus.exporters.exportarr-sonarr.enable {
+                  type = "prometheus";
+                  url =  "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}";
+                  query = "sonarr_queue_total{instance=\"${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.sonarrExporter}\"}";
+                };
               };
             }
           ]
@@ -43,7 +52,9 @@
               "radarr" = {
                 description = "Radarr Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/radarr"; # URL to the Radarr service
-                icon = "radarr.png"; # Icon for Radarr
+                icon = "radarr.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.radarr}";
+                statusStyle = "dot";
               };
             }
           ]
@@ -52,7 +63,9 @@
               "prowlarr" = {
                 description = "Prowlarr Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/prowlarr"; # URL to the Prowlarr service
-                icon = "prowlarr.png"; # Icon for Prowlarr
+                icon = "prowlarr.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prowlarr}";
+                statusStyle = "dot";
               };
             }
           ]
@@ -62,6 +75,8 @@
                 description = "Jackett Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/jackett"; # URL to the Jackett service
                 icon = "jackett.png"; # Icon for Jackett
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
+                statusStyle = "dot";
               };
             }
           ]
@@ -71,6 +86,34 @@
                 description = "Jellyfin Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/jellyfin"; # URL to the Jellyfin service
                 icon = "jellyfin.png"; # Icon for Jellyfin
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+                statusStyle = "dot";
+              };
+            }
+          ];
+      }
+      {
+        "monitoring" =
+          [ ]
+          ++ lib.optionals config.services.prometheus.enable [
+            {
+              "prometheus" = {
+                description = "prometheus Web UI";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}"; # Convert port to string
+                icon = "prometheus.png"; # Icon for Deluge
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}";
+                statusStyle = "dot";
+              };
+            }
+          ]
+          ++ lib.optionals config.services.grafana.enable [
+            {
+              "grafana" = {
+                description = "prometheus Web UI";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.userDefinedGlobalVariables.servicePort.grafana}"; # Convert port to string
+                icon = "grafana.png"; # Icon for Deluge
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.grafana}";
+                statusStyle = "dot";
               };
             }
           ];
@@ -84,6 +127,8 @@
                 description = "Syncthing Web GUI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/syncthing"; # URL to the Syncthing service
                 icon = "syncthing.png"; # Icon for Syncthing
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.syncthing}";
+                statusStyle = "dot";
               };
             }
           ];
@@ -97,6 +142,8 @@
                 description = "AdGuard Web GUI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/adguard"; # URL to the AdGuard service
                 icon = "adguard-home.png"; # Icon for AdGuard
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.adguard}";
+                statusStyle = "dot";
               };
             }
           ];
