@@ -67,6 +67,13 @@
         description = "Defines the static IP used by the homelab machine";
       };
 
+      localHostIPv4 = lib.mkOption {
+        default = "127.0.0.1";
+        type = lib.types.str;
+        description = "Defines the static IP used by the homelab machine";
+      };
+
+
       routerIP = lib.mkOption {
         default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
         type = lib.types.str;
@@ -308,9 +315,20 @@
           jellyfin = 8096;
           bazarr = 6767;
           wireguard = 51820;
+          promtail = 9080;
+          loki = 3100;
+          grafana = 3001;
+
+          prometheus  = {
+              server = 9090;
+              nodeExporter = 9100;
+              blackboxExporter = 9115;
+              sonarrExporter = 9707;
+          };
         };
-        type = lib.types.attrsOf lib.types.int;
-        description = "Default ports used by various services";
+
+        type = lib.types.attrsOf (lib.types.oneOf [ lib.types.int (lib.types.attrsOf lib.types.int) ]);
+        description = "Default ports used by various services (single port or multiple ports per service)";
       };
 
       workspaces = lib.mkOption {

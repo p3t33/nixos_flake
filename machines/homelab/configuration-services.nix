@@ -22,5 +22,6 @@
     ../../modules/nixos/services/wireguard/wireguard-server.nix
     ../../modules/nixos/services/bazarr.nix
     ../../modules/nixos/services/inadyn.nix
+    ../../modules/nixos/services/prometheus.nix
   ];
 }
