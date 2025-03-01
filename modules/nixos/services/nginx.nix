@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -294,7 +293,25 @@ in
           '';
         };
       };
-
+      "prometheus.${config.userDefinedGlobalVariables.hostConfigurationName}" = {
+        listen = [
+        {
+            addr = "${allInterfaces}";
+            port = httpPort;
+        }
+      ];
+      locations."/" = {
+      proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}/";
+      extraConfig = ''
+         proxy_http_version 1.1;
+         proxy_set_header Upgrade $http_upgrade;
+         proxy_set_header Connection "upgrade";
+         proxy_redirect off;
+         proxy_read_timeout 600s;
+         proxy_send_timeout 600s;
+      '';
+      };
+     };
     };
   };
 
