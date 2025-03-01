@@ -24,5 +24,6 @@
     ../../modules/nixos/services/inadyn.nix
     ../../modules/nixos/services/prometheus.nix
     ../../modules/nixos/services/promtail.nix
+    ../../modules/nixos/services/loki.nix
   ];
 }
