@@ -7,7 +7,7 @@ let
   httpPort = 80;
   httpsPort = 443;
   allInterfaces = "0.0.0.0";
-  localHost = "http://localhost";
+  localHost = "http://${builtins.toString config.userDefinedGlobalVariables.localHostIPv4}";
 in
 {
   services.nginx = {
