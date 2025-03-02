@@ -26,7 +26,7 @@
                 description = "Deluge Web UI";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/deluge"; # URL to the Deluge service
                 icon = "deluge.png"; # Icon for Deluge
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deglue}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}";
                 statusStyle = "dot";
               };
             }

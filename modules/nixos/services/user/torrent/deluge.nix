@@ -8,7 +8,7 @@
     web = {
       enable = true;
       openFirewall = true;
-      port = config.userDefinedGlobalVariables.servicePort.deglue;
+      port = config.userDefinedGlobalVariables.servicePort.deluge.webGUI;
     };
     extraPackages = with pkgs; [
       unzip
@@ -42,17 +42,19 @@
       # Set a fixed range for P2P communication ports, minumum two so I used the same value.
       # Same ports need to be opened in the router firewall.
       listen_ports = [
-        6629
-        6629
+        config.userDefinedGlobalVariables.servicePort.deluge.daemonListen
+        config.userDefinedGlobalVariables.servicePort.deluge.daemonListen
       ];
       enabled_plugins = [
         "Extractor"
         "Label"
       ];
     };
-    # has to be defined for "declarative = true"
-    authFile = config.sops.secrets.deluge_auth_file.path;
 
+    # has to be defined for "declarative = true"
+    # defines the clients that can access the deluged, this is requried for
+    # the webgui and anybody else who needs access(such as prometheus exporter).
+    authFile = config.sops.secrets.deluge_auth_file.path;
   };
 
   sops.secrets.deluge_auth_file = {

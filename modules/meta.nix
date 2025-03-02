@@ -304,7 +304,6 @@
 
       servicePort = lib.mkOption {
         default = {
-          deglue = 8112;
           adguard = 3000;
           syncthing = 8384;
           sonarr = 8989;
@@ -318,6 +317,11 @@
           promtail = 9080;
           loki = 3100;
           grafana = 3001;
+
+          deluge = {
+            webGUI = 8112;
+            daemonListen = 6629;
+          };
 
           prometheus  = {
               server = 9090;

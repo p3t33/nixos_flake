@@ -45,7 +45,7 @@ in
           }
           // lib.optionalAttrs config.services.deluge.enable {
             "/deluge/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deglue}/";
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}/";
               extraConfig = ''
                 proxy_set_header X-Deluge-Base "/deluge/";
                 add_header X-Frame-Options SAMEORIGIN;
@@ -134,7 +134,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deglue}/";
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}/";
               extraConfig = ''
                 proxy_set_header X-Deluge-Base "/";
                 add_header X-Frame-Options SAMEORIGIN;
