@@ -1,4 +1,15 @@
 { pkgs, ... }:
+let
+  spelunk-nvim = pkgs.vimUtils.buildVimPlugin {
+    pname = "spelunk.nvim";
+    version = "unstable-2025-01-15";
+    src = pkgs.fetchgit {
+      url = "https://github.com/EvWilson/spelunk.nvim.git";
+      rev = "2ef99a8c9ba50a9e85b68022c31f028faf538fe3";
+      sha256 = "1nwm5fff4f5mpmzm33b14pgvbjmvbjf7l2db6ad6p1nj7bnwd2gg";
+    };
+  };
+in
 {
   programs.neovim = {
 
@@ -68,11 +79,9 @@
       # dependencies:
       telescope-vim-bookmarks-nvim
       telescope-ui-select-nvim
-      {
-        plugin = telescope-fzf-native-nvim;
-        type = "lua";
-        config = '''';
-      }
+      telescope-fzf-native-nvim
+      smart-open-nvim
+      sqlite-lua # reuired by smart-open-nvim
       {
         plugin = telescope-nvim;
         type = "lua";
@@ -151,6 +160,15 @@
                   ["ui-select"] = {
                       require("telescope.themes").get_cursor(),
                   },
+                  smart_open = {
+                      match_algorithm = 'fzf',
+                      disable_devicons = false,
+                      cwd_only = true,
+                      show_scores = true,
+                      formatter = function(file)
+                    return file.path
+                    end,
+                  },
               }
           }
 
@@ -158,6 +176,7 @@
           require('telescope').load_extension('fzf')
           -- for the use of telescope-vim-bookmarks-nvim
           require('telescope').load_extension('vim_bookmarks')
+          require('telescope').load_extension('smart_open')
           require("telescope").load_extension("ui-select")
 
           local builtin = require('telescope.builtin')
@@ -169,14 +188,37 @@
           vim.keymap.set('n', '<leader>xc', builtin.git_status, {})
           vim.keymap.set('n', '<leader>xr', builtin.resume, {})
           vim.keymap.set('n', '<leader>fm', function()
-              require('telescope').extensions.vim_bookmarks.all()
+          -- As an extention ignores globaly layout config.
+          require('telescope').extensions.vim_bookmarks.all({
+              layout_strategy = 'vertical',
+              layout_config = {
+              prompt_position = "bottom",
+              preview_height = 0.6,
+              width = 0.9,
+              height = 0.95,
+              }
+              })
           end, {desc = 'Telescope: All Vim Bookmarks'})
+
 
           -- telescope unlike fzf-lua doesn't have lsp_code_actions picker
           -- Insted I am using a lower level function for telescope key bindings
           -- By using telescope-ui-select-nvim vim.ui.select will go to telescope.
           -- This way I am getting a "picker" that feels native to telescope.
           vim.keymap.set("n", "<leader>xd", vim.lsp.buf.code_action, bufopts)
+
+          -- As an extention ignores globaly layout config.
+          vim.keymap.set('n', '<leader>fo', function()
+          require('telescope').extensions.smart_open.smart_open({
+            layout_strategy = 'vertical',
+              layout_config = {
+              prompt_position = "bottom",
+              preview_height = 0.6,
+              width = 0.9,
+              height = 0.95,
+            }
+          })
+          end, {desc = 'Telescope: Smart Open'})
         '';
       }
       # --------------------------------
@@ -200,7 +242,6 @@
           vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
         '';
       }
-
     ];
   };
 }
