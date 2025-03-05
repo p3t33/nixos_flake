@@ -242,6 +242,33 @@ in
           vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
         '';
       }
+      {
+        plugin = arrow-nvim;
+        type = "lua";
+        config = ''
+          require('arrow').setup({
+            show_icons = true,
+            leader_key = ';', -- Recommended to be a single key
+            buffer_leader_key = 'm', -- Per Buffer Mappings
+            separate_by_branch = false,
+            global_bookmarks = false,
+            window = {
+              width = "auto",
+              height = "auto",
+              border = "rounded",
+            },
+            per_buffer_config = {
+              lines = 4,
+              sort_automatically = true,
+            },
+          })
+
+          -- Quick access keymaps
+          vim.keymap.set("n", "H", require("arrow.persist").previous)
+          vim.keymap.set("n", "L", require("arrow.persist").next)
+          -- vim.keymap.set("n", "<C-s>", require("arrow.persist").toggle)
+        '';
+      }
     ];
   };
 }
