@@ -31,6 +31,7 @@
         description = "Defines the release version when OS was first installed";
       };
 
+
       neovimCustomDictionaryPathrelativeToHomeDirectory = lib.mkOption {
         default = ".config/nvim/spell/nixen.utf-8";
         type = lib.types.str;
@@ -269,6 +270,15 @@
           text = "#f3f4f5";
           inactive-text = "#676E70";
           urgent-bg = "#E53935";
+        };
+        type = lib.types.attrsOf lib.types.str;
+        description = "Defines the color palette for the user interface";
+      };
+
+      bridgedNetwork = lib.mkOption {
+        default = {
+          bridgeName = "br0";
+          physicalInterface = "enp0s13f0u4";
         };
         type = lib.types.attrsOf lib.types.str;
         description = "Defines the color palette for the user interface";

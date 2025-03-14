@@ -31,6 +31,7 @@
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/graphics.nix
     ../../modules/nixos/dconf.nix
+    ../../modules/nixos/networking/br0_interface.nix # used for development.
   ];
 
   # As the intel GPU in this machine is too new to be officially supported by the i915 driver
@@ -39,22 +40,6 @@
   boot.kernelParams = [
     "i915.force_probe=7d55"
   ];
-
-
-  networking = {
-    firewall.trustedInterfaces = [ "br0" ];
-    # Define the bridge interface without specifying DHCP here
-    bridges.br0.interfaces = [ "enp0s13f0u4" ]; # Add the physical interface to the bridge
-
-    # Enable DHCP on the bridge itself
-    interfaces.br0.useDHCP = true;
-
-    # Ensure the physical interface is free for the bridge to manage
-    interfaces.enp0s20f0u1 = {
-      ipv4.addresses = [ ];
-      useDHCP = false;
-    };
-  };
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
