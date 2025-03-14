@@ -20,6 +20,13 @@
       "tags"
       ".clang-format"
       ".ccls-cache"
+      # java build files
+      "*.class"
+      # Eclipse-specific files
+      ".classpath"
+      ".project"
+      ".settings/"
+      "*.launch"
     ];
 
     extraConfig = {
