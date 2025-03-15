@@ -63,6 +63,17 @@ in
               '';
             };
           }
+          // lib.optionalAttrs config.services.readarr.enable {
+            "/readarr" = {
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_redirect off;
+              '';
+            };
+          }
           // lib.optionalAttrs config.services.radarr.enable {
             "/radarr" = {
               proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.radarr}";
@@ -186,6 +197,26 @@ in
             ];
             locations."/" = {
               proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+                proxy_redirect off;
+              '';
+            };
+          };
+
+      "readarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+        lib.optionalAttrs config.services.readarr.enable
+          {
+            listen = [
+              {
+                addr = "${allInterfaces}";
+                port = httpPort;
+              }
+            ];
+            locations."/" = {
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;

@@ -19,6 +19,7 @@
     ../../modules/nixos/services/jackett.nix
     ../../modules/nixos/services/sonarr.nix
     ../../modules/nixos/services/radarr.nix
+    ../../modules/nixos/services/readarr.nix
     ../../modules/nixos/services/wireguard/wireguard-server.nix
     ../../modules/nixos/services/bazarr.nix
     ../../modules/nixos/services/inadyn.nix

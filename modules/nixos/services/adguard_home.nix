@@ -49,6 +49,12 @@ in
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
+          ++ lib.optionals config.services.readarr.enable [
+            {
+              domain = "readarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
+          ]
           ++ lib.optionals config.services.radarr.enable [
             {
               domain = "radarr.${config.userDefinedGlobalVariables.hostConfigurationName}";

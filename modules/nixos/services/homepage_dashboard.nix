@@ -47,6 +47,17 @@
               };
             }
           ]
+          ++ lib.optionals config.services.readarr.enable [
+            {
+              "readarr" = {
+                description = "Sonarr Web UI";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/readarr"; # URL to the Sonarr service
+                icon = "readarr.png"; # Icon for Sonarr
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
+                statusStyle = "dot";
+              };
+            }
+          ]
           ++ lib.optionals config.services.radarr.enable [
             {
               "radarr" = {

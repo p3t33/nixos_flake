@@ -317,6 +317,7 @@
           adguard = 3000;
           syncthing = 8384;
           sonarr = 8989;
+          readarr = 8787;
           radarr = 7878;
           prowlarr = 9696;
           jackett = 9117;
