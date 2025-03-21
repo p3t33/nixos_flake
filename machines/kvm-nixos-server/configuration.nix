@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ./configuration-services.nix
     ./sops-configuration.nix
-    ./disko-config.nix
+    (import ./disko-config.nix { zpoolName = config.networking.hostName; })
     ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
@@ -35,6 +35,31 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  networking.hostId = "3f8c6b19";
+
+  boot = {
+      supportedFilesystems = [ "zfs" ];
+      initrd.supportedFilesystems = [ "zfs" ];
+  zfs = {
+      # forceImportRoot = true;
+      # forceImportAll = true;
+      devNodes = "/dev/disk/by-uuid";
+      # extraPools = [ "${config.networking.hostName}" ];
+    };
+  };
+
+
+  services.zfs = {
+    autoScrub = {
+      enable = true;
+      interval = "Sun, *-*-1..7 05:00";
+    };
+    trim = {
+      enable = true;
+      interval = "Sat, *-*-1..7 10:00";
+    };
+  };
 
   # Configure keymap in X11
   services.xserver = {
