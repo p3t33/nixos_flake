@@ -46,6 +46,38 @@
               };
           };
       };
+      third = {
+          type = "disk";
+          device = "/dev/vdc";
+          content = {
+              type = "gpt";
+              partitions = {
+                  zfs = {
+                      size = "100%";
+                      content = {
+                          type = "zfs";
+                          pool = "tank";
+                      };
+                  };
+              };
+          };
+      };
+      fourth = {
+          type = "disk";
+          device = "/dev/vdd";
+          content = {
+              type = "gpt";
+              partitions = {
+                  zfs = {
+                      size = "100%";
+                      content = {
+                          type = "zfs";
+                          pool = "tank";
+                      };
+                  };
+              };
+          };
+      };
     };
     zpool = {
       boot-pool = {
@@ -96,6 +128,17 @@
 
       tank = {
           type = "zpool";
+          mode = {
+              topology = {
+                  type = "topology";
+                  vdev = [
+                  {
+                      mode = "raidz1";
+                      members = [ "second" "third" "fourth" ];
+                  }
+                  ];
+              };
+          };
           options = {
               ashift = "12";
           };
