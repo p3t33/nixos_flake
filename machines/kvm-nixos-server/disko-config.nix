@@ -24,15 +24,31 @@
               size = "100%";
               content = {
                 type = "zfs";
-                pool = "rpool";
+                pool = "boot-pool";
               };
             };
           };
         };
       };
+      second = {
+          type = "disk";
+          device = "/dev/vdb";
+          content = {
+              type = "gpt";
+              partitions = {
+                  zfs = {
+                      size = "100%";
+                      content = {
+                          type = "zfs";
+                          pool = "tank";
+                      };
+                  };
+              };
+          };
+      };
     };
     zpool = {
-      rpool = {
+      boot-pool = {
         type = "zpool";
         options = {
           ashift = "12";
@@ -76,6 +92,25 @@
             mountpoint = "/tmp";
           };
         };
+      };
+
+      tank = {
+          type = "zpool";
+          options = {
+              ashift = "12";
+          };
+          rootFsOptions = {
+              mountpoint = "none";
+              compression = "zstd";
+              atime = "off";
+          };
+          datasets = {
+              "data" = {
+                  type = "zfs_fs";
+                  options.mountpoint = "legacy";
+                  mountpoint = "/data"; # you can change this to /srv, /mnt/media, etc.
+              };
+          };
       };
     };
   };
