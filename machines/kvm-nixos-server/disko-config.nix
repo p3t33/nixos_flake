@@ -1,15 +1,10 @@
 # uefi only which means that the VM needs to be set with uefi boot
-{ disks ? [ "/dev/vda" ]
-, zpoolName ? "rpool"
-, ...
-}:
-
 {
   disko.devices = {
     disk = {
       first = {
         type = "disk";
-        device = builtins.elemAt disks 0;
+        device = "/dev/vda";
         content = {
           type = "gpt";
           partitions = {
@@ -29,7 +24,7 @@
               size = "100%";
               content = {
                 type = "zfs";
-                pool = zpoolName;
+                pool = "rpool";
               };
             };
           };
@@ -37,7 +32,7 @@
       };
     };
     zpool = {
-      "${zpoolName}" = {
+      rpool = {
         type = "zpool";
         options = {
           ashift = "12";
@@ -47,8 +42,8 @@
           acltype = "posixacl";
           xattr = "sa";
           atime = "off";
-          encryption = "on";
-          keyformat = "passphrase";
+          # encryption = "on";
+          # keyformat = "passphrase";
         };
         datasets = {
           "safe" = {
