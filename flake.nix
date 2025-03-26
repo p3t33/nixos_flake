@@ -53,6 +53,21 @@
             inputs.disko.nixosModules.disko
           ];
         };
+        home-assistant = lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit inputs;
+            machineName = "home-assistant";
+          };
+          modules = [
+            ./machines/home-assistant/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nix-index-database.nixosModules.nix-index
+            inputs.sops-nix.nixosModules.sops
+            inputs.disko.nixosModules.disko
+          ];
+        };
+
         homelab = lib.nixosSystem {
           inherit system;
           specialArgs = {

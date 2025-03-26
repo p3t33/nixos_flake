@@ -366,6 +366,7 @@
       machines = lib.mkOption {
         default = {
           kvm-nixos-server = "kvm-nixos-server";
+          home-assistant = "home-assistant";
           work-pc = "work-pc";
           home-desktop = "home-desktop";
           homelab = "homelab";
@@ -427,6 +428,12 @@
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
       userDefinedGlobalVariables.primeUsername = "drone";
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
+      }";
+      userDefinedGlobalVariables.systemStateVersion = "24.11";
+    })
+
+    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-assistant}") {
+      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-assistant
       }";
       userDefinedGlobalVariables.systemStateVersion = "24.11";
     })

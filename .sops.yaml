@@ -4,6 +4,7 @@ keys:
   - &homelab age16dp952aecvxguqj8xz4mh2akakfe7py5l7j77akx6zhygt3mefls2ex4vy
   - &generic_linux_distro age1jukh2jtz084zgvzkq398frz73qjr9cjnljhsdsw70ywy5kxp7pnsls0eja
   - &kvm-nixos-server age1857y4m4fa3wwrut8uqfeculpq6m4lw05n3k6ky6s79nnh84raf8qvlm4aw
+  - &home-assistant age1u4yqa76tcnvsdyshcssarl6fdr049mjdq398a48epa2f4zu8haqqujj0m3
 creation_rules:
   - path_regex: machines/work-pc/secrets/nixos/secrets.yaml$
     key_groups:
@@ -53,3 +54,11 @@ creation_rules:
     key_groups:
       - age:
         - *kvm-nixos-server
+  - path_regex: machines/home-assistant/secrets/nixos/secrets.yaml$
+    key_groups:
+      - age:
+        - *home-assistant
+  - path_regex: machines/home-assistant/secrets/home-manager/secrets.yaml$
+    key_groups:
+      - age:
+        - *home-assistant
