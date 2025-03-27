@@ -8,5 +8,6 @@
     ../../modules/nixos/services/envfs.nix
     ../../modules/nixos/services/home-assistant.nix
     ../../modules/nixos/services/mosquitto.nix
+    ../../modules/nixos/services/zigbee2mqtt.nix
   ];
 }
