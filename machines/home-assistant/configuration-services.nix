@@ -6,5 +6,6 @@
     ../../modules/nixos/services/user/tmux.nix
     ../../modules/nixos/services/user/watchman.nix
     ../../modules/nixos/services/envfs.nix
+    ../../modules/nixos/services/home-assistant.nix
   ];
 }

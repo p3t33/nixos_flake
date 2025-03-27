@@ -74,6 +74,17 @@
         description = "Defines the static IP used by the homelab machine";
       };
 
+      anyIPv4 = lib.mkOption {
+          default = "0.0.0.0";
+          type = lib.types.str;
+          description = "Defines an IPv4 address that binds to all available network interfaces.";
+      };
+
+      timeZone = lib.mkOption {
+          default = "Asia/Jerusalem";
+          type = lib.types.str;
+          description = "Defines an IPv4 address that binds to all available network interfaces.";
+      };
 
       routerIP = lib.mkOption {
         default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
@@ -328,6 +339,7 @@
           promtail = 9080;
           loki = 3100;
           grafana = 3001;
+          homeAssistant = 8123;
 
           deluge = {
             webGUI = 8112;
