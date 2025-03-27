@@ -27,5 +27,6 @@
     ../../modules/nixos/services/promtail.nix
     ../../modules/nixos/services/loki.nix
     ../../modules/nixos/services/grafana.nix
+    ../../modules/nixos/services/samba.nix
   ];
 }
