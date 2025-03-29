@@ -1,7 +1,10 @@
-Personal [NixOS] configurations with [home-manager] as OS module(and as a stand alone
-for generic GNU/Linux) in a flake. This repository is a work in progress, containing
-configuration files for my various machines.
+# Desktop & Homelab Configurations Based on NixOS and Home-Manager Flake
 
+Personal [NixOS] configurations utilizing [home-manager] both as an integrated OS module and
+standalone for generic GNU/Linux systems, structured using a flake. This repository contains
+configuration files tailored specifically to manage my desktop environments and dedicated homelab
+infrastructure. It aims to simplify and automate deployment and maintenance, streamlining
+operations across my desktops and homelab.
 
 
 > [!IMPORTANT]
@@ -16,7 +19,7 @@ configuration files for my various machines.
 > high level sops file(sops-configuration.nix) from the import list and editing the
 > password for the prime user.
 
-# Design philosophy
+# Overall Design Philosophy
 - Multiple machines are defined with emphasis on shared code between them
 in order to achieve consistency and to avoid code repeat where possible. With
 each machine having its own separate responsibility.
@@ -24,7 +27,7 @@ each machine having its own separate responsibility.
 Some keyboard bindings may look strange but they are effected by the fact
 that I am using a programmable keyboard(configurations in
 [my Adv360-Pro-ZMK repo]).
-- Lacking functionality is extended by scripts(such as Firefox bookmarks for rofi).
+- Lacking functionality is extended by scripts(such as buku bookmarks for rofi).
 - Effort has been made to define everything using nix, including the $HOME
 dotfiles to the possible extent.
 
@@ -37,8 +40,11 @@ dotfiles to the possible extent.
 - Configuration for KVM, VirtualBox, and docker.
 - Integration of [disko] to partition hard drives during NixOS installing
   and to create /etc/fstab.
+- Some of the machines use zfs.
 
-## Daily driver software
+# My Desktops
+![My i3 Desktop](snapshots/desktop.png)
+## Daily Driver Software
 - **Desktop**: xorg with i3 and polybar.
 - **Launcher**: Rofi.
 - **Shell**: zsh + starship with fzf, zoxide and atuin integration.
@@ -46,7 +52,7 @@ dotfiles to the possible extent.
 - **Terminal**: alacritty(with tmux).
 - **Second brain**: emacs(org-roam).
 
-## Some of the daemons I use
+## Some of the Daemons I Use
 - **ssh-agnet(via gpg-agnet)**: For all my ssh needs.
 - **emacs daemon**: for quick load time.
 - **clipmenu**: a clipboard history via rofi.
@@ -60,7 +66,10 @@ dotfiles to the possible extent.
   I used it to rsync files I changed locally to a remote automatically.
 - **moolticuted**: a daemon used to interact with mooltipass the hardware password manager.
 
-# Repo structure
+# Homelab
+![homelab](snapshots/homelab.png)
+
+# Repo Structure
 - **flake.nix**: The entry point for machines and home configurations.
 - **machines**: The machines that can be configured using this repository. With each
 machine having its high level .nix configuration that define machine specific settings
@@ -72,12 +81,8 @@ then be including by the various machines to achieve code reuse.
 - **wallpaper**: self explanatory :)
 
 # ToDo
-- [x] ~~Look into streamlining installation process of NixOS on a new machine with [nixos-anywhere].~~
-- [x] ~~Replace default way to mount hard drives with a generic one in the form of [disko].~~
-  - [x] ~~Update all machines to use disko.~~
 - [ ] I am not sure that emacs systemd unit can communicate with ssh-agnet, this is a very low
       priority.
-- [x] ~~Stream line the use of nix-index.~~
 - [ ] Look into automating home-manger installation as a stand alone on
       generic Linux using Ansible.
 
