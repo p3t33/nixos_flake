@@ -100,12 +100,14 @@
 
     # Searching nix packages
     nix-search-cli # uses as "nix-search <name of package>"
+
     git-filter-repo
     iperf3
     dig
     buku
     wireguard-tools
     upower
+    smartmontools # tool to assess hard drives(sudo smartctl -a /dev/sda).
   ];
 
 }
