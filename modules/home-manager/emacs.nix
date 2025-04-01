@@ -223,23 +223,38 @@ in
              (use-package org-download
               :ensure t
               :config
-
               ;; Set the method for handling downloaded images
               ;; 'attach integrates with Org's attachment system
-              (setq org-download-method 'directory)
+              (setq org-download-method 'directory
+               org-download-image-org-width 600)
 
               ;; where to save files?
               ;; when  org-download-method is set to "attach"
               ;; then org-roam will handle where to store the
               ;; file and creat place for it.
-              ;; is you want to specify the directory then
+              ;; if you want to specify the directory then
               ;; org-download-method needs to be chagned to directory
               ;; and you will need to set org-download-image-dir, E.g:
               ;; Set the default directory where images will be downloaded
               ;; ONLY WORKS WITH org-download-method set to directory
-              (setq org-download-image-dir "${orgRoamDirctoryPath}/images/")
 
-              (setq org-download-image-org-width 600))
+              ;; Dynamically set org-download-image-dir to match the Org file timestamp
+              ;; This is done so when org-roam node is deleted the referenced images in it delete
+              ;; as well.
+              (defun my/org-download-set-image-dir ()
+               "Set `org-download-image-dir` based on the timestamp in the Org filename, but do NOT create the directory."
+               (when buffer-file-name
+                (let* ((org-base-name (file-name-base buffer-file-name))
+                       ;; Extract timestamp (part before first dash)
+                       (timestamp (car (split-string org-base-name "-")))
+                       (target-dir (expand-file-name
+                                    (concat "images/" timestamp)
+                                    (file-truename "${orgRoamDirctoryPath}"))))
+                 (setq-local org-download-image-dir target-dir))))
+
+              ;; Hook it to org-mode
+              (add-hook 'org-mode-hook #'my/org-download-set-image-dir))
+
 
 
              ;;(with-eval-after-load 'org
@@ -266,14 +281,29 @@ in
                      ;; Dailies
                      ("C-c n j" . org-roam-dailies-capture-today))
               :config
+
               ;; Define the costum function to delete nodes and sync database.
               (defun custom-org-roam-delete-node-and-sync ()
-               "Delete the current Org-roam node file with confirmation, then sync database."
+               "Delete the current Org-roam node file with confirmation,
+               delete the associated image folder (based on timestamp), then sync the Org-roam database."
                (interactive)
-               (when (and (buffer-file-name) (y-or-n-p "Are you sure you want to delete this node?"))
-                (let ((file-to-delete (buffer-file-name)))
+               (when (and (buffer-file-name)
+                      (y-or-n-p "Are you sure you want to delete this node and its associated image directory?"))
+                (let* ((file-to-delete (buffer-file-name))
+                       (file-base (file-name-base file-to-delete))
+                       ;; Extract the timestamp (part before the first dash)
+                       (timestamp (car (split-string file-base "-")))
+                       (image-dir (expand-file-name
+                                   (concat "images/" timestamp)
+                                   (file-truename "${orgRoamDirctoryPath}"))))
+                 ;; Delete the org file
                  (delete-file file-to-delete)
                  (message "Deleted file %s" file-to-delete)
+                 ;; Delete the image folder, if it exists
+                 (when (file-directory-p image-dir)
+                  (delete-directory image-dir t)
+                  (message "Deleted image directory %s" image-dir))
+                 ;; Kill buffer and sync
                  (kill-buffer)
                  (org-roam-db-sync))))
 
