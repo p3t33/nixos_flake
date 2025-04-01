@@ -242,8 +242,8 @@ in
               (setq org-download-image-org-width 600))
 
 
-             (with-eval-after-load 'org
-                 (setq org-agenda-files '("${orgRoamDirctoryPath}")))
+             ;;(with-eval-after-load 'org
+             ;;    (setq org-agenda-files '("${orgRoamDirctoryPath}")))
 
 
              (setq org-todo-keywords
