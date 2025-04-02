@@ -37,7 +37,7 @@
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/lazygit.nix
     ../../modules/home-manager/clipmenu.nix
-    ../../modules/home-manager/emacs.nix
+    ../../modules/home-manager/emacs/emacs.nix
     ../../modules/home-manager/xdg/mime_apps.nix
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/services/dnust.nix
