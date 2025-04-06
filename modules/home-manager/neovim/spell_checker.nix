@@ -1,6 +1,5 @@
 { config, ... }:
 {
-
   config.programs.neovim.extraLuaConfig = ''
     -- ----------------------------------------------------------
     -- spelling and costum dictrionary use
