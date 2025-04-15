@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{  pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
 
@@ -33,6 +33,11 @@
     # Remote control
     tigervnc
     nomachine-client
+
+    # pdf annotation
+    xournalpp
+    # pdf viewer
+    zathura
   ];
 
 }

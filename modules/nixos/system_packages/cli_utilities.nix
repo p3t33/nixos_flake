@@ -18,6 +18,7 @@
 
     # process monitor
     htop-vim
+    neovim
 
     # networking
     tcpdump
@@ -108,6 +109,8 @@
     wireguard-tools
     upower
     smartmontools # tool to assess hard drives(sudo smartctl -a /dev/sda).
+
+    pdftk # pdf editing.
   ];
 
 }
