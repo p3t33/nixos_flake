@@ -189,7 +189,7 @@
       };
 
       wallpaperName = lib.mkOption {
-        default = "mountain.jpg";
+        default = "watchtower.png";
         type = lib.types.str;
         description = "The name of the wallpaper file";
       };
