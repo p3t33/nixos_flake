@@ -29,5 +29,4 @@
       package = pkgs.adwaita-icon-theme;
     };
   };
-
 }

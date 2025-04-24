@@ -40,6 +40,7 @@
     ../../modules/home-manager/emacs/emacs.nix
     ../../modules/home-manager/xdg/mime_apps.nix
     ../../modules/home-manager/gtk.nix
+    ../../modules/home-manager/qt.nix
     ../../modules/home-manager/services/dnust.nix
     ../../modules/home-manager/firefox.nix
     ../../modules/home-manager/generic_linux_fonts.nix
