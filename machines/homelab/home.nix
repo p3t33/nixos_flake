@@ -18,7 +18,6 @@
     ../../modules/home-manager/lazygit.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/bat.nix
-    ../../modules/home-manager/ssh.nix
     ../../modules/home-manager/yazi.nix
   ];
 }

@@ -18,7 +18,8 @@
     ../../modules/home-manager/scripts/i3-monitor.nix
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/gpg.nix
-    ../../modules/home-manager/ssh.nix
+    ../../modules/home-manager/ssh/ssh-client.nix
+    ../../modules/home-manager/ssh/ssh_public_key.nix
     ../../modules/home-manager/polybar.nix
     ../../modules/home-manager/scripts/rofi-buku-bookmarks.nix
     ../../modules/home-manager/scripts/tmux-sessionizer.nix

@@ -360,6 +360,31 @@
         description = "Default ports used by various services (single port or multiple ports per service)";
       };
 
+      sshPublicKeys = lib.mkOption {
+          default = {
+              work-pc = {
+                  key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFMZ7lwYos3kwgGNff76kAjUchcSAT2yjKWwf0dZKtsY openpgp:0xEDC5F14F";
+              };
+
+              home-desktop = {
+                  key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPvNm5eCx93uwyiJUIy/scH8UMOUfifzw6PrYLLbBnV+ openpgp:0x6799A2F2";
+              };
+          };
+
+          type = lib.types.attrsOf (lib.types.oneOf [
+                  lib.types.str
+                  (lib.types.attrsOf lib.types.str)
+          ]);
+
+          description = "Default ports used by various services (single port or multiple ports per service, as strings)";
+      };
+
+      sshPublicKey = lib.mkOption {
+        default = "";
+        type = lib.types.str;
+        description = "The relative path to the SOPS key file";
+      };
+
       workspaces = lib.mkOption {
         default = {
           ws1 = "1: ${config.userDefinedGlobalVariables.workspaces_icons.firefox} Firefox";
@@ -412,6 +437,7 @@
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc
       }";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
+      userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
@@ -429,6 +455,7 @@
       }";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
+      userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
       userDefinedGlobalVariables.devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
         "${config.userDefinedGlobalVariables.machines.work-pc}"
