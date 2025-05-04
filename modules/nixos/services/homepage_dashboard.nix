@@ -31,6 +31,17 @@
               };
             }
           ]
+          ++ lib.optionals config.services.sabnzbd.enable [
+            {
+              "sabnzbd" = {
+                description = "sabnzbd Web UI";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/sabnzbd"; # URL to the Deluge service
+                icon = "sabnzbd.png"; # Icon for Deluge
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}";
+                statusStyle = "dot";
+              };
+            }
+          ]
           ++ lib.optionals config.services.sonarr.enable [
             {
               "sonarr" = {

@@ -91,6 +91,12 @@ in
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
+          ++ lib.optionals config.services.sabnzbd.enable [
+            {
+              domain = "sabnzbd.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
+          ]
           ++ lib.optionals config.services.grafana.enable [
             {
               domain = "grafana.${config.userDefinedGlobalVariables.hostConfigurationName}";

@@ -37,8 +37,8 @@
   systemd.tmpfiles.rules = [
     "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/tv 0770 sonarr ${config.userDefinedGlobalVariables.mediaGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/movies 0770 radarr ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
   ];
 
   networking.interfaces.eno1.ipv4.addresses = [

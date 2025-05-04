@@ -107,6 +107,19 @@ in
               '';
             };
           }
+          // lib.optionalAttrs config.services.sabnzbd.enable {
+            "/sabnzbd/" = {
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}/sabnzbd/";
+              extraConfig = ''
+                  proxy_set_header X-Forwarded-Host $host;
+              proxy_set_header X-Forwarded-Server $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection "upgrade";
+              '';
+          };
+}
           // lib.optionalAttrs config.services.jellyfin.enable {
             "/jellyfin" = {
               proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
@@ -166,6 +179,26 @@ in
               proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.adguard}/";
             };
           };
+
+      "sabnzbd.${config.userDefinedGlobalVariables.hostConfigurationName}" = lib.optionalAttrs config.services.sabnzbd.enable {
+        listen = [
+        {
+          addr = allInterfaces;
+          port = httpPort;
+        }
+        ];
+        locations."/" = {
+          proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}/sabnzbd/";
+          extraConfig = ''
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_set_header X-Forwarded-Host $host;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          '';
+        };
+      };
+
 
       "syncthing.${config.userDefinedGlobalVariables.hostConfigurationName}" =
         lib.optionalAttrs config.services.syncthing.enable
