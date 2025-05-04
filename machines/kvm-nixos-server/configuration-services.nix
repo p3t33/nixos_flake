@@ -9,6 +9,5 @@
     ../../modules/nixos/services/syncthing/syncthing.nix
     ../../modules/nixos/services/envfs.nix
     ../../modules/nixos/services/wireguard/wg-quick-client.nix
-    ../../modules/nixos/motd.nix
   ];
 }

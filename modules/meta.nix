@@ -32,6 +32,12 @@
       };
 
 
+      motd = lib.mkOption {
+        default = '''';
+        type = lib.types.str;
+        description = "defines moto of the day";
+      };
+
       neovimCustomDictionaryPathrelativeToHomeDirectory = lib.mkOption {
         default = ".config/nvim/spell/nixen.utf-8";
         type = lib.types.str;
@@ -360,6 +366,7 @@
         description = "Default ports used by various services (single port or multiple ports per service)";
       };
 
+
       sshPublicKeys = lib.mkOption {
           default = {
               work-pc = {
@@ -471,12 +478,28 @@
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
       }";
       userDefinedGlobalVariables.systemStateVersion = "24.11";
+      userDefinedGlobalVariables.motd = ''
+            __  powered by NixOS              __
+           |  |--.--.--.--------.______.-----|__.--.--.-----.-----.______.-----.-----.----.--.--.-----.----.
+           |    <|  |  |        |______|     |  |_   _|  _  |__ --|______|__ --|  -__|   _|  |  |  -__|   _|
+           |__|__|\___/|__|__|__|      |__|__|__|__.__|_____|_____|      |_____|_____|__|  \___/|_____|__|
+      '';
+
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-assistant}") {
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-assistant
       }";
       userDefinedGlobalVariables.systemStateVersion = "24.11";
+      userDefinedGlobalVariables.motd = ''
+       ___ ___                             _______             __       __               __
+      |   |   .-----.--------.-----.______|   _   .-----.-----|__.-----|  |_.---.-.-----|  |_
+      |.  |   |  _  |        |  -__|______|.  |   |__ --|__ --|  |__ --|   _|  _  |     |   _|
+      |.  _   |_____|__|__|__|_____|      |.  _   |_____|_____|__|_____|____|___._|__|__|____|
+      |:  |   | powered by NixOS          |:  |   |
+      |::.|:. |                           |::.|:. |
+      `--- ---'                           `--- ---'
+      '';
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
@@ -494,6 +517,15 @@
         "${config.userDefinedGlobalVariables.machines.work-pc}"
         "${config.userDefinedGlobalVariables.machines.home-desktop}"
       ];
+      userDefinedGlobalVariables.motd = ''
+         ___ ___                      __       __
+        |   |   .-----.--------.-----|  .---.-|  |--.
+        |.  |   |  _  |        |  -__|  |  _  |  _  |
+        |.  _   |_____|__|__|__|_____|__|___._|_____|
+        |:  |   | powered by NixOS
+        |::.|:. |
+        `--- ---'
+      '';
     })
 
     (lib.mkIf (machineName == "generic_linux_distro") {

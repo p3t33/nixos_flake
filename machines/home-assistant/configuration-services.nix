@@ -10,6 +10,5 @@
     ../../modules/nixos/services/mosquitto.nix
     ../../modules/nixos/services/zigbee2mqtt.nix
     ../../modules/nixos/services/zfs/auto-scrub.nix
-    ../../modules/nixos/motd.nix
   ];
 }

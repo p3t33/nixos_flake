@@ -30,6 +30,7 @@
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/auto_upgrade.nix
     ../../modules/nixos/graphics.nix
+    ../../modules/nixos/motd.nix
   ];
 
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.

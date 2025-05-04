@@ -28,6 +28,7 @@
     ../../modules/nixos/defaults_for_system_build.nix
     ../../modules/nixos/graphics.nix
     ../../modules/nixos/auto_upgrade.nix
+    ../../modules/nixos/motd.nix
   ];
 
     # openssl rand -hex 4
