@@ -41,6 +41,10 @@
         title = "Dunst";
         class = "Dunst";
         max_icon_size = 64;
+
+        mouse_left_click = "open_url, close_current";
+        mouse_middle_click = "do_action, close_current";
+        mouse_right_click = "close_all";
       };
     };
   };
