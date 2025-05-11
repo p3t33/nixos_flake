@@ -23,7 +23,7 @@
           ++ lib.optionals config.services.deluge.enable [
             {
               "deluge" = {
-                description = "Deluge Web UI";
+                description = "BitTorrent client";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/deluge"; # URL to the Deluge service
                 icon = "deluge.png"; # Icon for Deluge
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}";
@@ -34,7 +34,7 @@
           ++ lib.optionals config.services.sabnzbd.enable [
             {
               "sabnzbd" = {
-                description = "sabnzbd Web UI";
+                description = "Usenet client";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/sabnzbd"; # URL to the Deluge service
                 icon = "sabnzbd.png"; # Icon for Deluge
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}";
@@ -42,10 +42,21 @@
               };
             }
           ]
+          ++ lib.optionals config.services.bazarr.enable [
+            {
+              "bazarr" = {
+                description = "Subtitles for media library";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/bazarr"; # URL to the Deluge service
+                icon = "bazarr.png"; # Icon for Deluge
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.bazarr}";
+                statusStyle = "dot";
+              };
+            }
+          ]
           ++ lib.optionals config.services.sonarr.enable [
             {
               "sonarr" = {
-                description = "Sonarr Web UI";
+                description = "Tv series";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/sonarr"; # URL to the Sonarr service
                 icon = "sonarr.png"; # Icon for Sonarr
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
@@ -61,7 +72,7 @@
           ++ lib.optionals config.services.readarr.enable [
             {
               "readarr" = {
-                description = "Sonarr Web UI";
+                description = "Ebooks";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/readarr"; # URL to the Sonarr service
                 icon = "readarr.png"; # Icon for Sonarr
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
@@ -72,7 +83,7 @@
           ++ lib.optionals config.services.radarr.enable [
             {
               "radarr" = {
-                description = "Radarr Web UI";
+                description = "Movies";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/radarr"; # URL to the Radarr service
                 icon = "radarr.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.radarr}";
@@ -83,7 +94,7 @@
           ++ lib.optionals config.services.prowlarr.enable [
             {
               "prowlarr" = {
-                description = "Prowlarr Web UI";
+                description = "Indexer manager";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/prowlarr"; # URL to the Prowlarr service
                 icon = "prowlarr.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prowlarr}";
@@ -94,7 +105,7 @@
           ++ lib.optionals config.services.jackett.enable [
             {
               "jackett" = {
-                description = "Jackett Web UI";
+                description = "Indexer manager";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/jackett"; # URL to the Jackett service
                 icon = "jackett.png"; # Icon for Jackett
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
@@ -105,7 +116,7 @@
           ++ lib.optionals config.services.jellyfin.enable [
             {
               "jellyfin" = {
-                description = "Jellyfin Web UI";
+                description = "Media server";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/jellyfin"; # URL to the Jellyfin service
                 icon = "jellyfin.png"; # Icon for Jellyfin
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
@@ -120,7 +131,7 @@
           ++ lib.optionals config.services.prometheus.enable [
             {
               "prometheus" = {
-                description = "prometheus Web UI";
+                description = "Metrics collections and alerting";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}"; # Convert port to string
                 icon = "prometheus.png"; # Icon for Deluge
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}";
@@ -131,7 +142,7 @@
           ++ lib.optionals config.services.grafana.enable [
             {
               "grafana" = {
-                description = "prometheus Web UI";
+                description = "visualization and analytics platform";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.userDefinedGlobalVariables.servicePort.grafana}"; # Convert port to string
                 icon = "grafana.png"; # Icon for Deluge
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.grafana}";
@@ -146,7 +157,7 @@
           ++ lib.optionals config.services.syncthing.enable [
             {
               "syncthing" = {
-                description = "Syncthing Web GUI";
+                description = "real-time file synchronization";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/syncthing"; # URL to the Syncthing service
                 icon = "syncthing.png"; # Icon for Syncthing
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.syncthing}";
@@ -161,7 +172,7 @@
           ++ lib.optionals config.services.adguardhome.enable [
             {
               "adguard" = {
-                description = "AdGuard Web GUI";
+                description = "DNS based ad blocker";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/adguard"; # URL to the AdGuard service
                 icon = "adguard-home.png"; # Icon for AdGuard
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.adguard}";

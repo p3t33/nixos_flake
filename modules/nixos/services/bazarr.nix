@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs,... }:
 {
   # Enable the Sonarr service(as of now there is no config for default sonarr port)
   services.bazarr = {
@@ -7,6 +7,6 @@
     user = "bazarr";
     group = "${config.userDefinedGlobalVariables.mediaGroup}";
     listenPort = config.userDefinedGlobalVariables.servicePort.bazarr;
+    package = pkgs.bazarr.override { python3 = pkgs.python311;};
   };
-
 }
