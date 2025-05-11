@@ -355,6 +355,7 @@
           mosquitto = 1883;
           zigbee2mqttFrontend = 8124;
           sabnzbd = 8080;
+          paperless = 28981;
 
           deluge = {
             webGUI = 8112;

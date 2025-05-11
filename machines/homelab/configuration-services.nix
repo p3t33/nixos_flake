@@ -29,5 +29,6 @@
     ../../modules/nixos/services/grafana.nix
     ../../modules/nixos/services/samba.nix
     ../../modules/nixos/services/sabnzbd.nix
+    ../../modules/nixos/services/paperless.nix
   ];
 }
