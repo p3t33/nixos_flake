@@ -15,5 +15,6 @@
     ../../modules/nixos/services/gui/xserver.nix
     ../../modules/nixos/services/gui/display_manager/display_manager_base.nix
     ../../modules/nixos/services/greenclip.nix
+    ../../modules/nixos/services/user/sxhkd.nix
   ];
 }
