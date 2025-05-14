@@ -43,7 +43,7 @@
         rofi -modi emoji -show emoji
 
       super + c
-        clipmenu
+        rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
       super + y
         rofi -modi calc -show calc
