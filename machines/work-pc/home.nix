@@ -32,7 +32,6 @@
     ../../modules/home-manager/wallpaper.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/git/lazygit.nix
-    ../../modules/home-manager/clipmenu.nix
     ../../modules/home-manager/emacs/emacs.nix
     ../../modules/home-manager/xdg/mime_apps.nix
     ../../modules/home-manager/gtk.nix
