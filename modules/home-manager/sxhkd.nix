@@ -4,21 +4,21 @@
   # Setting sxhkd as a service.
   # ---------------------------
   #
-  # There a few ways to autostart sxhkd as
-  # a daemon.
+  # There a few ways to autostart sxhkd as a daemon.
   #
   # 1. Using systemd. This can be done by writing a user service
   #    that will go into configuration.nix(systemd.user.services.sxhkd).
   #    It can also be done by using the home-manger(services.sxhkd.enable = true;)
-  #    For some reason using home-manger doesn't work for me. Unit file isn't
-  #    being created. But the problem with systemd services is that it
-  #    by design intended to work in isolation, it doesn't
-  #    inherit the user environment which means that it isn't very good
-  #    choice for daemons that are used to execute other executable(E.g tmux/sxhkd).
-  #    this is why I only use to home-manger to create settings file for sxhkd and
-  #    nothing else.
-  # 2. Execute the binary from the i3wm, which is what I will be doing.
+  #    This will create a scoped service. For some reason using home-manger doesn't work for me.
   #
+  #    systemd service is intended to work in isolation, it doesn't inherit the user environment which means
+  #    it isn"t a straight forward choice for daemons that are used to execute other executable(E.g emacs/tmux/sxhkd).
+  #    This means that extra work need to be done to make them work wihch I did in my declared systemd service.
+
+  # 2. Execute the binary from the i3wm, which couples a deamon to i3wm and does not provide
+  #    the contorl and the logging that I can get with systemd service.
+  #
+  # So this file only handles the keybindings for the sxhkd.
   #
   # Notes for rofi key bindings
   # ---------------------------

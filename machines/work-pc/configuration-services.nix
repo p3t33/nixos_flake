@@ -17,5 +17,6 @@
     ../../modules/nixos/services/gui/display_manager/display_manager_base.nix
     ../../modules/nixos/services/upower.nix # used by polybar battery module.
     ../../modules/nixos/services/greenclip.nix
+    ../../modules/nixos/services/user/sxhkd.nix
   ];
 }
