@@ -368,6 +368,8 @@
               blackboxExporter = 9115;
               sonarrExporter = 9707;
           };
+
+          calibreWeb = 8083;
         };
 
         type = lib.types.attrsOf (lib.types.oneOf [ lib.types.int (lib.types.attrsOf lib.types.int) ]);

@@ -30,5 +30,6 @@
     ../../modules/nixos/services/samba.nix
     ../../modules/nixos/services/sabnzbd.nix
     ../../modules/nixos/services/paperless.nix
+    ../../modules/nixos/services/calibre-web.nix
   ];
 }

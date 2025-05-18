@@ -85,6 +85,12 @@ in
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
+          ++ lib.optionals config.services.calibre-web.enable [
+            {
+              domain = "calibre-web.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+            }
+          ]
           ++ lib.optionals config.services.homepage-dashboard.enable [
             {
               domain = "homepage.${config.userDefinedGlobalVariables.hostConfigurationName}";

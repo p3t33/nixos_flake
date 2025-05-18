@@ -63,6 +63,20 @@ in
               '';
             };
           }
+
+          // lib.optionalAttrs config.services.calibre-web.enable {
+            "/calibre-web/" = {
+              proxyPass = "http://127.0.0.1:8083/";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Script-Name /calibre-web;
+                client_max_body_size 1024M;
+             '';
+            };
+          }
           // lib.optionalAttrs config.services.bazarr.enable {
             "/bazarr" = {
               proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.bazarr}";
@@ -349,6 +363,29 @@ in
               '';
             };
           };
+
+    "calibre-web.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      lib.optionalAttrs config.services.calibre-web.enable
+        {
+          listen = [
+            {
+              addr = "${allInterfaces}";
+              port = httpPort;
+            }
+          ];
+          locations."/" = {
+            proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.calibreWeb}";
+
+            extraConfig = ''
+              proxy_http_version 1.1;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+              client_max_body_size 1024M;
+            '';
+          };
+        };
+
 
       "jellyfin.${config.userDefinedGlobalVariables.hostConfigurationName}" =
         lib.optionalAttrs config.services.jellyfin.enable
