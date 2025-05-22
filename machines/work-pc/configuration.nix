@@ -32,6 +32,7 @@
     ../../modules/nixos/graphics.nix
     ../../modules/nixos/dconf.nix
     ../../modules/nixos/networking/br0_interface.nix # used for development.
+    ../../modules/nixos/networking/usb0.nix
   ];
 
   # As the intel GPU in this machine is too new to be officially supported by the i915 driver
