@@ -49,19 +49,36 @@ in
                },
              },
 
+
              fzf_opts = {
              ['--layout'] = 'reverse-list',
              },
+
+             oldfiles = {
+               include_current_session = true,
+               cwd_only = true,
+               stat_file = true, -- verify files exist on disk
+             },
+
+             grep = {
+               rg_glob        = true,          -- turn prompt-side globbing ON
+               glob_flag      = "--iglob",     -- case-insensitive glob for RG
+               glob_separator = "%s%-%-",      -- space + two dashes delimiter
+               actions = {                     -- optional quality-of-life
+                 ["ctrl-g"] = require("fzf-lua.actions").toggle_ignore, -- toggle .gitignore
+             },
+            },
           })
 
+          vim.keymap.set('n', '<leader>fr', ':FzfLua resume<CR>', { noremap = true, silent = true })
+          vim.keymap.set('n', '<leader>fx', ':FzfLua search_history<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>ff', ':FzfLua files<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fb', ':FzfLua buffers<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fs', ':FzfLua live_grep<CR>', { noremap = true, silent = true })
-          vim.keymap.set('n', '<leader>fr', ':FzfLua resume<CR>', { noremap = true, silent = true })
+          vim.keymap.set('n', '<leader>fv', ':FzfLua grep_visual<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fw', ':FzfLua grep_cword<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fW', ':FzfLua grep_cWORD<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fg', ':FzfLua git_bcommits<CR>', { noremap = true, silent = true })
-          vim.keymap.set('n', '<leader>fv', ':FzfLua grep_visual<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fc', ':FzfLua git_status<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fl', ':FzfLua lsp_finder<CR>', { noremap = true, silent = true })
           vim.keymap.set('n', '<leader>fd', ':FzfLua diagnostics_workspace<CR>', { noremap = true, silent = true })
@@ -180,13 +197,14 @@ in
           require("telescope").load_extension("ui-select")
 
           local builtin = require('telescope.builtin')
+          vim.keymap.set('n', '<leader>xr', builtin.resume, {})
           vim.keymap.set('n', '<leader>xf', builtin.find_files, {})
+          vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
           vim.keymap.set('n', '<leader>xs', builtin.live_grep, {})
           vim.keymap.set('n', '<leader>xw', builtin.grep_string, {})
-          vim.keymap.set('n', '<leader>xb', builtin.buffers, {})
-          vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
+          vim.keymap.set('n', '<leader>xg', builtin.git_bcommits, {})
           vim.keymap.set('n', '<leader>xc', builtin.git_status, {})
-          vim.keymap.set('n', '<leader>xr', builtin.resume, {})
+          vim.keymap.set('n', '<leader>xh', builtin.help_tags, {})
           vim.keymap.set('n', '<leader>fm', function()
           -- As an extention ignores globaly layout config.
           require('telescope').extensions.vim_bookmarks.all({
