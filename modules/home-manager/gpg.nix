@@ -39,7 +39,7 @@ in
     # "corses" caveat:
     # A minimum window size is required for it to work
     # inside a terminal.
-    pinentryPackage = pkgs.pinentry-qt;
+    pinentry.package = pkgs.pinentry-qt;
   };
 
 }

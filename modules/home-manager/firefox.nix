@@ -132,14 +132,17 @@
       };
       search.force = true;
 
-      bookmarks = [
+      bookmarks = {
+        force = true;
+        settings = [
         {
           name = "wikipedia";
           tags = [ "wiki" ];
           keyword = "wiki";
           url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
         }
-      ];
+        ];
+      };
     };
   };
 }

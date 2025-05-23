@@ -3,7 +3,7 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
 
   environment.systemPackages = with pkgs; [
-    mesa.drivers # For Vulkan support
+    mesa # For Vulkan support
     mesa.opencl
 
     # dependencies to provid use space apps hardware acceleration

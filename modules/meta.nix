@@ -17,10 +17,9 @@
     userDefinedGlobalVariables = {
       fontPackages = lib.mkOption {
         default = [
-          pkgs.nerdfonts
           pkgs.powerline-fonts
           pkgs.font-awesome
-        ];
+        ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
         type = lib.types.listOf lib.types.package;
         description = "List of font packages to be used";
       };
