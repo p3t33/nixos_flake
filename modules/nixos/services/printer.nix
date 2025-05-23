@@ -5,7 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     # software for printing labels.
-    glabels
+    glabels-qt
   ];
   # Enable CUPS to print documents
   services.printing.enable = true;

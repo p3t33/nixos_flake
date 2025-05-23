@@ -17,10 +17,9 @@
     userDefinedGlobalVariables = {
       fontPackages = lib.mkOption {
         default = [
-          pkgs.nerdfonts
           pkgs.powerline-fonts
           pkgs.font-awesome
-        ];
+        ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
         type = lib.types.listOf lib.types.package;
         description = "List of font packages to be used";
       };
@@ -487,7 +486,7 @@
       userDefinedGlobalVariables.primeUsername = "drone";
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
       }";
-      userDefinedGlobalVariables.systemStateVersion = "24.11";
+      userDefinedGlobalVariables.systemStateVersion = "25.05";
       userDefinedGlobalVariables.motd = ''
             __  powered by NixOS              __
            |  |--.--.--.--------.______.-----|__.--.--.-----.-----.______.-----.-----.----.--.--.-----.----.

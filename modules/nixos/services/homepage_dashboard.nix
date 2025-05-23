@@ -5,6 +5,9 @@
     enable = true;
     listenPort = config.userDefinedGlobalVariables.servicePort.homepageDashboard;
     openFirewall = true;
+    allowedHosts = "${config.userDefinedGlobalVariables.localHostIPv4},${config.userDefinedGlobalVariables.anyIPv4},homepage.homelab,${config.userDefinedGlobalVariables.homeLabIP}";
+
+
     widgets = [
 
       {

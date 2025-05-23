@@ -1,4 +1,10 @@
 { config, pkgs, ... }:
+let
+  myPython = pkgs.python3.withPackages (ps: [
+       ps.pip
+       ps.virtualenv
+     ]);
+in
 {
   environment.systemPackages = with pkgs; [
     # editors
@@ -53,12 +59,8 @@
     # For packages to be able to find each other they must be delared toghter
     # I installed there the bare minimum minimum to be able to use python
     # venv scheme.
-    (python3.withPackages (
-      p: with p; [
-        python3Packages.pip
-        python3Packages.virtualenv
-      ]
-    ))
+
+    myPython
     pyright # language server.
 
     # networking
