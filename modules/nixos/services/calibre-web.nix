@@ -31,7 +31,7 @@ in
       group = config.userDefinedGlobalVariables.mediaGroup;
       listen = {
         ip = "${config.userDefinedGlobalVariables.anyIPv4}";
-        port = config.userDefinedGlobalVariables.servicePort.calibreWeb;
+        port = 8083;
       };
       openFirewall = true;
       options = {

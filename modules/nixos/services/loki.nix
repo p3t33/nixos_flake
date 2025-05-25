@@ -112,7 +112,7 @@ services.loki = {
 
     # the server grafana will be communicatoing with.
     server = {
-      http_listen_port = config.userDefinedGlobalVariables.servicePort.loki;
+      http_listen_port = 3100;
     };
 
     auth_enabled = false;

@@ -4,14 +4,14 @@ services.promtail = {
   enable = true;
   configuration = {
     server = {
-      http_listen_port = config.userDefinedGlobalVariables.servicePort.promtail;
+      http_listen_port = 9080;
       grpc_listen_port = 0; # disables gRPC listener, no clustering
     };
     # tells promtail where to send logs
     clients = [ ]
       ++ lib.optionals config.services.loki.enable [
         {
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.loki}/loki/api/v1/push";
+          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push";
         }
     ];
 

@@ -1,12 +1,14 @@
 { config, pkgs,... }:
+let
+  serviceName = "bazarr";
+in
 {
   # Enable the Sonarr service(as of now there is no config for default sonarr port)
-  services.bazarr = {
+  services.${serviceName} = {
     enable = true;
     openFirewall = true; # Opens Sonarr's port on the firewall (default 8989)
-    user = "bazarr";
+    user = "${serviceName}";
     group = "${config.userDefinedGlobalVariables.mediaGroup}";
-    listenPort = config.userDefinedGlobalVariables.servicePort.bazarr;
-    package = pkgs.bazarr.override { python3 = pkgs.python311;};
+    listenPort = 6767;
   };
 }

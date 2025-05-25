@@ -40,12 +40,12 @@ in
           }
           // lib.optionalAttrs config.services.adguardhome.enable {
             "/adguard/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.adguard}/";
+              proxyPass = "${localHost}:${builtins.toString config.services.adguardhome.port}/";
             };
           }
           // lib.optionalAttrs config.services.deluge.enable {
             "/deluge/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}/";
+              proxyPass = "${localHost}:${builtins.toString config.services.deluge.web.port}/";
               extraConfig = ''
                 proxy_set_header X-Deluge-Base "/deluge/";
                 add_header X-Frame-Options SAMEORIGIN;
@@ -54,7 +54,7 @@ in
           }
           // lib.optionalAttrs config.services.sonarr.enable {
             "/sonarr" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.sonarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -66,7 +66,7 @@ in
 
           // lib.optionalAttrs config.services.calibre-web.enable {
             "/calibre-web/" = {
-              proxyPass = "http://127.0.0.1:8083/";
+              proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
               proxyWebsockets = true;
               extraConfig = ''
                 proxy_set_header Host $host;
@@ -79,7 +79,7 @@ in
           }
           // lib.optionalAttrs config.services.bazarr.enable {
             "/bazarr" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.bazarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.bazarr.listenPort}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -90,7 +90,7 @@ in
           }
           // lib.optionalAttrs config.services.readarr.enable {
             "/readarr" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.readarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -101,7 +101,7 @@ in
           }
           // lib.optionalAttrs config.services.radarr.enable {
             "/radarr" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.radarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.radarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -112,7 +112,7 @@ in
           }
           // lib.optionalAttrs config.services.prowlarr.enable {
             "/prowlarr" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prowlarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.prowlarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -123,7 +123,7 @@ in
           }
           // lib.optionalAttrs config.services.jackett.enable {
             "/jackett" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
+              proxyPass = "${localHost}:${builtins.toString config.services.jackett.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -159,7 +159,7 @@ in
               {
               }
               // lib.optionalAttrs config.services.homepage-dashboard.enable {
-                proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.homepageDashboard}/";
+                proxyPass = "${localHost}:${builtins.toString config.services.homepage-dashboard.listenPort}/";
                 extraConfig = ''
                    proxy_http_version 1.1;
                   proxy_set_header Upgrade $http_upgrade;
@@ -183,7 +183,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}/";
+              proxyPass = "${localHost}:${builtins.toString config.services.deluge.web.port}/";
               extraConfig = ''
                 proxy_set_header X-Deluge-Base "/";
                 add_header X-Frame-Options SAMEORIGIN;
@@ -201,7 +201,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.adguard}/";
+              proxyPass = "${localHost}:${builtins.toString config.services.adguardhome.port}/";
             };
           };
 
@@ -254,7 +254,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.sonarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -274,7 +274,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.bazarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.bazarr.listenPort}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -294,7 +294,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.readarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -314,7 +314,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.radarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.radarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -334,7 +334,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prowlarr}";
+              proxyPass = "${localHost}:${builtins.toString config.services.prowlarr.settings.server.port}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -354,7 +354,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
+              proxyPass = "${localHost}:${builtins.toString config.services.jackett.port}";
               extraConfig = ''
                     proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -374,7 +374,7 @@ in
             }
           ];
           locations."/" = {
-            proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.calibreWeb}";
+            proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
 
             extraConfig = ''
               proxy_http_version 1.1;
@@ -416,7 +416,7 @@ in
         ];
         # Serve homepage at the root of this domain
         locations."/" = {
-          proxyPass = "${localHost}:${toString config.userDefinedGlobalVariables.servicePort.homepageDashboard}";
+          proxyPass = "${localHost}:${toString config.services.homepage-dashboard.listenPort}";
           extraConfig = ''
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
@@ -433,7 +433,7 @@ in
         }
       ];
       locations."/" = {
-      proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}/";
+      proxyPass = "${localHost}:${builtins.toString config.services.prometheus.port}/";
       extraConfig = ''
          proxy_http_version 1.1;
          proxy_set_header Upgrade $http_upgrade;

@@ -1,14 +1,14 @@
 {config, pkgs, lib, ...}:
 {
-  networking.firewall.allowedTCPPorts = [ config.userDefinedGlobalVariables.servicePort.grafana ];
+  networking.firewall.allowedTCPPorts = [ config.services.grafana.settings.server.http_port ];
 
   services.grafana = {
     enable = true;
     settings = {
         users.home_page = "/d/home-dashboard";
         server = {
-          http_addr = "0.0.0.0";
-          http_port = config.userDefinedGlobalVariables.servicePort.grafana;
+          http_addr = "${config.userDefinedGlobalVariables.anyIPv4}";
+          http_port = 3001;
        };
     };
 
@@ -38,7 +38,7 @@
           {
             name = "Loki";
             type = "loki";
-            url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.loki}";
+            url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.loki.configuration.server.http_listen_port}";
             access = "proxy";
             jsonData = {
               maxLines = 1000;

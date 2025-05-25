@@ -1,10 +1,26 @@
 { config, ... }:
+let
+  serviceName = "readarr";
+in
 {
-  services.readarr = {
+  sops.secrets."${serviceName}/apiKey" = {};
+
+  services.${serviceName} = {
     enable = true;
     openFirewall = true; # Opens Readarr's port on the firewall (default 8787)
     group = "${config.userDefinedGlobalVariables.mediaGroup}";
-    user = "readarr";
+    user = "${serviceName}";
+    settings = {
+      server = {
+        port = 8787;
+        urlbase = "/${serviceName}";
+      };
+    };
+
+    environmentFiles = [
+      config.sops.secrets."${serviceName}/apiKey".path
+    ];
+
   };
 
 

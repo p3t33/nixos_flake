@@ -11,6 +11,7 @@ in
   services.adguardhome = {
     enable = true; # Enables AdGuard Home
     openFirewall = true; # Opens the firewall for AdGuard (optional)
+    port = 3000;
 
     # Basic settings
     settings = {
@@ -115,9 +116,6 @@ in
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ];
-      };
-      http = {
-        port = config.userDefinedGlobalVariables.servicePort.adguard;
       };
     };
   };

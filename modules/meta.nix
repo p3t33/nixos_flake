@@ -336,39 +336,13 @@
 
       servicePort = lib.mkOption {
         default = {
-          adguard = 3000;
           syncthing = 8384;
-          sonarr = 8989;
-          readarr = 8787;
-          radarr = 7878;
-          prowlarr = 9696;
-          jackett = 9117;
-          homepageDashboard = 8082;
           jellyfin = 8096;
-          bazarr = 6767;
           wireguard = 51820;
-          promtail = 9080;
-          loki = 3100;
-          grafana = 3001;
           homeAssistant = 8123;
           mosquitto = 1883;
           zigbee2mqttFrontend = 8124;
           sabnzbd = 8080;
-          paperless = 28981;
-
-          deluge = {
-            webGUI = 8112;
-            daemonListen = 6629;
-          };
-
-          prometheus  = {
-              server = 9090;
-              nodeExporter = 9100;
-              blackboxExporter = 9115;
-              sonarrExporter = 9707;
-          };
-
-          calibreWeb = 8083;
         };
 
         type = lib.types.attrsOf (lib.types.oneOf [ lib.types.int (lib.types.attrsOf lib.types.int) ]);

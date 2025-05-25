@@ -3,7 +3,7 @@
 
   services.homepage-dashboard = {
     enable = true;
-    listenPort = config.userDefinedGlobalVariables.servicePort.homepageDashboard;
+    listenPort = 8082;
     openFirewall = true;
     allowedHosts = "${config.userDefinedGlobalVariables.localHostIPv4},${config.userDefinedGlobalVariables.anyIPv4},homepage.homelab,${config.userDefinedGlobalVariables.homeLabIP}";
 
@@ -29,7 +29,7 @@
                 description = "BitTorrent client";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/deluge";
                 icon = "deluge.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.deluge.webGUI}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.deluge.web.port}";
                 statusStyle = "dot";
               };
             }
@@ -51,7 +51,7 @@
                 description = "Subtitles for media library";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/bazarr";
                 icon = "bazarr.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.bazarr}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.bazarr.listenPort}";
                 statusStyle = "dot";
               };
             }
@@ -62,7 +62,7 @@
                 description = "Tv series";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/sonarr";
                 icon = "sonarr.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}";
                 statusStyle = "dot";
               };
             }
@@ -73,7 +73,7 @@
                 description = "book library";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/calibre-web";
                 icon = "calibre-web.png"; # Icon for Sonarr
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.calibreWeb}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.calibre-web.listen.port}";
                 statusStyle = "dot";
               };
             }
@@ -84,7 +84,7 @@
                 description = "Ebooks";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/readarr";
                 icon = "readarr.png"; # Icon for Sonarr
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.readarr}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.readarr.settings.server.port}";
                 statusStyle = "dot";
               };
             }
@@ -95,7 +95,7 @@
                 description = "Movies";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/radarr";
                 icon = "radarr.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.radarr}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.radarr.settings.server.port}";
                 statusStyle = "dot";
               };
             }
@@ -106,7 +106,7 @@
                 description = "Indexer manager";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/prowlarr";
                 icon = "prowlarr.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prowlarr}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prowlarr.settings.server.port}";
                 statusStyle = "dot";
               };
             }
@@ -117,7 +117,7 @@
                 description = "Indexer manager";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/jackett";
                 icon = "jackett.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jackett}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.jackett.port}";
                 statusStyle = "dot";
               };
             }
@@ -141,9 +141,9 @@
             {
               "prometheus" = {
                 description = "Metrics collections and alerting";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.prometheus.port}";
                 icon = "prometheus.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.server}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.port}";
                 statusStyle = "dot";
               };
             }
@@ -152,9 +152,9 @@
             {
               "grafana" = {
                 description = "visualization and analytics platform";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.userDefinedGlobalVariables.servicePort.grafana}";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.grafana.settings.server.http_port}";
                 icon = "grafana.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.grafana}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.grafana.settings.server.http_port}";
                 statusStyle = "dot";
               };
             }
@@ -184,7 +184,7 @@
                 description = "DNS based ad blocker";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/adguard";
                 icon = "adguard-home.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.adguard}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.adguardhome.port}";
                 statusStyle = "dot";
               };
             }

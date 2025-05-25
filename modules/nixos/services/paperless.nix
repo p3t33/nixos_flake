@@ -4,7 +4,7 @@
   services.paperless = {
     enable = true;
     address = "${config.userDefinedGlobalVariables.anyIPv4}";
-    port = config.userDefinedGlobalVariables.servicePort.paperless;
+    port = 28981;
     passwordFile = config.sops.secrets.paperless-ngx.path;
   };
 

@@ -5,11 +5,11 @@
     mode = "0644";
   };
 
-  networking.firewall.allowedTCPPorts = [ config.userDefinedGlobalVariables.servicePort.prometheus.server ];
+  networking.firewall.allowedTCPPorts = [ config.services.prometheus.port ];
 
   services.prometheus = {
     enable = true;
-    port = config.userDefinedGlobalVariables.servicePort.prometheus.server;
+    port = 9090;
     retentionTime = "7d";
     extraFlags = [
       "--storage.tsdb.retention.size=5GB"
@@ -23,13 +23,13 @@
       node = {
         enable = true;
         extraFlags = [ "--collector.cpu" ];
-        port = config.userDefinedGlobalVariables.servicePort.prometheus.nodeExporter;
+        port = 9100;
       };
 
       # http, TCP, DNS, ICMP, gRPC (experimental), useful for service health status.
       blackbox = {
         enable = true;
-        port = config.userDefinedGlobalVariables.servicePort.prometheus.blackboxExporter;
+        port = 9115;
         configFile = pkgs.writeText "blackbox.yaml" ''
           modules:
             http_2xx:
@@ -54,8 +54,8 @@
       # sonarr metrics
       exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
         enable = true;
-        url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}/sonarr";
-        port = config.userDefinedGlobalVariables.servicePort.prometheus.sonarrExporter;
+        url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
+        port = 9707;
         apiKeyFile = config.sops.secrets."sonarr/apiKey".path;
         openFirewall = true;
       };
@@ -71,12 +71,12 @@
           metrics_path = "/probe";
           params.module = [ "http_2xx" ];
           static_configs = [{
-              targets = [ "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sonarr}/sonarr" ];
+              targets = [ "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr" ];
           }];
           relabel_configs = [
           { source_labels = [ "__address__" ]; target_label = "__param_target"; }
           { source_labels = [ "__param_target" ]; target_label = "instance"; }
-          { target_label = "__address__"; replacement = "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.blackboxExporter}"; }
+          { target_label = "__address__"; replacement = "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.blackbox.port}"; }
           ];
         }
       ]
@@ -84,13 +84,13 @@
       ++ lib.optionals config.services.prometheus.exporters.exportarr-sonarr.enable [
         {
           job_name = "sonarr";
-          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.sonarrExporter}" ]; }];
+          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.exportarr-sonarr.port}" ]; }];
         }
       ]
       ++ lib.optionals config.services.prometheus.exporters.node.enable [
         {
           job_name = "node_exporter";
-          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.prometheus.nodeExporter}" ]; }];
+          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.node.port}" ]; }];
         }
       ]
       ++ lib.optionals config.services.restic.server.enable [

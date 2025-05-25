@@ -8,7 +8,7 @@
     web = {
       enable = true;
       openFirewall = true;
-      port = config.userDefinedGlobalVariables.servicePort.deluge.webGUI;
+      port = 8112;
     };
     extraPackages = with pkgs; [
       unzip
@@ -42,8 +42,8 @@
       # Set a fixed range for P2P communication ports, minumum two so I used the same value.
       # Same ports need to be opened in the router firewall.
       listen_ports = [
-        config.userDefinedGlobalVariables.servicePort.deluge.daemonListen
-        config.userDefinedGlobalVariables.servicePort.deluge.daemonListen
+        6629
+        6629
       ];
       enabled_plugins = [
         "Extractor"
