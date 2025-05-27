@@ -38,6 +38,8 @@
     xournalpp
     # pdf viewer
     zathura
+
+    drawio
   ];
 
 }
