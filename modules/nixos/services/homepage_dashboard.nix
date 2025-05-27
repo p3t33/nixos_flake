@@ -158,6 +158,17 @@
                 statusStyle = "dot";
               };
             }
+          ]
+          ++ lib.optionals config.services.gatus.enable [
+            {
+              "gatus" = {
+                description = "visualization and analytics platform";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.gatus.settings.web.port}";
+                icon = "gatus.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}";
+                statusStyle = "dot";
+              };
+            }
           ];
       }
       {
@@ -211,7 +222,7 @@
     ];
     settings = {
       # base = "http://homepage.homelab";
-      title = "My Dashboard"; # Set the title of your homepage
+      title = "My Dashboard";
     };
   };
 }
