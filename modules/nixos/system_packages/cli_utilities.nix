@@ -13,7 +13,7 @@
 
     # web
     wget
-    speedtest-cli
+    speedtest-go
     pkg-config # helper tool for more information during the update of nix.
 
     # process monitor
