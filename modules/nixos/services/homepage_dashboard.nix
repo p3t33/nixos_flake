@@ -1,11 +1,21 @@
 { config, lib, ... }:
 {
 
+  # This file has all of the environment varibles that the systemd homepage-dashboard will be using
+  # Note that all of the varibles names must start with HOMEPAGE_VAR_<your string>. So typical
+  # secret file will have multiple lines and will look like:
+  #
+  # HOMEPAGE_VAR_DELUGE=<deluge web gui password>
+  # HOMEPAGE_VAR_RADARR=<radarr api key>
+  # HOMEPAGE_VAR_SONARR=<sonarr api key>
+  sops.secrets.homepage-dashboard = {};
+
   services.homepage-dashboard = {
     enable = true;
     listenPort = 8082;
     openFirewall = true;
     allowedHosts = "${config.userDefinedGlobalVariables.localHostIPv4},${config.userDefinedGlobalVariables.anyIPv4},homepage.homelab,${config.userDefinedGlobalVariables.homeLabIP}";
+    environmentFile = config.sops.secrets.homepage-dashboard.path;
 
 
     widgets = [
@@ -31,6 +41,12 @@
                 icon = "deluge.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.deluge.web.port}";
                 statusStyle = "dot";
+                widget = {
+                  type = "deluge";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.deluge.web.port}";
+                  password = "{{HOMEPAGE_VAR_DELUGE}}"; # not a hash, but human redable password used with the webgui.
+                  enableLeechProgress = true;
+                };
               };
             }
           ]
@@ -64,6 +80,12 @@
                 icon = "sonarr.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}";
                 statusStyle = "dot";
+                widget = {
+                    type = "sonarr";
+                    url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.sonarr.settings.server.port}";
+                    key = "{{HOMEPAGE_VAR_SONARR}}";
+                    enableQueue = true;
+                };
               };
             }
           ]
@@ -72,7 +94,7 @@
               "calibre-web" = {
                 description = "book library";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/calibre-web";
-                icon = "calibre-web.png"; # Icon for Sonarr
+                icon = "calibre-web.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.calibre-web.listen.port}";
                 statusStyle = "dot";
               };
@@ -83,9 +105,15 @@
               "readarr" = {
                 description = "Ebooks";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/readarr";
-                icon = "readarr.png"; # Icon for Sonarr
+                icon = "readarr.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.readarr.settings.server.port}";
                 statusStyle = "dot";
+                widget = {
+                  type = "readarr";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.readarr.settings.server.port}";
+                  key = "{{HOMEPAGE_VAR_READARR}}"; #
+                  enableQueue = true;
+                };
               };
             }
           ]
@@ -97,6 +125,12 @@
                 icon = "radarr.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.radarr.settings.server.port}";
                 statusStyle = "dot";
+                widget = {
+                  type = "radarr";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.radarr.settings.server.port}";
+                  key = "{{HOMEPAGE_VAR_RADARR}}";
+                  enableQueue = true;
+                };
               };
             }
           ]
@@ -108,6 +142,12 @@
                 icon = "prowlarr.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prowlarr.settings.server.port}";
                 statusStyle = "dot";
+                widget = {
+                  type = "prowlarr";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.prowlarr.settings.server.port}";
+                  key = "{{HOMEPAGE_VAR_PROWLARR}}";
+                  enableQueue = true;
+                };
               };
             }
           ]
@@ -162,7 +202,7 @@
           ++ lib.optionals config.services.gatus.enable [
             {
               "gatus" = {
-                description = "visualization and analytics platform";
+                description = "Serivce health monitoring and alerting";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.gatus.settings.web.port}";
                 icon = "gatus.png";
                 siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}";
@@ -221,8 +261,7 @@
       }
     ];
     settings = {
-      # base = "http://homepage.homelab";
-      title = "My Dashboard";
+      title = "homelab Dashboard";
     };
   };
 }
