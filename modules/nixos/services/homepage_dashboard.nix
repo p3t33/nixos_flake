@@ -220,7 +220,7 @@
                 description = "real-time file synchronization";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/syncthing";
                 icon = "syncthing.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.syncthing}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}";
                 statusStyle = "dot";
               };
             }

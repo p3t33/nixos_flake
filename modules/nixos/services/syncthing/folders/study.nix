@@ -1,24 +1,16 @@
-{
-  config,
-  lib,
-  machineName,
-  ...
-}:
+{ config, ... }:
+let
+  study = "study";
+in
 {
   services.syncthing = {
     settings = {
       folders = {
-        "study" = {
-          id = "study";
-          path = "${config.userDefinedGlobalVariables.syncthingSyncDir}/study";
-          devices =
-            [ ]
-            ++ lib.optionals (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") [
-              "${config.userDefinedGlobalVariables.machines.homelab}"
-            ]
-            ++ lib.optionals (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") [
-              "${config.userDefinedGlobalVariables.machines.home-desktop}"
-            ];
+        "${study}" = {
+          id = "${study}";
+          path = "${config.userDefinedGlobalVariables.syncthing.syncDir}/${study}";
+          devices = config.userDefinedGlobalVariables.syncthing.devicesToShareStudyFolderWith;
+          versioning = config.userDefinedGlobalVariables.syncthing.simpleFileVersioningForBackUpMachinesOnly;
         };
       };
     };

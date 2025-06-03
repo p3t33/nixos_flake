@@ -275,7 +275,7 @@ in
         {
           name = "syncthing";
           group = files;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.userDefinedGlobalVariables.servicePort.syncthing}";
+          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.userDefinedGlobalVariables.syncthing.httpPort}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{

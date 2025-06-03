@@ -31,7 +31,7 @@ in
         locations = lib.recursiveUpdate { } (
           lib.optionalAttrs config.services.syncthing.enable {
             "/syncthing/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.syncthing}/";
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}/";
               extraConfig = ''
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;
@@ -235,7 +235,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.syncthing}/";
+              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}/";
               extraConfig = ''
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;

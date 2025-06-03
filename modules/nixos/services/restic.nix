@@ -32,6 +32,10 @@ in
       local = {
         # will create restic repo if it does not exit yet.
         initialize = true;
+        # for syncthing versioning
+        exclude = [
+          "**/.stversions/**"
+        ];
 
         # A file with restic repository path.
         repositoryFile = config.sops.secrets."restic/local/repositoryPathFile".path;
@@ -59,6 +63,11 @@ in
 
       gdrive = {
         initialize = true;
+        # for syncthing versioning
+        exclude = [
+          "**/.stversions/**"
+        ];
+
         repositoryFile = config.sops.secrets."restic/gdrive/repositoryPathFile".path;
         rcloneConfigFile = config.sops.secrets."restic/gdrive/rcloneConfigFile".path;
         passwordFile = config.sops.secrets."restic/gdrive/passwordFile".path; # <-- clearly points here
@@ -84,6 +93,10 @@ in
 
       amazon = {
         initialize = true;
+        # for syncthing versioning
+        exclude = [
+          "**/.stversions/**"
+        ];
 
         repositoryFile = config.sops.secrets."restic/amazon/repositoryPathFile".path;
         rcloneConfigFile = config.sops.secrets."restic/amazon/rcloneConfigFile".path;

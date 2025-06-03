@@ -33,24 +33,24 @@
     ];
 
   systemd.tmpfiles.rules = [
-    "d ${config.userDefinedGlobalVariables.syncthingDataDirectory} 0750 ${config.userDefinedGlobalVariables.syncthingUser} ${config.userDefinedGlobalVariables.dataGroup} -"
+    "d ${config.userDefinedGlobalVariables.syncthing.dataDirectory} 0750 ${config.userDefinedGlobalVariables.syncthing.user} ${config.userDefinedGlobalVariables.dataGroup} -"
   ];
 
   sops.secrets."syncthing/cert.pem" = {
-    owner = "${config.userDefinedGlobalVariables.syncthingUser}";
+    owner = "${config.userDefinedGlobalVariables.syncthing.user}";
     mode = "0600";
 
   };
 
   sops.secrets."syncthing/key.pem" = {
-    owner = "${config.userDefinedGlobalVariables.syncthingUser}";
+    owner = "${config.userDefinedGlobalVariables.syncthing.user}";
     mode = "0600";
   };
 
   services.syncthing = {
     enable = true;
     group = "${config.userDefinedGlobalVariables.dataGroup}";
-    user = "${config.userDefinedGlobalVariables.syncthingUser}";
+    user = "${config.userDefinedGlobalVariables.syncthing.user}";
     key = config.sops.secrets."syncthing/key.pem".path;
     cert = config.sops.secrets."syncthing/cert.pem".path;
     #overrideDevices = true; # Deletes devices that are not configured declaratively
