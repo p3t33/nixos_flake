@@ -9,7 +9,10 @@ let
   external = "external";
 in
 {
-  sops.secrets.gatus = {};
+  sops.secrets.gatus = {
+    restartUnits = [ "gatus.service" ];
+  };
+
 
   services.gatus = {
     enable = true;
@@ -20,6 +23,15 @@ in
         title = "homelab Status";
         dark-mode = true;
       };
+
+      storage = {
+        type = "postgres";
+        # passwrod for gatus postgresql database is stored inside of environmentFile provided to the gatus service.
+        path = "postgres://${config.systemd.services.gatus.serviceConfig.User}:\${GATUS_DB_PASSWORD}@${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.postgresql.settings.port}/${config.systemd.services.gatus.serviceConfig.User}?sslmode=disable";
+        caching = true;
+        maximum-number-of-results = 800;
+        maximum-number-of-events = 50;
+    };
 
       alerting = {
         telegram = {
