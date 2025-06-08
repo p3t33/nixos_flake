@@ -1,4 +1,10 @@
 { config, lib, ... }:
+let
+  monitoring = "monitoring";
+  files = "files";
+  media = "media";
+  devices = "devices";
+in
 {
 
   # This file has all of the environment varibles that the systemd homepage-dashboard will be using
@@ -25,14 +31,27 @@
           cpu = true;
           disk = "/";
           memory = true;
+          cputemp = true;
+          uptime = true;
         };
       }
 
     ];
     services = [
       {
-        "media" =
+        "${files}" =
           [ ]
+          ++ lib.optionals config.services.syncthing.enable [
+            {
+              "syncthing" = {
+                description = "real-time file synchronization";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/syncthing";
+                icon = "syncthing.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}";
+                statusStyle = "dot";
+              };
+            }
+          ]
           ++ lib.optionals config.services.deluge.enable [
             {
               "deluge" = {
@@ -60,18 +79,69 @@
                 statusStyle = "dot";
               };
             }
-          ]
-          ++ lib.optionals config.services.bazarr.enable [
+          ];
+      }
+      {
+        "${monitoring}" =
+          [ ]
+          ++ lib.optionals config.services.adguardhome.enable [
             {
-              "bazarr" = {
-                description = "Subtitles for media library";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/bazarr";
-                icon = "bazarr.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.bazarr.listenPort}";
+              "adguard" = {
+                description = "DNS based ad blocker";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/adguard";
+                icon = "adguard-home.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.adguardhome.port}";
+                statusStyle = "dot";
+                widget = {
+                  type = "adguard";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.adguardhome.port}";
+                  # password = "{{HOMEPAGE_VAR_DELUGE}}"; # not a hash, but human redable password used with the webgui.
+                  # enableLeechProgress = true;
+                };
+              };
+            }
+          ]
+          ++ lib.optionals config.services.gatus.enable [
+            {
+              "gatus" = {
+                description = "Serivce health monitoring and alerting";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.gatus.settings.web.port}";
+                icon = "gatus.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}";
+                statusStyle = "dot";
+                widget = {
+                  type = "gatus";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.gatus.settings.web.port}";
+                };
+              };
+            }
+          ]
+          ++ lib.optionals config.services.prometheus.enable [
+            {
+              "prometheus" = {
+                description = "Metrics collections and alerting";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.prometheus.port}";
+                icon = "prometheus.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.port}";
                 statusStyle = "dot";
               };
             }
           ]
+          ++ lib.optionals config.services.grafana.enable [
+            {
+              "grafana" = {
+                description = "visualization and analytics platform";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.grafana.settings.server.http_port}";
+                icon = "grafana.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.grafana.settings.server.http_port}";
+                statusStyle = "dot";
+              };
+            }
+          ];
+      }
+      {
+        "${media}" =
+          [ ]
           ++ lib.optionals config.services.sonarr.enable [
             {
               "sonarr" = {
@@ -89,14 +159,20 @@
               };
             }
           ]
-          ++ lib.optionals config.services.calibre-web.enable [
+          ++ lib.optionals config.services.radarr.enable [
             {
-              "calibre-web" = {
-                description = "book library";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/calibre-web";
-                icon = "calibre-web.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.calibre-web.listen.port}";
+              "radarr" = {
+                description = "Movies";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/radarr";
+                icon = "radarr.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.radarr.settings.server.port}";
                 statusStyle = "dot";
+                widget = {
+                  type = "radarr";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.radarr.settings.server.port}";
+                  key = "{{HOMEPAGE_VAR_RADARR}}";
+                  enableQueue = true;
+                };
               };
             }
           ]
@@ -117,20 +193,14 @@
               };
             }
           ]
-          ++ lib.optionals config.services.radarr.enable [
+          ++ lib.optionals config.services.bazarr.enable [
             {
-              "radarr" = {
-                description = "Movies";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/radarr";
-                icon = "radarr.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.radarr.settings.server.port}";
+              "bazarr" = {
+                description = "Subtitles for media library";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/bazarr";
+                icon = "bazarr.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.bazarr.listenPort}";
                 statusStyle = "dot";
-                widget = {
-                  type = "radarr";
-                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.radarr.settings.server.port}";
-                  key = "{{HOMEPAGE_VAR_RADARR}}";
-                  enableQueue = true;
-                };
               };
             }
           ]
@@ -172,77 +242,27 @@
                 statusStyle = "dot";
               };
             }
-          ];
-      }
-      {
-        "monitoring" =
-          [ ]
-          ++ lib.optionals config.services.prometheus.enable [
-            {
-              "prometheus" = {
-                description = "Metrics collections and alerting";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.prometheus.port}";
-                icon = "prometheus.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.port}";
-                statusStyle = "dot";
-              };
-            }
           ]
-          ++ lib.optionals config.services.grafana.enable [
+          ++ lib.optionals config.services.calibre-web.enable [
             {
-              "grafana" = {
-                description = "visualization and analytics platform";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.grafana.settings.server.http_port}";
-                icon = "grafana.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.grafana.settings.server.http_port}";
+              "calibre-web" = {
+                description = "book library";
+                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/calibre-web";
+                icon = "calibre-web.png";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.calibre-web.listen.port}";
                 statusStyle = "dot";
-              };
-            }
-          ]
-          ++ lib.optionals config.services.gatus.enable [
-            {
-              "gatus" = {
-                description = "Serivce health monitoring and alerting";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.gatus.settings.web.port}";
-                icon = "gatus.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}";
-                statusStyle = "dot";
+                widget = {
+                  type = "calibreweb";
+                  url = "http://${config.userDefinedGlobalVariables.homeLabIP}:${builtins.toString config.services.calibre-web.listen.port}";
+                  username = "{{HOMEPAGE_VAR_CALIBRE_USER}}";
+                  password = "{{HOMEPAGE_VAR_CALIBRE_PASSWORD}}";
+                };
               };
             }
           ];
       }
       {
-        "files" =
-          [ ]
-          ++ lib.optionals config.services.syncthing.enable [
-            {
-              "syncthing" = {
-                description = "real-time file synchronization";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/syncthing";
-                icon = "syncthing.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}";
-                statusStyle = "dot";
-              };
-            }
-          ];
-      }
-      {
-        "filtering" =
-          [ ]
-          ++ lib.optionals config.services.adguardhome.enable [
-            {
-              "adguard" = {
-                description = "DNS based ad blocker";
-                href = "http://${config.userDefinedGlobalVariables.homeLabIP}/adguard";
-                icon = "adguard-home.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.adguardhome.port}";
-                statusStyle = "dot";
-              };
-            }
-          ];
-      }
-      {
-        "devices" = [
+        "${devices}" = [
           {
             "router" = {
               description = "router ui";
@@ -262,6 +282,13 @@
     ];
     settings = {
       title = "homelab Dashboard";
+      # order of items in [] is the order of itmes on actual gui.
+      layout = [
+        { ${monitoring} = { style = "row"; columns = 3; }; }
+        { ${files} = { style = "row"; columns = 3; }; }
+        { ${media} = { style = "row"; columns = 3; }; }
+        { ${devices} = { style = "row"; columns = 3; }; }
+      ];
     };
   };
 }
