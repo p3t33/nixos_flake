@@ -39,7 +39,12 @@
     # pdf viewer
     zathura
 
+    # diagram
     drawio
+
+    # comics readar
+    foliate
+    mcomix
   ];
 
 }
