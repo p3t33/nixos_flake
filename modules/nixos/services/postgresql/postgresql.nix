@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  gatus = config.systemd.services.gatus.serviceConfig.User;
+  gatus = "gatus";
 in
 {
  sops.secrets."postgresql/gatus" = {

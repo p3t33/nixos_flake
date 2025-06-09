@@ -33,5 +33,6 @@
     ../../modules/nixos/services/calibre-web.nix
     ../../modules/nixos/services/gatus.nix
     ../../modules/nixos/services/postgresql/postgresql.nix
+    ../../modules/nixos/services/postgresql/postgresql_backup.nix
   ];
 }
