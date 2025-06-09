@@ -226,7 +226,7 @@ in
           vim.keymap.set("n", "<leader>xd", vim.lsp.buf.code_action, bufopts)
 
           -- As an extention ignores globaly layout config.
-          vim.keymap.set('n', '<leader>fo', function()
+          vim.keymap.set('n', '<leader><leader>', function()
           require('telescope').extensions.smart_open.smart_open({
             layout_strategy = 'vertical',
               layout_config = {
