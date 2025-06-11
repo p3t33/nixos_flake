@@ -13,6 +13,10 @@
       add_newline = false;
       scan_timeout = 10;
 
+      # Sets the prompt for incomplete(E.g: echo command with messing closing ", echo "hello) or multi-line
+      # command using \ at the end of each line.
+      continuation_prompt = "[  ↳ ](#5FD700)";
+
       # Order of right side modules of the prompt
       #
       # Creating elements that blend
