@@ -1,6 +1,6 @@
-{ config, ... }:
+{ config, userDefinedGlobalVariables, ... }:
 {
-  sops.defaultSopsFile = config.userDefinedGlobalVariables.homeManagerAsNixOSModuleDefaultSecretsPath;
+  sops.defaultSopsFile = userDefinedGlobalVariables.homeManagerAsNixOSModuleDefaultSecretsPath;
   sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = config.userDefinedGlobalVariables.sopsKeyPath;
+  sops.age.keyFile = userDefinedGlobalVariables.sopsKeyPath;
 }

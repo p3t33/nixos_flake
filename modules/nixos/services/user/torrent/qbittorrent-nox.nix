@@ -42,7 +42,7 @@ in
     };
 
     users.groups.qbittorrent = { };
-    users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+    users.users.${config.hostSpecification.primeUsername} = {
       extraGroups = [ "qbittorrent" ];
     };
 

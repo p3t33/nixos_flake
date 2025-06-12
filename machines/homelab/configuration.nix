@@ -1,5 +1,6 @@
 {
   config,
+  machineName,
   ...
 }:
 {
@@ -11,6 +12,7 @@
     ./disko-config-extra-hard-dirves.nix
     ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
+    ../../modules/common/host-specification.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/fonts.nix
     ../../modules/nixos/experimental-features.nix
@@ -33,10 +35,59 @@
     ../../modules/nixos/motd.nix
   ];
 
+  hostSpecification = {
+    primeUsername = "kmedrish";
+    hostConfigurationName = machineName;
+    systemStateVersion = "24.05";
+    syncthing = {
+      syncDir = "/mnt/data/Sync";
+      user = "syncthing";
+      simpleFileVersioningForBackUpMachinesOnly = {
+        type = "simple";
+        params = {
+          keep = "5";
+          cleanoutDays = "10";
+        };
+        cleanupIntervalS = 3600;
+      };
+
+      devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
+
+      devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
+
+      devicesToShareDatabaseFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
+
+      devicesToShareDocumentsFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
+
+      devicesToShareStudyFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
+    };
+    motd = ''
+         ___ ___                      __       __
+        |   |   .-----.--------.-----|  .---.-|  |--.
+        |.  |   |  _  |        |  -__|  |  _  |  _  |
+        |.  _   |_____|__|__|__|_____|__|___._|_____|
+        |:  |   | powered by NixOS
+        |::.|:. |
+        `--- ---'
+      '';
+  };
+
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.
   systemd.tmpfiles.rules = [
-    "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.hostSpecification.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${config.hostSpecification.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
   ];
@@ -65,7 +116,7 @@
     };
   };
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${config.hostSpecification.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only

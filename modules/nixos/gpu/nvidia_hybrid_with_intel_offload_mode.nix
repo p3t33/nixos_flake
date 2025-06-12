@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   # Nvidia PRIME(technology used to manage hybrid graphics) settings
   # Note: non hybrid Nvidia graphics don't need this part and should be
@@ -15,8 +15,8 @@
       enableOffloadCmd = true;
     };
 
-    # values in configurations(meta.nix) were found by executing lspci | grep -E 'VGA|3D'
-    nvidiaBusId = config.userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId;
-    intelBusId = config.userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId;
+    # values in configuration, were found by executing lspci | grep -E 'VGA|3D'
+    nvidiaBusId = config.hostSpecification.nvidiaHybridWithIntel.nvidiaBusId;
+    intelBusId = config.hostSpecification.nvidiaHybridWithIntel.intelBusId;
   };
 }

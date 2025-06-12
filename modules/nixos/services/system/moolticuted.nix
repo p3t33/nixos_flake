@@ -18,7 +18,7 @@
       ExecStart = "${pkgs.moolticute}/bin/moolticuted";
       killMode = "process";
       Restart = "always";
-      User = "${config.userDefinedGlobalVariables.primeUsername}";
+      User = "${config.hostSpecification.primeUsername}";
       # --- Why 'Group=' is Not Used ---
       # No 'Group=' line is needed because the 'uaccess' tag already gives
       # the user specified above all the necessary permissions. Adding a

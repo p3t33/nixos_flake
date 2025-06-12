@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, machineName, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -7,6 +7,7 @@
     ./disko-config.nix
     ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
+    ../../modules/common/host-specification.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/fonts.nix
     ../../modules/nixos/experimental-features.nix
@@ -34,6 +35,33 @@
     ../../modules/nixos/networking/br0_interface.nix # used for development.
     ../../modules/nixos/networking/usb0.nix
   ];
+
+    hostSpecification = {
+      primeUsername = "kmedrish";
+      hostConfigurationName = machineName;
+      wallpaperName = "watchtower.png";
+      systemStateVersion = "24.05";
+
+      nvidiaHybridWithIntel = {
+        nvidiaBusId = "PCI:01:00:0";
+        intelBusId = "PCI:00:02:0";
+      };
+
+      sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
+      syncthing = {
+
+        devicesToShareTaskWarriorFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.homelab}"
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+         ];
+
+        devicesToShareDevResourcesFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.homelab}"
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        ];
+      };
+  };
+
 
   # As the intel GPU in this machine is too new to be officially supported by the i915 driver
   # it needs to be forced, if this is not done the main gpu won't work and this will cause bunch

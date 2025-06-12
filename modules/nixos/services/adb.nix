@@ -1,7 +1,7 @@
 { config, ... }:
 {
   programs.adb.enable = true;
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${config.hostSpecification.primeUsername} = {
     extraGroups = [ "adbusers" ];
   };
 }

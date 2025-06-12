@@ -1,5 +1,7 @@
 {
   pkgs,
+  config,
+  machineName,
   ...
 }:
 {
@@ -10,6 +12,7 @@
     ./disko-config.nix
     ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
+    ../../modules/common/host-specification.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/fonts.nix
     ../../modules/nixos/experimental-features.nix
@@ -36,6 +39,33 @@
     ../../modules/nixos/gaming/steam.nix
     ../../modules/nixos/dconf.nix
   ];
+
+  hostSpecification = {
+    primeUsername = "kmedrish";
+    hostConfigurationName = machineName;
+    wallpaperName = "crane_at_night.png";
+    systemStateVersion = "24.05";
+    sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
+    syncthing = {
+      devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+      ];
+      devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+      ];
+      devicesToShareDatabaseFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
+      devicesToShareDocumentsFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
+      devicesToShareStudyFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
+    };
+  };
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

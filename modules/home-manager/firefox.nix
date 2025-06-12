@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, hostSpecification,  ... }:
 {
   programs.firefox = {
     enable = true;
@@ -48,10 +48,10 @@
         ];
     };
 
-    profiles.${config.userDefinedGlobalVariables.primeUsername} = {
+    profiles.${hostSpecification.primeUsername} = {
       # to verify inter into the search bar about:profiles
       id = 0;
-      name = "${config.userDefinedGlobalVariables.primeUsername}";
+      name = "${hostSpecification.primeUsername}";
       isDefault = true;
       # The list bellow reflects the configuration that are available from
       # the search bar using about:config

@@ -1,4 +1,4 @@
 {config, ...}:
 {
-  users.motd = config.userDefinedGlobalVariables.motd;
+  users.motd = config.hostSpecification.motd;
 }

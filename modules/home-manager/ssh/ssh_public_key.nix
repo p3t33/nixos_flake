@@ -1,9 +1,9 @@
-{ config, ... }:
+{ hostSpecification, ... }:
 {
 
   home.file = {
     ".ssh/smartcard.pub".text = ''
-      ${config.userDefinedGlobalVariables.sshPublicKey}
+      ${hostSpecification.sshPublicKey}
     '';
   };
 }

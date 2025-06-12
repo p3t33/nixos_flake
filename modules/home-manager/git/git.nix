@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, userDefinedGlobalVariables, ... }:
 {
   programs.git = {
     enable = true;
@@ -32,7 +32,7 @@
     extraConfig = {
 
       core = {
-        editor = "${config.userDefinedGlobalVariables.editor}";
+        editor = "${userDefinedGlobalVariables.editor}";
       };
 
       pull = {

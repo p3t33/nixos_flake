@@ -2,21 +2,22 @@
   config,
   lib,
   pkgs,
+  userDefinedGlobalVariables,
   ...
 }:
 
 let
   mod = "Mod4";
-  ws1 = "${config.userDefinedGlobalVariables.workspaces.ws1}";
-  ws2 = "${config.userDefinedGlobalVariables.workspaces.ws2}";
-  ws3 = "${config.userDefinedGlobalVariables.workspaces.ws3}";
-  ws4 = "${config.userDefinedGlobalVariables.workspaces.ws4}";
-  ws5 = "${config.userDefinedGlobalVariables.workspaces.ws5}";
-  ws6 = "${config.userDefinedGlobalVariables.workspaces.ws6}";
-  ws7 = "${config.userDefinedGlobalVariables.workspaces.ws7}";
-  ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
-  ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
-  ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
+  ws1 = "${userDefinedGlobalVariables.workspaces.ws1}";
+  ws2 = "${userDefinedGlobalVariables.workspaces.ws2}";
+  ws3 = "${userDefinedGlobalVariables.workspaces.ws3}";
+  ws4 = "${userDefinedGlobalVariables.workspaces.ws4}";
+  ws5 = "${userDefinedGlobalVariables.workspaces.ws5}";
+  ws6 = "${userDefinedGlobalVariables.workspaces.ws6}";
+  ws7 = "${userDefinedGlobalVariables.workspaces.ws7}";
+  ws8 = "${userDefinedGlobalVariables.workspaces.ws8}";
+  ws9 = "${userDefinedGlobalVariables.workspaces.ws9}";
+  ws10 = "${userDefinedGlobalVariables.workspaces.ws10}";
 
 in
 {
@@ -31,7 +32,7 @@ in
       defaultWorkspace = "workspace number 1";
 
       fonts = {
-        names = [ config.userDefinedGlobalVariables.font.sansSerif ];
+        names = [ userDefinedGlobalVariables.font.sansSerif ];
         # There is also an option to set style for the font
         # style = "Bold Italic";
         size = 20.0;
@@ -67,7 +68,7 @@ in
         }
         # wallpaper.
         {
-          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.userDefinedGlobalVariables.wallpaperOut} --head=-1";
+          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${userDefinedGlobalVariables.wallpaperOut} --head=-1";
           always = true;
           notification = false;
         }
@@ -202,27 +203,27 @@ in
 
       colors = {
         focused = {
-          text = config.userDefinedGlobalVariables.colors.text;
-          background = config.userDefinedGlobalVariables.colors.background-alt;
-          border = config.userDefinedGlobalVariables.colors.primary;
-          childBorder = config.userDefinedGlobalVariables.colors.primary;
-          indicator = config.userDefinedGlobalVariables.colors.alert;
+          text = userDefinedGlobalVariables.colors.text;
+          background = userDefinedGlobalVariables.colors.background-alt;
+          border = userDefinedGlobalVariables.colors.primary;
+          childBorder = userDefinedGlobalVariables.colors.primary;
+          indicator = userDefinedGlobalVariables.colors.alert;
         };
 
         focusedInactive = {
-          text = config.userDefinedGlobalVariables.colors.inactive-text;
-          background = config.userDefinedGlobalVariables.colors.inactive-bg;
-          border = config.userDefinedGlobalVariables.colors.inactive-bg;
-          childBorder = config.userDefinedGlobalVariables.colors.secondary;
-          indicator = config.userDefinedGlobalVariables.colors.alert;
+          text = userDefinedGlobalVariables.colors.inactive-text;
+          background = userDefinedGlobalVariables.colors.inactive-bg;
+          border = userDefinedGlobalVariables.colors.inactive-bg;
+          childBorder = userDefinedGlobalVariables.colors.secondary;
+          indicator = userDefinedGlobalVariables.colors.alert;
         };
 
         unfocused = {
-          text = config.userDefinedGlobalVariables.colors.inactive-text;
-          background = config.userDefinedGlobalVariables.colors.inactive-bg;
-          border = config.userDefinedGlobalVariables.colors.background;
-          childBorder = config.userDefinedGlobalVariables.colors.background;
-          indicator = config.userDefinedGlobalVariables.colors.alert;
+          text = userDefinedGlobalVariables.colors.inactive-text;
+          background = userDefinedGlobalVariables.colors.inactive-bg;
+          border = userDefinedGlobalVariables.colors.background;
+          childBorder = userDefinedGlobalVariables.colors.background;
+          indicator = userDefinedGlobalVariables.colors.alert;
         };
       };
 

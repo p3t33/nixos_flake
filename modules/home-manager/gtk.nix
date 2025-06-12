@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, userDefinedGlobalVariables, ... }:
 {
   home.packages = with pkgs; [
     arc-theme
@@ -10,7 +10,7 @@
   gtk = {
     enable = true;
     font = {
-      name = config.userDefinedGlobalVariables.font.sansSerif;
+      name = userDefinedGlobalVariables.font.sansSerif;
       size = 12;
     };
 

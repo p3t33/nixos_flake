@@ -128,7 +128,7 @@
       };
 
       pathToFlakeDirectory = lib.mkOption {
-        default = "${config.home.homeDirectory}/projects/nixos_flake";
+        default = "${config.hostSpecification.primeUserHomeDirectory}/projects/nixos_flake";
         type = lib.types.str;
         description = "Defines the path to the flake directory";
       };
@@ -193,38 +193,38 @@
         description = "The relative path to the wallpaper file inside the repository";
       };
 
-      home_manger_import_path = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/home.nix;
+      homeMangerImportPath = lib.mkOption {
+        default = ../machines/${config.hostSpecification.hostConfigurationName}/home.nix;
         type = lib.types.path;
         description = "The relative path inside the repository to the home configuration file";
       };
 
       secretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
+        default = ../machines/${config.hostSpecification.hostConfigurationName}/secrets;
         type = lib.types.path;
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
       };
 
       NixOSDefaultSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets/nixos/secrets.yaml;
+        default = ../machines/${config.hostSpecification.hostConfigurationName}/secrets/nixos/secrets.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
 
       homeManagerAsNixOSModuleDefaultSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets/home-manager/secrets.yaml;
+        default = ../machines/${config.hostSpecification.hostConfigurationName}/secrets/home-manager/secrets.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
 
       calibreAsNixOSModuleSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/calibre.yaml;
+        default = ../machines/${config.hostSpecification.hostConfigurationName}/calibre.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
 
       databaseSecret = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/prowlarr.db;
+        default = ../machines/${config.hostSpecification.hostConfigurationName}/prowlarr.db;
         type = lib.types.path;
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
       };
@@ -243,15 +243,6 @@
         };
         type = lib.types.attrsOf lib.types.str;
         description = "Fonts to be used on the system";
-      };
-
-      nvidiaHybridWithIntel = lib.mkOption {
-        default = {
-          nvidiaBusId = "";
-          intelBusId = "";
-        };
-        type = lib.types.attrsOf lib.types.str;
-        description = "Bus IDs for Nvidia Hybrid with Intel setup";
       };
 
       colors = lib.mkOption {
@@ -344,12 +335,6 @@
           description = "Default ports used by various services (single port or multiple ports per service, as strings)";
       };
 
-      sshPublicKey = lib.mkOption {
-        default = "";
-        type = lib.types.str;
-        description = "The relative path to the SOPS key file";
-      };
-
       workspaces = lib.mkOption {
         default = {
           ws1 = "1: ${config.userDefinedGlobalVariables.workspaces_icons.firefox} Firefox";
@@ -381,207 +366,14 @@
         description = "avalible machines";
       };
 
-      syncthing = lib.mkOption {
-        type = lib.types.submodule {
-          options = {
-
-            httpPort = lib.mkOption {
-              type = lib.types.int;
-              default = 8384;
-              description = "Port for Syncthing web GUI.";
-            };
-
-            dataDirectory = lib.mkOption {
-              default = "/var/lib/syncthing/";
-              type = lib.types.str;
-              description = "Defines the Syncthing data directory";
-            };
-
-            syncDir = lib.mkOption {
-              default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
-              type = lib.types.str;
-              description = "Defines the Syncthing sync directory";
-            };
-
-            configDirectory = lib.mkOption {
-              default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/syncthing";
-              type = lib.types.str;
-              description = "Defines the Syncthing configuration directory";
-            };
-
-            user = lib.mkOption {
-              default = "${config.userDefinedGlobalVariables.primeUsername}";
-              type = lib.types.str;
-              description = "Defines the Syncthing user";
-            };
-            devicesToShareTaskWarriorFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareDevResourcesFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareDatabaseFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareDocumentsFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareStudyFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            simpleFileVersioningForBackUpMachinesOnly = lib.mkOption {
-              type = lib.types.nullOr lib.types.attrs;
-              default = null;
-              description = "Syncthing simple versioning config, only enabled for homelab.";
-            };
-          };
-        };
-        default = {};
-        description = "Syncthing related configuration";
-        };
-
-
-
-
     };
   };
 
   config = lib.mkMerge [
-    # Machine-specific configurations
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc
-      }";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
-      userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
-      userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
-      userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop
-      }";
-      userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
-      userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDatabaseFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDocumentsFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareStudyFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-      ];
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
-      userDefinedGlobalVariables.primeUsername = "drone";
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
-      }";
-      userDefinedGlobalVariables.systemStateVersion = "25.05";
-      userDefinedGlobalVariables.motd = ''
-            __  powered by NixOS              __
-           |  |--.--.--.--------.______.-----|__.--.--.-----.-----.______.-----.-----.----.--.--.-----.----.
-           |    <|  |  |        |______|     |  |_   _|  _  |__ --|______|__ --|  -__|   _|  |  |  -__|   _|
-           |__|__|\___/|__|__|__|      |__|__|__|__.__|_____|_____|      |_____|_____|__|  \___/|_____|__|
-      '';
-
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-assistant}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-assistant
-      }";
-      userDefinedGlobalVariables.systemStateVersion = "24.11";
-      userDefinedGlobalVariables.motd = ''
-       ___ ___                             _______             __       __               __
-      |   |   .-----.--------.-----.______|   _   .-----.-----|__.-----|  |_.---.-.-----|  |_
-      |.  |   |  _  |        |  -__|______|.  |   |__ --|__ --|  |__ --|   _|  _  |     |   _|
-      |.  _   |_____|__|__|__|_____|      |.  _   |_____|_____|__|_____|____|___._|__|__|____|
-      |:  |   | powered by NixOS          |:  |   |
-      |::.|:. |                           |::.|:. |
-      `--- ---'                           `--- ---'
-      '';
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab
-      }";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.syncthing.configDirectory = "/var/lib/syncthing/.config/syncthing";
-      userDefinedGlobalVariables.syncthing.syncDir = "/mnt/data/Sync";
-      userDefinedGlobalVariables.syncthing.user = "syncthing";
-      userDefinedGlobalVariables.syncthing.simpleFileVersioningForBackUpMachinesOnly = {
-        type = "simple";
-        params = {
-          keep = "5";
-          cleanoutDays = "10";
-        };
-        cleanupIntervalS = 3600;
-      };
-      userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-
-      userDefinedGlobalVariables.syncthing.devicesToShareDatabaseFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDocumentsFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareStudyFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.motd = ''
-         ___ ___                      __       __
-        |   |   .-----.--------.-----|  .---.-|  |--.
-        |.  |   |  _  |        |  -__|  |  _  |  _  |
-        |.  _   |_____|__|__|__|_____|__|___._|_____|
-        |:  |   | powered by NixOS
-        |::.|:. |
-        `--- ---'
-      '';
-    })
-
     (lib.mkIf (machineName == "generic_linux_distro") {
       userDefinedGlobalVariables.hostConfigurationName = "generic_linux_distro";
       userDefinedGlobalVariables.systemStateVersion = "23.11";
-      userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
+      userDefinedGlobalVariables.sopsKeyPath = "${config.hostSpecification.primeUserHomeDirectory}/.config/sops/age/keys.txt";
     })
   ];
 }

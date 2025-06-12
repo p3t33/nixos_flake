@@ -30,7 +30,7 @@
   };
 
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${config.hostSpecification.primeUsername} = {
     extraGroups = [ "libvirtd" ];
   };
 

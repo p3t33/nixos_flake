@@ -31,7 +31,7 @@ in
         locations = lib.recursiveUpdate { } (
           lib.optionalAttrs config.services.syncthing.enable {
             "/syncthing/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}/";
+              proxyPass = "${localHost}:${builtins.toString config.hostSpecification.syncthing.httpPort}/";
               extraConfig = ''
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;
@@ -173,7 +173,7 @@ in
       };
 
       # Conditionally add virtual hosts based on enabled services
-      "deluge.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "deluge.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.deluge.enable
           {
             listen = [
@@ -191,7 +191,7 @@ in
             };
           };
 
-      "adguard.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "adguard.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.adguardhome.enable
           {
             listen = [
@@ -205,7 +205,7 @@ in
             };
           };
 
-      "sabnzbd.${config.userDefinedGlobalVariables.hostConfigurationName}" = lib.optionalAttrs config.services.sabnzbd.enable {
+      "sabnzbd.${config.hostSpecification.hostConfigurationName}" = lib.optionalAttrs config.services.sabnzbd.enable {
         listen = [
         {
           addr = allInterfaces;
@@ -225,7 +225,7 @@ in
       };
 
 
-      "syncthing.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "syncthing.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.syncthing.enable
           {
             listen = [
@@ -235,7 +235,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}/";
+              proxyPass = "${localHost}:${builtins.toString config.hostSpecification.syncthing.httpPort}/";
               extraConfig = ''
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;
@@ -244,7 +244,7 @@ in
           };
 
       # Add Sonarr Virtual Host
-      "sonarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "sonarr.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.sonarr.enable
           {
             listen = [
@@ -264,7 +264,7 @@ in
             };
           };
 
-      "bazarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "bazarr.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.bazarr.enable
           {
             listen = [
@@ -284,7 +284,7 @@ in
             };
           };
 
-      "readarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "readarr.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.readarr.enable
           {
             listen = [
@@ -304,7 +304,7 @@ in
             };
           };
 
-      "radarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "radarr.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.radarr.enable
           {
             listen = [
@@ -324,7 +324,7 @@ in
             };
           };
 
-      "prowlarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "prowlarr.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.prowlarr.enable
           {
             listen = [
@@ -344,7 +344,7 @@ in
             };
           };
 
-      "jackett.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "jackett.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.jackett.enable
           {
             listen = [
@@ -364,7 +364,7 @@ in
             };
           };
 
-    "calibre-web.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+    "calibre-web.${config.hostSpecification.hostConfigurationName}" =
       lib.optionalAttrs config.services.calibre-web.enable
         {
           listen = [
@@ -387,7 +387,7 @@ in
         };
 
 
-      "jellyfin.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "jellyfin.${config.hostSpecification.hostConfigurationName}" =
         lib.optionalAttrs config.services.jellyfin.enable
           {
             listen = [
@@ -407,7 +407,7 @@ in
             };
           };
 
-      "homepage.${config.userDefinedGlobalVariables.hostConfigurationName}" = {
+      "homepage.${config.hostSpecification.hostConfigurationName}" = {
         listen = [
           {
             addr = "${allInterfaces}";
@@ -425,7 +425,7 @@ in
           '';
         };
       };
-      "prometheus.${config.userDefinedGlobalVariables.hostConfigurationName}" = {
+      "prometheus.${config.hostSpecification.hostConfigurationName}" = {
         listen = [
         {
             addr = "${allInterfaces}";

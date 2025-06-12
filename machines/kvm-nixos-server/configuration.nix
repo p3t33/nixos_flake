@@ -1,5 +1,6 @@
 {
   config,
+  machineName,
   ...
 }:
 {
@@ -10,6 +11,7 @@
     ./disko-config.nix
     ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
+    ../../modules/common/host-specification.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/experimental-features.nix
     ../../modules/nixos/garbage_collection.nix
@@ -31,6 +33,19 @@
     ../../modules/nixos/motd.nix
   ];
 
+  hostSpecification = {
+    primeUsername = "drone";
+    hostConfigurationName = machineName;
+    systemStateVersion = "25.05";
+    motd = ''
+      __  powered by NixOS              __
+     |  |--.--.--.--------.______.-----|__.--.--.-----.-----.______.-----.-----.----.--.--.-----.----.
+     |    <|  |  |        |______|     |  |_   _|  _  |__ --|______|__ --|  -__|   _|  |  |  -__|   _|
+     |__|__|\___/|__|__|__|      |__|__|__|__.__|_____|_____|      |_____|_____|__|  \___/|_____|__|
+    '';
+  };
+
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -45,7 +60,7 @@
     };
   };
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${config.hostSpecification.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
@@ -59,7 +74,7 @@
   # ];
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = config.userDefinedGlobalVariables.primeUsername;
+  services.getty.autologinUser = config.hostSpecification.primeUsername;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

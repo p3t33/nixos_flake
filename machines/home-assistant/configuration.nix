@@ -1,5 +1,6 @@
 {
   config,
+  machineName,
   ...
 }:
 {
@@ -10,6 +11,7 @@
     ./disko-config.nix
     ../../modules/nixos/bootloader/systemd-boot.nix
     ../../modules/meta.nix
+    ../../modules/common/host-specification.nix
     ../../modules/nixos/home-manager-as-nixos-module.nix
     ../../modules/nixos/experimental-features.nix
     ../../modules/nixos/garbage_collection.nix
@@ -31,6 +33,22 @@
     ../../modules/nixos/motd.nix
   ];
 
+    hostSpecification = {
+      primeUsername = "kmedrish";
+      hostConfigurationName = machineName;
+      systemStateVersion = "24.11";
+      motd = ''
+         ___ ___                             _______             __       __               __
+        |   |   .-----.--------.-----.______|   _   .-----.-----|__.-----|  |_.---.-.-----|  |_
+        |.  |   |  _  |        |  -__|______|.  |   |__ --|__ --|  |__ --|   _|  _  |     |   _|
+        |.  _   |_____|__|__|__|_____|      |.  _   |_____|_____|__|_____|____|___._|__|__|____|
+        |:  |   | powered by NixOS          |:  |   |
+        |::.|:. |                           |::.|:. |
+        `--- ---'                           `--- ---'
+      '';
+    };
+
+
     # openssl rand -hex 4
     networking.hostId = "cf97b6ff";
 
@@ -49,7 +67,7 @@
     };
   };
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${config.hostSpecification.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only

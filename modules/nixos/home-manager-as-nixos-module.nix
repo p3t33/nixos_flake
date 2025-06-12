@@ -18,9 +18,11 @@
     extraSpecialArgs = {
       inherit inputs;
       inherit machineName;
+      hostSpecification = config.hostSpecification;
+      userDefinedGlobalVariables = config.userDefinedGlobalVariables;
     };
-    users.${config.userDefinedGlobalVariables.primeUsername} =
-      import config.userDefinedGlobalVariables.home_manger_import_path;
+    users.${config.hostSpecification.primeUsername} =
+      import config.userDefinedGlobalVariables.homeMangerImportPath;
     # will be available to all users managed by home manager
     sharedModules = [
       # allows to use sops-nix subset of NixOS module.

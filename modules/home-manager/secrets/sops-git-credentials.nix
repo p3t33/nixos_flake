@@ -1,7 +1,7 @@
-{ config, ... }:
+{ config, userDefinedGlobalVariables, ... }:
 {
   sops = {
-    age.keyFile = config.userDefinedGlobalVariables.sopsKeyPath;
+    age.keyFile = userDefinedGlobalVariables.sopsKeyPath;
     secrets.git = { };
   };
 }

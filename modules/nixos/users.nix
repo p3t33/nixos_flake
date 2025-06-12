@@ -5,7 +5,7 @@
   programs.zsh.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${config.hostSpecification.primeUsername} = {
     isNormalUser = true;
     # The hash, as a string or as a file need to be sutiable for the chpasswd -e command
     # which means that at least at the moment argon2 will not work for now.
@@ -15,7 +15,7 @@
     #
     # By default Yescrypt is used for hasing.
     hashedPasswordFile = config.sops.secrets.initial_hashed_password.path;
-    description = config.userDefinedGlobalVariables.primeUsername;
+    description = config.hostSpecification.primeUsername;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -23,15 +23,15 @@
     packages = with pkgs; [ ];
   };
 
-  users.groups.${config.userDefinedGlobalVariables.primeUsername} = {
-    members = [ config.userDefinedGlobalVariables.primeUsername ];
+  users.groups.${config.hostSpecification.primeUsername} = {
+    members = [ config.hostSpecification.primeUsername ];
   };
 
   users.groups.${config.userDefinedGlobalVariables.mediaGroup} = {
-    members = [ config.userDefinedGlobalVariables.primeUsername ];
+    members = [ config.hostSpecification.primeUsername ];
   };
 
   users.groups.${config.userDefinedGlobalVariables.dataGroup} = {
-    members = [ config.userDefinedGlobalVariables.primeUsername ];
+    members = [ config.hostSpecification.primeUsername ];
   };
 }

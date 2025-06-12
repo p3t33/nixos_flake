@@ -8,6 +8,7 @@
 
   imports = [
     ../../modules/meta.nix
+    ../../modules/common/host-specification.nix
     ./sops-home.nix
     ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
     ../../modules/home-manager/starship.nix

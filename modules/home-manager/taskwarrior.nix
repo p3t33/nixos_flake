@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, hostSpecification, ... }:
 {
   home.packages = with pkgs; [ taskwarrior-tui ];
   programs.taskwarrior = {
@@ -6,7 +6,7 @@
     package = pkgs.taskwarrior3;
 
     # Will be used to sync data across devices
-    dataLocation = "${config.userDefinedGlobalVariables.syncthing.syncDir}/taskwarrior_data/task";
+    dataLocation = "${hostSpecification.syncthing.syncDir}/taskwarrior_data/task";
 
     config = {
       weekstart = "Sunday";

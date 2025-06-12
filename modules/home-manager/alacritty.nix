@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ userDefinedGlobalVariables, pkgs, ... }:
 {
 
   home.packages = with pkgs; [
@@ -12,15 +12,15 @@
       font = {
         size = 16;
         normal = {
-          family = config.userDefinedGlobalVariables.font.mono;
+          family = userDefinedGlobalVariables.font.mono;
           style = "Regular";
         };
         bold = {
-          family = config.userDefinedGlobalVariables.font.mono;
+          family = userDefinedGlobalVariables.font.mono;
           style = "Bold";
         };
         italic = {
-          family = config.userDefinedGlobalVariables.font.mono;
+          family = userDefinedGlobalVariables.font.mono;
           style = "Italic";
         };
       };

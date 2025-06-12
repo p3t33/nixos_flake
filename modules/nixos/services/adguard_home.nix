@@ -28,91 +28,91 @@ in
           [ ]
           ++ lib.optionals config.services.deluge.enable [
             {
-              domain = "deluge.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "deluge.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.syncthing.enable [
             {
-              domain = "syncthing.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "syncthing.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.adguardhome.enable [
             {
-              domain = "adguard.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "adguard.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.sonarr.enable [
             {
-              domain = "sonarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "sonarr.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.bazarr.enable [
             {
-              domain = "bazarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "bazarr.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.readarr.enable [
             {
-              domain = "readarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "readarr.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.radarr.enable [
             {
-              domain = "radarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "radarr.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.prowlarr.enable [
             {
-              domain = "prowlarr.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "prowlarr.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.jackett.enable [
             {
-              domain = "jackett.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "jackett.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.jellyfin.enable [
             {
-              domain = "jellyfin.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "jellyfin.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.calibre-web.enable [
             {
-              domain = "calibre-web.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "calibre-web.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.homepage-dashboard.enable [
             {
-              domain = "homepage.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "homepage.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.prometheus.enable [
             {
-              domain = "prometheus.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "prometheus.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.sabnzbd.enable [
             {
-              domain = "sabnzbd.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "sabnzbd.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ]
           ++ lib.optionals config.services.grafana.enable [
             {
-              domain = "grafana.${config.userDefinedGlobalVariables.hostConfigurationName}";
+              domain = "grafana.${config.hostSpecification.hostConfigurationName}";
               answer = "${config.userDefinedGlobalVariables.homeLabIP}";
             }
           ];
