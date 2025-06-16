@@ -21,8 +21,8 @@
       inherit machineName;
       inherit hostSpecific;
     };
-    users.${hostSpecific.primeUsername} =
-      import config.userDefinedGlobalVariables.home_manger_import_path;
+
+    users.${hostSpecific.primeUsername} = import "${inputs.self}/machines/${hostSpecific.hostName}/home.nix";
     # will be available to all users managed by home manager
     sharedModules = [
       # allows to use sops-nix subset of NixOS module.

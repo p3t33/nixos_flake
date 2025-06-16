@@ -158,12 +158,6 @@
         description = "Defines the primary user's home directory";
       };
 
-      home_manger_import_path = lib.mkOption {
-        default = ../machines/${hostSpecific.hostName}/home.nix;
-        type = lib.types.path;
-        description = "The relative path inside the repository to the home configuration file";
-      };
-
       secretsPath = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/secrets;
         type = lib.types.path;
