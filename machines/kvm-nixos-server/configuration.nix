@@ -1,5 +1,6 @@
 {
   config,
+  hostSpecific,
   ...
 }:
 {
@@ -31,11 +32,17 @@
     ../../modules/nixos/motd.nix
   ];
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  customOptions = {
+    systemStateVersion = "25.05";
+    motd = ''
+      __  powered by NixOS              __
+     |  |--.--.--.--------.______.-----|__.--.--.-----.-----.______.-----.-----.----.--.--.-----.----.
+     |    <|  |  |        |______|     |  |_   _|  _  |__ --|______|__ --|  -__|   _|  |  |  -__|   _|
+     |__|__|\___/|__|__|__|      |__|__|__|__.__|_____|_____|      |_____|_____|__|  \___/|_____|__|
+    '';
+  };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  system.stateVersion = "25.05";
 
   # Configure keymap in X11
   services.xserver = {
@@ -45,7 +52,7 @@
     };
   };
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${hostSpecific.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
@@ -54,26 +61,6 @@
     ];
   };
 
-  # users.users.root.openssh.authorizedKeys.keys = [
-  #     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINs6NNbZ6EaU1x7cem1zqhDYubadH5Uww+K28e6GOmiY Motorola no password"
-  # ];
-
   # Enable automatic login for the user.
-  services.getty.autologinUser = config.userDefinedGlobalVariables.primeUsername;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  services.getty.autologinUser = hostSpecific.primeUsername;
 }

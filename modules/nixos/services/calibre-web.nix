@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 
 let
-  calibreLibraryPath = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/calibre";
+  calibreLibraryPath = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/calibre";
   dummyBookPath = "/tmp/calibre_dummy_book.txt";
 in
 {
@@ -12,7 +12,7 @@ in
 
   # create directory for calibre database if it does not exist yet.
   systemd.tmpfiles.rules = [
-    "d ${calibreLibraryPath} 0770 ${config.services.calibre-web.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${calibreLibraryPath} 0770 ${config.services.calibre-web.user} ${config.customGlobalOptions.mediaGroup} -"
   ];
 
   # Create a database for calibre if it does not exist yet.
@@ -28,9 +28,9 @@ in
       enable = true;
       package = pkgs.calibre-web;
       user = "calibre-web";
-      group = config.userDefinedGlobalVariables.mediaGroup;
+      group = config.customGlobalOptions.mediaGroup;
       listen = {
-        ip = "${config.userDefinedGlobalVariables.anyIPv4}";
+        ip = "${config.customGlobalOptions.anyIPv4}";
         port = 8083;
       };
       openFirewall = true;

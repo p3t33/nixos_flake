@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -35,6 +35,26 @@
     ../../modules/nixos/networking/usb0.nix
   ];
 
+  customOptions = {
+    nvidiaHybridWithIntel = {
+      nvidiaBusId = "PCI:01:00:0";
+      intelBusId = "PCI:00:02:0";
+    };
+
+    systemStateVersion = "24.05";
+    syncthing = {
+      devicesToShareTaskWarriorFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.home-desktop}"
+      ];
+
+      devicesToShareDevResourcesFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.home-desktop}"
+      ];
+    };
+  };
+
   # As the intel GPU in this machine is too new to be officially supported by the i915 driver
   # it needs to be forced, if this is not done the main gpu won't work and this will cause bunch
   # of bad things, including the external monitors connected via the dock not to work.
@@ -42,31 +62,10 @@
     "i915.force_probe=7d55"
   ];
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     moolticute
     syncthing
     git-review # cli tool to interact with gerrit.
     vim
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 }

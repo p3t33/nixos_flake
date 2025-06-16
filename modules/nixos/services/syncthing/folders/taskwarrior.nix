@@ -8,9 +8,9 @@ in
       folders = {
         "${taskwarrior}" = {
           id = "${taskwarrior}";
-          path = "${config.userDefinedGlobalVariables.syncthing.syncDir}/${taskwarrior}_data";
-          devices = config.userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith;
-          versioning = config.userDefinedGlobalVariables.syncthing.simpleFileVersioningForBackUpMachinesOnly;
+          path = "${config.customOptions.syncthing.syncDir}/${taskwarrior}_data";
+          devices = config.customOptions.syncthing.devicesToShareTaskWarriorFolderWith;
+          versioning = config.customOptions.syncthing.simpleFileVersioningForBackUpMachinesOnly;
         };
       };
     };

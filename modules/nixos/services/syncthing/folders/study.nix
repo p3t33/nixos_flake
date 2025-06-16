@@ -8,9 +8,9 @@ in
       folders = {
         "${study}" = {
           id = "${study}";
-          path = "${config.userDefinedGlobalVariables.syncthing.syncDir}/${study}";
-          devices = config.userDefinedGlobalVariables.syncthing.devicesToShareStudyFolderWith;
-          versioning = config.userDefinedGlobalVariables.syncthing.simpleFileVersioningForBackUpMachinesOnly;
+          path = "${config.customOptions.syncthing.syncDir}/${study}";
+          devices = config.customOptions.syncthing.devicesToShareStudyFolderWith;
+          versioning = config.customOptions.syncthing.simpleFileVersioningForBackUpMachinesOnly;
         };
       };
     };

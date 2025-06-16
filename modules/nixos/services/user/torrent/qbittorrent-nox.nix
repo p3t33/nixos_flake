@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  hostSpecific,
   ...
 }:
 let
@@ -34,7 +35,7 @@ in
   config = lib.mkIf cfg.enable {
     users.users.qbittorrent = {
       isSystemUser = true;
-      group = "${config.userDefinedGlobalVariables.mediaGroup}";
+      group = "${config.customGlobalOptions.mediaGroup}";
       home = cfg.dataDir;
       homeMode = "777";
       createHome = true;
@@ -42,7 +43,7 @@ in
     };
 
     users.groups.qbittorrent = { };
-    users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+    users.users.${hostSpecific.primeUsername} = {
       extraGroups = [ "qbittorrent" ];
     };
 

@@ -32,7 +32,7 @@
     extraConfig = {
 
       core = {
-        editor = "${config.userDefinedGlobalVariables.editor}";
+        editor = "${config.home.sessionVariables.EDITOR}";
       };
 
       pull = {

@@ -52,14 +52,14 @@
       };
 
       # sonarr metrics
-      exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
-        enable = true;
-        url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
-        port = 9707;
-        apiKeyFile = config.sops.secrets."sonarr/apiKey".path;
-        openFirewall = true;
-      };
-
+      # exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
+      #   enable = true;
+      #   url = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
+      #   port = 9707;
+      #   apiKeyFile = config.sops.secrets."sonarr/apiKey".path;
+      #   openFirewall = true;
+      # };
+      #
     };
 
     # responsible to scrape the data from the exporters.
@@ -71,12 +71,12 @@
           metrics_path = "/probe";
           params.module = [ "http_2xx" ];
           static_configs = [{
-              targets = [ "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr" ];
+              targets = [ "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr" ];
           }];
           relabel_configs = [
           { source_labels = [ "__address__" ]; target_label = "__param_target"; }
           { source_labels = [ "__param_target" ]; target_label = "instance"; }
-          { target_label = "__address__"; replacement = "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.blackbox.port}"; }
+          { target_label = "__address__"; replacement = "${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.blackbox.port}"; }
           ];
         }
       ]
@@ -84,20 +84,20 @@
       ++ lib.optionals config.services.prometheus.exporters.exportarr-sonarr.enable [
         {
           job_name = "sonarr";
-          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.exportarr-sonarr.port}" ]; }];
+          static_configs = [{ targets = [ "${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.exportarr-sonarr.port}" ]; }];
         }
       ]
       ++ lib.optionals config.services.prometheus.exporters.node.enable [
         {
           job_name = "node_exporter";
-          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.node.port}" ]; }];
+          static_configs = [{ targets = [ "${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.prometheus.exporters.node.port}" ]; }];
         }
       ]
       ++ lib.optionals config.services.restic.server.enable [
         {
           job_name = "restic";
           metrics_path = "/metrics";
-          static_configs = [{ targets = [ "${config.userDefinedGlobalVariables.localHostIPv4}:9005" ]; }];
+          static_configs = [{ targets = [ "${config.customGlobalOptions.localHostIPv4}:9005" ]; }];
         }
       ];
   };

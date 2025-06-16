@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 {
@@ -37,17 +38,29 @@
     ../../modules/nixos/dconf.nix
   ];
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  customOptions = {
+    systemStateVersion = "24.05";
+    syncthing = {
+      devicesToShareTaskWarriorFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.work-pc}"
+      ];
+      devicesToShareDevResourcesFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.work-pc}"
+      ];
+      devicesToShareDatabaseFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+      ];
+      devicesToShareDocumentsFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+      ];
+      devicesToShareStudyFolderWith = [
+        "${config.customOptions.syncthing.devices.homelab}"
+      ];
+    };
+  };
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
 
     signal-desktop
@@ -59,20 +72,4 @@
     calibre
     alacritty
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 }

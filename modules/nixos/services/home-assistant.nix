@@ -17,20 +17,21 @@
         aiohttp-fast-zlib
         isal
     ];
+
    openFirewall = true;
-      enable = true;
-      # only install components but does not enable them.
-      extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
-      config = {
-        homeassistant = {
+    enable = true;
+    # only install components but does not enable them.
+    extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
+    config = {
+      homeassistant = {
         name = "Home";
         unit_system = "metric";
-        time_zone = "${config.userDefinedGlobalVariables.timeZone}";
+        time_zone = "${config.time.timeZone}";
         temperature_unit = "C";
       };
       http = {
-        server_host = "${config.userDefinedGlobalVariables.anyIPv4}";
-        server_port = config.userDefinedGlobalVariables.servicePort.homeAssistant;
+        server_host = "${config.customGlobalOptions.anyIPv4}";
+        server_port = 8123;
       };
     };
   };

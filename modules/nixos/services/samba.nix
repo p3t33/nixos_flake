@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, hostSpecific, ... }:
 {
   sops.secrets.smbpasswd = {};
 
@@ -20,10 +20,10 @@
 
       # [private] section in a traditional smb.conf.
       private = {
-          path = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/torrents";
+          path = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents";
           browseable = "yes";
           "guest ok" = "no";
-          "valid users" = "${config.userDefinedGlobalVariables.primeUsername}";
+          "valid users" = "${hostSpecific.primeUsername}";
           "read only" = "yes";
       };
     };
@@ -63,7 +63,7 @@
     deps = [ "setupSecrets" ];
 
     text = ''
-      if ! ${pkgs.samba}/bin/pdbedit -L | grep -q '^${config.userDefinedGlobalVariables.primeUsername}:'; then
+      if ! ${pkgs.samba}/bin/pdbedit -L | grep -q '^${hostSpecific.primeUsername}:'; then
         ${pkgs.samba}/bin/pdbedit \
           -i smbpasswd:${config.sops.secrets.smbpasswd.path} \
           -e tdbsam:/var/lib/samba/private/passdb.tdb

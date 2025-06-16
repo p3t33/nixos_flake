@@ -41,7 +41,7 @@
       ;; This sets the default font on all graphical frames created after restarting Emacs.
       ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
       ;; are not right unless I also add this method of setting the default font.
-      (add-to-list 'default-frame-alist '(font . "${config.userDefinedGlobalVariables.font.mono}-16"))
+      (add-to-list 'default-frame-alist '(font . "${config.customGlobalOptions.font.mono}-16"))
       ;;================================
 
       ;; When used by other plugins, can hide thier

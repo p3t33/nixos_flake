@@ -1,11 +1,11 @@
-{ pkgs, config, ... }:
+{ pkgs, config, hostSpecific, ... }:
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # Since 23.05 there will be a failed assertion if zsh is not enabled here.
   programs.zsh.enable = true;
 
   users.defaultUserShell = pkgs.zsh;
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${hostSpecific.primeUsername} = {
     isNormalUser = true;
     # The hash, as a string or as a file need to be sutiable for the chpasswd -e command
     # which means that at least at the moment argon2 will not work for now.
@@ -15,7 +15,7 @@
     #
     # By default Yescrypt is used for hasing.
     hashedPasswordFile = config.sops.secrets.initial_hashed_password.path;
-    description = config.userDefinedGlobalVariables.primeUsername;
+    description = hostSpecific.primeUsername;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -23,15 +23,15 @@
     packages = with pkgs; [ ];
   };
 
-  users.groups.${config.userDefinedGlobalVariables.primeUsername} = {
-    members = [ config.userDefinedGlobalVariables.primeUsername ];
+  users.groups.${hostSpecific.primeUsername} = {
+    members = [ hostSpecific.primeUsername ];
   };
 
-  users.groups.${config.userDefinedGlobalVariables.mediaGroup} = {
-    members = [ config.userDefinedGlobalVariables.primeUsername ];
+  users.groups.${config.customGlobalOptions.mediaGroup} = {
+    members = [ hostSpecific.primeUsername ];
   };
 
-  users.groups.${config.userDefinedGlobalVariables.dataGroup} = {
-    members = [ config.userDefinedGlobalVariables.primeUsername ];
+  users.groups.${config.customGlobalOptions.dataGroup} = {
+    members = [ hostSpecific.primeUsername ];
   };
 }

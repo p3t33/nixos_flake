@@ -1,6 +1,6 @@
-{ config, ... }:
+{ config, inputs, hostSpecific, ... }:
 {
-  sops.defaultSopsFile = config.userDefinedGlobalVariables.NixOSDefaultSecretsPath;
+  sops.defaultSopsFile = inputs.self + "/machines/${hostSpecific.hostName}/secrets/nixos/secrets.yaml";
   sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = config.userDefinedGlobalVariables.sopsKeyPath;
+  sops.age.keyFile = config.customGlobalOptions.sopsKeyPath;
 }

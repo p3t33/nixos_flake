@@ -9,7 +9,7 @@ in
     enable = true;
     openFirewall = true; # Opens Sonarr's port on the firewall (default 8989)
     user = "${serviceName}";
-    group = "${config.userDefinedGlobalVariables.mediaGroup}";
+    group = "${config.customGlobalOptions.mediaGroup}";
     settings = {
         server = {
           port = 7878;

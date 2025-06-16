@@ -7,7 +7,7 @@
     settings = {
         users.home_page = "/d/home-dashboard";
         server = {
-          http_addr = "${config.userDefinedGlobalVariables.anyIPv4}";
+          http_addr = "${config.customGlobalOptions.anyIPv4}";
           http_port = 3001;
        };
     };
@@ -38,7 +38,7 @@
           {
             name = "Loki";
             type = "loki";
-            url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.loki.configuration.server.http_listen_port}";
+            url = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.loki.configuration.server.http_listen_port}";
             access = "proxy";
             jsonData = {
               maxLines = 1000;

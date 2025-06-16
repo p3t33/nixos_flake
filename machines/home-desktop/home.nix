@@ -1,8 +1,11 @@
+{ config, ... }:
 {
   imports = [
     ./sops-home.nix
     ../../modules/meta.nix
     ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
+    ../../modules/home-manager/custom-global-options/colors.nix
+    ../../modules/home-manager/session-variables.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/fzf.nix
     ../../modules/home-manager/neovim/neovim.nix
@@ -41,4 +44,9 @@
     ../../modules/home-manager/yazi.nix
     ../../modules/home-manager/ghostty.nix
   ];
+
+  customOptions = {
+      wallpaperName = "crane_at_night.png";
+      sshPublicKey = config.customGlobalOptions.sshPublicKeys.home-desktop.key;
+  };
 }

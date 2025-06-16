@@ -27,7 +27,7 @@ in
       storage = {
         type = "postgres";
         # passwrod for gatus postgresql database is stored inside of environmentFile provided to the gatus service.
-        path = "postgres://${config.systemd.services.gatus.serviceConfig.User}:\${GATUS_DB_PASSWORD}@${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.postgresql.settings.port}/${config.systemd.services.gatus.serviceConfig.User}?sslmode=disable";
+        path = "postgres://${config.systemd.services.gatus.serviceConfig.User}:\${GATUS_DB_PASSWORD}@${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.postgresql.settings.port}/${config.systemd.services.gatus.serviceConfig.User}?sslmode=disable";
         caching = true;
         maximum-number-of-results = 800;
         maximum-number-of-events = 50;
@@ -45,7 +45,7 @@ in
       };
 
       web = {
-        address = "${config.userDefinedGlobalVariables.anyIPv4}"; # Listen on all interfaces
+        address = "${config.customGlobalOptions.anyIPv4}"; # Listen on all interfaces
         port = 8081;
         root = "/gatus";
       };
@@ -72,7 +72,7 @@ in
         {
           name = "sshd";
           group = "${remoteAccess}";
-          url = "tcp://${config.userDefinedGlobalVariables.localHostIPv4}:22";
+          url = "tcp://${config.customGlobalOptions.localHostIPv4}:22";
           interval = "30s";
           conditions = [
             "[CONNECTED] == true"
@@ -93,7 +93,7 @@ in
         {
           name = "calibre-web";
           group = "${media}";
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.calibre-web.listen.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.calibre-web.listen.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [
@@ -111,7 +111,7 @@ in
         {
           name = "deluge";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.deluge.web.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.deluge.web.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -127,7 +127,7 @@ in
         {
           name = "sabnzbd";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.userDefinedGlobalVariables.servicePort.sabnzbd}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.customOptions.servicePort.sabnzbd}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -143,7 +143,7 @@ in
         {
           name = "bazarr";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.bazarr.listenPort}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.bazarr.listenPort}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -159,7 +159,7 @@ in
         {
           name = "sonarr";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.sonarr.settings.server.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.sonarr.settings.server.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -175,7 +175,7 @@ in
         {
           name = "readarr";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.readarr.settings.server.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.readarr.settings.server.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -191,7 +191,7 @@ in
         {
           name = "radarr";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.radarr.settings.server.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.radarr.settings.server.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -207,7 +207,7 @@ in
         {
           name = "prowlarr";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -223,7 +223,7 @@ in
         {
           name = "jackett";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.jackett.port}/favicon.ico";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.jackett.port}/favicon.ico";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -239,7 +239,7 @@ in
         {
           name = "jellyfin";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.customOptions.servicePort.jellyfin}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -255,7 +255,7 @@ in
         {
           name = "prometheus";
           group = monitoring;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.prometheus.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.prometheus.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -271,7 +271,7 @@ in
         {
           name = "grafana";
           group = monitoring;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.grafana.settings.server.http_port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.grafana.settings.server.http_port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -287,7 +287,7 @@ in
         {
           name = "syncthing";
           group = files;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.userDefinedGlobalVariables.syncthing.httpPort}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.customOptions.syncthing.httpPort}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{
@@ -303,7 +303,7 @@ in
         {
           name = "adguard";
           group = filtering;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.services.adguardhome.port}";
+          url = "http://${config.customGlobalOptions.localHostIPv4}:${toString config.services.adguardhome.port}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{

@@ -12,15 +12,15 @@
       font = {
         size = 16;
         normal = {
-          family = config.userDefinedGlobalVariables.font.mono;
+          family = config.customGlobalOptions.font.mono;
           style = "Regular";
         };
         bold = {
-          family = config.userDefinedGlobalVariables.font.mono;
+          family = config.customGlobalOptions.font.mono;
           style = "Bold";
         };
         italic = {
-          family = config.userDefinedGlobalVariables.font.mono;
+          family = config.customGlobalOptions.font.mono;
           style = "Italic";
         };
       };

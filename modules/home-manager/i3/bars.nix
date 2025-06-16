@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
 
@@ -16,25 +16,25 @@
       # generate a config file for i3status to look at.
       statusCommand = "${pkgs.i3status}/bin/i3status";
       colors = {
-        background = config.userDefinedGlobalVariables.colors.bg;
+        background = config.customGlobalOptions.colors.bg;
         separator = "#757575";
 
         focusedWorkspace = {
-          border = config.userDefinedGlobalVariables.colors.bg;
-          background = config.userDefinedGlobalVariables.colors.bg;
-          text = config.userDefinedGlobalVariables.colors.text;
+          border = config.customGlobalOptions.colors.bg;
+          background = config.customGlobalOptions.colors.bg;
+          text = config.customGlobalOptions.colors.text;
         };
 
         inactiveWorkspace = {
-          border = config.userDefinedGlobalVariables.colors.inactive-bg;
-          background = config.userDefinedGlobalVariables.colors.inactive-bg;
-          text = config.userDefinedGlobalVariables.colors.inactive-text;
+          border = config.customGlobalOptions.colors.inactive-bg;
+          background = config.customGlobalOptions.colors.inactive-bg;
+          text = config.customGlobalOptions.colors.inactive-text;
         };
 
         urgentWorkspace = {
-          border = config.userDefinedGlobalVariables.colors.urgent-bg;
-          background = config.userDefinedGlobalVariables.colors.urgent-bg;
-          text = config.userDefinedGlobalVariables.colors.text;
+          border = config.customGlobalOptions.colors.urgent-bg;
+          background = config.customGlobalOptions.colors.urgent-bg;
+          text = config.customGlobalOptions.colors.text;
         };
 
       };

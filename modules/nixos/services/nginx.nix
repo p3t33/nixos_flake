@@ -1,13 +1,14 @@
 {
   config,
   lib,
+  hostSpecific,
   ...
 }:
 let
   httpPort = 80;
   httpsPort = 443;
   allInterfaces = "0.0.0.0";
-  localHost = "http://${builtins.toString config.userDefinedGlobalVariables.localHostIPv4}";
+  localHost = "http://${builtins.toString config.customGlobalOptions.localHostIPv4}";
 in
 {
   services.nginx = {
@@ -19,7 +20,7 @@ in
     recommendedTlsSettings = true;
 
     virtualHosts = {
-      "${config.userDefinedGlobalVariables.homeLabIP}" = {
+      "${config.customGlobalOptions.${hostSpecific.hostName}.ip}" = {
         listen = [
           {
             addr = "${allInterfaces}"; # Listen on all available network interfaces
@@ -31,7 +32,7 @@ in
         locations = lib.recursiveUpdate { } (
           lib.optionalAttrs config.services.syncthing.enable {
             "/syncthing/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}/";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.syncthing.httpPort}/";
               extraConfig = ''
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;
@@ -134,7 +135,7 @@ in
           }
           // lib.optionalAttrs config.services.sabnzbd.enable {
             "/sabnzbd/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}/sabnzbd/";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.sabnzbd}/sabnzbd/";
               extraConfig = ''
                   proxy_set_header X-Forwarded-Host $host;
               proxy_set_header X-Forwarded-Server $host;
@@ -147,7 +148,7 @@ in
 }
           // lib.optionalAttrs config.services.jellyfin.enable {
             "/jellyfin" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.jellyfin}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -173,7 +174,7 @@ in
       };
 
       # Conditionally add virtual hosts based on enabled services
-      "deluge.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "deluge.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.deluge.enable
           {
             listen = [
@@ -191,7 +192,7 @@ in
             };
           };
 
-      "adguard.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "adguard.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.adguardhome.enable
           {
             listen = [
@@ -205,7 +206,7 @@ in
             };
           };
 
-      "sabnzbd.${config.userDefinedGlobalVariables.hostConfigurationName}" = lib.optionalAttrs config.services.sabnzbd.enable {
+      "sabnzbd.${hostSpecific.hostName}" = lib.optionalAttrs config.services.sabnzbd.enable {
         listen = [
         {
           addr = allInterfaces;
@@ -213,7 +214,7 @@ in
         }
         ];
         locations."/" = {
-          proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}/sabnzbd/";
+          proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.sabnzbd}/sabnzbd/";
           extraConfig = ''
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
@@ -225,7 +226,7 @@ in
       };
 
 
-      "syncthing.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "syncthing.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.syncthing.enable
           {
             listen = [
@@ -235,7 +236,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.syncthing.httpPort}/";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.syncthing.httpPort}/";
               extraConfig = ''
                 proxy_read_timeout 600s;
                 proxy_send_timeout 600s;
@@ -244,7 +245,7 @@ in
           };
 
       # Add Sonarr Virtual Host
-      "sonarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "sonarr.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.sonarr.enable
           {
             listen = [
@@ -264,7 +265,7 @@ in
             };
           };
 
-      "bazarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "bazarr.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.bazarr.enable
           {
             listen = [
@@ -284,7 +285,7 @@ in
             };
           };
 
-      "readarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "readarr.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.readarr.enable
           {
             listen = [
@@ -304,7 +305,7 @@ in
             };
           };
 
-      "radarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "radarr.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.radarr.enable
           {
             listen = [
@@ -324,7 +325,7 @@ in
             };
           };
 
-      "prowlarr.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "prowlarr.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.prowlarr.enable
           {
             listen = [
@@ -344,7 +345,7 @@ in
             };
           };
 
-      "jackett.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "jackett.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.jackett.enable
           {
             listen = [
@@ -364,7 +365,7 @@ in
             };
           };
 
-    "calibre-web.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+    "calibre-web.${hostSpecific.hostName}" =
       lib.optionalAttrs config.services.calibre-web.enable
         {
           listen = [
@@ -387,7 +388,7 @@ in
         };
 
 
-      "jellyfin.${config.userDefinedGlobalVariables.hostConfigurationName}" =
+      "jellyfin.${hostSpecific.hostName}" =
         lib.optionalAttrs config.services.jellyfin.enable
           {
             listen = [
@@ -397,7 +398,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.jellyfin}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -407,7 +408,7 @@ in
             };
           };
 
-      "homepage.${config.userDefinedGlobalVariables.hostConfigurationName}" = {
+      "homepage.${hostSpecific.hostName}" = {
         listen = [
           {
             addr = "${allInterfaces}";
@@ -425,7 +426,7 @@ in
           '';
         };
       };
-      "prometheus.${config.userDefinedGlobalVariables.hostConfigurationName}" = {
+      "prometheus.${hostSpecific.hostName}" = {
         listen = [
         {
             addr = "${allInterfaces}";

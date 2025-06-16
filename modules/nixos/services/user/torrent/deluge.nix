@@ -2,7 +2,7 @@
 {
   services.deluge = {
     enable = true;
-    group = "${config.userDefinedGlobalVariables.mediaGroup}";
+    group = "${config.customGlobalOptions.mediaGroup}";
     # Only works when declarative = true and only for non random ports.
     openFirewall = true;
     web = {
@@ -23,7 +23,7 @@
     config = {
       # /mnt/media is a mount point with defined owner, and permissions
       # so I was getting warning when NixOS was switching.
-      download_location = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/torrents";
+      download_location = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents";
       max_active_seeding = 200;
       max_active_downloading = 200;
       max_active_limit = 200;
@@ -59,7 +59,7 @@
 
   sops.secrets.deluge_auth_file = {
     mode = "0660";
-    group = "${config.userDefinedGlobalVariables.mediaGroup}";
+    group = "${config.customGlobalOptions.mediaGroup}";
   };
 
 }
