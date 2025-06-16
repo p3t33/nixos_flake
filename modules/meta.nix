@@ -25,12 +25,6 @@
         description = "List of font packages to be used";
       };
 
-      neovimCustomDictionaryPathrelativeToHomeDirectory = lib.mkOption {
-        default = ".config/nvim/spell/nixen.utf-8";
-        type = lib.types.str;
-        description = "Defines the relative path to dictionary";
-      };
-
       homeManagerStateVersion = lib.mkOption {
         default = "24.05";
         type = lib.types.str;

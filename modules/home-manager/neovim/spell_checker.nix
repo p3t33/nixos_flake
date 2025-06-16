@@ -1,4 +1,7 @@
 { config, ... }:
+let
+  neovimCustomDictionaryPathrelativeToHomeDirectory = ".config/nvim/spell/nixen.utf-8";
+in
 {
   config.programs.neovim.extraLuaConfig = ''
     -- ----------------------------------------------------------
@@ -6,12 +9,12 @@
     -- ----------------------------------------------------------
     -- Define the custom command for nixen spell file compilation
     vim.api.nvim_create_user_command('MakeNixSpell', function()
-            vim.cmd('mkspell! ~/${config.userDefinedGlobalVariables.neovimCustomDictionaryPathrelativeToHomeDirectory}.spl ~/${config.userDefinedGlobalVariables.neovimCustomDictionaryPathrelativeToHomeDirectory}.add')
+            vim.cmd('mkspell! ~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.spl ~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.add')
             end, {})
 
     local function compile_nix_spell_file_if_needed()
-        local spellfile = vim.fn.expand("~/${config.userDefinedGlobalVariables.neovimCustomDictionaryPathrelativeToHomeDirectory}.spl")
-        local addfile = vim.fn.expand("~/${config.userDefinedGlobalVariables.neovimCustomDictionaryPathrelativeToHomeDirectory}.add")
+        local spellfile = vim.fn.expand("~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.spl")
+        local addfile = vim.fn.expand("~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.add")
 
         if vim.fn.filereadable(addfile) == 0 then
         return
@@ -56,7 +59,7 @@
   config = {
     home.file = {
       # Use the nested config.global.neovimCustomDictionaryPathrelativeToHomeDirectory directly
-      "${config.userDefinedGlobalVariables.neovimCustomDictionaryPathrelativeToHomeDirectory}.add".text =
+      "${neovimCustomDictionaryPathrelativeToHomeDirectory}.add".text =
         ''
           tmux
           Tmux
