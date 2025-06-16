@@ -36,12 +36,17 @@
   ];
 
   customOptions = {
-   systemStateVersion = "24.05";
+    nvidiaHybridWithIntel = {
+      nvidiaBusId = "PCI:01:00:0";
+      intelBusId = "PCI:00:02:0";
+    };
+
+    systemStateVersion = "24.05";
     syncthing = {
       devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"
         "${config.userDefinedGlobalVariables.machines.home-desktop}"
-       ];
+      ];
 
       devicesToShareDevResourcesFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"

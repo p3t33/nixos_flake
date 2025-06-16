@@ -232,15 +232,6 @@
         description = "Fonts to be used on the system";
       };
 
-      nvidiaHybridWithIntel = lib.mkOption {
-        default = {
-          nvidiaBusId = "";
-          intelBusId = "";
-        };
-        type = lib.types.attrsOf lib.types.str;
-        description = "Bus IDs for Nvidia Hybrid with Intel setup";
-      };
-
       colors = lib.mkOption {
         default = {
           background = "#312f2f";
@@ -395,8 +386,6 @@
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc
       }";
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
-      userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
-      userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
