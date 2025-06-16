@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   imports = [
     ./sops-home.nix
@@ -41,4 +42,9 @@
     ../../modules/home-manager/yazi.nix
     ../../modules/home-manager/ghostty.nix
   ];
+
+  customOptions = {
+      wallpaperName = "crane_at_night.png";
+  };
+
 }

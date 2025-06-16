@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   imports = [
     ./sops-home.nix
@@ -43,4 +44,9 @@
     ../../modules/home-manager/yazi.nix
     ../../modules/home-manager/ghostty.nix
   ];
+
+  customOptions = {
+      wallpaperName = "watchtower.png";
+  };
+
 }

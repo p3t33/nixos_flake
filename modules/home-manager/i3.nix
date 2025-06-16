@@ -67,7 +67,7 @@ in
         }
         # wallpaper.
         {
-          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.userDefinedGlobalVariables.wallpaperOut} --head=-1";
+          command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.customOptions.wallpaperOut} --head=-1";
           always = true;
           notification = false;
         }

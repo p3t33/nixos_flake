@@ -157,24 +157,6 @@
         description = "Defines the primary user's home directory";
       };
 
-      wallpaperName = lib.mkOption {
-        default = "watchtower.png";
-        type = lib.types.str;
-        description = "The name of the wallpaper file";
-      };
-
-      wallpaperOut = lib.mkOption {
-        default = "wallpaper/${config.userDefinedGlobalVariables.wallpaperName}";
-        type = lib.types.str;
-        description = "Defines the path where the wallpaper will be located";
-      };
-
-      wallpaperIn = lib.mkOption {
-        default = ../wallpaper/${config.userDefinedGlobalVariables.wallpaperName};
-        type = lib.types.path;
-        description = "The relative path to the wallpaper file inside the repository";
-      };
-
       home_manger_import_path = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/home.nix;
         type = lib.types.path;
@@ -379,11 +361,6 @@
     # Machine-specific configurations
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
-      userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
-      userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {

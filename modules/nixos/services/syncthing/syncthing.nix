@@ -1,19 +1,19 @@
 {
   config,
   lib,
-  machineName,
+  hostSpecific,
   ...
 }:
 {
   imports =
     [ ]
-    ++ lib.optionals (machineName == "work-pc") [
+    ++ lib.optionals (hostSpecific.hostName == "work-pc") [
       ./devices/homelab.nix
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
     ]
-    ++ lib.optionals (machineName == "home-desktop") [
+    ++ lib.optionals (hostSpecific.hostName == "home-desktop") [
       ./devices/work_laptop.nix
       ./devices/homelab.nix
       ./folders/taskwarrior.nix
@@ -22,7 +22,7 @@
       ./folders/documents.nix
       ./folders/study.nix
     ]
-    ++ lib.optionals (machineName == "homelab") [
+    ++ lib.optionals (hostSpecific.hostName == "homelab") [
       ./devices/work_laptop.nix
       ./devices/home-desktop.nix
       ./folders/taskwarrior.nix
