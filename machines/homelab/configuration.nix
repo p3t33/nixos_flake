@@ -33,6 +33,43 @@
     ../../modules/nixos/motd.nix
   ];
 
+    customOptions = {
+      syncthing = {
+        syncDir = "/mnt/data/Sync";
+        user = "syncthing";
+        simpleFileVersioningForBackUpMachinesOnly = {
+          type = "simple";
+          params = {
+            keep = "5";
+            cleanoutDays = "10";
+          };
+          cleanupIntervalS = 3600;
+        };
+
+        devicesToShareTaskWarriorFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.work-pc}"
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+         ];
+
+        devicesToShareDevResourcesFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.work-pc}"
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        ];
+
+        devicesToShareDatabaseFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        ];
+
+        devicesToShareDocumentsFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        ];
+
+        devicesToShareStudyFolderWith = [
+          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+        ];
+      };
+    };
+
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.
   systemd.tmpfiles.rules = [
     "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"

@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }:
 {
@@ -37,6 +38,27 @@
     ../../modules/nixos/dconf.nix
   ];
 
+  customOptions = {
+    syncthing = {
+      devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+      ];
+      devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.work-pc}"
+      ];
+      devicesToShareDatabaseFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
+      devicesToShareDocumentsFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
+      devicesToShareStudyFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+      ];
+    };
+  };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

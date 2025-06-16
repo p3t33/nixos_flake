@@ -385,69 +385,10 @@
         type = lib.types.submodule {
           options = {
 
-            httpPort = lib.mkOption {
-              type = lib.types.int;
-              default = 8384;
-              description = "Port for Syncthing web GUI.";
-            };
-
-            dataDirectory = lib.mkOption {
-              default = "/var/lib/syncthing/";
-              type = lib.types.str;
-              description = "Defines the Syncthing data directory";
-            };
-
             syncDir = lib.mkOption {
               default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
               type = lib.types.str;
               description = "Defines the Syncthing sync directory";
-            };
-
-            configDirectory = lib.mkOption {
-              default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/syncthing";
-              type = lib.types.str;
-              description = "Defines the Syncthing configuration directory";
-            };
-
-            user = lib.mkOption {
-              default = "${config.userDefinedGlobalVariables.primeUsername}";
-              type = lib.types.str;
-              description = "Defines the Syncthing user";
-            };
-            devicesToShareTaskWarriorFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareDevResourcesFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareDatabaseFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareDocumentsFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            devicesToShareStudyFolderWith = lib.mkOption {
-              default = [ ];
-              type = lib.types.listOf lib.types.str;
-              description = "List of devices to use for folder synchronization.";
-            };
-
-            simpleFileVersioningForBackUpMachinesOnly = lib.mkOption {
-              type = lib.types.nullOr lib.types.attrs;
-              default = null;
-              description = "Syncthing simple versioning config, only enabled for homelab.";
             };
           };
         };
@@ -470,14 +411,6 @@
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
-      userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
@@ -486,23 +419,6 @@
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
-      userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDatabaseFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDocumentsFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareStudyFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.homelab}"
-      ];
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
@@ -538,35 +454,6 @@
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab
       }";
       userDefinedGlobalVariables.systemStateVersion = "24.05";
-      userDefinedGlobalVariables.syncthing.configDirectory = "/var/lib/syncthing/.config/syncthing";
-      userDefinedGlobalVariables.syncthing.syncDir = "/mnt/data/Sync";
-      userDefinedGlobalVariables.syncthing.user = "syncthing";
-      userDefinedGlobalVariables.syncthing.simpleFileVersioningForBackUpMachinesOnly = {
-        type = "simple";
-        params = {
-          keep = "5";
-          cleanoutDays = "10";
-        };
-        cleanupIntervalS = 3600;
-      };
-      userDefinedGlobalVariables.syncthing.devicesToShareTaskWarriorFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.work-pc}"
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-
-      userDefinedGlobalVariables.syncthing.devicesToShareDatabaseFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareDocumentsFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
-      userDefinedGlobalVariables.syncthing.devicesToShareStudyFolderWith = [
-        "${config.userDefinedGlobalVariables.machines.home-desktop}"
-      ];
       userDefinedGlobalVariables.motd = ''
          ___ ___                      __       __
         |   |   .-----.--------.-----|  .---.-|  |--.

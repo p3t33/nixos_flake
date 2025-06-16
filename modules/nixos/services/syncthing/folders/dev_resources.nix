@@ -8,9 +8,9 @@ in
       folders = {
         "${devResources}" = {
           id = "${devResources}";
-          path = "${config.userDefinedGlobalVariables.syncthing.syncDir}/${devResources}";
-          devices = config.userDefinedGlobalVariables.syncthing.devicesToShareDevResourcesFolderWith;
-          versioning = config.userDefinedGlobalVariables.syncthing.simpleFileVersioningForBackUpMachinesOnly;
+          path = "${config.customOptions.syncthing.syncDir}/${devResources}";
+          devices = config.customOptions.syncthing.devicesToShareDevResourcesFolderWith;
+          versioning = config.customOptions.syncthing.simpleFileVersioningForBackUpMachinesOnly;
         };
       };
     };

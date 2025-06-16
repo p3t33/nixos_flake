@@ -32,44 +32,117 @@
       ./folders/study.nix
     ];
 
-  systemd.tmpfiles.rules = [
-    "d ${config.userDefinedGlobalVariables.syncthing.dataDirectory} 0750 ${config.userDefinedGlobalVariables.syncthing.user} ${config.userDefinedGlobalVariables.dataGroup} -"
-  ];
+  options.customOptions = {
+    syncthing = lib.mkOption {
+      type = lib.types.submodule {
+        options = {
+          httpPort = lib.mkOption {
+            type = lib.types.int;
+            default = 8384;
+            description = "Port for Syncthing web GUI.";
+          };
 
-  sops.secrets."syncthing/cert.pem" = {
-    owner = "${config.userDefinedGlobalVariables.syncthing.user}";
-    mode = "0600";
+          dataDirectory = lib.mkOption {
+            default = "/var/lib/syncthing/";
+            type = lib.types.str;
+            description = "Defines the Syncthing data directory";
+          };
 
-  };
+          syncDir = lib.mkOption {
+            default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
+            type = lib.types.str;
+            description = "Defines the Syncthing sync directory";
+          };
 
-  sops.secrets."syncthing/key.pem" = {
-    owner = "${config.userDefinedGlobalVariables.syncthing.user}";
-    mode = "0600";
-  };
+          user = lib.mkOption {
+            default = config.userDefinedGlobalVariables.primeUsername;
+            type = lib.types.str;
+            description = "Defines the Syncthing user";
+          };
 
-  services.syncthing = {
-    enable = true;
-    group = "${config.userDefinedGlobalVariables.dataGroup}";
-    user = "${config.userDefinedGlobalVariables.syncthing.user}";
-    key = config.sops.secrets."syncthing/key.pem".path;
-    cert = config.sops.secrets."syncthing/cert.pem".path;
-    #overrideDevices = true; # Deletes devices that are not configured declaratively
-    #overrideFolders = true; # Deletes folders that are not configured declaratively
+          devicesToShareTaskWarriorFolderWith = lib.mkOption {
+            default = [ ];
+            type = lib.types.listOf lib.types.str;
+            description = "List of devices to use for folder synchronization.";
+          };
 
-    settings = {
+          devicesToShareDevResourcesFolderWith = lib.mkOption {
+            default = [ ];
+            type = lib.types.listOf lib.types.str;
+            description = "List of devices to use for folder synchronization.";
+          };
 
-      options = {
-        urAccepted = -1; # explicitly disabled usage reporting.
-        globalAnnounceEnabled = true;
-        relaysEnabled = true;
-        localAnnounceEnabled = true;
+          devicesToShareDatabaseFolderWith = lib.mkOption {
+            default = [ ];
+            type = lib.types.listOf lib.types.str;
+            description = "List of devices to use for folder synchronization.";
+          };
+
+          devicesToShareDocumentsFolderWith = lib.mkOption {
+            default = [ ];
+            type = lib.types.listOf lib.types.str;
+            description = "List of devices to use for folder synchronization.";
+          };
+
+          devicesToShareStudyFolderWith = lib.mkOption {
+            default = [ ];
+            type = lib.types.listOf lib.types.str;
+            description = "List of devices to use for folder synchronization.";
+          };
+
+          simpleFileVersioningForBackUpMachinesOnly = lib.mkOption {
+            type = lib.types.nullOr lib.types.attrs;
+            default = null;
+            description = "Syncthing simple versioning config, only enabled for homelab.";
+          };
+        };
       };
+      default = {};
+      description = "Syncthing related configuration";
+    };
+  };
 
-      gui = {
-        # user = config.sops.templates."syncuser".content;
-        # password = config.sops.templates."syncpassword".content;
-        theme = "black";
-        insecureSkipHostCheck = true;
+  config = {
+
+    systemd.tmpfiles.rules = [
+      "d ${config.customOptions.syncthing.dataDirectory} 0750 ${config.customOptions.syncthing.user} ${config.userDefinedGlobalVariables.dataGroup} -"
+    ];
+
+    sops.secrets."syncthing/cert.pem" = {
+      owner = "${config.customOptions.syncthing.user}";
+      mode = "0600";
+
+    };
+
+    sops.secrets."syncthing/key.pem" = {
+      owner = "${config.customOptions.syncthing.user}";
+      mode = "0600";
+    };
+
+    services.syncthing = {
+      enable = true;
+      group = "${config.userDefinedGlobalVariables.dataGroup}";
+      user = "${config.customOptions.syncthing.user}";
+      key = config.sops.secrets."syncthing/key.pem".path;
+      cert = config.sops.secrets."syncthing/cert.pem".path;
+      #overrideDevices = true; # Deletes devices that are not configured declaratively
+      #overrideFolders = true; # Deletes folders that are not configured declaratively
+
+      settings = {
+
+        options = {
+          urAccepted = -1; # explicitly disabled usage reporting.
+          globalAnnounceEnabled = true;
+          relaysEnabled = true;
+          localAnnounceEnabled = true;
+        };
+
+        gui = {
+          # user = config.sops.templates."syncuser".content;
+          # password = config.sops.templates."syncpassword".content;
+          theme = "black";
+          insecureSkipHostCheck = true;
+        };
       };
     };
   };

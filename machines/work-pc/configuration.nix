@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -34,6 +34,20 @@
     ../../modules/nixos/networking/br0_interface.nix # used for development.
     ../../modules/nixos/networking/usb0.nix
   ];
+
+  customOptions = {
+    syncthing = {
+      devicesToShareTaskWarriorFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+       ];
+
+      devicesToShareDevResourcesFolderWith = [
+        "${config.userDefinedGlobalVariables.machines.homelab}"
+        "${config.userDefinedGlobalVariables.machines.home-desktop}"
+      ];
+    };
+  };
 
   # As the intel GPU in this machine is too new to be officially supported by the i915 driver
   # it needs to be forced, if this is not done the main gpu won't work and this will cause bunch
