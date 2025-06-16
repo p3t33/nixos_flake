@@ -25,12 +25,6 @@
         description = "List of font packages to be used";
       };
 
-      homeManagerStateVersion = lib.mkOption {
-        default = "24.05";
-        type = lib.types.str;
-        description = "Defines the release that Home Manager has backwards compatibility with";
-      };
-
       mediaGroup = lib.mkOption {
         default = "media";
         type = lib.types.str;

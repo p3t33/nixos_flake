@@ -18,6 +18,6 @@
     # You can update Home Manager without changing this value. See
     # the Home Manager release notes for a list of state version
     # changes in each release.
-    stateVersion = config.userDefinedGlobalVariables.homeManagerStateVersion;
+    stateVersion = "25.05";
   };
 }
