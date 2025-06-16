@@ -1,7 +1,7 @@
 {
-  machineName,
+  hostSpecific,
   ...
 }:
 {
-  networking.hostName = machineName;
+  networking.hostName = hostSpecific.hostName;
 }

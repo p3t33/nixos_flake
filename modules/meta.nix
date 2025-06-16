@@ -9,6 +9,7 @@
   pkgs,
   lib,
   machineName,
+  hostSpecific,
   ...
 }:
 
@@ -150,12 +151,6 @@
         description = "Defines the man pager command";
       };
 
-      hostConfigurationName = lib.mkOption {
-        default = "used as an argument for flake configuration.";
-        type = lib.types.str;
-        description = "Defines the host configuration name";
-      };
-
       primeUserHomeDirectory = lib.mkOption {
         default = "/home/${config.userDefinedGlobalVariables.primeUsername}";
         type = lib.types.str;
@@ -181,37 +176,37 @@
       };
 
       home_manger_import_path = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/home.nix;
+        default = ../machines/${hostSpecific.hostName}/home.nix;
         type = lib.types.path;
         description = "The relative path inside the repository to the home configuration file";
       };
 
       secretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets;
+        default = ../machines/${hostSpecific.hostName}/secrets;
         type = lib.types.path;
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
       };
 
       NixOSDefaultSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets/nixos/secrets.yaml;
+        default = ../machines/${hostSpecific.hostName}/secrets/nixos/secrets.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
 
       homeManagerAsNixOSModuleDefaultSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/secrets/home-manager/secrets.yaml;
+        default = ../machines/${hostSpecific.hostName}/secrets/home-manager/secrets.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
 
       calibreAsNixOSModuleSecretsPath = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/calibre.yaml;
+        default = ../machines/${hostSpecific.hostName}/calibre.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
 
       databaseSecret = lib.mkOption {
-        default = ../machines/${config.userDefinedGlobalVariables.hostConfigurationName}/prowlarr.db;
+        default = ../machines/${hostSpecific.hostName}/prowlarr.db;
         type = lib.types.path;
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
       };
@@ -383,37 +378,19 @@
   config = lib.mkMerge [
     # Machine-specific configurations
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc
-      }";
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-desktop}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop
-      }";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
       userDefinedGlobalVariables.primeUsername = "drone";
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
-      }";
-
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-assistant}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-assistant
-      }";
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
-      userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab
-      }";
     })
 
     (lib.mkIf (machineName == "generic_linux_distro") {
-      userDefinedGlobalVariables.hostConfigurationName = "generic_linux_distro";
       userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
     })
   ];

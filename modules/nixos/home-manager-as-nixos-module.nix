@@ -3,6 +3,7 @@
 {
   inputs,
   machineName,
+  hostSpecific,
   config,
   ...
 }:
@@ -18,6 +19,7 @@
     extraSpecialArgs = {
       inherit inputs;
       inherit machineName;
+      inherit hostSpecific;
     };
     users.${config.userDefinedGlobalVariables.primeUsername} =
       import config.userDefinedGlobalVariables.home_manger_import_path;

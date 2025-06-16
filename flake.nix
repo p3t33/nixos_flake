@@ -44,6 +44,10 @@
           specialArgs = {
             inherit inputs;
             machineName = "kvm-nixos-server";
+            hostSpecific = {
+              hostName = "kvm-nixos-server";
+              primeUsername = "drone";
+            };
           };
           modules = [
             ./machines/kvm-nixos-server/configuration.nix
@@ -58,6 +62,11 @@
           specialArgs = {
             inherit inputs;
             machineName = "home-assistant";
+            hostSpecific = {
+              hostName = "home-assistant";
+              primeUsername = "kmedrish";
+            };
+
           };
           modules = [
             ./machines/home-assistant/configuration.nix
@@ -73,6 +82,11 @@
           specialArgs = {
             inherit inputs;
             machineName = "homelab";
+            hostSpecific = {
+              hostName = "homelab";
+              primeUsername = "kmedrish";
+            };
+
           };
           modules = [
             ./machines/homelab/configuration.nix
@@ -88,6 +102,10 @@
           specialArgs = {
             inherit inputs;
             machineName = "work-pc";
+            hostSpecific = {
+              hostName = "work-pc";
+              primeUsername = "kmedrish";
+            };
           };
           modules = [
             ./machines/work-pc/configuration.nix
@@ -103,6 +121,10 @@
           specialArgs = {
             inherit inputs;
             machineName = "home-desktop";
+            hostSpecific = {
+              hostName = "home-desktop";
+              primeUsername = "kmedrish";
+            };
           };
           modules = [
             ./machines/home-desktop/configuration.nix
@@ -124,6 +146,10 @@
           extraSpecialArgs = {
             inherit inputs;
             machineName = "generic_linux_distro";
+            hostSpecific = {
+              hostName = "generic_linux_distro";
+              primeUsername = "kmedrish";
+            };
           };
           modules = [
             ./machines/generic_linux_distro/home.nix

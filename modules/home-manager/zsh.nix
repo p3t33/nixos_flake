@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, hostSpecific, ... }:
 
 {
   home.packages = with pkgs; [
@@ -26,7 +26,7 @@
 
     shellAliases = {
       get_flake_repository_if_does_not_exit = "if [[ ! -d ${config.userDefinedGlobalVariables.pathToFlakeDirectory} ]]; then ${pkgs.git}/bin/git clone ${config.userDefinedGlobalVariables.flakeRepositoryUrl} ${config.userDefinedGlobalVariables.pathToFlakeDirectory}; fi;";
-      update = "get_flake_repository_if_does_not_exit; sudo nixos-rebuild switch --flake ${config.userDefinedGlobalVariables.pathToFlakeDirectory}#${config.userDefinedGlobalVariables.hostConfigurationName}";
+      update = "get_flake_repository_if_does_not_exit; sudo nixos-rebuild switch --flake ${config.userDefinedGlobalVariables.pathToFlakeDirectory}#${hostSpecific.hostName}";
       upgrade = "get_flake_repository_if_does_not_exit; sudo nix flake update --flake ${config.userDefinedGlobalVariables.pathToFlakeDirectory} && update";
       format-nix = "find ${config.userDefinedGlobalVariables.pathToFlakeDirectory} -type f -name \"*.nix\" -print0 | xargs -0 -n1 ${pkgs.nixfmt-rfc-style}";
       list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
