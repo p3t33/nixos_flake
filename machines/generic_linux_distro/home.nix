@@ -47,6 +47,7 @@
     ../../modules/home-manager/yazi.nix
   ];
 
+  userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory }/.config/sops/age/keys.txt";
   targets.genericLinux.enable = true;
 
   # Variables that will be set "system wide" in the context of the user.

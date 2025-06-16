@@ -151,6 +151,7 @@
         description = "Defines the man pager command";
       };
 
+      # shared between home-manger and nixos.
       primeUserHomeDirectory = lib.mkOption {
         default = "/home/${hostSpecific.primeUsername}";
         type = lib.types.str;
@@ -336,6 +337,7 @@
         description = "avalible machines";
       };
 
+      # shared between home-manger and nixos.
       syncthing = lib.mkOption {
         type = lib.types.submodule {
           options = {
@@ -352,11 +354,4 @@
         };
     };
   };
-
-  config = lib.mkMerge [
-    # Machine-specific configurations
-    (lib.mkIf (machineName == "generic_linux_distro") {
-      userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
-    })
-  ];
 }

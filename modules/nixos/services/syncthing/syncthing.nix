@@ -49,7 +49,7 @@
           };
 
           syncDir = lib.mkOption {
-            default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
+            default = "${config.userDefinedGlobalVariables.syncthing.syncDir}";
             type = lib.types.str;
             description = "Defines the Syncthing sync directory";
           };
