@@ -139,18 +139,6 @@
         description = "Defines the primary username";
       };
 
-      editor = lib.mkOption {
-        default = "nvim";
-        type = lib.types.str;
-        description = "Defines the default editor";
-      };
-
-      manPager = lib.mkOption {
-        default = "nvim +Man!";
-        type = lib.types.str;
-        description = "Defines the man pager command";
-      };
-
       # shared between home-manger and nixos.
       primeUserHomeDirectory = lib.mkOption {
         default = "/home/${hostSpecific.primeUsername}";

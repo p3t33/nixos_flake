@@ -10,6 +10,7 @@
     ../../modules/meta.nix
     ./sops-home.nix
     ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
+    ../../modules/home-manager/session-variables.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/fzf.nix
     ../../modules/home-manager/neovim/neovim.nix
@@ -49,15 +50,4 @@
 
   userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory }/.config/sops/age/keys.txt";
   targets.genericLinux.enable = true;
-
-  # Variables that will be set "system wide" in the context of the user.
-  # E.g, by setting MANPAGER it will be available to bash, zsh, fish with
-  # the alternative limiting the scope and setting this variables in a file
-  # such as .bashrc using "export".
-  home.sessionVariables = {
-    EDITOR = config.userDefinedGlobalVariables.editor;
-    SUDO_EDITOR = config.userDefinedGlobalVariables.editor;
-    MANPAGER = config.userDefinedGlobalVariables.manPager;
-  };
-
 }
