@@ -1,5 +1,6 @@
 {
   config,
+  hostSpecific,
   ...
 }:
 {
@@ -84,8 +85,8 @@
 
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.
   systemd.tmpfiles.rules = [
-    "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
+    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
     "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
   ];
@@ -114,7 +115,7 @@
     };
   };
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${hostSpecific.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only

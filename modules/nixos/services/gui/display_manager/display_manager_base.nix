@@ -1,4 +1,4 @@
-{ config, ... }:
+{ hostSpecific, ... }:
 {
   # Global settings for displaymanger.
   # can be used to define the display manger itslef(E.g ssdm, lt) but not all
@@ -17,7 +17,7 @@
     defaultSession = "none+i3";
     autoLogin = {
       enable = true;
-      user = config.userDefinedGlobalVariables.primeUsername;
+      user = hostSpecific.primeUsername;
     };
   };
 }

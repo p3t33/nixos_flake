@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, hostSpecific, ... }:
 
 {
   # Let Home Manager install and manage itself.
@@ -7,7 +7,7 @@
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    username = config.userDefinedGlobalVariables.primeUsername;
+    username = hostSpecific.primeUsername;
     homeDirectory = config.userDefinedGlobalVariables.primeUserHomeDirectory;
 
     # This value determines the Home Manager release that your

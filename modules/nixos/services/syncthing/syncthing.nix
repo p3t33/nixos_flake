@@ -55,7 +55,7 @@
           };
 
           user = lib.mkOption {
-            default = config.userDefinedGlobalVariables.primeUsername;
+            default = hostSpecific.primeUsername;
             type = lib.types.str;
             description = "Defines the Syncthing user";
           };

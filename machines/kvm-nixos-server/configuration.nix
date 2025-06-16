@@ -1,5 +1,6 @@
 {
   config,
+  hostSpecific,
   ...
 }:
 {
@@ -57,7 +58,7 @@
     };
   };
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${hostSpecific.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
@@ -71,7 +72,7 @@
   # ];
 
   # Enable automatic login for the user.
-  services.getty.autologinUser = config.userDefinedGlobalVariables.primeUsername;
+  services.getty.autologinUser = hostSpecific.primeUsername;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

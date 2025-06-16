@@ -152,7 +152,7 @@
       };
 
       primeUserHomeDirectory = lib.mkOption {
-        default = "/home/${config.userDefinedGlobalVariables.primeUsername}";
+        default = "/home/${hostSpecific.primeUsername}";
         type = lib.types.str;
         description = "Defines the primary user's home directory";
       };
@@ -350,10 +350,6 @@
         default = {};
         description = "Syncthing related configuration";
         };
-
-
-
-
     };
   };
 
@@ -361,10 +357,6 @@
     # Machine-specific configurations
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
-    })
-
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.kvm-nixos-server}") {
-      userDefinedGlobalVariables.primeUsername = "drone";
     })
 
     (lib.mkIf (machineName == "generic_linux_distro") {

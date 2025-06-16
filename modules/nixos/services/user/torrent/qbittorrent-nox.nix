@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  hostSpecific,
   ...
 }:
 let
@@ -42,7 +43,7 @@ in
     };
 
     users.groups.qbittorrent = { };
-    users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+    users.users.${hostSpecific.primeUsername} = {
       extraGroups = [ "qbittorrent" ];
     };
 

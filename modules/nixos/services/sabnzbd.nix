@@ -1,4 +1,4 @@
-{config, ...}:
+{config, hostSpecific, ...}:
 {
   services.sabnzbd = {
     enable = true;
@@ -8,7 +8,7 @@
   };
 
     systemd.tmpfiles.rules = [
-      "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory} 0770 ${config.userDefinedGlobalVariables.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
+      "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
       "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory}/complete 0770 ${config.services.sabnzbd.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
       "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory}/incomplete 0770 ${config.services.sabnzbd.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
     ];

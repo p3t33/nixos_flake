@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, hostSpecific, ... }:
 {
   virtualisation = {
     libvirtd = {
@@ -30,7 +30,7 @@
   };
 
 
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${hostSpecific.primeUsername} = {
     extraGroups = [ "libvirtd" ];
   };
 

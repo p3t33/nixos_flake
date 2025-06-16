@@ -21,7 +21,7 @@
       inherit machineName;
       inherit hostSpecific;
     };
-    users.${config.userDefinedGlobalVariables.primeUsername} =
+    users.${hostSpecific.primeUsername} =
       import config.userDefinedGlobalVariables.home_manger_import_path;
     # will be available to all users managed by home manager
     sharedModules = [

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ hostSpecific, pkgs, ... }:
 {
   # Note for cups service(printing = enable) to automatically discover
   # IPP printers avahi daemon service is required.
@@ -19,7 +19,7 @@
   # need to be recognized by CUPS as someone who has permission to do so.
   # This recognition often depends on being a member of the lp group,
   # as you've found. I was having issues without this setting.
-  users.users.${config.userDefinedGlobalVariables.primeUsername} = {
+  users.users.${hostSpecific.primeUsername} = {
     extraGroups = [ "lp" ];
   };
 
