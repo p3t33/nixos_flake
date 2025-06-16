@@ -34,6 +34,18 @@
     # openssl rand -hex 4
     networking.hostId = "cf97b6ff";
 
+    customOptions = {
+      motd = ''
+         ___ ___                             _______             __       __               __
+        |   |   .-----.--------.-----.______|   _   .-----.-----|__.-----|  |_.---.-.-----|  |_
+        |.  |   |  _  |        |  -__|______|.  |   |__ --|__ --|  |__ --|   _|  _  |     |   _|
+        |.  _   |_____|__|__|__|_____|      |.  _   |_____|_____|__|_____|____|___._|__|__|____|
+        |:  |   | powered by NixOS          |:  |   |
+        |::.|:. |                           |::.|:. |
+        `--- ---'                           `--- ---'
+      '';
+    };
+
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
