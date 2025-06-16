@@ -45,6 +45,6 @@
 
   customOptions = {
       wallpaperName = "crane_at_night.png";
+      sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
   };
-
 }

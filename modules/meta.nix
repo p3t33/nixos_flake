@@ -355,10 +355,6 @@
 
   config = lib.mkMerge [
     # Machine-specific configurations
-    (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
-      userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
-    })
-
     (lib.mkIf (machineName == "generic_linux_distro") {
       userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
     })
