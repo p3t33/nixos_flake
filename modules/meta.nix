@@ -24,13 +24,6 @@
         description = "List of font packages to be used";
       };
 
-      systemStateVersion = lib.mkOption {
-        default = "";
-        type = lib.types.str;
-        description = "Defines the release version when OS was first installed";
-      };
-
-
       neovimCustomDictionaryPathrelativeToHomeDirectory = lib.mkOption {
         default = ".config/nvim/spell/nixen.utf-8";
         type = lib.types.str;
@@ -401,7 +394,6 @@
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.work-pc}") {
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.work-pc
       }";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
       userDefinedGlobalVariables.nvidiaHybridWithIntel.nvidiaBusId = "PCI:01:00:0";
       userDefinedGlobalVariables.nvidiaHybridWithIntel.intelBusId = "PCI:00:02:0";
@@ -411,7 +403,6 @@
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-desktop
       }";
       userDefinedGlobalVariables.wallpaperName = "crane_at_night.png";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
       userDefinedGlobalVariables.sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key;
     })
 
@@ -419,25 +410,21 @@
       userDefinedGlobalVariables.primeUsername = "drone";
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.kvm-nixos-server
       }";
-      userDefinedGlobalVariables.systemStateVersion = "25.05";
 
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.home-assistant}") {
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.home-assistant
       }";
-      userDefinedGlobalVariables.systemStateVersion = "24.11";
     })
 
     (lib.mkIf (machineName == "${config.userDefinedGlobalVariables.machines.homelab}") {
       userDefinedGlobalVariables.hostConfigurationName = "${config.userDefinedGlobalVariables.machines.homelab
       }";
-      userDefinedGlobalVariables.systemStateVersion = "24.05";
     })
 
     (lib.mkIf (machineName == "generic_linux_distro") {
       userDefinedGlobalVariables.hostConfigurationName = "generic_linux_distro";
-      userDefinedGlobalVariables.systemStateVersion = "23.11";
       userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
     })
   ];

@@ -32,6 +32,7 @@
   ];
 
   customOptions = {
+    systemStateVersion = "25.05";
     motd = ''
       __  powered by NixOS              __
      |  |--.--.--.--------.______.-----|__.--.--.-----.-----.______.-----.-----.----.--.--.-----.----.
@@ -39,6 +40,8 @@
      |__|__|\___/|__|__|__|      |__|__|__|__.__|_____|_____|      |_____|_____|__|  \___/|_____|__|
     '';
   };
+
+  system.stateVersion = "25.05";
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

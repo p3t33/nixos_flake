@@ -39,6 +39,7 @@
   ];
 
   customOptions = {
+    systemStateVersion = "24.05";
     syncthing = {
       devicesToShareTaskWarriorFolderWith = [
         "${config.userDefinedGlobalVariables.machines.homelab}"

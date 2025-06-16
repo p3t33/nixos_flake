@@ -35,6 +35,7 @@
     networking.hostId = "cf97b6ff";
 
     customOptions = {
+      systemStateVersion = "24.11";
       motd = ''
          ___ ___                             _______             __       __               __
         |   |   .-----.--------.-----.______|   _   .-----.-----|__.-----|  |_.---.-.-----|  |_

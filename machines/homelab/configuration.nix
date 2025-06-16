@@ -34,6 +34,8 @@
   ];
 
     customOptions = {
+      systemStateVersion = "24.05";
+
       motd = ''
          ___ ___                      __       __
         |   |   .-----.--------.-----|  .---.-|  |--.
