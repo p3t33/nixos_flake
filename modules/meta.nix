@@ -25,12 +25,14 @@
         description = "List of font packages to be used";
       };
 
+      # global
       mediaGroup = lib.mkOption {
         default = "media";
         type = lib.types.str;
         description = "Defines the media group";
       };
 
+      # global
       dataGroup = lib.mkOption {
         default = "data";
         type = lib.types.str;
@@ -57,12 +59,6 @@
 
       anyIPv4 = lib.mkOption {
           default = "0.0.0.0";
-          type = lib.types.str;
-          description = "Defines an IPv4 address that binds to all available network interfaces.";
-      };
-
-      timeZone = lib.mkOption {
-          default = "Asia/Jerusalem";
           type = lib.types.str;
           description = "Defines an IPv4 address that binds to all available network interfaces.";
       };

@@ -17,6 +17,7 @@
         aiohttp-fast-zlib
         isal
     ];
+
    openFirewall = true;
       enable = true;
       # only install components but does not enable them.
@@ -25,7 +26,7 @@
         homeassistant = {
         name = "Home";
         unit_system = "metric";
-        time_zone = "${config.userDefinedGlobalVariables.timeZone}";
+        time_zone = "${config.time.timeZone}";
         temperature_unit = "C";
       };
       http = {
