@@ -60,25 +60,25 @@
         };
 
         devicesToShareTaskWarriorFolderWith = [
-          "${config.userDefinedGlobalVariables.machines.work-pc}"
-          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+          "${config.customOptions.syncthing.machines.work-pc}"
+          "${config.customOptions.syncthing.machines.home-desktop}"
          ];
 
         devicesToShareDevResourcesFolderWith = [
-          "${config.userDefinedGlobalVariables.machines.work-pc}"
-          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+          "${config.customOptions.syncthing.machines.work-pc}"
+          "${config.customOptions.syncthing.machines.home-desktop}"
         ];
 
         devicesToShareDatabaseFolderWith = [
-          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+          "${config.customOptions.syncthing.machines.home-desktop}"
         ];
 
         devicesToShareDocumentsFolderWith = [
-          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+          "${config.customOptions.syncthing.machines.home-desktop}"
         ];
 
         devicesToShareStudyFolderWith = [
-          "${config.userDefinedGlobalVariables.machines.home-desktop}"
+          "${config.customOptions.syncthing.machines.home-desktop}"
         ];
       };
     };

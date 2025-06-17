@@ -42,6 +42,17 @@
             description = "Port for Syncthing web GUI.";
           };
 
+          machines = lib.mkOption {
+            type = lib.types.attrsOf lib.types.str;
+            description = "avalible machines";
+            default = {
+              home-assistant = "home-assistant";
+              work-pc = "work-pc";
+              home-desktop = "home-desktop";
+              homelab = "homelab";
+            };
+          };
+
           dataDirectory = lib.mkOption {
             default = "/var/lib/syncthing/";
             type = lib.types.str;

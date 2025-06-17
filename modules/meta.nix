@@ -241,19 +241,6 @@
         description = "Workspace definitions for i3wm";
       };
 
-      machines = lib.mkOption {
-        default = {
-          kvm-nixos-server = "kvm-nixos-server";
-          home-assistant = "home-assistant";
-          work-pc = "work-pc";
-          home-desktop = "home-desktop";
-          homelab = "homelab";
-          generic-linux-distro = "generic-linux-distro";
-        };
-
-        type = lib.types.attrsOf lib.types.str;
-        description = "avalible machines";
-      };
 
       # shared between home-manger and nixos.
       syncthing = lib.mkOption {
