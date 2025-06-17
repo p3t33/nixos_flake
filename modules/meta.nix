@@ -196,24 +196,9 @@
         description = "Icon definitions for workspace labels";
       };
 
-      wireguard = lib.mkOption {
-        default = let
-          base = "10.100.0";
-        in {
-          networkName = "wg0";
-          externalInterface = "eno1";
-          baseSubnet = base;
-          gateway = "${base}.1";
-          network = "${base}.0/24";
-        };
-        type = lib.types.attrsOf lib.types.str;
-        description = "Default values used by wireguard";
-      };
-
       servicePort = lib.mkOption {
         default = {
           jellyfin = 8096;
-          wireguard = 51820;
           homeAssistant = 8123;
           mosquitto = 1883;
           zigbee2mqttFrontend = 8124;
