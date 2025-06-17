@@ -4,7 +4,7 @@
   options.customOptions.servicePort.mosquitto = lib.mkOption {
     type = lib.types.int;
     default = 1883;
-    description = "Jellyfin port";
+    description = "mosquitto port";
   };
 
   config = {
