@@ -194,12 +194,6 @@
           description = "Default ports used by various services (single port or multiple ports per service, as strings)";
       };
 
-      sshPublicKey = lib.mkOption {
-        default = "";
-        type = lib.types.str;
-        description = "The relative path to the SOPS key file";
-      };
-
       workspaces = lib.mkOption {
         default = {
           ws1 = "1: ${config.userDefinedGlobalVariables.workspaces_icons.firefox} Firefox";
