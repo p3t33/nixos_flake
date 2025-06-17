@@ -1,11 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, hostSpecific, ... }:
 let
   monitoring = "monitoring";
   files = "files";
   media = "media";
   devices = "devices";
-  routerIP = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
-  proxmoxIP = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}74";
+  routerIP = "${config.customOptions.${hostSpecific.hostName}.subnetPrefix}1";
+  proxmoxIP = "${config.customOptions.${hostSpecific.hostName}.subnetPrefix}74";
 
 in
 {
