@@ -99,7 +99,7 @@
     }
   ];
 
-  networking.defaultGateway = "${config.userDefinedGlobalVariables.homeLabGateway}";
+  networking.defaultGateway = "${config.customOptions.${hostSpecific.hostName}.gateway}";
   networking.nameservers = [ "8.8.8.8" ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.

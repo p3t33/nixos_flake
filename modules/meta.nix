@@ -11,7 +11,6 @@
   hostSpecific,
   ...
 }:
-
 {
   options = {
     userDefinedGlobalVariables = {
@@ -38,18 +37,6 @@
         description = "Defines the data group";
       };
 
-      homeLabSubnetPrefix = lib.mkOption {
-        default = "10.100.102.";
-        type = lib.types.str;
-        description = "Defines the static IP subnet prefix used by homelab machines";
-      };
-
-      homeLabIP = lib.mkOption {
-        default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}73";
-        type = lib.types.str;
-        description = "Defines the static IP used by the homelab machine";
-      };
-
       # global
       localHostIPv4 = lib.mkOption {
         default = "127.0.0.1";
@@ -62,12 +49,6 @@
           default = "0.0.0.0";
           type = lib.types.str;
           description = "Defines an IPv4 address that binds to all available network interfaces.";
-      };
-
-      homeLabGateway = lib.mkOption {
-        default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
-        type = lib.types.str;
-        description = "Defines the gateway IP for the homelab machine";
       };
 
       # global
