@@ -102,12 +102,6 @@
   networking.defaultGateway = "${config.customOptions.${hostSpecific.hostName}.gateway}";
   networking.nameservers = [ "8.8.8.8" ];
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Configure keymap in X11
   services.xserver = {
     xkb = {
@@ -126,22 +120,7 @@
     ];
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Open ports in the firewall.
+  # iPerf3 testing ports
   networking.firewall.allowedTCPPorts = [ 5201 ];
   networking.firewall.allowedUDPPorts = [ 5201 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 }
