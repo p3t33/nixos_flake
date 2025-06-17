@@ -2,7 +2,6 @@
 # as flake input.
 {
   inputs,
-  machineName,
   hostSpecific,
   config,
   ...
@@ -18,7 +17,6 @@
     useUserPackages = true;
     extraSpecialArgs = {
       inherit inputs;
-      inherit machineName;
       inherit hostSpecific;
     };
 

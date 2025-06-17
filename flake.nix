@@ -43,7 +43,6 @@
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "kvm-nixos-server";
             hostSpecific = {
               hostName = "kvm-nixos-server";
               primeUsername = "drone";
@@ -61,7 +60,6 @@
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "home-assistant";
             hostSpecific = {
               hostName = "home-assistant";
               primeUsername = "kmedrish";
@@ -81,7 +79,6 @@
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "homelab";
             hostSpecific = {
               hostName = "homelab";
               primeUsername = "kmedrish";
@@ -101,7 +98,6 @@
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "work-pc";
             hostSpecific = {
               hostName = "work-pc";
               primeUsername = "kmedrish";
@@ -120,7 +116,6 @@
           inherit system;
           specialArgs = {
             inherit inputs;
-            machineName = "home-desktop";
             hostSpecific = {
               hostName = "home-desktop";
               primeUsername = "kmedrish";
@@ -145,7 +140,6 @@
           inherit pkgs;
           extraSpecialArgs = {
             inherit inputs;
-            machineName = "generic_linux_distro";
             hostSpecific = {
               hostName = "generic_linux_distro";
               primeUsername = "kmedrish";
