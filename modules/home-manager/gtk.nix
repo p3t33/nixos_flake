@@ -10,7 +10,7 @@
   gtk = {
     enable = true;
     font = {
-      name = config.userDefinedGlobalVariables.font.sansSerif;
+      name = config.customGlobalOptions.font.sansSerif;
       size = 12;
     };
 

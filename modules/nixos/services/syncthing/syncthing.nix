@@ -60,7 +60,7 @@
           };
 
           syncDir = lib.mkOption {
-            default = "${config.userDefinedGlobalVariables.syncthing.syncDir}";
+            default = "${config.customGlobalOptions.syncthing.syncDir}";
             type = lib.types.str;
             description = "Defines the Syncthing sync directory";
           };
@@ -116,7 +116,7 @@
   config = {
 
     systemd.tmpfiles.rules = [
-      "d ${config.customOptions.syncthing.dataDirectory} 0750 ${config.customOptions.syncthing.user} ${config.userDefinedGlobalVariables.dataGroup} -"
+      "d ${config.customOptions.syncthing.dataDirectory} 0750 ${config.customOptions.syncthing.user} ${config.customGlobalOptions.dataGroup} -"
     ];
 
     sops.secrets."syncthing/cert.pem" = {
@@ -132,7 +132,7 @@
 
     services.syncthing = {
       enable = true;
-      group = "${config.userDefinedGlobalVariables.dataGroup}";
+      group = "${config.customGlobalOptions.dataGroup}";
       user = "${config.customOptions.syncthing.user}";
       key = config.sops.secrets."syncthing/key.pem".path;
       cert = config.sops.secrets."syncthing/cert.pem".path;

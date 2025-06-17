@@ -20,7 +20,7 @@
               content = {
                 type = "filesystem";
                 format = "ext4";
-                mountpoint = "${config.userDefinedGlobalVariables.pathToMediaDirectory}";
+                mountpoint = "${config.customGlobalOptions.pathToMediaDirectory}";
               };
             };
           };
@@ -38,7 +38,7 @@
               content = {
                 type = "filesystem";
                 format = "ext4";
-                mountpoint = "${config.userDefinedGlobalVariables.pathToDataDirectory}";
+                mountpoint = "${config.customGlobalOptions.pathToDataDirectory}";
               };
             };
           };

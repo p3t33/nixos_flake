@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  sops.defaultSopsFile = config.userDefinedGlobalVariables.NixOSDefaultSecretsPath;
+  sops.defaultSopsFile = config.customGlobalOptions.NixOSDefaultSecretsPath;
   sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = config.userDefinedGlobalVariables.sopsKeyPath;
+  sops.age.keyFile = config.customGlobalOptions.sopsKeyPath;
 }

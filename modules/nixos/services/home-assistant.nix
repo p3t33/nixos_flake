@@ -30,7 +30,7 @@
         temperature_unit = "C";
       };
       http = {
-        server_host = "${config.userDefinedGlobalVariables.anyIPv4}";
+        server_host = "${config.customGlobalOptions.anyIPv4}";
         server_port = 8123;
       };
     };

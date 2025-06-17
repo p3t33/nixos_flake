@@ -86,10 +86,10 @@
 
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.
   systemd.tmpfiles.rules = [
-    "d ${config.userDefinedGlobalVariables.pathToDataDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.dataGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
-    "d ${config.userDefinedGlobalVariables.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
+    "d ${config.customGlobalOptions.pathToDataDirectory} 0770 ${hostSpecific.primeUsername} ${config.customGlobalOptions.dataGroup} -"
+    "d ${config.customGlobalOptions.pathToMediaDirectory} 0770 ${hostSpecific.primeUsername} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customGlobalOptions.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customGlobalOptions.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.customGlobalOptions.mediaGroup} -"
   ];
 
   networking.interfaces.eno1.ipv4.addresses = [
@@ -115,8 +115,8 @@
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
-      config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key
-      config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key
+      config.customGlobalOptions.sshPublicKeys.home-desktop.key
+      config.customGlobalOptions.sshPublicKeys.work-pc.key
     ];
   };
 

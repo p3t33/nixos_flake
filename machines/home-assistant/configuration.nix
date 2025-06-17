@@ -61,8 +61,8 @@
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
-      config.userDefinedGlobalVariables.sshPublicKeys.home-desktop.key
-      config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key
+      config.customGlobalOptions.sshPublicKeys.home-desktop.key
+      config.customGlobalOptions.sshPublicKeys.work-pc.key
     ];
   };
 

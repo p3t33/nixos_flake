@@ -20,7 +20,7 @@
       enable = true;
       listeners = [
         {
-          address = "${config.userDefinedGlobalVariables.anyIPv4}";  # Listen on all interfaces
+          address = "${config.customGlobalOptions.anyIPv4}";  # Listen on all interfaces
           port = config.customOptions.servicePort.mosquitto;  # Explicitly set the MQTT port
           acl = [ "pattern readwrite #" ];
           omitPasswordAuth = true;

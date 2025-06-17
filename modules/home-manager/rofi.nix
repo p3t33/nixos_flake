@@ -6,12 +6,12 @@
 
 let
   colors = rec {
-    bg0 = "${config.userDefinedGlobalVariables.colors.background}E6";
-    bg1 = "${config.userDefinedGlobalVariables.colors.background-alt}80";
-    bg2 = "${config.userDefinedGlobalVariables.colors.primary}E6";
+    bg0 = "${config.customGlobalOptions.colors.background}E6";
+    bg1 = "${config.customGlobalOptions.colors.background-alt}80";
+    bg2 = "${config.customGlobalOptions.colors.primary}E6";
     fg0 = "#DEDEDE";
-    fg1 = "${config.userDefinedGlobalVariables.colors.foreground}";
-    fg2 = "${config.userDefinedGlobalVariables.colors.disabled}80";
+    fg1 = "${config.customGlobalOptions.colors.foreground}";
+    fg2 = "${config.customGlobalOptions.colors.disabled}80";
   };
 in
 {
@@ -24,7 +24,7 @@ in
       rofi-power-menu
     ];
 
-    font = "${config.userDefinedGlobalVariables.font.sansSerif} 20";
+    font = "${config.customGlobalOptions.font.sansSerif} 20";
     theme =
       let
         mkL = config.lib.formats.rasi.mkLiteral;

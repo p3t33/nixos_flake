@@ -17,7 +17,7 @@
     services.jellyfin = {
       enable = true;
       openFirewall = true;
-      group = "${config.userDefinedGlobalVariables.mediaGroup}";
+      group = "${config.customGlobalOptions.mediaGroup}";
     };
   };
 }

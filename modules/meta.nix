@@ -13,7 +13,7 @@
 }:
 {
   options = {
-    userDefinedGlobalVariables = {
+    customGlobalOptions = {
       fontPackages = lib.mkOption {
         default = [
           pkgs.powerline-fonts
@@ -164,7 +164,7 @@
           options = {
 
             syncDir = lib.mkOption {
-              default = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/Sync";
+              default = "${config.customGlobalOptions.primeUserHomeDirectory}/Sync";
               type = lib.types.str;
               description = "Defines the Syncthing sync directory";
             };

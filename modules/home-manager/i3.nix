@@ -61,7 +61,7 @@ in
         defaultWorkspace = "workspace number 1";
 
         fonts = {
-          names = [ config.userDefinedGlobalVariables.font.sansSerif ];
+          names = [ config.customGlobalOptions.font.sansSerif ];
           # There is also an option to set style for the font
           # style = "Bold Italic";
           size = 20.0;
@@ -232,27 +232,27 @@ in
 
         colors = {
           focused = {
-            text = config.userDefinedGlobalVariables.colors.text;
-            background = config.userDefinedGlobalVariables.colors.background-alt;
-            border = config.userDefinedGlobalVariables.colors.primary;
-            childBorder = config.userDefinedGlobalVariables.colors.primary;
-            indicator = config.userDefinedGlobalVariables.colors.alert;
+            text = config.customGlobalOptions.colors.text;
+            background = config.customGlobalOptions.colors.background-alt;
+            border = config.customGlobalOptions.colors.primary;
+            childBorder = config.customGlobalOptions.colors.primary;
+            indicator = config.customGlobalOptions.colors.alert;
           };
 
           focusedInactive = {
-            text = config.userDefinedGlobalVariables.colors.inactive-text;
-            background = config.userDefinedGlobalVariables.colors.inactive-bg;
-            border = config.userDefinedGlobalVariables.colors.inactive-bg;
-            childBorder = config.userDefinedGlobalVariables.colors.secondary;
-            indicator = config.userDefinedGlobalVariables.colors.alert;
+            text = config.customGlobalOptions.colors.inactive-text;
+            background = config.customGlobalOptions.colors.inactive-bg;
+            border = config.customGlobalOptions.colors.inactive-bg;
+            childBorder = config.customGlobalOptions.colors.secondary;
+            indicator = config.customGlobalOptions.colors.alert;
           };
 
           unfocused = {
-            text = config.userDefinedGlobalVariables.colors.inactive-text;
-            background = config.userDefinedGlobalVariables.colors.inactive-bg;
-            border = config.userDefinedGlobalVariables.colors.background;
-            childBorder = config.userDefinedGlobalVariables.colors.background;
-            indicator = config.userDefinedGlobalVariables.colors.alert;
+            text = config.customGlobalOptions.colors.inactive-text;
+            background = config.customGlobalOptions.colors.inactive-bg;
+            border = config.customGlobalOptions.colors.background;
+            childBorder = config.customGlobalOptions.colors.background;
+            indicator = config.customGlobalOptions.colors.alert;
           };
         };
 

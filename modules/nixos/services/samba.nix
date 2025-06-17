@@ -20,7 +20,7 @@
 
       # [private] section in a traditional smb.conf.
       private = {
-          path = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/torrents";
+          path = "${config.customGlobalOptions.pathToMediaDirectory}/torrents";
           browseable = "yes";
           "guest ok" = "no";
           "valid users" = "${hostSpecific.primeUsername}";

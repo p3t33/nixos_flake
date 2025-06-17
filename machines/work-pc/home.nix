@@ -48,6 +48,6 @@
 
   customOptions = {
       wallpaperName = "watchtower.png";
-      sshPublicKey = config.userDefinedGlobalVariables.sshPublicKeys.work-pc.key;
+      sshPublicKey = config.customGlobalOptions.sshPublicKeys.work-pc.key;
   };
 }

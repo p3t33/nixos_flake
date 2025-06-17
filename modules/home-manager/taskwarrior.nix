@@ -6,7 +6,7 @@
     package = pkgs.taskwarrior3;
 
     # Will be used to sync data across devices
-    dataLocation = "${config.userDefinedGlobalVariables.syncthing.syncDir}/taskwarrior_data/task";
+    dataLocation = "${config.customGlobalOptions.syncthing.syncDir}/taskwarrior_data/task";
 
     config = {
       weekstart = "Sunday";

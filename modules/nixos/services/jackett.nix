@@ -8,6 +8,6 @@ in
     openFirewall = true;
     port = 9117;
     user = "${serviceName}";
-    group = "${config.userDefinedGlobalVariables.mediaGroup}";
+    group = "${config.customGlobalOptions.mediaGroup}";
   };
 }

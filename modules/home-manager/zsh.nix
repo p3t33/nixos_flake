@@ -1,7 +1,7 @@
 { config, pkgs, hostSpecific, ... }:
 
 let
-  flakeRepositoryUrl = "https://github.com/${config.userDefinedGlobalVariables.githubFlakeRepositoryName}.git";
+  flakeRepositoryUrl = "https://github.com/${config.customGlobalOptions.githubFlakeRepositoryName}.git";
   pathToFlakeDirectory = "${config.home.homeDirectory}/projects/nixos_flake";
 in
 {

@@ -19,10 +19,10 @@
 
   sops.secrets.wg-quick-client-config = {
       # wg-quick expects the file to be at a specific path, with specific name.
-      path = "/etc/wireguard/${config.userDefinedGlobalVariables.wireguard.networkName}.conf";
+      path = "/etc/wireguard/${config.customGlobalOptions.wireguard.networkName}.conf";
   };
 
-  networking.wg-quick.interfaces.${config.userDefinedGlobalVariables.wireguard.networkName} = {
+  networking.wg-quick.interfaces.${config.customGlobalOptions.wireguard.networkName} = {
     configFile = config.sops.secrets.wg-quick-client-config.path;
     autostart = false;  # Start manually
   };

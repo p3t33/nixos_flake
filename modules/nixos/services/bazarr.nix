@@ -7,7 +7,7 @@ in
     enable = true;
     openFirewall = true;
     user = "${serviceName}";
-    group = "${config.userDefinedGlobalVariables.mediaGroup}";
+    group = "${config.customGlobalOptions.mediaGroup}";
     listenPort = 6767;
   };
 }

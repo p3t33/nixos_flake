@@ -27,11 +27,11 @@
     members = [ hostSpecific.primeUsername ];
   };
 
-  users.groups.${config.userDefinedGlobalVariables.mediaGroup} = {
+  users.groups.${config.customGlobalOptions.mediaGroup} = {
     members = [ hostSpecific.primeUsername ];
   };
 
-  users.groups.${config.userDefinedGlobalVariables.dataGroup} = {
+  users.groups.${config.customGlobalOptions.dataGroup} = {
     members = [ hostSpecific.primeUsername ];
   };
 }
