@@ -52,14 +52,14 @@
       };
 
       # sonarr metrics
-      exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
-        enable = true;
-        url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
-        port = 9707;
-        apiKeyFile = config.sops.secrets."sonarr/apiKey".path;
-        openFirewall = true;
-      };
-
+      # exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
+      #   enable = true;
+      #   url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
+      #   port = 9707;
+      #   apiKeyFile = config.sops.secrets."sonarr/apiKey".path;
+      #   openFirewall = true;
+      # };
+      #
     };
 
     # responsible to scrape the data from the exporters.
