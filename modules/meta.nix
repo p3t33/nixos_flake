@@ -175,16 +175,6 @@
         description = "Icon definitions for workspace labels";
       };
 
-      servicePort = lib.mkOption {
-        default = {
-          sabnzbd = 8080;
-        };
-
-        type = lib.types.attrsOf (lib.types.oneOf [ lib.types.int (lib.types.attrsOf lib.types.int) ]);
-        description = "Default ports used by various services (single port or multiple ports per service)";
-      };
-
-
       sshPublicKeys = lib.mkOption {
           default = {
               work-pc = {

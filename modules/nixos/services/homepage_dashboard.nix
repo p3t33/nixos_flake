@@ -78,7 +78,7 @@ in
                 description = "Usenet client";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/sabnzbd";
                 icon = "sabnzbd.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.customOptions.servicePort.sabnzbd}";
                 statusStyle = "dot";
               };
             }

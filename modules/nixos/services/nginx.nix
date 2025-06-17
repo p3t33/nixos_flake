@@ -135,7 +135,7 @@ in
           }
           // lib.optionalAttrs config.services.sabnzbd.enable {
             "/sabnzbd/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}/sabnzbd/";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.sabnzbd}/sabnzbd/";
               extraConfig = ''
                   proxy_set_header X-Forwarded-Host $host;
               proxy_set_header X-Forwarded-Server $host;
@@ -214,7 +214,7 @@ in
         }
         ];
         locations."/" = {
-          proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.sabnzbd}/sabnzbd/";
+          proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.sabnzbd}/sabnzbd/";
           extraConfig = ''
           proxy_http_version 1.1;
           proxy_set_header Upgrade $http_upgrade;
