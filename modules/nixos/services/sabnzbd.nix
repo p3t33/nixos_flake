@@ -1,4 +1,7 @@
 {config, hostSpecific, ...}:
+let
+  pathToUsenetDirectory = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/usenet";
+in
 {
   services.sabnzbd = {
     enable = true;
@@ -8,9 +11,9 @@
   };
 
     systemd.tmpfiles.rules = [
-      "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
-      "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory}/complete 0770 ${config.services.sabnzbd.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
-      "d ${config.userDefinedGlobalVariables.pathToUsenetDirectory}/incomplete 0770 ${config.services.sabnzbd.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
+      "d ${pathToUsenetDirectory} 0770 ${hostSpecific.primeUsername} ${config.userDefinedGlobalVariables.mediaGroup} -"
+      "d ${pathToUsenetDirectory}/complete 0770 ${config.services.sabnzbd.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
+      "d ${pathToUsenetDirectory}/incomplete 0770 ${config.services.sabnzbd.user} ${config.userDefinedGlobalVariables.mediaGroup} -"
     ];
 
 }

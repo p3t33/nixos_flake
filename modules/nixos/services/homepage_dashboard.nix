@@ -4,6 +4,9 @@ let
   files = "files";
   media = "media";
   devices = "devices";
+  routerIP = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
+  proxmoxIP = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}74";
+
 in
 {
 
@@ -266,14 +269,14 @@ in
           {
             "router" = {
               description = "router ui";
-              href = "http://${config.userDefinedGlobalVariables.routerIP}";
+              href = "http://${routerIP}";
               icon = "router.png";
             };
           }
           {
             "proxmox" = {
               description = "Proxmox VE Dashboard";
-              href = "http://${config.userDefinedGlobalVariables.proxmoxIP}:8006";
+              href = "http://${proxmoxIP}:8006";
               icon = "proxmox.png";
             };
           }

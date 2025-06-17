@@ -51,28 +51,18 @@
         description = "Defines the static IP used by the homelab machine";
       };
 
+      # global
       localHostIPv4 = lib.mkOption {
         default = "127.0.0.1";
         type = lib.types.str;
         description = "Defines the static IP used by the homelab machine";
       };
 
+      # global
       anyIPv4 = lib.mkOption {
           default = "0.0.0.0";
           type = lib.types.str;
           description = "Defines an IPv4 address that binds to all available network interfaces.";
-      };
-
-      routerIP = lib.mkOption {
-        default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}1";
-        type = lib.types.str;
-        description = "Defines the static IP used by the homelab machine";
-      };
-
-      proxmoxIP = lib.mkOption {
-        default = "${config.userDefinedGlobalVariables.homeLabSubnetPrefix}74";
-        type = lib.types.str;
-        description = "Defines the static IP used by the homelab machine";
       };
 
       homeLabGateway = lib.mkOption {
@@ -93,12 +83,6 @@
         description = "Path to the media directory on the homelab host";
       };
 
-      pathToUsenetDirectory = lib.mkOption {
-        default = "${config.userDefinedGlobalVariables.pathToMediaDirectory}/usenet";
-        type = lib.types.str;
-        description = "Path to the media directory on the homelab host";
-      };
-
       pathToFlakeDirectory = lib.mkOption {
         default = "${config.home.homeDirectory}/projects/nixos_flake";
         type = lib.types.str;
@@ -115,12 +99,6 @@
         default = "https://github.com/${config.userDefinedGlobalVariables.githubFlakeRepositoryName}.git";
         type = lib.types.str;
         description = "URL of the flake repository used in Zsh update/upgrade aliases";
-      };
-
-      primeUsername = lib.mkOption {
-        default = "kmedrish";
-        type = lib.types.str;
-        description = "Defines the primary username";
       };
 
       # shared between home-manger and nixos.
