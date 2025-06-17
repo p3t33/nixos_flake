@@ -177,7 +177,6 @@
 
       servicePort = lib.mkOption {
         default = {
-          mosquitto = 1883;
           zigbee2mqttFrontend = 8124;
           sabnzbd = 8080;
         };
