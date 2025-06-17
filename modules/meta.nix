@@ -162,15 +162,6 @@
         description = "Defines the color palette for the user interface";
       };
 
-      bridgedNetwork = lib.mkOption {
-        default = {
-          bridgeName = "br0";
-          physicalInterface = "enp0s13f0u3";
-        };
-        type = lib.types.attrsOf lib.types.str;
-        description = "Defines the color palette for the user interface";
-      };
-
       workspaces_icons = lib.mkOption {
         default = {
           firefox = "";
