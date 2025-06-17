@@ -7,6 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ./configuration-services.nix
+    ./host-specific-configuration.nix
     ./sops-configuration.nix
     ./disko-config.nix
     ./disko-config-extra-hard-dirves.nix
