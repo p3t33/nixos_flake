@@ -241,7 +241,7 @@ in
                 description = "Media server";
                 href = "http://${config.userDefinedGlobalVariables.homeLabIP}/jellyfin";
                 icon = "jellyfin.png";
-                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+                siteMonitor = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${builtins.toString config.customOptions.servicePort.jellyfin}";
                 statusStyle = "dot";
               };
             }

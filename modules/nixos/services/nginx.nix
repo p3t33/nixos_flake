@@ -148,7 +148,7 @@ in
 }
           // lib.optionalAttrs config.services.jellyfin.enable {
             "/jellyfin" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.jellyfin}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;
@@ -398,7 +398,7 @@ in
               }
             ];
             locations."/" = {
-              proxyPass = "${localHost}:${builtins.toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+              proxyPass = "${localHost}:${builtins.toString config.customOptions.servicePort.jellyfin}";
               extraConfig = ''
                 proxy_http_version 1.1;
                 proxy_set_header Upgrade $http_upgrade;

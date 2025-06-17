@@ -239,7 +239,7 @@ in
         {
           name = "jellyfin";
           group = media;
-          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.userDefinedGlobalVariables.servicePort.jellyfin}";
+          url = "http://${config.userDefinedGlobalVariables.localHostIPv4}:${toString config.customOptions.servicePort.jellyfin}";
           interval = "30s";
           conditions = [ "[STATUS] == 200" ];
           alerts = [{

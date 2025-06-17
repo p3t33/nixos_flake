@@ -8,7 +8,6 @@
   config,
   pkgs,
   lib,
-  machineName,
   hostSpecific,
   ...
 }:
@@ -178,7 +177,6 @@
 
       servicePort = lib.mkOption {
         default = {
-          jellyfin = 8096;
           homeAssistant = 8123;
           mosquitto = 1883;
           zigbee2mqttFrontend = 8124;
