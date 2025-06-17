@@ -29,91 +29,91 @@ in
           ++ lib.optionals config.services.deluge.enable [
             {
               domain = "deluge.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.syncthing.enable [
             {
               domain = "syncthing.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.adguardhome.enable [
             {
               domain = "adguard.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.sonarr.enable [
             {
               domain = "sonarr.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.bazarr.enable [
             {
               domain = "bazarr.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.readarr.enable [
             {
               domain = "readarr.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.radarr.enable [
             {
               domain = "radarr.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.prowlarr.enable [
             {
               domain = "prowlarr.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.jackett.enable [
             {
               domain = "jackett.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.jellyfin.enable [
             {
               domain = "jellyfin.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.calibre-web.enable [
             {
               domain = "calibre-web.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.homepage-dashboard.enable [
             {
               domain = "homepage.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.prometheus.enable [
             {
               domain = "prometheus.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.sabnzbd.enable [
             {
               domain = "sabnzbd.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ]
           ++ lib.optionals config.services.grafana.enable [
             {
               domain = "grafana.${hostSpecific.hostName}";
-              answer = "${config.userDefinedGlobalVariables.homeLabIP}";
+              answer = "${config.customOptions.${hostSpecific.hostName}.ip}";
             }
           ];
       };

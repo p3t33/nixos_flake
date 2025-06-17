@@ -94,7 +94,7 @@
 
   networking.interfaces.eno1.ipv4.addresses = [
     {
-      address = "${config.userDefinedGlobalVariables.homeLabIP}";
+      address = "${config.customOptions.${hostSpecific.hostName}.ip}";
       prefixLength = 24;
     }
   ];
