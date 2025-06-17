@@ -70,12 +70,14 @@
         description = "Defines the gateway IP for the homelab machine";
       };
 
+      # global
       pathToDataDirectory = lib.mkOption {
         default = "/mnt/data";
         type = lib.types.str;
         description = "Path to the data directory on the homelab host";
       };
 
+      # global
       pathToMediaDirectory = lib.mkOption {
         default = "/mnt/media";
         type = lib.types.str;
@@ -110,12 +112,6 @@
 
       homeManagerAsNixOSModuleDefaultSecretsPath = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/secrets/home-manager/secrets.yaml;
-        type = lib.types.path;
-        description = "The relative path to the NixOS secrets file";
-      };
-
-      calibreAsNixOSModuleSecretsPath = lib.mkOption {
-        default = ../machines/${hostSpecific.hostName}/calibre.yaml;
         type = lib.types.path;
         description = "The relative path to the NixOS secrets file";
       };
@@ -161,20 +157,7 @@
         description = "Defines the color palette for the user interface";
       };
 
-      workspaces_icons = lib.mkOption {
-        default = {
-          firefox = "";
-          code = "";
-          cherrytree = "";
-          chrome = "";
-          terminal = "";
-          buildserver = "";
-          vm = "";
-        };
-        type = lib.types.attrsOf lib.types.str;
-        description = "Icon definitions for workspace labels";
-      };
-
+      # shared between home-manger and nixos and multiple hosts
       sshPublicKeys = lib.mkOption {
           default = {
               work-pc = {
@@ -193,24 +176,6 @@
 
           description = "Default ports used by various services (single port or multiple ports per service, as strings)";
       };
-
-      workspaces = lib.mkOption {
-        default = {
-          ws1 = "1: ${config.userDefinedGlobalVariables.workspaces_icons.firefox} Firefox";
-          ws2 = "2: ${config.userDefinedGlobalVariables.workspaces_icons.code} Code";
-          ws3 = "3: ${config.userDefinedGlobalVariables.workspaces_icons.cherrytree} Cherrytree";
-          ws4 = "4: ${config.userDefinedGlobalVariables.workspaces_icons.chrome} Chrome";
-          ws5 = "5: ${config.userDefinedGlobalVariables.workspaces_icons.buildserver} BuildServer";
-          ws6 = "6: ${config.userDefinedGlobalVariables.workspaces_icons.terminal} Terminal";
-          ws7 = "7";
-          ws8 = "8: ${config.userDefinedGlobalVariables.workspaces_icons.vm} VM";
-          ws9 = "9: VPN";
-          ws10 = "10";
-        };
-        type = lib.types.attrsOf lib.types.str;
-        description = "Workspace definitions for i3wm";
-      };
-
 
       # shared between home-manger and nixos.
       syncthing = lib.mkOption {

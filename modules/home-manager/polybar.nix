@@ -1,24 +1,24 @@
 { config, pkgs, ... }:
 
 let
-  ws1 = "${config.userDefinedGlobalVariables.workspaces.ws1}";
-  ws2 = "${config.userDefinedGlobalVariables.workspaces.ws2}";
-  ws3 = "${config.userDefinedGlobalVariables.workspaces.ws3}";
-  ws4 = "${config.userDefinedGlobalVariables.workspaces.ws4}";
-  ws5 = "${config.userDefinedGlobalVariables.workspaces.ws5}";
-  ws6 = "${config.userDefinedGlobalVariables.workspaces.ws6}";
-  ws7 = "${config.userDefinedGlobalVariables.workspaces.ws7}";
-  ws8 = "${config.userDefinedGlobalVariables.workspaces.ws8}";
-  ws9 = "${config.userDefinedGlobalVariables.workspaces.ws9}";
-  ws10 = "${config.userDefinedGlobalVariables.workspaces.ws10}";
+  ws1 = "${config.customOptions.i3.workspaces.ws1}";
+  ws2 = "${config.customOptions.i3.workspaces.ws2}";
+  ws3 = "${config.customOptions.i3.workspaces.ws3}";
+  ws4 = "${config.customOptions.i3.workspaces.ws4}";
+  ws5 = "${config.customOptions.i3.workspaces.ws5}";
+  ws6 = "${config.customOptions.i3.workspaces.ws6}";
+  ws7 = "${config.customOptions.i3.workspaces.ws7}";
+  ws8 = "${config.customOptions.i3.workspaces.ws8}";
+  ws9 = "${config.customOptions.i3.workspaces.ws9}";
+  ws10 ="${config.customOptions.i3.workspaces.ws10}";
 
-  ws1_icon = "${config.userDefinedGlobalVariables.workspaces_icons.firefox}";
-  ws2_icon = "${config.userDefinedGlobalVariables.workspaces_icons.code}";
-  ws3_icon = "${config.userDefinedGlobalVariables.workspaces_icons.cherrytree}";
-  ws4_icon = "${config.userDefinedGlobalVariables.workspaces_icons.chrome}";
-  ws5_icon = "${config.userDefinedGlobalVariables.workspaces_icons.terminal}";
-  ws6_icon = "${config.userDefinedGlobalVariables.workspaces_icons.buildserver}";
-  ws8_icon = "${config.userDefinedGlobalVariables.workspaces_icons.vm}";
+  ws1Icon = "${config.customOptions.i3.workspacesIcons.firefox}";
+  ws2Icon = "${config.customOptions.i3.workspacesIcons.code}";
+  ws3Icon = "${config.customOptions.i3.workspacesIcons.cherrytree}";
+  ws4Icon = "${config.customOptions.i3.workspacesIcons.chrome}";
+  ws5Icon = "${config.customOptions.i3.workspacesIcons.terminal}";
+  ws6Icon = "${config.customOptions.i3.workspacesIcons.buildserver}";
+  ws8Icon = "${config.customOptions.i3.workspacesIcons.vm}";
 in
 {
   services.polybar = {
@@ -92,14 +92,14 @@ in
         fuzzy-match = true;
 
         icon-0 = "${ws10};";
-        icon-1 = "${ws1};${ws1_icon}";
-        icon-2 = "${ws2};${ws2_icon}";
-        icon-3 = "${ws3};${ws3_icon}";
-        icon-4 = "${ws4};${ws4_icon}";
-        icon-5 = "${ws5};${ws5_icon}";
-        icon-6 = "${ws6};${ws6_icon}";
+        icon-1 = "${ws1};${ws1Icon}";
+        icon-2 = "${ws2};${ws2Icon}";
+        icon-3 = "${ws3};${ws3Icon}";
+        icon-4 = "${ws4};${ws4Icon}";
+        icon-5 = "${ws5};${ws5Icon}";
+        icon-6 = "${ws6};${ws6Icon}";
         icon-7 = "${ws7};";
-        icon-8 = "${ws8};${ws8_icon}";
+        icon-8 = "${ws8};${ws8Icon}";
         icon-9 = "${ws9};";
         icon-default = "";
 
@@ -272,14 +272,14 @@ in
         # ws-icon-[0-9]+ = <label>;<icon>
         # NOTE: The <label> needs to match the name of the i3 workspace
         ws-icon-0 = "${ws10};";
-        ws-icon-1 = "${ws1};${ws1_icon}";
-        ws-icon-2 = "${ws2};${ws2_icon}";
-        ws-icon-3 = "${ws3};${ws3_icon}";
-        ws-icon-4 = "${ws4};${ws4_icon}";
-        ws-icon-5 = "${ws5};${ws5_icon}";
-        ws-icon-6 = "${ws6};${ws6_icon}";
+        ws-icon-1 = "${ws1};${ws1Icon}";
+        ws-icon-2 = "${ws2};${ws2Icon}";
+        ws-icon-3 = "${ws3};${ws3Icon}";
+        ws-icon-4 = "${ws4};${ws4Icon}";
+        ws-icon-5 = "${ws5};${ws5Icon}";
+        ws-icon-6 = "${ws6};${ws6Icon}";
         ws-icon-7 = "${ws7};";
-        ws-icon-8 = "${ws8};${ws8_icon}";
+        ws-icon-8 = "${ws8};${ws8Icon}";
         ws-icon-9 = "${ws9};";
         ws-icon-default = "";
 

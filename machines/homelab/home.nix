@@ -3,7 +3,7 @@
   imports = [
     ./sops-home.nix
     ../../modules/meta.nix
-    ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
+    ../../modules/home-manager/basic.nix
     ../../modules/home-manager/session-variables.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/tmux.nix
@@ -22,6 +22,4 @@
     ../../modules/home-manager/bat.nix
     ../../modules/home-manager/yazi.nix
   ];
-
-  userDefinedGlobalVariables.sopsKeyPath = "${config.userDefinedGlobalVariables.primeUserHomeDirectory}/.config/sops/age/keys.txt";
 }
