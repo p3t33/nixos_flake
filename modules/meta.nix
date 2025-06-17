@@ -83,22 +83,11 @@
         description = "Path to the media directory on the homelab host";
       };
 
-      pathToFlakeDirectory = lib.mkOption {
-        default = "${config.home.homeDirectory}/projects/nixos_flake";
-        type = lib.types.str;
-        description = "Defines the path to the flake directory";
-      };
-
+      # global
       githubFlakeRepositoryName = lib.mkOption {
         default = "p3t33/nixos_flake";
         type = lib.types.str;
         description = "Name of the flake repository on GitHub";
-      };
-
-      flakeRepositoryUrl = lib.mkOption {
-        default = "https://github.com/${config.userDefinedGlobalVariables.githubFlakeRepositoryName}.git";
-        type = lib.types.str;
-        description = "URL of the flake repository used in Zsh update/upgrade aliases";
       };
 
       # shared between home-manger and nixos.
