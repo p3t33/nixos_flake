@@ -19,11 +19,11 @@
     ];
 
    openFirewall = true;
-      enable = true;
-      # only install components but does not enable them.
-      extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
-      config = {
-        homeassistant = {
+    enable = true;
+    # only install components but does not enable them.
+    extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
+    config = {
+      homeassistant = {
         name = "Home";
         unit_system = "metric";
         time_zone = "${config.time.timeZone}";
@@ -31,7 +31,7 @@
       };
       http = {
         server_host = "${config.userDefinedGlobalVariables.anyIPv4}";
-        server_port = config.userDefinedGlobalVariables.servicePort.homeAssistant;
+        server_port = 8123;
       };
     };
   };

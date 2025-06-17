@@ -177,7 +177,6 @@
 
       servicePort = lib.mkOption {
         default = {
-          homeAssistant = 8123;
           mosquitto = 1883;
           zigbee2mqttFrontend = 8124;
           sabnzbd = 8080;
