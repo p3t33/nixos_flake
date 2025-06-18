@@ -1,6 +1,5 @@
 {
   imports = [
     ../../modules/nixos/custom-global-ptions/networking.nix
-    ../../modules/nixos/custom-global-ptions/static-ip.nix
   ];
 }

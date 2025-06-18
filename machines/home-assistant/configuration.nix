@@ -7,6 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ./configuration-services.nix
+    ./global-options.nix
     ./sops-configuration.nix
     ./disko-config.nix
     ../../modules/nixos/bootloader/systemd-boot.nix

@@ -1,25 +1,17 @@
-{ config, lib, hostSpecific, ...}:
+{ lib, ...}:
 {
   options.customGlobalOptions = {
-    ${hostSpecific.hostName} = {
-      subnetPrefix = lib.mkOption {
-        default = "10.100.102.";
-        type = lib.types.str;
-        description = "Defines the static IP subnet prefix used by homelab machines";
-      };
+    localHostIPv4 = lib.mkOption {
+      default = "127.0.0.1";
+      type = lib.types.str;
+      description = "Defines the static IP used by the homelab machine";
+    };
 
-      ip = lib.mkOption {
-        default = "${config.customGlobalOptions.${hostSpecific.hostName}.subnetPrefix}73";
+    # global
+    anyIPv4 = lib.mkOption {
+        default = "0.0.0.0";
         type = lib.types.str;
-        description = "Defines the static IP used by the homelab machine";
-      };
-
-      gateway = lib.mkOption {
-        default = "${config.customGlobalOptions.${hostSpecific.hostName}.subnetPrefix}1";
-        type = lib.types.str;
-        description = "Defines the gateway IP for the homelab machine";
-      };
+        description = "Defines an IPv4 address that binds to all available network interfaces.";
     };
   };
 }
-
