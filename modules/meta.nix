@@ -57,18 +57,6 @@
         description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
       };
 
-      NixOSDefaultSecretsPath = lib.mkOption {
-        default = ../machines/${hostSpecific.hostName}/secrets/nixos/secrets.yaml;
-        type = lib.types.path;
-        description = "The relative path to the NixOS secrets file";
-      };
-
-      homeManagerAsNixOSModuleDefaultSecretsPath = lib.mkOption {
-        default = ../machines/${hostSpecific.hostName}/secrets/home-manager/secrets.yaml;
-        type = lib.types.path;
-        description = "The relative path to the NixOS secrets file";
-      };
-
       databaseSecret = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/prowlarr.db;
         type = lib.types.path;
