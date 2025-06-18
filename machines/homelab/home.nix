@@ -4,6 +4,7 @@
     ./sops-home.nix
     ../../modules/meta.nix
     ../../modules/home-manager/basic.nix
+    ../../modules/home-manager/custom-global-options/colors.nix
     ../../modules/home-manager/session-variables.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/tmux.nix
