@@ -42,7 +42,7 @@
             description = "Port for Syncthing web GUI.";
           };
 
-          machines = lib.mkOption {
+          devices = lib.mkOption {
             type = lib.types.attrsOf lib.types.str;
             description = "avalible machines";
             default = {

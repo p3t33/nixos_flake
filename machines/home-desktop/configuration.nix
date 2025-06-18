@@ -42,21 +42,21 @@
     systemStateVersion = "24.05";
     syncthing = {
       devicesToShareTaskWarriorFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
-        "${config.customOptions.syncthing.machines.work-pc}"
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.work-pc}"
       ];
       devicesToShareDevResourcesFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
-        "${config.customOptions.syncthing.machines.work-pc}"
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.work-pc}"
       ];
       devicesToShareDatabaseFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
+        "${config.customOptions.syncthing.devices.homelab}"
       ];
       devicesToShareDocumentsFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
+        "${config.customOptions.syncthing.devices.homelab}"
       ];
       devicesToShareStudyFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
+        "${config.customOptions.syncthing.devices.homelab}"
       ];
     };
   };

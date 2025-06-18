@@ -44,13 +44,13 @@
     systemStateVersion = "24.05";
     syncthing = {
       devicesToShareTaskWarriorFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
-        "${config.customOptions.syncthing.machines.home-desktop}"
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.home-desktop}"
       ];
 
       devicesToShareDevResourcesFolderWith = [
-        "${config.customOptions.syncthing.machines.homelab}"
-        "${config.customOptions.syncthing.machines.home-desktop}"
+        "${config.customOptions.syncthing.devices.homelab}"
+        "${config.customOptions.syncthing.devices.home-desktop}"
       ];
     };
   };
