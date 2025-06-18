@@ -38,20 +38,6 @@
       };
 
       # global
-      pathToDataDirectory = lib.mkOption {
-        default = "/mnt/data";
-        type = lib.types.str;
-        description = "Path to the data directory on the homelab host";
-      };
-
-      # global
-      pathToMediaDirectory = lib.mkOption {
-        default = "/mnt/media";
-        type = lib.types.str;
-        description = "Path to the media directory on the homelab host";
-      };
-
-      # global
       githubFlakeRepositoryName = lib.mkOption {
         default = "p3t33/nixos_flake";
         type = lib.types.str;

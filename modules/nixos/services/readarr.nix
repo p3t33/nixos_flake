@@ -26,8 +26,8 @@ in
 
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.
   systemd.tmpfiles.rules = [
-    "d ${config.customGlobalOptions.pathToMediaDirectory}/books 0770 ${config.services.readarr.user} ${config.customGlobalOptions.mediaGroup} -"
-    "d ${config.customGlobalOptions.pathToMediaDirectory}/audiobooks 0770 ${config.services.readarr.user} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/books 0770 ${config.services.readarr.user} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/audiobooks 0770 ${config.services.readarr.user} ${config.customGlobalOptions.mediaGroup} -"
   ];
 
 }

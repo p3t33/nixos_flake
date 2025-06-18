@@ -23,7 +23,7 @@
     config = {
       # /mnt/media is a mount point with defined owner, and permissions
       # so I was getting warning when NixOS was switching.
-      download_location = "${config.customGlobalOptions.pathToMediaDirectory}/torrents";
+      download_location = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents";
       max_active_seeding = 200;
       max_active_downloading = 200;
       max_active_limit = 200;

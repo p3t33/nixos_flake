@@ -86,10 +86,10 @@
 
   # systemd will create directory on boot(and set ownership and permission) if it doesn't exist yet.
   systemd.tmpfiles.rules = [
-    "d ${config.customGlobalOptions.pathToDataDirectory} 0770 ${hostSpecific.primeUsername} ${config.customGlobalOptions.dataGroup} -"
-    "d ${config.customGlobalOptions.pathToMediaDirectory} 0770 ${hostSpecific.primeUsername} ${config.customGlobalOptions.mediaGroup} -"
-    "d ${config.customGlobalOptions.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.customGlobalOptions.mediaGroup} -"
-    "d ${config.customGlobalOptions.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customHostSpecificGlobalOptions.pathToDataDirectory} 0770 ${hostSpecific.primeUsername} ${config.customGlobalOptions.dataGroup} -"
+    "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory} 0770 ${hostSpecific.primeUsername} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.customGlobalOptions.mediaGroup} -"
+    "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.customGlobalOptions.mediaGroup} -"
   ];
 
   networking.interfaces.eno1.ipv4.addresses = [
