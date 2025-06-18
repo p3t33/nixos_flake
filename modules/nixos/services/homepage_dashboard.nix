@@ -4,8 +4,8 @@ let
   files = "files";
   media = "media";
   devices = "devices";
-  routerIP = "${config.customOptions.${hostSpecific.hostName}.subnetPrefix}1";
-  proxmoxIP = "${config.customOptions.${hostSpecific.hostName}.subnetPrefix}74";
+  routerIP = "${config.customGlobalOptions.${hostSpecific.hostName}.subnetPrefix}1";
+  proxmoxIP = "${config.customGlobalOptions.${hostSpecific.hostName}.subnetPrefix}74";
 
 in
 {
@@ -23,7 +23,7 @@ in
     enable = true;
     listenPort = 8082;
     openFirewall = true;
-    allowedHosts = "${config.customGlobalOptions.localHostIPv4},${config.customGlobalOptions.anyIPv4},homepage.homelab,${config.customOptions.${hostSpecific.hostName}.ip}";
+    allowedHosts = "${config.customGlobalOptions.localHostIPv4},${config.customGlobalOptions.anyIPv4},homepage.homelab,${config.customGlobalOptions.${hostSpecific.hostName}.ip}";
     environmentFile = config.sops.secrets.homepage-dashboard.path;
 
 
@@ -48,7 +48,7 @@ in
             {
               "syncthing" = {
                 description = "real-time file synchronization";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/syncthing";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/syncthing";
                 icon = "syncthing.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.customOptions.syncthing.httpPort}";
                 statusStyle = "dot";
@@ -59,13 +59,13 @@ in
             {
               "deluge" = {
                 description = "BitTorrent client";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/deluge";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/deluge";
                 icon = "deluge.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.deluge.web.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "deluge";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.deluge.web.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.deluge.web.port}";
                   password = "{{HOMEPAGE_VAR_DELUGE}}"; # not a hash, but human redable password used with the webgui.
                   enableLeechProgress = true;
                 };
@@ -76,7 +76,7 @@ in
             {
               "sabnzbd" = {
                 description = "Usenet client";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/sabnzbd";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/sabnzbd";
                 icon = "sabnzbd.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.customOptions.servicePort.sabnzbd}";
                 statusStyle = "dot";
@@ -91,13 +91,13 @@ in
             {
               "adguard" = {
                 description = "DNS based ad blocker";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/adguard";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/adguard";
                 icon = "adguard-home.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.adguardhome.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "adguard";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.adguardhome.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.adguardhome.port}";
                   # password = "{{HOMEPAGE_VAR_DELUGE}}"; # not a hash, but human redable password used with the webgui.
                   # enableLeechProgress = true;
                 };
@@ -108,13 +108,13 @@ in
             {
               "gatus" = {
                 description = "Serivce health monitoring and alerting";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
                 icon = "gatus.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "gatus";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
                 };
               };
             }
@@ -123,7 +123,7 @@ in
             {
               "prometheus" = {
                 description = "Metrics collections and alerting";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.prometheus.port}";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.prometheus.port}";
                 icon = "prometheus.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.prometheus.port}";
                 statusStyle = "dot";
@@ -134,7 +134,7 @@ in
             {
               "grafana" = {
                 description = "visualization and analytics platform";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.grafana.settings.server.http_port}";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.grafana.settings.server.http_port}";
                 icon = "grafana.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.grafana.settings.server.http_port}";
                 statusStyle = "dot";
@@ -149,13 +149,13 @@ in
             {
               "sonarr" = {
                 description = "Tv series";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/sonarr";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/sonarr";
                 icon = "sonarr.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}";
                 statusStyle = "dot";
                 widget = {
                     type = "sonarr";
-                    url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.sonarr.settings.server.port}";
+                    url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.sonarr.settings.server.port}";
                     key = "{{HOMEPAGE_VAR_SONARR}}";
                     enableQueue = true;
                 };
@@ -166,13 +166,13 @@ in
             {
               "radarr" = {
                 description = "Movies";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/radarr";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/radarr";
                 icon = "radarr.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.radarr.settings.server.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "radarr";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.radarr.settings.server.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.radarr.settings.server.port}";
                   key = "{{HOMEPAGE_VAR_RADARR}}";
                   enableQueue = true;
                 };
@@ -183,13 +183,13 @@ in
             {
               "readarr" = {
                 description = "Ebooks";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/readarr";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/readarr";
                 icon = "readarr.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.readarr.settings.server.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "readarr";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.readarr.settings.server.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.readarr.settings.server.port}";
                   key = "{{HOMEPAGE_VAR_READARR}}"; #
                   enableQueue = true;
                 };
@@ -200,7 +200,7 @@ in
             {
               "bazarr" = {
                 description = "Subtitles for media library";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/bazarr";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/bazarr";
                 icon = "bazarr.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.bazarr.listenPort}";
                 statusStyle = "dot";
@@ -211,13 +211,13 @@ in
             {
               "prowlarr" = {
                 description = "Indexer manager";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/prowlarr";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/prowlarr";
                 icon = "prowlarr.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.prowlarr.settings.server.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "prowlarr";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.prowlarr.settings.server.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.prowlarr.settings.server.port}";
                   key = "{{HOMEPAGE_VAR_PROWLARR}}";
                   enableQueue = true;
                 };
@@ -228,7 +228,7 @@ in
             {
               "jackett" = {
                 description = "Indexer manager";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/jackett";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/jackett";
                 icon = "jackett.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.jackett.port}";
                 statusStyle = "dot";
@@ -239,7 +239,7 @@ in
             {
               "jellyfin" = {
                 description = "Media server";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/jellyfin";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/jellyfin";
                 icon = "jellyfin.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.customOptions.servicePort.jellyfin}";
                 statusStyle = "dot";
@@ -250,13 +250,13 @@ in
             {
               "calibre-web" = {
                 description = "book library";
-                href = "http://${config.customOptions.${hostSpecific.hostName}.ip}/calibre-web";
+                href = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}/calibre-web";
                 icon = "calibre-web.png";
                 siteMonitor = "http://${config.customGlobalOptions.localHostIPv4}:${builtins.toString config.services.calibre-web.listen.port}";
                 statusStyle = "dot";
                 widget = {
                   type = "calibreweb";
-                  url = "http://${config.customOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.calibre-web.listen.port}";
+                  url = "http://${config.customGlobalOptions.${hostSpecific.hostName}.ip}:${builtins.toString config.services.calibre-web.listen.port}";
                   username = "{{HOMEPAGE_VAR_CALIBRE_USER}}";
                   password = "{{HOMEPAGE_VAR_CALIBRE_PASSWORD}}";
                 };

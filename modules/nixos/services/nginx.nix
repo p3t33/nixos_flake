@@ -20,7 +20,7 @@ in
     recommendedTlsSettings = true;
 
     virtualHosts = {
-      "${config.customOptions.${hostSpecific.hostName}.ip}" = {
+      "${config.customGlobalOptions.${hostSpecific.hostName}.ip}" = {
         listen = [
           {
             addr = "${allInterfaces}"; # Listen on all available network interfaces

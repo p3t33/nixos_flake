@@ -7,7 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ./configuration-services.nix
-    ./host-specific-configuration.nix
+    ./global-options.nix
     ./sops-configuration.nix
     ./disko-config.nix
     ./disko-config-extra-hard-dirves.nix
@@ -94,12 +94,12 @@
 
   networking.interfaces.eno1.ipv4.addresses = [
     {
-      address = "${config.customOptions.${hostSpecific.hostName}.ip}";
+      address = "${config.customGlobalOptions.${hostSpecific.hostName}.ip}";
       prefixLength = 24;
     }
   ];
 
-  networking.defaultGateway = "${config.customOptions.${hostSpecific.hostName}.gateway}";
+  networking.defaultGateway = "${config.customGlobalOptions.${hostSpecific.hostName}.gateway}";
   networking.nameservers = [ "8.8.8.8" ];
 
   # Configure keymap in X11
