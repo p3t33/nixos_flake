@@ -48,6 +48,7 @@
   ];
 
   customOptions = {
+      enableModule.starship = true;
       wallpaperName = "watchtower.png";
       sshPublicKey = config.customGlobalOptions.sshPublicKeys.work-pc.key;
   };

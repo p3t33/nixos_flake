@@ -46,6 +46,7 @@
   ];
 
   customOptions = {
+      enableModule.starship = true;
       wallpaperName = "crane_at_night.png";
       sshPublicKey = config.customGlobalOptions.sshPublicKeys.home-desktop.key;
   };

@@ -23,4 +23,9 @@
     ../../modules/home-manager/ssh/ssh-client.nix
     ../../modules/home-manager/yazi.nix
   ];
+
+  customOptions = {
+    enableModule.starship = true;
+  };
+
 }

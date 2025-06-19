@@ -21,4 +21,9 @@
     ../../modules/home-manager/bat.nix
     ../../modules/home-manager/yazi.nix
   ];
+
+  customOptions = {
+    enableModule.starship = true;
+  };
+
 }

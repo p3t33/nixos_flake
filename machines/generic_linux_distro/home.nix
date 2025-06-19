@@ -49,6 +49,11 @@
     ../../modules/home-manager/yazi.nix
   ];
 
+  customOptions = {
+    enableModule.starship = true;
+  };
+
+
   customGlobalOptions.sopsKeyPath = "${config.customGlobalOptions.primeUserHomeDirectory }/.config/sops/age/keys.txt";
   targets.genericLinux.enable = true;
 }
