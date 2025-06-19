@@ -1,5 +1,4 @@
 { ... }:
 {
-
   services.picom.enable = true;
 }

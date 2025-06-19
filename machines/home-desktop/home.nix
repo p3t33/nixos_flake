@@ -46,8 +46,34 @@
   ];
 
   customOptions = {
-      enableModule.starship = true;
-      wallpaperName = "crane_at_night.png";
-      sshPublicKey = config.customGlobalOptions.sshPublicKeys.home-desktop.key;
+    enableModule.starship = true;
+    enableModule.fzf = true;
+    enableModule.git = true;
+    enableModule.gitCommitSignaturesWithGpg = true;
+    enableModule.zoxide = true;
+    enableModule.tmux = true;
+    enableModule.alacritty = true;
+    enableModule.rofi = true;
+    enableModule.gpgAgent = true;
+    enableModule.sshClient = true;
+    enableModule.enableSmartcardPublicKey  = true;
+    enableModule.polybar  = true;
+    enableModule.redshift  = true;
+    enableModule.taskwarrior = true;
+    enableModule.wallpaper = true;
+    enableModule.atuin = true;
+    enableModule.lazygit = true;
+    enableModule.mimeApps = true;
+    enableModule.gtk = true;
+    enableModule.qt = true;
+    enableModule.dunst = true;
+    enableModule.bat = true;
+    enableModule.firefox = true;
+    enableModule.zellij = true;
+    enableModule.yazi = true;
+    enableModule.ghostty = true;
+
+    wallpaperName = "crane_at_night.png";
+    sshPublicKey = config.customGlobalOptions.sshPublicKeys.home-desktop.key;
   };
 }

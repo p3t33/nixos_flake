@@ -8,25 +8,24 @@
     ../../modules/home-manager/session-variables.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/fzf.nix
-    ../../modules/home-manager/neovim/neovim.nix
+    ../../modules/home-manager/neovim/neovim.nix # to do
     ../../modules/home-manager/git/git.nix
     ../../modules/home-manager/git/git_commit_signatures_with_gpg.nix
     ../../modules/home-manager/zoxide.nix
-    ../../modules/home-manager/zsh.nix
-    ../../modules/home-manager/bash.nix
+    ../../modules/home-manager/zsh.nix # to do.
+    ../../modules/home-manager/bash.nix # to do.
     ../../modules/home-manager/tmux.nix
-    ../../modules/home-manager/sxhkd.nix
-    ../../modules/home-manager/i3status.nix
+    ../../modules/home-manager/sxhkd.nix # to do.
     ../../modules/home-manager/alacritty.nix
-    ../../modules/home-manager/picom.nix
-    ../../modules/home-manager/i3.nix
+    ../../modules/home-manager/picom.nix # todo
+    ../../modules/home-manager/i3.nix # todo
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/ssh/ssh-client.nix
     ../../modules/home-manager/ssh/ssh_public_key.nix
     ../../modules/home-manager/polybar.nix
-    ../../modules/home-manager/scripts/i3-monitor.nix
-    ../../modules/home-manager/scripts/rofi-buku-bookmarks.nix
+    ../../modules/home-manager/scripts/i3-monitor.nix # to do
+    ../../modules/home-manager/scripts/rofi-buku-bookmarks.nix #
     ../../modules/home-manager/scripts/helloworld-python.nix
     ../../modules/home-manager/scripts/tmux-sessionizer.nix
     ../../modules/home-manager/scripts/cheat-sh.nix
@@ -35,7 +34,7 @@
     ../../modules/home-manager/wallpaper.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/git/lazygit.nix
-    ../../modules/home-manager/emacs/emacs.nix
+    ../../modules/home-manager/emacs/emacs.nix # todo
     ../../modules/home-manager/xdg/mime_apps.nix
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/qt.nix
@@ -48,8 +47,35 @@
   ];
 
   customOptions = {
-      enableModule.starship = true;
-      wallpaperName = "watchtower.png";
-      sshPublicKey = config.customGlobalOptions.sshPublicKeys.work-pc.key;
+    enableModule.starship = true;
+    enableModule.fzf = true;
+    enableModule.git = true;
+    enableModule.gitCommitSignaturesWithGpg = true;
+    enableModule.zoxide = true;
+    enableModule.tmux = true;
+    enableModule.alacritty = true;
+    enableModule.rofi = true;
+    enableModule.gpgAgent = true;
+    enableModule.sshClient = true;
+    enableModule.enableSmartcardPublicKey  = true;
+    enableModule.polybar  = true;
+    enableModule.redshift  = true;
+    enableModule.taskwarrior = true;
+    enableModule.wallpaper = true;
+    enableModule.atuin = true;
+    enableModule.lazygit = true;
+    enableModule.mimeApps = true;
+    enableModule.gtk = true;
+    enableModule.qt = true;
+    enableModule.dunst = true;
+    enableModule.bat = true;
+    enableModule.firefox = true;
+    enableModule.zellij = true;
+    enableModule.yazi = true;
+    enableModule.ghostty = true;
+
+
+    wallpaperName = "watchtower.png";
+    sshPublicKey = config.customGlobalOptions.sshPublicKeys.work-pc.key;
   };
 }

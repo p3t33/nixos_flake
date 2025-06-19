@@ -38,12 +38,12 @@
     ../../modules/home-manager/wallpaper.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/git/lazygit.nix
-    ../../modules/home-manager/clipmenu.nix
     ../../modules/home-manager/emacs/emacs.nix
     ../../modules/home-manager/xdg/mime_apps.nix
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/qt.nix
     ../../modules/home-manager/services/dnust.nix
+    ../../modules/home-manager/bat.nix
     ../../modules/home-manager/firefox.nix
     ../../modules/home-manager/generic_linux_fonts.nix
     ../../modules/home-manager/yazi.nix
@@ -51,6 +51,25 @@
 
   customOptions = {
     enableModule.starship = true;
+    enableModule.fzf = true;
+    enableModule.zoxide = true;
+    enableModule.tmux = true;
+    enableModule.rofi = true;
+    enableModule.gpgAgent = true;
+    enableModule.sshClient = true;
+    enableModule.polybar  = true;
+    enableModule.redshift  = true;
+    enableModule.taskwarrior = true;
+    enableModule.wallpaper = true;
+    enableModule.atuin = true;
+    enableModule.lazygit = true;
+    enableModule.mimeApps = true;
+    enableModule.gtk = true;
+    enableModule.qt = true;
+    enableModule.dunst = true;
+    enableModule.bat = true;
+    enableModule.firefox = true;
+    enableModule.yazi = true;
   };
 
 

@@ -26,6 +26,17 @@
 
   customOptions = {
     enableModule.starship = true;
+    enableModule.tmux = true;
+    enableModule.fzf = true;
+    enableModule.git = true;
+    enableModule.zoxide = true;
+    enableModule.taskwarrior = true;
+    enableModule.atuin = true;
+    enableModule.lazygit = true;
+    enableModule.gpgAgent = true;
+    enableModule.bat = true;
+    enableModule.sshClient = true;
+    enableModule.yazi = true;
   };
 
 }
