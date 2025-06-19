@@ -12,13 +12,13 @@
     ../../modules/home-manager/git/git.nix
     ../../modules/home-manager/git/git_commit_signatures_with_gpg.nix
     ../../modules/home-manager/zoxide.nix
-    ../../modules/home-manager/zsh.nix # to do.
-    ../../modules/home-manager/bash.nix # to do.
+    ../../modules/home-manager/zsh.nix
+    ../../modules/home-manager/bash.nix
     ../../modules/home-manager/tmux.nix
     ../../modules/home-manager/sxhkd.nix # to do.
     ../../modules/home-manager/alacritty.nix
-    ../../modules/home-manager/picom.nix # todo
-    ../../modules/home-manager/i3.nix # todo
+    ../../modules/home-manager/picom.nix
+    ../../modules/home-manager/i3.nix
     ../../modules/home-manager/rofi.nix
     ../../modules/home-manager/gpg.nix
     ../../modules/home-manager/ssh/ssh-client.nix
@@ -59,6 +59,8 @@
     enableModule.rofi = true;
     enableModule.gpgAgent = true;
     enableModule.sshClient = true;
+    enableModule.picom = true;
+    enableModule.i3 = true;
     enableModule.enableSmartcardPublicKey  = true;
     enableModule.polybar  = true;
     enableModule.redshift  = true;

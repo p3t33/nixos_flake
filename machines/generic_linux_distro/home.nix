@@ -59,6 +59,8 @@
     enableModule.rofi = true;
     enableModule.gpgAgent = true;
     enableModule.sshClient = true;
+    enableModule.picom = true;
+    enableModule.i3 = true;
     enableModule.polybar  = true;
     enableModule.redshift  = true;
     enableModule.taskwarrior = true;

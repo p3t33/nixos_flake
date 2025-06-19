@@ -6,6 +6,8 @@
 }:
 
 let
+  cfg = config.customOptions.enableModule.i3;
+
   mod = "Mod4";
   ws1 = "${config.customOptions.i3.workspaces.ws1}";
   ws2 = "${config.customOptions.i3.workspaces.ws2}";
@@ -19,6 +21,7 @@ let
   ws10 = "${config.customOptions.i3.workspaces.ws10}";
 in
 {
+  options.customOptions.enableModule.i3 = lib.mkEnableOption "Enable i3 window manager configuration";
   options.customOptions.i3 = {
     workspacesIcons = lib.mkOption {
       default = {
@@ -52,7 +55,7 @@ in
     };
   };
 
-  config = {
+    config = lib.mkIf cfg {
     xsession.windowManager.i3 = {
       enable = true;
 
