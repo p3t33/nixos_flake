@@ -1,3 +1,8 @@
+{ lib, config, ... }:
+
+let
+  cfg = config.customOptions.enableModule.emacs;
+in
 {
 
 # NOTE: I mosly use emacs for org-roam so the reset of the config were not fully
@@ -12,6 +17,27 @@
 #
 # I did use use-package with :after to control how the packages are evaluated but I can't
 # be sure it is covering 100% of all the edge cases, so the order should be kept as is.
+
+options.customOptions = {
+    enableModule.emacs = lib.mkEnableOption "Enable all Emacs modules";
+  };
+
+  config = lib.mkIf cfg {
+    customOptions = {
+      enableEmacsCore = true;
+      enableEmacsKeybindings = true;
+      enableEmacsUI = true;
+      enableEmacsSpellChecker = true;
+      enableEmacsEvil = true;
+      enableEmacsOrg = true;
+      enableEmacsSearchAndSelect = true;
+      enableEmacsDired = true;
+      enableEmacsNavigationAndShell = true;
+      enableEmacsRSS = true;
+      enableEmacsGit = true;
+      enableEmacsCompletion = true;
+    };
+  };
 
 imports = [
   ./core.nix

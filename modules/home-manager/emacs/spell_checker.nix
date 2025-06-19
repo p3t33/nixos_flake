@@ -1,4 +1,13 @@
+{ lib, config, ... }:
+
+let
+  cfg = config.customOptions.enableEmacsSpellChecker;
+in
 {
+  options.customOptions.enableEmacsSpellChecker =
+    lib.mkEnableOption "Enable Emacs spell checker (flyspell + flycheck)";
+
+  config = lib.mkIf cfg {
 
   programs.emacs.extraPackages = epkgs: with epkgs; [
     flycheck
@@ -45,4 +54,5 @@
          "[s" #'costum-flyspell-previous-and-correct)) ;; Use #' for functions
        )
   '';
+  };
 }

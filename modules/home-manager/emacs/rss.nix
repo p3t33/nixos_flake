@@ -1,6 +1,13 @@
-{ config, ... }:
+{ lib, config, ... }:
 
+let
+  cfg = config.customOptions.enableEmacsRSS;
+in
 {
+  options.customOptions.enableEmacsRSS =
+    lib.mkEnableOption "Enable Emacs RSS reader configuration (Elfeed and Elfeed Goodies)";
+
+  config = lib.mkIf cfg {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [
       elfeed
@@ -37,5 +44,6 @@
       ;; ====================
     '';
   };
+};
 }
 

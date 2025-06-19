@@ -1,4 +1,13 @@
+{ lib, config, ... }:
+
+let
+  cfg = config.customOptions.enableEmacsGit;
+in
 {
+  options.customOptions.enableEmacsGit =
+    lib.mkEnableOption "Enable Emacs Git configuration (Magit, Git Timemachine)";
+
+  config = lib.mkIf cfg {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [
       magit
@@ -24,5 +33,6 @@
 
     '';
   };
+};
 }
 

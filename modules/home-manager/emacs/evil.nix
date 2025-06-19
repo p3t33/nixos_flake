@@ -1,5 +1,13 @@
-{ pkgs, ... }:
+{ lib, config, pkgs, ... }:
+
+let
+  cfg = config.customOptions.enableEmacsEvil;
+in
 {
+  options.customOptions.enableEmacsEvil =
+    lib.mkEnableOption "Enable Emacs Evil mode and Evil Collection integration";
+
+  config = lib.mkIf cfg {
   programs.emacs.extraPackages = epkgs: with epkgs; [
     evil
     evil-collection
@@ -81,4 +89,5 @@
         (evil-define-key 'normal 'global (kbd "C-l") 'evil-window-right)
            ;; =================================
   '';
+};
 }

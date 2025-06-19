@@ -1,4 +1,13 @@
+{ lib, config, ... }:
+
+let
+  cfg = config.customOptions.enableEmacsCompletion;
+in
 {
+  options.customOptions.enableEmacsCompletion =
+    lib.mkEnableOption "Enable Emacs completion and language support (LSP, Company, Lua, Flycheck)";
+
+  config = lib.mkIf cfg {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [
       lsp-mode
@@ -86,5 +95,6 @@
 
  '';
 
+ };
  };
 }

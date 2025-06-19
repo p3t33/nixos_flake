@@ -1,5 +1,13 @@
-{ pkgs, ... }:
+{ lib, config, pkgs, ... }:
+
+let
+  cfg = config.customOptions.enableEmacsSearchAndSelect;
+in
 {
+  options.customOptions.enableEmacsSearchAndSelect =
+    lib.mkEnableOption "Enable Ivy, Counsel, Prescient, and related fuzzy search features";
+
+  config = lib.mkIf cfg {
   home.packages = with pkgs; [
     ripgrep
     fd
@@ -79,5 +87,6 @@
 
     '';
     };
+};
 }
 

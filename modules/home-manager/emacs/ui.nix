@@ -1,5 +1,12 @@
-{config, ...}:
+{ lib, config, ... }:
+
+let
+  cfg = config.customOptions.enableEmacsUI;
+in
 {
+  options.customOptions.enableEmacsUI = lib.mkEnableOption "Enable Emacs UI and visual enhancement packages";
+
+  config = lib.mkIf cfg {
   programs.emacs.extraPackages = epkgs: with epkgs; [
     all-the-icons
     all-the-icons-dired
@@ -189,4 +196,5 @@
               which-key-separator " → " ))
       ;; =====================
   '';
+};
 }

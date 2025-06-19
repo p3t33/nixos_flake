@@ -1,6 +1,13 @@
-{ config, ... }:
+{ lib, config, ... }:
 
+let
+  cfg = config.customOptions.enableEmacsDired;
+in
 {
+  options.customOptions.enableEmacsDired =
+    lib.mkEnableOption "Enable Dired enhancements (dired-open, peep-dired, keybindings)";
+
+  config = lib.mkIf cfg {
   programs.emacs.extraPackages = epkgs: with epkgs; [
     dired-open
     peep-dired
@@ -48,5 +55,6 @@
 
   '';
 
+};
 }
 

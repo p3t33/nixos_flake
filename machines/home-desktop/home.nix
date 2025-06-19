@@ -71,6 +71,7 @@
     enableModule.atuin = true;
     enableModule.lazygit = true;
     enableModule.mimeApps = true;
+    enableModule.emacs = true;
     enableModule.gtk = true;
     enableModule.qt = true;
     enableModule.dunst = true;
