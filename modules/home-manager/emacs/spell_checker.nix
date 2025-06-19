@@ -1,11 +1,9 @@
 { lib, config, ... }:
 
 let
-  cfg = config.customOptions.enableEmacsSpellChecker;
+  cfg = config.programs.emacs.enable;
 in
 {
-  options.customOptions.enableEmacsSpellChecker =
-    lib.mkEnableOption "Enable Emacs spell checker (flyspell + flycheck)";
 
   config = lib.mkIf cfg {
 

@@ -1,13 +1,10 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.customOptions.enableEmacsOrg;
+  cfg = config.programs.emacs.enable;
   orgRoamDirctoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
 in
 {
-
-  options.customOptions.enableEmacsOrg = lib.mkEnableOption "Enable Org-mode configuration and tools such as Org-roam, PlantUML, and exporters";
-
   config = lib.mkIf cfg {
   home.packages = with pkgs; [
     # used by org-bable with PlantUML

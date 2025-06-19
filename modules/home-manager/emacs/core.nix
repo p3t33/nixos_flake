@@ -1,6 +1,6 @@
 { pkgs, config, lib, ... }:
 let
-  cfg = config.customOptions.enableEmacsCore;
+  cfg = config.customOptions.enableModule.emacs;
   #xdg.dataHome used ro specify a path while xdg.dataFile used for creating files
   # in the same path.
   autoSaveDirectoryName = "emacs_autosave";
@@ -9,7 +9,7 @@ let
 
 in
 {
-  options.customOptions.enableEmacsCore = lib.mkEnableOption "Enable Emacs core configuration";
+  options.customOptions.enableModule.emacs = lib.mkEnableOption "Enable all Emacs modules";
 
   config = lib.mkIf cfg {
   # This is a fix to make the system use universal-ctags package instead

@@ -1,12 +1,9 @@
 { lib, config, ... }:
 
 let
-  cfg = config.customOptions.enableEmacsNavigationAndShell;
+  cfg = config.programs.emacs.enable;
 in
 {
-  options.customOptions.enableEmacsNavigationAndShell =
-    lib.mkEnableOption "Enable Emacs navigation and shell tools (vterm, neotree, eshell settings)";
-
   config = lib.mkIf cfg {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [

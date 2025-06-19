@@ -1,11 +1,9 @@
 { lib, config, ... }:
 
 let
-  cfg = config.customOptions.enableEmacsKeybindings;
+  cfg = config.programs.emacs.enable;
 in
 {
-  options.customOptions.enableEmacsKeybindings = lib.mkEnableOption "Enable Emacs general.el keybindings configuration";
-
   config = lib.mkIf cfg {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [

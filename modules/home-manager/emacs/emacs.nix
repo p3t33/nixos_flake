@@ -18,28 +18,16 @@ in
 # I did use use-package with :after to control how the packages are evaluated but I can't
 # be sure it is covering 100% of all the edge cases, so the order should be kept as is.
 
-options.customOptions = {
-    enableModule.emacs = lib.mkEnableOption "Enable all Emacs modules";
-  };
-
-  config = lib.mkIf cfg {
-    customOptions = {
-      enableEmacsCore = true;
-      enableEmacsKeybindings = true;
-      enableEmacsUI = true;
-      enableEmacsSpellChecker = true;
-      enableEmacsEvil = true;
-      enableEmacsOrg = true;
-      enableEmacsSearchAndSelect = true;
-      enableEmacsDired = true;
-      enableEmacsNavigationAndShell = true;
-      enableEmacsRSS = true;
-      enableEmacsGit = true;
-      enableEmacsCompletion = true;
-    };
-  };
-
 imports = [
+  # Core is the one to define the customOptions.enableModule.emacs and this
+  # module is the one to enable cofnig.programs.emacs.enable
+  #
+  # All other modules use config.program.emacs.enable as the logic to to enable them.
+  # As I broke my emacs config into fragments so it will be easier to maintain and develop
+  # It they all should depend on a single switch to be enabled.
+  #
+  # it is possible to create customOptions.enableModule.emacsUI to get more control
+  # over the individual fragments but for now I don"t see the need.
   ./core.nix
   ./keybindings.nix
   ./ui.nix

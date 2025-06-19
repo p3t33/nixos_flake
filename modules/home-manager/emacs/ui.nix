@@ -1,10 +1,9 @@
 { lib, config, ... }:
 
 let
-  cfg = config.customOptions.enableEmacsUI;
+  cfg = config.programs.emacs.enable;
 in
 {
-  options.customOptions.enableEmacsUI = lib.mkEnableOption "Enable Emacs UI and visual enhancement packages";
 
   config = lib.mkIf cfg {
   programs.emacs.extraPackages = epkgs: with epkgs; [

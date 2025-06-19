@@ -1,11 +1,9 @@
 { lib, config, pkgs, ... }:
 
 let
-  cfg = config.customOptions.enableEmacsEvil;
+  cfg = config.programs.emacs.enable;
 in
 {
-  options.customOptions.enableEmacsEvil =
-    lib.mkEnableOption "Enable Emacs Evil mode and Evil Collection integration";
 
   config = lib.mkIf cfg {
   programs.emacs.extraPackages = epkgs: with epkgs; [

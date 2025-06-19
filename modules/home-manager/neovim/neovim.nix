@@ -40,6 +40,15 @@
 # *for some reason extraLuaConfig inside of spell_checker got to the top of the init.lua
 {
   imports = [
+     # Core is the one to define the customOptions.enableModule.neovim and this
+     # module is the one to enable cofnig.programs.neovim.enable
+     #
+     # All other modules use config.program.neovim.enable as the logic to to enable them.
+     # As I broke my neovim config into fragments so it will be easier to maintain and develop
+     # It they all should depend on a single switch to be enabled.
+     #
+     # it is possible to create customOptions.enableModule.neovimUI to get more control
+     # over the individual fragments but for now I don"t see the need.
     ./core.nix
     ./spell_checker.nix
     ./ui.nix
