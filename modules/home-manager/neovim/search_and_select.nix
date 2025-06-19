@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 let
+  cfg = config.customOptions.enableNeovimSearchAndSelect;
   spelunk-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "spelunk.nvim";
     version = "unstable-2025-01-15";
@@ -11,6 +12,10 @@ let
   };
 in
 {
+  options.customOptions.enableNeovimSearchAndSelect =
+    lib.mkEnableOption "Enable Neovim fuzzy search and selection (FZF, Telescope, Harpoon, Arrow, etc).";
+
+  config = lib.mkIf cfg {
   programs.neovim = {
 
     extraPackages = with pkgs; [
@@ -288,5 +293,6 @@ in
         '';
       }
     ];
+  };
   };
 }

@@ -1,5 +1,12 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.customOptions.enableNeovimUI;
+in
 {
+  options.customOptions.enableNeovimUI = lib.mkEnableOption "Enable Neovim UI plugins and configuration";
+
+  config = lib.mkIf cfg {
   programs.neovim.plugins = with pkgs.vimPlugins; [
     {
       plugin = rainbow-delimiters-nvim;
@@ -134,4 +141,5 @@
 
     }
   ];
+  };
 }

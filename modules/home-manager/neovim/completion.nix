@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  cfg = config.customOptions.enableNeovimCompletion;
+in
 {
+  options.customOptions.enableNeovimCompletion = lib.mkEnableOption "Enable Neovim completion setup";
+
+  config = lib.mkIf cfg {
   programs.neovim = {
 
     extraPackages = with pkgs; [
@@ -310,5 +316,6 @@
         '';
       }
     ];
+  };
   };
 }

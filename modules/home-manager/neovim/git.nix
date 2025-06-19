@@ -1,5 +1,12 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  cfg = config.customOptions.enableNeovimGit ;
+in
 {
+  options.customOptions.enableNeovimGit =
+    lib.mkEnableOption "Enable Neovim fuzzy search and selection (FZF, Telescope, Harpoon, Arrow, etc).";
+
+  config = lib.mkIf cfg {
   programs.neovim = {
 
     extraPackages = with pkgs; [
@@ -34,6 +41,7 @@
       '';
     }
     ];
+  };
   };
 }
 

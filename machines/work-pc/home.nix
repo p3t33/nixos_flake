@@ -49,6 +49,7 @@
   customOptions = {
     enableModule.starship = true;
     enableModule.fzf = true;
+    enableModule.neovim = true;
     enableModule.git = true;
     enableModule.gitCommitSignaturesWithGpg = true;
     enableModule.zoxide = true;

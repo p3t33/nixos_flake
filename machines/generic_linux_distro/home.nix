@@ -52,6 +52,7 @@
   customOptions = {
     enableModule.starship = true;
     enableModule.fzf = true;
+    enableModule.neovim = true;
     enableModule.zoxide = true;
     enableModule.zsh = true;
     enableModule.bash = true;

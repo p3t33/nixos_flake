@@ -28,6 +28,7 @@
     enableModule.starship = true;
     enableModule.tmux = true;
     enableModule.fzf = true;
+    enableModule.neovim = true;
     enableModule.git = true;
     enableModule.zoxide = true;
     enableModule.zsh = true;

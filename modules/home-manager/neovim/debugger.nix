@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  cfg = config.customOptions.enableNeovimDebugger;
+in
 {
+  options.customOptions.enableNeovimDebugger = lib.mkEnableOption "Enable Neovim debugger setup";
+
+  config = lib.mkIf cfg {
   programs.neovim = {
 
     extraPackages = with pkgs; [
@@ -93,5 +99,6 @@
       }
 
     ];
+  };
   };
 }

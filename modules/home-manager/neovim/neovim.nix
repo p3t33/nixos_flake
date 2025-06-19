@@ -39,7 +39,28 @@
 #
 # *for some reason extraLuaConfig inside of spell_checker got to the top of the init.lua
 
+{lib, config,  ...}:
+let
+  cfg = config.customOptions.enableModule.neovim;
+in
 {
+  options.customOptions = {
+    enableModule.neovim = lib.mkEnableOption "Enable all Neovim modules";
+  };
+
+  config = lib.mkIf cfg {
+    customOptions = {
+      enableNeovimCore = true;
+      enableNeovimSpellChecker = true;
+      enableNeovimUI = true;
+      enableNeovimCompletion = true;
+      enableNeovimDebugger = true;
+      enableNeovimSearchAndSelect = true;
+      enableNeovimGit = true;
+      enableNeovimFirefoxIntegration = true;
+      };
+    };
+
   imports = [
     ./core.nix
     ./spell_checker.nix
