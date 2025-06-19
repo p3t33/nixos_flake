@@ -1,6 +1,15 @@
-{ ... }:
+{ config, lib, ... }:
+
+let
+  cfg = config.customOptions.enableModule.zellij;
+in
 {
-  programs.zellij = {
-    enable = true;
+  options.customOptions.enableModule.zellij = lib.mkEnableOption "Enable Zellij terminal multiplexer";
+
+  config = lib.mkIf cfg {
+    programs.zellij = {
+      enable = true;
+    };
   };
 }
+

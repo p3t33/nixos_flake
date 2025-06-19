@@ -1,8 +1,14 @@
-{ pkgs, config, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  cfg = config.customOptions.enableModule.i3Bar;
+in
 {
 
-  xsession.windowManager.i3.config.bars = [
+  options.customOptions.enableModule.i3Bar = lib.mkEnableOption "Enable Starship prompt configuration";
+
+  config = lib.mkIf cfg {
+    xsession.windowManager.i3.config.bars = [
     {
       position = "bottom";
       fonts = {
@@ -38,7 +44,7 @@
         };
 
       };
-    }
-
-  ];
+      }
+    ];
+  };
 }

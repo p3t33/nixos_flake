@@ -1,12 +1,18 @@
 { config, lib, ... }:
+let
+  cfg = config.customOptions.enableModule.zigbee2mqtt;
+in
 {
-  options.customOptions.servicePort.zigbee2mqttFrontend = lib.mkOption {
-    type = lib.types.int;
-    default = 8124;
-    description = "zigbee2mqtt port";
+  options.customOptions = {
+    enableModule.zigbee2mqtt = lib.mkEnableOption "Enable Zigbee2MQTT integration";
+    servicePort.zigbee2mqttFrontend = lib.mkOption {
+      type = lib.types.int;
+      default = 8124;
+      description = "zigbee2mqtt port";
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg {
     # /var/lib/zigbee2mqtt/configuration.yaml
     # used to pair with zigbee devices.
     services.zigbee2mqtt = {

@@ -1,5 +1,10 @@
 { config, lib, ... }:
+let
+    cfg = config.customOptions.enableModule.enableSmartcardPublicKey;
+in
 {
+  options.customOptions.enableModule.enableSmartcardPublicKey = lib.mkEnableOption "Enable writing the smartcard SSH public key to ~/.ssh/smartcard.pub";
+
   options.customOptions = {
       sshPublicKey = lib.mkOption {
       default = "";
@@ -8,7 +13,7 @@
     };
   };
 
-  config = {
+  config = lib.mkIf cfg {
     home.file = {
       ".ssh/smartcard.pub".text = ''
         ${config.customOptions.sshPublicKey}

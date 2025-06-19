@@ -1,5 +1,6 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
+  cfg = config.customOptions.enableModule.hellowordPython;
   helloword-python =
     pkgs.writers.writePython3Bin "helloword-python" { libraries = [ pkgs.python3Packages.PyGithub ]; }
       ''
@@ -10,5 +11,8 @@ let
       '';
 in
 {
-  home.packages = [ helloword-python ];
+  options.customOptions.enableModule.hellowordPython = lib.mkEnableOption "Install helloword-python script";
+  config = lib.mkIf cfg {
+    home.packages = [ helloword-python ];
+  };
 }

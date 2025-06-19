@@ -29,7 +29,7 @@ check_host() {
 install_host() {
     if [[ $MATCH_FOUND -eq 1 ]]; then
         echo "Success: Argument matches the subdirectory '$HOST_TO_INSTALL'."
-        sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko "./hosts/$HOST_TO_INSTALL/disko-config.nix"
+        sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko "./hosts/$HOST_TO_INSTALL/disko-configuration.nix"
         sudo cp /root/keys.txt /mnt
         sudo nixos-install --flake "../nixos_flake#$HOST_TO_INSTALL"
         exit 0 # success exit code

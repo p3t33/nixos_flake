@@ -1,5 +1,9 @@
-{ pkgs, ... }:
+{ config, pkgs, lib, ... }:
+let
+  cfg = config.programs.neovim.enable;
+in
 {
+  config = lib.mkIf cfg {
   programs.neovim = {
 
     extraPackages = with pkgs; [
@@ -93,5 +97,6 @@
       }
 
     ];
+  };
   };
 }

@@ -1,5 +1,6 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
+  cfg = config.customOptions.enableModule.cheatSh;
   cheat-sh = pkgs.writeShellScriptBin "cheat-sh" ''
       languages=$(echo "cpp python bash c go" | tr ' ' '\n')
     core_utils=$(echo "find mv sed awk tar grep fd rsync ssh scp nmcli" | tr ' ' '\n')
@@ -54,5 +55,9 @@ let
   '';
 in
 {
-  home.packages = [ cheat-sh ];
+  options.customOptions.enableModule.cheatSh = lib.mkEnableOption "Enable cheat-sh command line tool";
+
+  config = lib.mkIf cfg {
+    home.packages = [ cheat-sh ];
+  };
 }
