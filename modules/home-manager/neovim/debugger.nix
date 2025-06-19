@@ -1,10 +1,8 @@
 { config, pkgs, lib, ... }:
 let
-  cfg = config.customOptions.enableNeovimDebugger;
+  cfg = config.programs.neovim.enable;
 in
 {
-  options.customOptions.enableNeovimDebugger = lib.mkEnableOption "Enable Neovim debugger setup";
-
   config = lib.mkIf cfg {
   programs.neovim = {
 

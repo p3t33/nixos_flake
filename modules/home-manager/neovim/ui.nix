@@ -1,11 +1,9 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.customOptions.enableNeovimUI;
+  cfg = config.programs.neovim.enable;
 in
 {
-  options.customOptions.enableNeovimUI = lib.mkEnableOption "Enable Neovim UI plugins and configuration";
-
   config = lib.mkIf cfg {
   programs.neovim.plugins = with pkgs.vimPlugins; [
     {

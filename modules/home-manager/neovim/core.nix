@@ -1,10 +1,10 @@
-  { config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
-  cfg = config.customOptions.enableNeovimCore;
+  cfg = config.customOptions.enableModule.neovim;
 in
 {
-  options.customOptions.enableNeovimCore = lib.mkEnableOption "Enable Neovim core configuration";
+  options.customOptions.enableModule.neovim = lib.mkEnableOption "Enable all Neovim modules";
 
   config = lib.mkIf cfg {
     programs.neovim = {

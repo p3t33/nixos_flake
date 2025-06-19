@@ -1,11 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.customOptions.enableNeovimSpellChecker;
+  cfg = config.programs.neovim.enable;
   neovimCustomDictionaryPathrelativeToHomeDirectory = ".config/nvim/spell/nixen.utf-8";
 in
 {
-  options.customOptions.enableNeovimSpellChecker = lib.mkEnableOption "Enable Neovim spell checker configuration and custom dictionary";
-
   config = lib.mkIf cfg {
     programs.neovim.extraLuaConfig = ''
       -- ----------------------------------------------------------

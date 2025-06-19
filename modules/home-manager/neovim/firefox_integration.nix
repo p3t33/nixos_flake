@@ -1,11 +1,8 @@
 { config, pkgs, lib, ... }:
 let
-  cfg = config.customOptions.enableNeovimFirefoxIntegration;
+  cfg = config.programs.neovim.enable;
 in
 {
-  options.customOptions.enableNeovimFirefoxIntegration =
-    lib.mkEnableOption "Enable Neovim and Firefox integration with Firenvim.";
-
   config = lib.mkIf cfg {
   programs.firefox = {
     policies = {

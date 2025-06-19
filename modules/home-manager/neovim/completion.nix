@@ -1,10 +1,8 @@
 { config, pkgs, lib, ... }:
 let
-  cfg = config.customOptions.enableNeovimCompletion;
+  cfg = config.programs.neovim.enable;
 in
 {
-  options.customOptions.enableNeovimCompletion = lib.mkEnableOption "Enable Neovim completion setup";
-
   config = lib.mkIf cfg {
   programs.neovim = {
 
