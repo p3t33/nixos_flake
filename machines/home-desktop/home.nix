@@ -40,7 +40,9 @@
     ../../modules/home-manager/gtk.nix
     ../../modules/home-manager/qt.nix
     ../../modules/home-manager/services/dnust.nix
+    ../../modules/home-manager/bat.nix
     ../../modules/home-manager/firefox.nix
+    ../../modules/home-manager/zellij.nix
     ../../modules/home-manager/yazi.nix
     ../../modules/home-manager/ghostty.nix
   ];
