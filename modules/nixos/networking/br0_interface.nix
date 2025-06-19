@@ -1,15 +1,21 @@
 { config, lib, ... }:
+let
+  cfg = config.customOptions.enableModule.bridgedInterface;
+in
 {
-  options.customOptions.bridgedNetwork = lib.mkOption {
-    default = {
-      bridgeName = "br0";
-      physicalInterface = "enp0s13f0u3";
+  options.customOptions = {
+    enableModule.bridgedInterface = lib.mkEnableOption "Enable bridged network configuration";
+    bridgedNetwork = lib.mkOption {
+      default = {
+        bridgeName = "br0";
+        physicalInterface = "enp0s13f0u3";
+      };
+      type = lib.types.attrsOf lib.types.str;
+      description = "Defines the color palette for the user interface";
     };
-    type = lib.types.attrsOf lib.types.str;
-    description = "Defines the color palette for the user interface";
   };
 
-  config = {
+  config = lib.mkIf cfg {
     networking = {
       firewall.trustedInterfaces = [ config.customOptions.bridgedNetwork.bridgeName ];
 

@@ -1,13 +1,20 @@
 {pkgs, config, lib, ... }:
+let
+  cfg = config.customOptions.enableModule.mosquitto;
+in
 {
   # Created so I can share it with better access then the one form the listeners set.
-  options.customOptions.servicePort.mosquitto = lib.mkOption {
-    type = lib.types.int;
-    default = 1883;
-    description = "mosquitto port";
+  options.customOptions =
+  {
+    enableModule.mosquitto = lib.mkEnableOption "Enable Mosquitto MQTT broker";
+    servicePort.mosquitto = lib.mkOption {
+      type = lib.types.int;
+      default = 1883;
+      description = "mosquitto port";
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg {
     environment.systemPackages = with pkgs; [
       mosquitto  # Installs Mosquitto and its CLI tools (mosquitto_pub & mosquitto_sub)
     ];

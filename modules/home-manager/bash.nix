@@ -1,11 +1,16 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  cfg = config.customOptions.enableModule.bash;
+in
 {
+  options.customOptions.enableModule.bash =
+    lib.mkEnableOption "Enable Bash shell support";
 
-  programs.bash = {
-
-    enable = true;
-
+  config = lib.mkIf cfg {
+    programs.bash = {
+      enable = true;
+    };
   };
-
 }
+

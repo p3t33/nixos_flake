@@ -1,13 +1,20 @@
 { config, lib, ... }:
+let
+  cfg = config.customOptions.enableModule.wireguardQuickClient;
+in
 {
 
-  options.customOptions.wireguardQuickClient.networkName = lib.mkOption {
+  options.customOptions = {
+    enableModule.wireguardQuickClient = lib.mkEnableOption "Enable WireGuard quick client";
+    wireguardQuickClient.networkName = lib.mkOption {
       default = "wg0";
       type = lib.types.str;
       description = "Defines value for wireguard client network";
+
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg {
     # As I did not want to put in plain text the url of the vpn service I am
     # using, I am putting the entire config into my sops file instead of
     # using a more declarative approach. The stracture inside of the secrets.yaml is:

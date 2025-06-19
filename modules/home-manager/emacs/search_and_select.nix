@@ -1,5 +1,10 @@
-{ pkgs, ... }:
+{ lib, config, pkgs, ... }:
+
+let
+  cfg = config.programs.emacs.enable;
+in
 {
+  config = lib.mkIf cfg {
   home.packages = with pkgs; [
     ripgrep
     fd
@@ -79,5 +84,6 @@
 
     '';
     };
+};
 }
 

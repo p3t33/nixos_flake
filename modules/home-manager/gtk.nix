@@ -1,32 +1,40 @@
-{ pkgs, config, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.customOptions.enableModule.gtk;
+in
 {
-  home.packages = with pkgs; [
-    arc-theme
-    arc-icon-theme
-    papirus-icon-theme
-    tela-icon-theme
-  ];
+  options.customOptions.enableModule.gtk = lib.mkEnableOption "Enable GTK theming and configuration";
 
-  gtk = {
-    enable = true;
-    font = {
-      name = config.customGlobalOptions.font.sansSerif;
-      size = 12;
-    };
+  config = lib.mkIf cfg {
+    home.packages = with pkgs; [
+      arc-theme
+      arc-icon-theme
+      papirus-icon-theme
+      tela-icon-theme
+    ];
 
-    theme = {
-      name = "Nordic-darker";
-      package = pkgs.nordic;
-    };
+    gtk = {
+      enable = true;
+      font = {
+        name = config.customGlobalOptions.font.sansSerif;
+        size = 12;
+      };
 
-    iconTheme = {
-      name = "Nordic-bluish";
-      package = pkgs.nordic;
-    };
+      theme = {
+        name = "Nordic-darker";
+        package = pkgs.nordic;
+      };
 
-    cursorTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
+      iconTheme = {
+        name = "Nordic-bluish";
+        package = pkgs.nordic;
+      };
+
+      cursorTheme = {
+        name = "Adwaita";
+        package = pkgs.adwaita-icon-theme;
+      };
     };
   };
 }

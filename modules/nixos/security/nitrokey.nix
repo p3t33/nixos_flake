@@ -1,13 +1,21 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.customOptions.enableModule.nitrokey;
+in
 {
-  environment.systemPackages = with pkgs; [
-    pynitrokey # cli for nk3
-    nitrokey-app2 # gui for nk3
+  options.customOptions.enableModule.nitrokey = lib.mkEnableOption "Enable Nitrokey support (CLI, GUI, udev rules)";
 
-    # FIDO/FIDO(U2F) libraries dependencies.
-    libfido2 # webauto
-    pam_u2f # linux(sudo, display manager, console login...)
-  ];
+  config = lib.mkIf cfg {
+    environment.systemPackages = with pkgs; [
+      pynitrokey # cli for nk3
+      nitrokey-app2 # gui for nk3
 
-  services.udev.packages = [ pkgs.nitrokey-udev-rules ];
+      # FIDO/FIDO(U2F) libraries dependencies.
+      libfido2 # webauto
+      pam_u2f # linux(sudo, display manager, console login...)
+    ];
+
+    services.udev.packages = [ pkgs.nitrokey-udev-rules ];
+  };
 }

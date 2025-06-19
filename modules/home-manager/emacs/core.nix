@@ -1,5 +1,6 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
+  cfg = config.customOptions.enableModule.emacs;
   #xdg.dataHome used ro specify a path while xdg.dataFile used for creating files
   # in the same path.
   autoSaveDirectoryName = "emacs_autosave";
@@ -8,6 +9,9 @@ let
 
 in
 {
+  options.customOptions.enableModule.emacs = lib.mkEnableOption "Enable all Emacs modules";
+
+  config = lib.mkIf cfg {
   # This is a fix to make the system use universal-ctags package instead
   # of the ctags package that is provided by emacs. The order in which
   # the packges are listed is important and by listing universal-ctags first
@@ -149,6 +153,6 @@ in
       (global-set-key [escape] 'keyboard-escape-quit)
 '';
 };
-
+};
 }
 

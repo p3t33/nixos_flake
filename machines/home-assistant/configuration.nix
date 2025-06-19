@@ -6,37 +6,22 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./configuration-services.nix
+    ./services-configuration.nix
     ./global-options.nix
     ./sops-configuration.nix
-    ./disko-config.nix
-    ../../modules/nixos/bootloader/systemd-boot.nix
-    ../../modules/meta.nix
-    ../../modules/nixos/home-manager-as-nixos-module.nix
-    ../../modules/nixos/experimental-features.nix
-    ../../modules/nixos/garbage_collection.nix
-    ../../modules/nixos/system_version.nix
-    ../../modules/nixos/non_free_software.nix
-    ../../modules/nixos/locale.nix
-    ../../modules/nixos/system_packages/development.nix
-    ../../modules/nixos/system_packages/cli_utilities.nix
-    ../../modules/nixos/system_packages/encryption.nix
-    ../../modules/nixos/environment_variables.nix
-    ../../modules/nixos/virtualization/docker.nix
-    ../../modules/nixos/networking/networkmanager.nix
-    ../../modules/nixos/networking/hostname.nix
-    ../../modules/nixos/users.nix
-    ../../modules/nixos/dictionaries.nix
-    ../../modules/nixos/defaults_for_system_build.nix
-    ../../modules/nixos/graphics.nix
-    ../../modules/nixos/auto_upgrade.nix
-    ../../modules/nixos/motd.nix
+    ./disko-configuration.nix
+    ../../modules/nixos # imported via default.nix
   ];
 
     # openssl rand -hex 4
     networking.hostId = "cf97b6ff";
 
     customOptions = {
+      enableConfigurationProfile = {
+        core = true;
+        server = true;
+      };
+
       systemStateVersion = "24.11";
       motd = ''
          ___ ___                             _______             __       __               __

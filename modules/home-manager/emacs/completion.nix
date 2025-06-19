@@ -1,4 +1,10 @@
+{ lib, config, ... }:
+
+let
+  cfg = config.programs.emacs.enable;
+in
 {
+  config = lib.mkIf cfg {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [
       lsp-mode
@@ -86,5 +92,6 @@
 
  '';
 
+ };
  };
 }

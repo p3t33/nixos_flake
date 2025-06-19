@@ -1,27 +1,35 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.customOptions.enableModule.qt;
+in
 {
-  home.packages = with pkgs; [
-    nordic
-  ];
+  options.customOptions.enableModule.qt = lib.mkEnableOption "Enable Qt theming and Kvantum config";
 
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk";
+  config = lib.mkIf cfg {
+    home.packages = with pkgs; [
+      nordic
+    ];
 
-    style = {
-      name = "kvantum";
-      package = pkgs.libsForQt5.qtstyleplugin-kvantum;
+    qt = {
+      enable = true;
+      platformTheme.name = "gtk";
+
+      style = {
+        name = "kvantum";
+        package = pkgs.libsForQt5.qtstyleplugin-kvantum;
+      };
+      # Doens not require to setup xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+      # style = {
+      #   name = "adwaita-dark";
+      #   package = pkgs.adwaita-qt;
+      # };
     };
-    # Doens not require to setup xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
-    # style = {
-    #   name = "adwaita-dark";
-    #   package = pkgs.adwaita-qt;
-    # };
-  };
 
-  xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
-    [General]
-    theme=Nordic-Darker
-  '';
+    xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+      [General]
+      theme=Nordic-Darker
+    '';
+  };
 }
 

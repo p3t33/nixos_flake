@@ -1,5 +1,12 @@
-{config, ... }:
+{ config, lib, ... }:
+
+let
+  cfg = config.customOptions.enableModule.homeAssistant;
+in
 {
+  options.customOptions.enableModule.homeAssistant = lib.mkEnableOption "Enable the Home Assistant system service";
+
+  config = lib.mkIf cfg {
     services.home-assistant = {
     # Home Assistant runs in an isolated NixOS service environment, so system-wide
     # Python packages are not available to it. We must explicitly declare additional
@@ -18,7 +25,7 @@
         isal
     ];
 
-   openFirewall = true;
+  openFirewall = true;
     enable = true;
     # only install components but does not enable them.
     extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
@@ -35,4 +42,5 @@
       };
     };
   };
+ };
 }

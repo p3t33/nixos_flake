@@ -1,15 +1,19 @@
 {config, lib, hostSpecific, ...}:
 let
+  cfg = config.customOptions.enableModule.sabnzbd;
   pathToUsenetDirectory = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/usenet";
 in
 {
-  options.customOptions.servicePort.sabnzbd = lib.mkOption {
-    type = lib.types.int;
-    default = 8080;
-    description = "sabnzbd port";
+  options.customOptions = {
+    enableModule.sabnzbd = lib.mkEnableOption "Enable sabnzbd service";
+    servicePort.sabnzbd = lib.mkOption {
+      type = lib.types.int;
+      default = 8080;
+      description = "sabnzbd port";
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg {
     services.sabnzbd = {
       enable = true;
       group = config.customGlobalOptions.mediaGroup;

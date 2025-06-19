@@ -1,22 +1,29 @@
 { pkgs, config, lib, ... }:
+let
+  cfg = config.customOptions.enableModule."wireguard-server";
+in
 {
 
-  options.customOptions.wireguard = lib.mkOption {
-    type = lib.types.attrsOf (lib.types.oneOf [lib.types.str lib.types.int]);
-    default = let
-      base = "10.100.0";
-    in {
-      networkName = "wg0";
-      externalInterface = "eno1";
-      baseSubnet = base;
-      gateway = "${base}.1";
-      network = "${base}.0/24";
-      listenPort = 51820;
+  options.customOptions =
+  {
+    enableModule."wireguard-server" = lib.mkEnableOption "Enable WireGuard server configuration";
+    wireguard = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.oneOf [lib.types.str lib.types.int]);
+      default = let
+        base = "10.100.0";
+      in {
+        networkName = "wg0";
+        externalInterface = "eno1";
+        baseSubnet = base;
+        gateway = "${base}.1";
+        network = "${base}.0/24";
+        listenPort = 51820;
+      };
+      description = "WireGuard base network settings";
     };
-    description = "WireGuard base network settings";
   };
 
-  config = {
+  config = lib.mkIf cfg {
     networking.firewall = {
       allowedUDPPorts = [ config.customOptions.wireguard.listenPort ];
     };

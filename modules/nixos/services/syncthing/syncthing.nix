@@ -1,30 +1,15 @@
+{ config, lib, hostSpecific, ... }:
+
+let
+  cfg = config.customOptions.enableModule.syncthing ;
+in
 {
-  config,
-  lib,
-  hostSpecific,
-  ...
-}:
-{
-  imports =
-    [ ]
-    ++ lib.optionals (hostSpecific.hostName == "work-pc") [
-      ./devices/homelab.nix
+  # Each machine switches in the devices and folders it needs.
+  imports =[
+      ./devices/work-pc.nix
       ./devices/home-desktop.nix
-      ./folders/taskwarrior.nix
-      ./folders/dev_resources.nix
-    ]
-    ++ lib.optionals (hostSpecific.hostName == "home-desktop") [
-      ./devices/work_laptop.nix
       ./devices/homelab.nix
-      ./folders/taskwarrior.nix
-      ./folders/dev_resources.nix
-      ./folders/database.nix
-      ./folders/documents.nix
-      ./folders/study.nix
-    ]
-    ++ lib.optionals (hostSpecific.hostName == "homelab") [
-      ./devices/work_laptop.nix
-      ./devices/home-desktop.nix
+      ./devices/kvm-nixos-server.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
       ./folders/database.nix
@@ -33,6 +18,8 @@
     ];
 
   options.customOptions = {
+    enableModule.syncthing = lib.mkEnableOption "Enable Syncthing configuration module";
+
     syncthing = lib.mkOption {
       type = lib.types.submodule {
         options = {
@@ -40,17 +27,6 @@
             type = lib.types.int;
             default = 8384;
             description = "Port for Syncthing web GUI.";
-          };
-
-          devices = lib.mkOption {
-            type = lib.types.attrsOf lib.types.str;
-            description = "avalible machines";
-            default = {
-              home-assistant = "home-assistant";
-              work-pc = "work-pc";
-              home-desktop = "home-desktop";
-              homelab = "homelab";
-            };
           };
 
           dataDirectory = lib.mkOption {
@@ -71,36 +47,6 @@
             description = "Defines the Syncthing user";
           };
 
-          devicesToShareTaskWarriorFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareDevResourcesFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareDatabaseFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareDocumentsFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareStudyFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
           simpleFileVersioningForBackUpMachinesOnly = lib.mkOption {
             type = lib.types.nullOr lib.types.attrs;
             default = null;
@@ -113,7 +59,7 @@
     };
   };
 
-  config = {
+  config = lib.mkIf cfg {
 
     systemd.tmpfiles.rules = [
       "d ${config.customOptions.syncthing.dataDirectory} 0750 ${config.customOptions.syncthing.user} ${config.customGlobalOptions.dataGroup} -"

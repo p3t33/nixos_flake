@@ -1,5 +1,11 @@
-{ pkgs, ... }:
+{ lib, config, pkgs, ... }:
+
+let
+  cfg = config.programs.emacs.enable;
+in
 {
+
+  config = lib.mkIf cfg {
   programs.emacs.extraPackages = epkgs: with epkgs; [
     evil
     evil-collection
@@ -81,4 +87,5 @@
         (evil-define-key 'normal 'global (kbd "C-l") 'evil-window-right)
            ;; =================================
   '';
+};
 }

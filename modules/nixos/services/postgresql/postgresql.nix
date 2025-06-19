@@ -1,68 +1,72 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
+  cfg = config.customOptions.enableModule."postgresql";
   gatus = "gatus";
 in
 {
- sops.secrets."postgresql/gatus" = {
-  owner = config.systemd.services.postgresql.serviceConfig.User;
-  restartUnits = [ "postgresql.service" ];
-};
+  options.customOptions.enableModule."postgresql" = lib.mkEnableOption "Enable PostgreSQL with gatus user and database";
 
- services.postgresql = {
-   enable = true;
-   settings = {
-     port = 5432;
-   };
+  config = lib.mkIf cfg {
+    sops.secrets."postgresql/gatus" = {
+      owner = config.systemd.services.postgresql.serviceConfig.User;
+      restartUnits = [ config.systemd.services.postgresql.name ];
+    };
 
-   # Removing users that were created using this confiugration will not remove them on postgresql side,
-   # meanin you will need to do this manually.
-   ensureUsers = [
-     {
-       name = "${gatus}";
-       ensureDBOwnership = true;
-     }
-   ];
+    services.postgresql = {
+      enable = true;
+      settings = {
+        port = 5432;
+      };
 
-   # Removing databases that were created using this confiugration will not remove them on postgresql side,
-   # meanin you will need to do this manually.
-   ensureDatabases = [
-     "${gatus}"
-   ];
+      # Removing users that were created using this confiugration will not remove them on postgresql side,
+      # meanin you will need to do this manually.
+      ensureUsers = [
+        {
+          name = "${gatus}";
+          ensureDBOwnership = true;
+        }
+      ];
 
-   authentication = ''
-     local all all                peer
-     host  all all 127.0.0.1/32   md5
-     host  all all ::1/128        md5
-   '';
- };
+      # Removing databases that were created using this confiugration will not remove them on postgresql side,
+      # meanin you will need to do this manually.
+      ensureDatabases = [
+        "${gatus}"
+      ];
 
- # As there is no way to declare passwords for non peer users, this oneshot
- # service is a workaround.
- systemd.services.postgresql-set-passwords-for-non-peer-access = {
-  description = "Set PostgreSQL password for non peer access with SOPS secret";
-  after = [ "postgresql.service" ];
-  requires = [ "postgresql.service" ];
-  wantedBy = [ "multi-user.target" ];
-  serviceConfig = {
-    Type = "oneshot";
-    User = config.systemd.services.postgresql.serviceConfig.User;
-    ExecStart = pkgs.writeShellScript "set-non-peer-passwords" ''
-      ${pkgs.postgresql}/bin/psql -U postgres -tA <<'EOF'
-        DO $$
-        DECLARE password TEXT;
-        BEGIN
-          password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/gatus".path}'), E'\n', '''));
-          EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD '''%s''';', password);
-        END $$;
-      EOF
-    '';
-    # This is less PostgreSQL-idiomatic way to do it but it was tested to work.
-    # ExecStart = pkgs.writeShellScript "set-non-peer-passwords" ''
-    #   pw=$(tr -d '\n' < ${config.sops.secrets."postgresql/gatus".path})
-    #   echo "Setting password for ${gatus}"
-    #   ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ DECLARE password TEXT; BEGIN password := '$pw'; EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD %L;', password); END \$\$;"
+      authentication = ''
+        local all all                peer
+        host  all all 127.0.0.1/32   md5
+        host  all all ::1/128        md5
+      '';
+    };
+
+    # As there is no way to declare passwords for non peer users, this oneshot
+    # service is a workaround.
+    systemd.services.postgresql-set-passwords-for-non-peer-access = {
+     description = "Set PostgreSQL password for non peer access with SOPS secret";
+     after = [ config.systemd.services.postgresql.name] ;
+     requires = [ config.systemd.services.postgresql.name ];
+     wantedBy = [ config.systemd.targets.multi-user.name ];
+     serviceConfig = {
+       Type = "oneshot";
+       User = config.systemd.services.postgresql.serviceConfig.User;
+       ExecStart = pkgs.writeShellScript "set-non-peer-passwords" ''
+         ${pkgs.postgresql}/bin/psql -U postgres -tA <<'EOF'
+           DO $$
+           DECLARE password TEXT;
+           BEGIN
+             password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/gatus".path}'), E'\n', '''));
+             EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD '''%s''';', password);
+           END $$;
+         EOF
+       '';
+       # This is less PostgreSQL-idiomatic way to do it but it was tested to work.
+       # ExecStart = pkgs.writeShellScript "set-non-peer-passwords" ''
+       #   pw=$(tr -d '\n' < ${config.sops.secrets."postgresql/gatus".path})
+       #   echo "Setting password for ${gatus}"
+       #   ${pkgs.postgresql}/bin/psql -U postgres -c "DO \$\$ DECLARE password TEXT; BEGIN password := '$pw'; EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD %L;', password); END \$\$;"
+     };
   };
 };
-
 }
