@@ -1,88 +1,93 @@
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 let
+  cfg = config.custom.apps.development;
   myPython = pkgs.python3.withPackages (ps: [
        ps.pip
        ps.virtualenv
      ]);
 in
 {
-  environment.systemPackages = with pkgs; [
-    # editors
-    neovim
-    # required by neovim/vim for copy/paste
-    # to work with system clipboard on x11.
-    xclip
+  options.custom.apps.development.enable = lib.mkEnableOption "Enable developer tools and language servers";
 
-    vscode
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      # editors
+      neovim
+      # required by neovim/vim for copy/paste
+      # to work with system clipboard on x11.
+      xclip
 
-    # UML
-    plantuml
-    graphviz
-    jdk11
+      vscode
 
-    #version control
-    git
-    git-crypt
-    delta
-    lazygit
-    lazydocker
+      # UML
+      plantuml
+      graphviz
+      jdk11
 
-    # lua
-    sumneko-lua-language-server
-    lua
+      #version control
+      git
+      git-crypt
+      delta
+      lazygit
+      lazydocker
 
-    # C/C++
-    valgrind
-    libsForQt5.kcachegrind # front end for callgrind and cachegrind.
-    linuxPackages.perf # profiling tool.
-    cppcheck # static analysis tool for c/c++
-    gcc
-    ccls # LSP for C/CPP
-    clang-tools # has clangd as part of it, and clang-format.
-    clang
-    cmake
-    gnumake
-    pkg-config # Used to get compile/linking flags(E.g gcc myprogram.c $(pkg-config --cflags --libs libpng) -o myprogram)
+      # lua
+      sumneko-lua-language-server
+      lua
 
-    # debug
-    gdb
-    cgdb
-    lldb
-    rr # record and replay to be used with gdb.
+      # C/C++
+      valgrind
+      libsForQt5.kcachegrind # front end for callgrind and cachegrind.
+      linuxPackages.perf # profiling tool.
+      cppcheck # static analysis tool for c/c++
+      gcc
+      ccls # LSP for C/CPP
+      clang-tools # has clangd as part of it, and clang-format.
+      clang
+      cmake
+      gnumake
+      pkg-config # Used to get compile/linking flags(E.g gcc myprogram.c $(pkg-config --cflags --libs libpng) -o myprogram)
 
-    # nix devlepoment
-    #rnix-lsp
+      # debug
+      gdb
+      cgdb
+      lldb
+      rr # record and replay to be used with gdb.
 
-    # python devlepoment
-    # ------------------
-    #
-    # For packages to be able to find each other they must be delared toghter
-    # I installed there the bare minimum minimum to be able to use python
-    # venv scheme.
+      # nix devlepoment
+      #rnix-lsp
 
-    myPython
-    pyright # language server.
+      # python devlepoment
+      # ------------------
+      #
+      # For packages to be able to find each other they must be delared toghter
+      # I installed there the bare minimum minimum to be able to use python
+      # venv scheme.
 
-    # networking
-    wireshark
+      myPython
+      pyright # language server.
 
-    # shell script static checker
-    shellcheck
+      # networking
+      wireshark
 
-    # serial
-    picocom
+      # shell script static checker
+      shellcheck
 
-    #general
-    universal-ctags
+      # serial
+      picocom
 
-    # encryption
-    openssl
+      #general
+      universal-ctags
 
-    # message bus system
-    dbus
-    hugo
+      # encryption
+      openssl
 
-    # nix formator
-    nixfmt-rfc-style
-  ];
+      # message bus system
+      dbus
+      hugo
+
+      # nix formator
+      nixfmt-rfc-style
+    ];
+  };
 }

@@ -1,4 +1,10 @@
+{ lib, config, ... }:
+
+let
+  cfg = config.programs.emacs;
+in
 {
+  config = lib.mkIf cfg.enable {
   programs.emacs = {
     extraPackages = epkgs: with epkgs; [
       vterm
@@ -84,5 +90,5 @@
       ;;=======================
      '';
     };
-
+};
 }

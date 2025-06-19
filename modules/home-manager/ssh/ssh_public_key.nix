@@ -1,17 +1,21 @@
 { config, lib, ... }:
+let
+    cfg = config.custom.file.smartcardPublicKey;
+in
 {
-  options.customOptions = {
-      sshPublicKey = lib.mkOption {
+  options.custom.file.smartcardPublicKey = {
+    enable = lib.mkEnableOption "Enable writing the smartcard SSH public key to ~/.ssh/smartcard.pub";
+    value = lib.mkOption {
       default = "";
       type = lib.types.str;
       description = "The name of the wallpaper file";
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     home.file = {
       ".ssh/smartcard.pub".text = ''
-        ${config.customOptions.sshPublicKey}
+        ${cfg.value}
       '';
     };
   };

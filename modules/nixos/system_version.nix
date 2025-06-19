@@ -1,6 +1,6 @@
 { config, lib, ... }:
 {
-  options.customOptions = {
+  options.custom = {
       systemStateVersion = lib.mkOption {
       type = lib.types.str;
       description = "define system version";
@@ -14,6 +14,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   config = {
-    system.stateVersion = config.customOptions.systemStateVersion; # Did you read the comment?
+    system.stateVersion = config.custom.systemStateVersion; # Did you read the comment?
   };
 }

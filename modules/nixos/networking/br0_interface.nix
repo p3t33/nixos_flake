@@ -1,27 +1,36 @@
 { config, lib, ... }:
+let
+  cfg = config.custom.networking.bridgedInterface;
+in
 {
-  options.customOptions.bridgedNetwork = lib.mkOption {
-    default = {
-      bridgeName = "br0";
-      physicalInterface = "enp0s13f0u3";
+  options.custom.networking.bridgedInterface = {
+    enable = lib.mkEnableOption "Enable bridged network configuration";
+    name = lib.mkOption {
+      type = lib.types.str;
+      default = "br0";
+      description = "The name of the bridge interface.";
     };
-    type = lib.types.attrsOf lib.types.str;
-    description = "Defines the color palette for the user interface";
+
+    memberInterfaces = lib.mkOption { # Renamed from physicalInterface
+      type = lib.types.str;
+      default = "enp0s13f0u3";
+      description = "The physical network interface to be enslaved to the bridge.";
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     networking = {
-      firewall.trustedInterfaces = [ config.customOptions.bridgedNetwork.bridgeName ];
+      firewall.trustedInterfaces = [ cfg.name ];
 
       # Define the bridge interface
-      bridges.${config.customOptions.bridgedNetwork.bridgeName}.interfaces =
-        [ config.customOptions.bridgedNetwork.physicalInterface ];
+      bridges.${cfg.name}.interfaces =
+        [ cfg.memberInterfaces ];
 
       # Enable DHCP on the bridge
-      interfaces.${config.customOptions.bridgedNetwork.bridgeName}.useDHCP = true;
+      interfaces.${cfg.name}.useDHCP = true;
 
       # Ensure the physical interface is free for the bridge to manage
-      interfaces.${config.customOptions.bridgedNetwork.physicalInterface} = {
+      interfaces.${cfg.memberInterfaces} = {
         ipv4.addresses = [ ];
         useDHCP = false;
       };
@@ -32,8 +41,8 @@
       #
       # As a side note networkmanager can be used to define the bridge interface.
       networkmanager.unmanaged = [
-        "interface-name:${config.customOptions.bridgedNetwork.bridgeName}"
-        "interface-name:${config.customOptions.bridgedNetwork.physicalInterface}"
+        "interface-name:${cfg.name}"
+        "interface-name:${cfg.memberInterfaces}"
       ];
     };
   };

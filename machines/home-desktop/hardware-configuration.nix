@@ -9,12 +9,16 @@
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ../../modules/nixos/hardware/host_platform.nix
-    ../../modules/nixos/gpu/amd.nix
-    ../../modules/nixos/gpu/amd_hardware_decoding.nix
-    ../../modules/nixos/hardware/dhcp-setup.nix
-    ../../modules/nixos/hardware/amd-microcode.nix
+    ../../modules/nixos/hardware # uses default.nix
   ];
+
+    custom = {
+      hardware = {
+        amd.enable = true;
+        amdHardwareDecoding.enable  = true;
+        cpuVendor = "amd";
+      };
+    };
 
   boot.initrd.availableKernelModules = [
     "xhci_pci"

@@ -1,6 +1,9 @@
-{ ... }:
+{ config, lib, ... }:
 {
-  services.fail2ban = {
-    enable = true;
+  # todo, provide basic configurations.
+  config = lib.mkIf config.services.fail2ban.enable {
+    services.fail2ban = {
+      extraPackages = [];
+    };
   };
 }

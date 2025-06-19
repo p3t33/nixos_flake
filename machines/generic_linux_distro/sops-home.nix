@@ -8,20 +8,20 @@
     # ../../modules/home-manager/secrets/sops-git-credentials.nix
   ];
 
-  sops = {
-    secrets = {
+  #sops = {
+  #  secrets = {
 
-      "syncthing/key.pem" = {
-        path = "${config.customGlobalOptions.syncthing.configDirectory}/key.pem";
-        mode = "0600";
-      };
+  #    "syncthing/key.pem" = {
+  #      path = "${config.customGlobal.syncthing.configDirectory}/key.pem";
+  #      mode = "0600";
+  #    };
 
-      "syncthing/cert.pem" = {
-        path = "${config.customGlobalOptions.syncthing.configDirectory}/cert.pem";
-        mode = "0600";
-      };
-    };
-  };
+  #    "syncthing/cert.pem" = {
+  #      path = "${config.customGlobal.syncthing.configDirectory}/cert.pem";
+  #      mode = "0600";
+  #    };
+  #  };
+ # };
 
   home.packages = with pkgs; [
     age

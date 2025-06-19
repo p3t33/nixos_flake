@@ -1,5 +1,10 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.programs.neovim;
+in
 {
+  config = lib.mkIf cfg.enable {
   programs.neovim.plugins = with pkgs.vimPlugins; [
     {
       plugin = rainbow-delimiters-nvim;
@@ -134,4 +139,5 @@
 
     }
   ];
+  };
 }

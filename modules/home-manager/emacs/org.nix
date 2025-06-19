@@ -1,10 +1,11 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
+  cfg = config.programs.emacs;
   orgRoamDirctoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
 in
 {
-
+  config = lib.mkIf cfg.enable {
   home.packages = with pkgs; [
     # used by org-bable with PlantUML
     # -------
@@ -336,5 +337,5 @@ in
       ;; =====================
 
   '';
-
+};
 }

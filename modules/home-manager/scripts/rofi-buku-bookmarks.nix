@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
+  cfg = config.programs.rofi;
   rofi-buku-bookmakrs = pkgs.writeShellScriptBin "rofi-buku-bookmakrs" ''
      # Function to list bookmarks
     list_bookmarks() {
@@ -34,6 +35,8 @@ let
 
 in
 {
-  home.packages = [ rofi-buku-bookmakrs ];
+  config = lib.mkIf cfg.enable {
+    home.packages = [ rofi-buku-bookmakrs ];
+  };
 }
 

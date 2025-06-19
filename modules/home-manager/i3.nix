@@ -7,19 +7,19 @@
 
 let
   mod = "Mod4";
-  ws1 = "${config.customOptions.i3.workspaces.ws1}";
-  ws2 = "${config.customOptions.i3.workspaces.ws2}";
-  ws3 = "${config.customOptions.i3.workspaces.ws3}";
-  ws4 = "${config.customOptions.i3.workspaces.ws4}";
-  ws5 = "${config.customOptions.i3.workspaces.ws5}";
-  ws6 = "${config.customOptions.i3.workspaces.ws6}";
-  ws7 = "${config.customOptions.i3.workspaces.ws7}";
-  ws8 = "${config.customOptions.i3.workspaces.ws8}";
-  ws9 = "${config.customOptions.i3.workspaces.ws9}";
-  ws10 = "${config.customOptions.i3.workspaces.ws10}";
+  ws1 = "${config.custom.i3.workspaces.ws1}";
+  ws2 = "${config.custom.i3.workspaces.ws2}";
+  ws3 = "${config.custom.i3.workspaces.ws3}";
+  ws4 = "${config.custom.i3.workspaces.ws4}";
+  ws5 = "${config.custom.i3.workspaces.ws5}";
+  ws6 = "${config.custom.i3.workspaces.ws6}";
+  ws7 = "${config.custom.i3.workspaces.ws7}";
+  ws8 = "${config.custom.i3.workspaces.ws8}";
+  ws9 = "${config.custom.i3.workspaces.ws9}";
+  ws10 = "${config.custom.i3.workspaces.ws10}";
 in
 {
-  options.customOptions.i3 = {
+  options.custom.i3 = {
     workspacesIcons = lib.mkOption {
       default = {
         firefox = "";
@@ -36,14 +36,14 @@ in
 
     workspaces = lib.mkOption {
       default = {
-        ws1 = "1: ${config.customOptions.i3.workspacesIcons.firefox} Firefox";
-        ws2 = "2: ${config.customOptions.i3.workspacesIcons.code} Code";
-        ws3 = "3: ${config.customOptions.i3.workspacesIcons.cherrytree} Cherrytree";
-        ws4 = "4: ${config.customOptions.i3.workspacesIcons.chrome} Chrome";
-        ws5 = "5: ${config.customOptions.i3.workspacesIcons.buildserver} BuildServer";
-        ws6 = "6: ${config.customOptions.i3.workspacesIcons.terminal} Terminal";
+        ws1 = "1: ${config.custom.i3.workspacesIcons.firefox} Firefox";
+        ws2 = "2: ${config.custom.i3.workspacesIcons.code} Code";
+        ws3 = "3: ${config.custom.i3.workspacesIcons.cherrytree} Cherrytree";
+        ws4 = "4: ${config.custom.i3.workspacesIcons.chrome} Chrome";
+        ws5 = "5: ${config.custom.i3.workspacesIcons.buildserver} BuildServer";
+        ws6 = "6: ${config.custom.i3.workspacesIcons.terminal} Terminal";
         ws7 = "7";
-        ws8 = "8: ${config.customOptions.i3.workspacesIcons.vm} VM";
+        ws8 = "8: ${config.custom.i3.workspacesIcons.vm} VM";
         ws9 = "9: VPN";
         ws10 = "10";
       };
@@ -52,16 +52,14 @@ in
     };
   };
 
-  config = {
+    config = lib.mkIf config.xsession.windowManager.i3.enable {
     xsession.windowManager.i3 = {
-      enable = true;
-
       config = {
         modifier = mod;
         defaultWorkspace = "workspace number 1";
 
         fonts = {
-          names = [ config.customGlobalOptions.font.sansSerif ];
+          names = [ config.customGlobal.font.sansSerif ];
           # There is also an option to set style for the font
           # style = "Bold Italic";
           size = 20.0;
@@ -97,7 +95,7 @@ in
           }
           # wallpaper.
           {
-            command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.customOptions.wallpaperOut} --head=-1";
+            command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.custom.desktop.wallpaper.pathOut} --head=-1";
             always = true;
             notification = false;
           }
@@ -232,27 +230,27 @@ in
 
         colors = {
           focused = {
-            text = config.customGlobalOptions.colors.text;
-            background = config.customGlobalOptions.colors.background-alt;
-            border = config.customGlobalOptions.colors.primary;
-            childBorder = config.customGlobalOptions.colors.primary;
-            indicator = config.customGlobalOptions.colors.alert;
+            text = config.customGlobal.colors.text;
+            background = config.customGlobal.colors.background-alt;
+            border = config.customGlobal.colors.primary;
+            childBorder = config.customGlobal.colors.primary;
+            indicator = config.customGlobal.colors.alert;
           };
 
           focusedInactive = {
-            text = config.customGlobalOptions.colors.inactive-text;
-            background = config.customGlobalOptions.colors.inactive-bg;
-            border = config.customGlobalOptions.colors.inactive-bg;
-            childBorder = config.customGlobalOptions.colors.secondary;
-            indicator = config.customGlobalOptions.colors.alert;
+            text = config.customGlobal.colors.inactive-text;
+            background = config.customGlobal.colors.inactive-bg;
+            border = config.customGlobal.colors.inactive-bg;
+            childBorder = config.customGlobal.colors.secondary;
+            indicator = config.customGlobal.colors.alert;
           };
 
           unfocused = {
-            text = config.customGlobalOptions.colors.inactive-text;
-            background = config.customGlobalOptions.colors.inactive-bg;
-            border = config.customGlobalOptions.colors.background;
-            childBorder = config.customGlobalOptions.colors.background;
-            indicator = config.customGlobalOptions.colors.alert;
+            text = config.customGlobal.colors.inactive-text;
+            background = config.customGlobal.colors.inactive-bg;
+            border = config.customGlobal.colors.background;
+            childBorder = config.customGlobal.colors.background;
+            indicator = config.customGlobal.colors.alert;
           };
         };
 

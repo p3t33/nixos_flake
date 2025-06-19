@@ -1,5 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 let
+  cfg = config.programs.neovim;
   spelunk-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "spelunk.nvim";
     version = "unstable-2025-01-15";
@@ -11,6 +12,7 @@ let
   };
 in
 {
+  config = lib.mkIf cfg.enable {
   programs.neovim = {
 
     extraPackages = with pkgs; [
@@ -288,5 +290,6 @@ in
         '';
       }
     ];
+  };
   };
 }

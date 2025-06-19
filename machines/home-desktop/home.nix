@@ -2,51 +2,24 @@
 {
   imports = [
     ./sops-home.nix
-    ../../modules/meta.nix
-    ../../modules/home-manager/basic.nix # enables home manger and sets the bare minimum.
-    ../../modules/home-manager/custom-global-options/colors.nix
-    ../../modules/home-manager/session-variables.nix
-    ../../modules/home-manager/starship.nix
-    ../../modules/home-manager/fzf.nix
-    ../../modules/home-manager/neovim/neovim.nix
-    ../../modules/home-manager/git/git.nix
-    ../../modules/home-manager/git/git_commit_signatures_with_gpg.nix
-    ../../modules/home-manager/zoxide.nix
-    ../../modules/home-manager/zsh.nix
-    ../../modules/home-manager/bash.nix
-    ../../modules/home-manager/tmux.nix
-    ../../modules/home-manager/sxhkd.nix
-    ../../modules/home-manager/alacritty.nix
-    ../../modules/home-manager/picom.nix
-    ../../modules/home-manager/i3.nix
-    ../../modules/home-manager/scripts/i3-monitor.nix
-    ../../modules/home-manager/rofi.nix
-    ../../modules/home-manager/gpg.nix
-    ../../modules/home-manager/ssh/ssh-client.nix
-    ../../modules/home-manager/ssh/ssh_public_key.nix
-    ../../modules/home-manager/polybar.nix
-    ../../modules/home-manager/scripts/rofi-buku-bookmarks.nix
-    ../../modules/home-manager/scripts/tmux-sessionizer.nix
-    ../../modules/home-manager/scripts/helloworld-python.nix
-    ../../modules/home-manager/scripts/cheat-sh.nix
-    ../../modules/home-manager/redshift.nix
-    ../../modules/home-manager/taskwarrior.nix
-    ../../modules/home-manager/wallpaper.nix
-    ../../modules/home-manager/atuin.nix
-    ../../modules/home-manager/git/lazygit.nix
-    ../../modules/home-manager/clipmenu.nix
-    ../../modules/home-manager/emacs/emacs.nix
-    ../../modules/home-manager/xdg/mime_apps.nix
-    ../../modules/home-manager/gtk.nix
-    ../../modules/home-manager/qt.nix
-    ../../modules/home-manager/services/dnust.nix
-    ../../modules/home-manager/firefox.nix
-    ../../modules/home-manager/yazi.nix
-    ../../modules/home-manager/ghostty.nix
+    ../../modules/home-manager # imported via default.nix
   ];
 
-  customOptions = {
-      wallpaperName = "crane_at_night.png";
-      sshPublicKey = config.customGlobalOptions.sshPublicKeys.home-desktop.key;
+  programs.gpg.enable = true;
+
+  custom = {
+    programs.gitCommitSignaturesWithGpg.enable = true;
+
+    profiles.homeManager = {
+      core = true;
+      desktop = true;
+    };
+
+    file.smartcardPublicKey = {
+      enable = true;
+      value = config.customGlobal.sshPublicKeys.home-desktop.key;
+    };
+
+    desktop.wallpaper.name = "crane_at_night.png";
   };
 }

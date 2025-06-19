@@ -1,5 +1,7 @@
-{config, ... }:
+{ config, lib, ... }:
 {
+
+  config = lib.mkIf config.services.home-assistant.enable {
     services.home-assistant = {
     # Home Assistant runs in an isolated NixOS service environment, so system-wide
     # Python packages are not available to it. We must explicitly declare additional
@@ -18,8 +20,7 @@
         isal
     ];
 
-   openFirewall = true;
-    enable = true;
+    openFirewall = true;
     # only install components but does not enable them.
     extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
     config = {
@@ -30,9 +31,10 @@
         temperature_unit = "C";
       };
       http = {
-        server_host = "${config.customGlobalOptions.anyIPv4}";
+        server_host = "${config.customGlobal.anyIPv4}";
         server_port = 8123;
       };
     };
   };
+ };
 }

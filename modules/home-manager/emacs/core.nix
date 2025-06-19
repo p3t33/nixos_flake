@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 let
   #xdg.dataHome used ro specify a path while xdg.dataFile used for creating files
   # in the same path.
@@ -8,6 +8,8 @@ let
 
 in
 {
+
+  config = lib.mkIf config.programs.emacs.enable {
   # This is a fix to make the system use universal-ctags package instead
   # of the ctags package that is provided by emacs. The order in which
   # the packges are listed is important and by listing universal-ctags first
@@ -37,7 +39,6 @@ in
   services.emacs.enable = true;
 
   programs.emacs = {
-    enable = true;
     package = pkgs.emacs30;
 
     # programs.emcas.extraConfig is responsible to create a configuration file for
@@ -149,6 +150,6 @@ in
       (global-set-key [escape] 'keyboard-escape-quit)
 '';
 };
-
+};
 }
 

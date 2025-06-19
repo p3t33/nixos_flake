@@ -1,6 +1,8 @@
+{ config, lib, ... }:
 {
-  services.zfs.autoScrub = {
-    enable = true;
-    interval = "monthly";
+  config = lib.mkIf config.services.zfs.autoScrub.enable {
+    services.zfs.autoScrub = {
+      interval = "monthly";
+    };
   };
 }

@@ -35,7 +35,7 @@ in
   config = lib.mkIf cfg.enable {
     users.users.qbittorrent = {
       isSystemUser = true;
-      group = "${config.customGlobalOptions.mediaGroup}";
+      group = "${config.customGlobal.mediaGroup}";
       home = cfg.dataDir;
       homeMode = "777";
       createHome = true;
@@ -52,8 +52,8 @@ in
 
     systemd.services.qbittorrent = {
       description = "qBittorrent Nox Service";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
+      after = [ config.systemd.targets.network.name];
+      wantedBy = [ config.systemd.targets.multi-user.name];
       serviceConfig = {
         ExecStart = "${pkgs.qbittorrent-nox}/bin/qbittorrent-nox --webui-port=${toString cfg.port}";
         User = cfg.user;

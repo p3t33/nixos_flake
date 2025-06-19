@@ -1,7 +1,9 @@
-{ config, pkgs, ... }:
-# As firenvim plugin has many parts, most of which need to be defined in neovim,
-# I wanted to encapsulate them in a single nix file that can be included for neovim.
+{ config, pkgs, lib, ... }:
+let
+  cfg = config.programs.neovim;
+in
 {
+  config = lib.mkIf cfg.enable {
   programs.firefox = {
     policies = {
       ExtensionSettings = {
@@ -74,5 +76,6 @@
       }
 
     ];
+  };
   };
 }

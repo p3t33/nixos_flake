@@ -8,10 +8,11 @@
 {
   imports = [
   (modulesPath + "/profiles/qemu-guest.nix")
-  ../../modules/nixos/hardware/host_platform.nix
-  ../../modules/nixos/hardware/dhcp-setup.nix
-  ../../modules/nixos/hardware/intel-microcode.nix
+    ../../modules/nixos/hardware # uses default.nix
   ];
+
+  custom.hardware.cpuVendor = "intel";
+
 
   boot.initrd.availableKernelModules = [
     "ahci"

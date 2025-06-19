@@ -1,5 +1,7 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
+  # NOTICE: This module is not used and not maintained at the moment.
+  #
   # The init.el that is created by the extraConfig in for Emacs by home-manger
   # does not gets picked up by the service, instead you need to make sure
   # that ~/.emacs.d/init.el exist(I used home.file to create one instead of
@@ -22,7 +24,7 @@
     # them here as well.
     package =
       with pkgs;
-      ((emacsPackagesFor emacs29).emacsWithPackages (epkgs: [
+      ((emacsPackagesFor emacs30).emacsWithPackages (epkgs: [
         epkgs.use-package
         epkgs.evil
         epkgs.evil-collection

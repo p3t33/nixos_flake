@@ -1,12 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   #bridge
-  services.trezord.enable = true;
+  config = lib.mkIf config.services.trezord.enable {
+    environment.systemPackages = with pkgs; [
+      trezorctl
+      trezor-suite
+    ];
 
-  environment.systemPackages = with pkgs; [
-    trezorctl
-    trezor-suite
-  ];
-
-  services.udev.packages = [ pkgs.trezor-udev-rules ];
+    services.udev.packages = [ pkgs.trezor-udev-rules ];
+  };
 }

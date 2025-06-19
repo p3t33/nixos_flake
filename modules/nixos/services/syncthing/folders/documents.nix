@@ -1,16 +1,28 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
+  cfg = config.custom.services.syncthing;
   documents = "documents";
 in
 {
-  services.syncthing = {
-    settings = {
-      folders = {
-        "${documents}" = {
-          id = "${documents}";
-          path = "${config.customOptions.syncthing.syncDir}/${documents}";
-          devices = config.customOptions.syncthing.devicesToShareDocumentsFolderWith;
-          versioning = config.customOptions.syncthing.simpleFileVersioningForBackUpMachinesOnly;
+  options.custom.services.syncthing.foldersToShare.documents = {
+    enable = lib.mkEnableOption "Enable Syncthing folder: documents";
+    devicesToShareWith = lib.mkOption {
+      default = [ ];
+      type = lib.types.listOf lib.types.str;
+      description = "List of devices to use for folder synchronization.";
+    };
+  };
+
+  config = lib.mkIf cfg.foldersToShare.documents.enable {
+    services.syncthing = {
+      settings = {
+        folders = {
+          "${documents}" = {
+            id = "${documents}";
+            path = "${cfg.syncDir}/${documents}";
+            devices = cfg.foldersToShare.documents.devicesToShareWith;
+            versioning = cfg.simpleFileVersioningForBackUpMachinesOnly;
+          };
         };
       };
     };

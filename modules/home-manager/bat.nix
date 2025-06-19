@@ -1,10 +1,12 @@
+{ config, lib, ... }:
 {
-  programs.bat = {
-    enable = true;
-    config = {
-      theme = "Visual Studio Dark+";
-      wrap = "character";
-      terminal-width = "80";
+  config = lib.mkIf config.programs.bat.enable {
+    programs.bat = {
+      config = {
+        theme = "Visual Studio Dark+";
+        wrap = "character";
+        terminal-width = "80";
+      };
     };
   };
 }

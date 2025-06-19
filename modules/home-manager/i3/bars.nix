@@ -1,8 +1,14 @@
-{ pkgs, config, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  cfg = config.custom.programs.i3Bar;
+in
 {
 
-  xsession.windowManager.i3.config.bars = [
+  options.custom.programs.i3Bar.enable = lib.mkEnableOption "Enable Starship prompt configuration";
+
+  config = lib.mkIf cfg.enable {
+    xsession.windowManager.i3.config.bars = [
     {
       position = "bottom";
       fonts = {
@@ -16,29 +22,29 @@
       # generate a config file for i3status to look at.
       statusCommand = "${pkgs.i3status}/bin/i3status";
       colors = {
-        background = config.customGlobalOptions.colors.bg;
+        background = config.customGlobal.colors.bg;
         separator = "#757575";
 
         focusedWorkspace = {
-          border = config.customGlobalOptions.colors.bg;
-          background = config.customGlobalOptions.colors.bg;
-          text = config.customGlobalOptions.colors.text;
+          border = config.customGlobal.colors.bg;
+          background = config.customGlobal.colors.bg;
+          text = config.customGlobal.colors.text;
         };
 
         inactiveWorkspace = {
-          border = config.customGlobalOptions.colors.inactive-bg;
-          background = config.customGlobalOptions.colors.inactive-bg;
-          text = config.customGlobalOptions.colors.inactive-text;
+          border = config.customGlobal.colors.inactive-bg;
+          background = config.customGlobal.colors.inactive-bg;
+          text = config.customGlobal.colors.inactive-text;
         };
 
         urgentWorkspace = {
-          border = config.customGlobalOptions.colors.urgent-bg;
-          background = config.customGlobalOptions.colors.urgent-bg;
-          text = config.customGlobalOptions.colors.text;
+          border = config.customGlobal.colors.urgent-bg;
+          background = config.customGlobal.colors.urgent-bg;
+          text = config.customGlobal.colors.text;
         };
 
       };
-    }
-
-  ];
+      }
+    ];
+  };
 }

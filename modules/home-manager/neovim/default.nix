@@ -38,9 +38,10 @@
 # I put the extraConfig/extraLuaConfig block to the top(as they will be generated).
 #
 # *for some reason extraLuaConfig inside of spell_checker got to the top of the init.lua
-
 {
   imports = [
+     # All modules use config.programs.neovim.enable to be activated, with
+     # Core being the essential module.
     ./core.nix
     ./spell_checker.nix
     ./ui.nix

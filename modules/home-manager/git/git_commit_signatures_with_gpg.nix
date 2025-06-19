@@ -1,14 +1,23 @@
+{ config, lib, ... }:
+
+let
+  cfg = config.custom.programs.gitCommitSignaturesWithGpg;
+in
 {
-  programs.git = {
+  options.custom.programs.gitCommitSignaturesWithGpg.enable = lib.mkEnableOption "Enable Git configuration";
 
-    extraConfig = {
+  config = lib.mkIf cfg.enable {
+    programs.git = {
 
-      commit = {
-        gpgSign = true;
-      };
+      extraConfig = {
 
-      gpg = {
-        program = "gpg";
+        commit = {
+          gpgSign = true;
+        };
+
+        gpg = {
+          program = "gpg";
+        };
       };
     };
   };

@@ -1,5 +1,6 @@
-{ lib, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 let
+  cfg = config.programs.tmux;
   tmux-sessionizer = pkgs.writeShellScriptBin "tmux-sessionizer" ''
      SINGLE_ARGUMENT=1
 
@@ -126,5 +127,7 @@ let
   '';
 in
 {
-  home.packages = [ tmux-sessionizer ];
+  config = lib.mkIf cfg.enable {
+    home.packages = [ tmux-sessionizer ];
+  };
 }

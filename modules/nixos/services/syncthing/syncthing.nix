@@ -1,30 +1,15 @@
+{ config, lib, hostSpecific, ... }:
+let
+  cfg = config.custom.services.syncthing;
+in
+
 {
-  config,
-  lib,
-  hostSpecific,
-  ...
-}:
-{
-  imports =
-    [ ]
-    ++ lib.optionals (hostSpecific.hostName == "work-pc") [
-      ./devices/homelab.nix
+  # Each machine switches in the devices and folders it needs.
+  imports =[
+      ./devices/work-pc.nix
       ./devices/home-desktop.nix
-      ./folders/taskwarrior.nix
-      ./folders/dev_resources.nix
-    ]
-    ++ lib.optionals (hostSpecific.hostName == "home-desktop") [
-      ./devices/work_laptop.nix
       ./devices/homelab.nix
-      ./folders/taskwarrior.nix
-      ./folders/dev_resources.nix
-      ./folders/database.nix
-      ./folders/documents.nix
-      ./folders/study.nix
-    ]
-    ++ lib.optionals (hostSpecific.hostName == "homelab") [
-      ./devices/work_laptop.nix
-      ./devices/home-desktop.nix
+      ./devices/kvm-nixos-server.nix
       ./folders/taskwarrior.nix
       ./folders/dev_resources.nix
       ./folders/database.nix
@@ -32,7 +17,7 @@
       ./folders/study.nix
     ];
 
-  options.customOptions = {
+  options.custom.services = {
     syncthing = lib.mkOption {
       type = lib.types.submodule {
         options = {
@@ -42,17 +27,6 @@
             description = "Port for Syncthing web GUI.";
           };
 
-          devices = lib.mkOption {
-            type = lib.types.attrsOf lib.types.str;
-            description = "avalible machines";
-            default = {
-              home-assistant = "home-assistant";
-              work-pc = "work-pc";
-              home-desktop = "home-desktop";
-              homelab = "homelab";
-            };
-          };
-
           dataDirectory = lib.mkOption {
             default = "/var/lib/syncthing/";
             type = lib.types.str;
@@ -60,7 +34,7 @@
           };
 
           syncDir = lib.mkOption {
-            default = "${config.customGlobalOptions.syncthing.syncDir}";
+            default = "${config.customGlobal.syncthing.syncDir}";
             type = lib.types.str;
             description = "Defines the Syncthing sync directory";
           };
@@ -69,36 +43,6 @@
             default = hostSpecific.primeUsername;
             type = lib.types.str;
             description = "Defines the Syncthing user";
-          };
-
-          devicesToShareTaskWarriorFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareDevResourcesFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareDatabaseFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareDocumentsFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
-          };
-
-          devicesToShareStudyFolderWith = lib.mkOption {
-            default = [ ];
-            type = lib.types.listOf lib.types.str;
-            description = "List of devices to use for folder synchronization.";
           };
 
           simpleFileVersioningForBackUpMachinesOnly = lib.mkOption {
@@ -113,27 +57,26 @@
     };
   };
 
-  config = {
+  config = lib.mkIf config.services.syncthing.enable {
 
     systemd.tmpfiles.rules = [
-      "d ${config.customOptions.syncthing.dataDirectory} 0750 ${config.customOptions.syncthing.user} ${config.customGlobalOptions.dataGroup} -"
+      "d ${cfg.dataDirectory} 0750 ${cfg.user} ${config.customGlobal.dataGroup} -"
     ];
 
     sops.secrets."syncthing/cert.pem" = {
-      owner = "${config.customOptions.syncthing.user}";
+      owner = "${cfg.user}";
       mode = "0600";
 
     };
 
     sops.secrets."syncthing/key.pem" = {
-      owner = "${config.customOptions.syncthing.user}";
+      owner = "${cfg.user}";
       mode = "0600";
     };
 
     services.syncthing = {
-      enable = true;
-      group = "${config.customGlobalOptions.dataGroup}";
-      user = "${config.customOptions.syncthing.user}";
+      group = "${config.customGlobal.dataGroup}";
+      user = "${cfg.user}";
       key = config.sops.secrets."syncthing/key.pem".path;
       cert = config.sops.secrets."syncthing/cert.pem".path;
       #overrideDevices = true; # Deletes devices that are not configured declaratively

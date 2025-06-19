@@ -1,3 +1,0 @@
-{
-  services.greenclip.enable = true;
-}

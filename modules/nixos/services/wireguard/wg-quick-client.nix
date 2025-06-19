@@ -1,13 +1,20 @@
 { config, lib, ... }:
+let
+  cfg = config.custom.vpn.wireguardQuickClient;
+in
 {
 
-  options.customOptions.wireguardQuickClient.networkName = lib.mkOption {
+  options.custom.vpn.wireguardQuickClient = {
+    enable = lib.mkEnableOption "Enable WireGuard quick client";
+    networkName = lib.mkOption {
       default = "wg0";
       type = lib.types.str;
       description = "Defines value for wireguard client network";
+
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     # As I did not want to put in plain text the url of the vpn service I am
     # using, I am putting the entire config into my sops file instead of
     # using a more declarative approach. The stracture inside of the secrets.yaml is:
@@ -26,10 +33,10 @@
 
     sops.secrets.wg-quick-client-config = {
         # wg-quick expects the file to be at a specific path, with specific name.
-        path = "/etc/wireguard/${config.customOptions.wireguardQuickClient.networkName}.conf";
+        path = "/etc/wireguard/${cfg.networkName}.conf";
     };
 
-    networking.wg-quick.interfaces.${config.customOptions.wireguardQuickClient.networkName} = {
+    networking.wg-quick.interfaces.${cfg.networkName} = {
       configFile = config.sops.secrets.wg-quick-client-config.path;
       autostart = false;  # Start manually
     };

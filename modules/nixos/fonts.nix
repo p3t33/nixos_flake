@@ -4,7 +4,7 @@
   # fonts.fontconfig.enable directive.
   fonts = {
     enableDefaultPackages = true;
-    packages = config.customGlobalOptions.fontPackages;
+    packages = config.customGlobal.fontPackages;
     fontconfig = {
       defaultFonts = {
         # Each character in a monospace font takes up the same amount of horizontal space
@@ -14,7 +14,7 @@
         #
         # I am using nerdfonts which are patched font with extra glyphs.
         # This type of font should be used with vim, tmux, VSCode...
-        monospace = [ config.customGlobalOptions.font.mono ];
+        monospace = [ config.customGlobal.font.mono ];
         # Sans-serif fonts lack the small projecting features at the end of strokes
         # They tend to have a more modern and clean look.
         #
@@ -26,14 +26,14 @@
         #
         # This type of fonts should be used for GUI elements such as
         # window decorations, browser settings...
-        sansSerif = [ config.customGlobalOptions.font.sansSerif ];
+        sansSerif = [ config.customGlobal.font.sansSerif ];
         # Serif fonts have small lines or strokes attached to the ends of
         # letters and symbols. This is believed to lead the eye along lines of
         #text, making long passages easier to read.
         #
         # Serif fonts are often used for large blocks of text, like in books,
         # newspapers, and lengthy articles.
-        serif = [ config.customGlobalOptions.font.serif ];
+        serif = [ config.customGlobal.font.serif ];
       };
       antialias = true;
       hinting = {

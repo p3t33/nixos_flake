@@ -1,6 +1,11 @@
-{ ... }:
+{ config, lib, ... }:
+
 {
-  programs.zellij = {
-    enable = true;
+
+  config = lib.mkIf config.programs.zellij.enable {
+    programs.zellij = {
+      # enable = true;
+    };
   };
 }
+

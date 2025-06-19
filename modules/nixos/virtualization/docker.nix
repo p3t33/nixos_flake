@@ -1,8 +1,8 @@
-{ hostSpecific, ... }:
+{ config, lib, hostSpecific, ... }:
 {
-  virtualisation.docker.enable = true;
-  users.users.${hostSpecific.primeUsername} = {
-    extraGroups = [ "docker" ];
+  config = lib.mkIf config.virtualisation.docker.enable {
+    users.users.${hostSpecific.primeUsername} = {
+      extraGroups = [ "docker" ];
+    };
   };
-
 }

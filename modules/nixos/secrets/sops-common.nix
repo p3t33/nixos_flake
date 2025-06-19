@@ -1,6 +1,8 @@
 { config, inputs, hostSpecific, ... }:
 {
-  sops.defaultSopsFile = inputs.self + "/machines/${hostSpecific.hostName}/secrets/nixos/secrets.yaml";
-  sops.defaultSopsFormat = "yaml";
-  sops.age.keyFile = config.customGlobalOptions.sopsKeyPath;
+  sops = {
+    defaultSopsFile = inputs.self + "/machines/${hostSpecific.hostName}/secrets/nixos/secrets.yaml";
+    defaultSopsFormat = "yaml";
+    age.keyFile = config.customGlobal.sopsKeyPath;
+  };
 }

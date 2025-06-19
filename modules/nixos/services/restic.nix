@@ -1,123 +1,128 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
+cfg = config.custom.services.restic;
+
   pruneDaily = "--keep-daily 7";
   pruneWeekly = "--keep-weekly 4";
   pruneYearly = "--keep-yearly 3";
   compressionMax = "--compression max";
 in
 {
+  options.custom.services.restic.enable = lib.mkEnableOption "Enable Restic backups and Restic REST server";
 
-  sops.secrets."restic/local/repositoryPathFile" = { };
-  sops.secrets."restic/local/passwordFile" = { };
-  sops.secrets."restic/gdrive/repositoryPathFile" = { };
-  sops.secrets."restic/gdrive/passwordFile" = { };
-  sops.secrets."restic/gdrive/rcloneConfigFile" = { };
-  sops.secrets."restic/amazon/repositoryPathFile" = { };
-  sops.secrets."restic/amazon/passwordFile" = { };
-  sops.secrets."restic/amazon/rcloneConfigFile" = { };
+  config = lib.mkIf cfg.enable {
+    sops.secrets."restic/local/repositoryPathFile" = { };
+    sops.secrets."restic/local/passwordFile" = { };
+    sops.secrets."restic/gdrive/repositoryPathFile" = { };
+    sops.secrets."restic/gdrive/passwordFile" = { };
+    sops.secrets."restic/gdrive/rcloneConfigFile" = { };
+    sops.secrets."restic/amazon/repositoryPathFile" = { };
+    sops.secrets."restic/amazon/passwordFile" = { };
+    sops.secrets."restic/amazon/rcloneConfigFile" = { };
 
-  services.restic = {
+    services.restic = {
 
-    server = {
-      enable = true;
-      extraFlags = [ "--no-auth" ];
-      listenAddress = "0.0.0.0:9005"; # Expose Restic API & metrics
-      prometheus = true; # Enable Prometheus metrics
-      appendOnly = true; # Ensure backups are append-only for safty from being hacked.
-    };
-
-    backups = {
-
-      # name of restic repository, should be descriptive but could be anything.
-      local = {
-        # will create restic repo if it does not exit yet.
-        initialize = true;
-        # for syncthing versioning
-        exclude = [
-          "**/.stversions/**"
-        ];
-
-        # A file with restic repository path.
-        repositoryFile = config.sops.secrets."restic/local/repositoryPathFile".path;
-        passwordFile = config.sops.secrets."restic/local/passwordFile".path;
-
-        # Paths to backup.
-        paths = [ "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync" ];
-
-        pruneOpts = [
-          pruneDaily
-          pruneWeekly
-          pruneYearly
-        ];
-
-        extraBackupArgs = [ compressionMax ];
-
-        timerConfig = {
-          # backup will happen each day  between 00:05 and 02:05.
-          # The exact start time within this window will vary each day
-          # due to the randomized delay.
-          OnCalendar = "00:05";
-          RandomizedDelaySec = "1h";
-        };
+      server = {
+        enable = true;
+        extraFlags = [ "--no-auth" ];
+        listenAddress = "0.0.0.0:9005"; # Expose Restic API & metrics
+        prometheus = true; # Enable Prometheus metrics
+        appendOnly = true; # Ensure backups are append-only for safty from being hacked.
       };
 
-      gdrive = {
-        initialize = true;
-        # for syncthing versioning
-        exclude = [
-          "**/.stversions/**"
-        ];
+      backups = {
 
-        repositoryFile = config.sops.secrets."restic/gdrive/repositoryPathFile".path;
-        rcloneConfigFile = config.sops.secrets."restic/gdrive/rcloneConfigFile".path;
-        passwordFile = config.sops.secrets."restic/gdrive/passwordFile".path; # <-- clearly points here
+        # name of restic repository, should be descriptive but could be anything.
+        local = {
+          # will create restic repo if it does not exit yet.
+          initialize = true;
+          # for syncthing versioning
+          exclude = [
+            "**/.stversions/**"
+          ];
 
-        paths = [
-          "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync"
-          "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
-        ];
-        pruneOpts = [
-          pruneDaily
-          pruneWeekly
-          pruneYearly
-        ];
+          # A file with restic repository path.
+          repositoryFile = config.sops.secrets."restic/local/repositoryPathFile".path;
+          passwordFile = config.sops.secrets."restic/local/passwordFile".path;
 
-        extraBackupArgs = [ compressionMax ];
+          # Paths to backup.
+          paths = [ "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync" ];
 
-        timerConfig = {
-          OnCalendar = "02:05";
-          RandomizedDelaySec = "1h";
+          pruneOpts = [
+            pruneDaily
+            pruneWeekly
+            pruneYearly
+          ];
+
+          extraBackupArgs = [ compressionMax ];
+
+          timerConfig = {
+            # backup will happen each day  between 00:05 and 02:05.
+            # The exact start time within this window will vary each day
+            # due to the randomized delay.
+            OnCalendar = "00:05";
+            RandomizedDelaySec = "1h";
+          };
         };
 
-      };
+        gdrive = {
+          initialize = true;
+          # for syncthing versioning
+          exclude = [
+            "**/.stversions/**"
+          ];
 
-      amazon = {
-        initialize = true;
-        # for syncthing versioning
-        exclude = [
-          "**/.stversions/**"
-        ];
+          repositoryFile = config.sops.secrets."restic/gdrive/repositoryPathFile".path;
+          rcloneConfigFile = config.sops.secrets."restic/gdrive/rcloneConfigFile".path;
+          passwordFile = config.sops.secrets."restic/gdrive/passwordFile".path; # <-- clearly points here
 
-        repositoryFile = config.sops.secrets."restic/amazon/repositoryPathFile".path;
-        rcloneConfigFile = config.sops.secrets."restic/amazon/rcloneConfigFile".path;
-        passwordFile = config.sops.secrets."restic/amazon/passwordFile".path;
+          paths = [
+            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync"
+            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+          ];
+          pruneOpts = [
+            pruneDaily
+            pruneWeekly
+            pruneYearly
+          ];
 
-        paths = [
-          "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync"
-          "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
-        ];
+          extraBackupArgs = [ compressionMax ];
 
-        pruneOpts = [
-          pruneDaily
-          pruneWeekly
-          pruneYearly
-        ];
+          timerConfig = {
+            OnCalendar = "02:05";
+            RandomizedDelaySec = "1h";
+          };
 
-        extraBackupArgs = [ compressionMax ];
+        };
 
-        timerConfig = {
-          OnCalendar = "04:05";
-          RandomizedDelaySec = "1h";
+        amazon = {
+          initialize = true;
+          # for syncthing versioning
+          exclude = [
+            "**/.stversions/**"
+          ];
+
+          repositoryFile = config.sops.secrets."restic/amazon/repositoryPathFile".path;
+          rcloneConfigFile = config.sops.secrets."restic/amazon/rcloneConfigFile".path;
+          passwordFile = config.sops.secrets."restic/amazon/passwordFile".path;
+
+          paths = [
+            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync"
+            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+          ];
+
+          pruneOpts = [
+            pruneDaily
+            pruneWeekly
+            pruneYearly
+          ];
+
+          extraBackupArgs = [ compressionMax ];
+
+          timerConfig = {
+            OnCalendar = "04:05";
+            RandomizedDelaySec = "1h";
+          };
         };
       };
     };

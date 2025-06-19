@@ -1,5 +1,6 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 let
+  cfg = config.custom.scripts.i3Monitor;
   i3-monitor = pkgs.writeShellScriptBin "i3-monitor" ''
     builtin_display="eDP-1" # Replace with your actual built-in display identifier
 
@@ -21,5 +22,9 @@ let
   '';
 in
 {
-  home.packages = [ i3-monitor ];
+  options.custom.scripts.i3Monitor.enable = lib.mkEnableOption "Enable i3-monitor script";
+
+  config = lib.mkIf cfg.enable {
+    home.packages = [ i3-monitor ];
+  };
 }

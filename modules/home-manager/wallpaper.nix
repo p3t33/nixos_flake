@@ -1,30 +1,37 @@
+{ config, lib, ... }:
+
+let
+  cfg = config.custom.desktop.wallpaper;
+  pathIn = ../../wallpaper/${cfg.name};
+in
 {
-  config,
-  lib,
-  ...
-}:
-{
-  options.customOptions = {
-    wallpaperName = lib.mkOption {
-      default = "watchtower.png";
+  options.custom.desktop.wallpaper = {
+    enable = lib.mkEnableOption "Enable wallpaper setup";
+
+    name = lib.mkOption {
       type = lib.types.str;
+      default = "watchtower.png";
       description = "The name of the wallpaper file";
     };
 
-    wallpaperOut = lib.mkOption {
-      default = "wallpaper/${config.customOptions.wallpaperName}";
+    pathOut = lib.mkOption {
       type = lib.types.str;
-      description = "Defines the path where the wallpaper will be located";
+      default = ""; # will be set below in config using mkDefault
+      description = "The path where the wallpaper will be located inside the XDG config";
     };
 
-    wallpaperIn = lib.mkOption {
-      default = ../../wallpaper/${config.customOptions.wallpaperName};
+    pathIn = lib.mkOption {
       type = lib.types.path;
-      description = "The relative path to the wallpaper file inside the repository";
+      default = ../../wallpaper/watchtower.png; # will be overridden below based on wallpaperName
+      description = "The source path to the wallpaper inside the repository";
     };
+
   };
 
-  config = {
-    xdg.configFile."${config.customOptions.wallpaperOut}".source = config.customOptions.wallpaperIn;
+  config = lib.mkIf cfg.enable {
+    custom.desktop.wallpaper.pathOut = lib.mkDefault "wallpaper/${cfg.name}";
+    custom.desktop.wallpaper.pathIn = lib.mkDefault ../../wallpaper/${cfg.name};
+
+    xdg.configFile."${cfg.pathOut}".source = pathIn; # Use the internal wallpaperPathIn
   };
 }

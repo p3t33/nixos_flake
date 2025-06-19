@@ -1,7 +1,13 @@
+#todo
 { config, lib, ... }:
+let
+  cfg = config.custom.hardware.nvidiaHybridWithIntelOffLoadMode;
+in
 {
-  options.customOptions = {
-      nvidiaHybridWithIntel = lib.mkOption {
+  options = {
+    custom = {
+      hardware.nvidiaHybridWithIntelOffLoadMode.enable = lib.mkEnableOption "Enable NVIDIA PRIME offload (hybrid with Intel)";
+      hardware.nvidiaHybridWithIntel = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         default = {
           nvidiaBusId = "";
@@ -9,12 +15,12 @@
         };
         description = "Bus IDs for Nvidia Hybrid with Intel setup";
       };
-
+    };
   };
   # Nvidia PRIME(technology used to manage hybrid graphics) settings
   # Note: non hybrid Nvidia graphics don't need this part and should be
   # only using the nvidia.nix file.
-  config = {
+  config = lib.mkIf cfg.enable {
     hardware.nvidia.prime = {
 
       # In this mode the Nvidia card is only activated on demand
@@ -27,9 +33,9 @@
         enableOffloadCmd = true;
       };
 
-      # values in configurations(meta.nix) were found by executing lspci | grep -E 'VGA|3D'
-      nvidiaBusId = config.customOptions.nvidiaHybridWithIntel.nvidiaBusId;
-      intelBusId = config.customOptions.nvidiaHybridWithIntel.intelBusId;
+      # values in configurations(custom-global-options.nix) were found by executing lspci | grep -E 'VGA|3D'
+      nvidiaBusId = config.custom.hardware.nvidiaHybridWithIntel.nvidiaBusId;
+      intelBusId = config.custom.hardware.nvidiaHybridWithIntel.intelBusId;
     };
   };
 }

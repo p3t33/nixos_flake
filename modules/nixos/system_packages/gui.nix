@@ -1,50 +1,57 @@
-{  pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.custom.apps.gui;
+in
 {
-  environment.systemPackages = with pkgs; [
+  options.custom.apps.gui.enable = lib.mkEnableOption "Enable GUI utilities and graphical system tools";
 
-    # web browser
-    firefox
-    google-chrome
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
 
-    # graphics
-    gimp
-    vlc
-    flameshot
+      # web browser
+      firefox
+      google-chrome
 
-    # note taking
-    cherrytree
+      # graphics
+      gimp
+      vlc
+      flameshot
 
-    # terminal
-    alacritty
+      # note taking
+      cherrytree
 
-    sxhkd
-    gparted
+      # terminal
+      alacritty
 
-    gpick # color picker.
-    pcmanfm
+      sxhkd
+      gparted
 
-    gpt4all # generative AI packages.
+      gpick # color picker.
+      pcmanfm
 
-    # Media
-    obs-studio # video recorder / live streming.
-    audacity # audio editing
-    libsForQt5.kdenlive # video editing.
+      gpt4all # generative AI packages.
 
-    # Remote control
-    tigervnc
-    nomachine-client
+      # Media
+      obs-studio # video recorder / live streming.
+      audacity # audio editing
+      libsForQt5.kdenlive # video editing.
 
-    # pdf annotation
-    xournalpp
-    # pdf viewer
-    zathura
+      # Remote control
+      tigervnc
+      nomachine-client
 
-    # diagram
-    drawio
+      # pdf annotation
+      xournalpp
+      # pdf viewer
+      zathura
 
-    # comics readar
-    foliate
-    mcomix
-  ];
+      # diagram
+      drawio
 
+      # comics readar
+      foliate
+      mcomix
+    ];
+  };
 }

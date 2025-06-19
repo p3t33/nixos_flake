@@ -1,43 +1,44 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, lib, ... }:
 {
-  services.xserver = {
-    enable = true;
-    logFile = "/var/log/Xorg.0.log"; # Enables logging to this file
-    xkb = {
-      layout = "us,il";
-      variant = "";
-      options = "grp:caps_toggle";
-    };
 
-    displayManager = {
-      lightdm.enable = true;
-    };
+  config = lib.mkIf config.services.xserver.enable {
+    services.xserver = {
+      logFile = "/var/log/Xorg.0.log"; # Enables logging to this file
+      xkb = {
+        layout = "us,il";
+        variant = "";
+        options = "grp:caps_toggle";
+      };
 
-    desktopManager = {
-      xterm.enable = false;
-    };
+      displayManager = {
+        lightdm.enable = true;
+      };
 
-    windowManager.i3 = {
-      enable = true;
-      #configFile = "/etc/i3.conf";
-      extraPackages = with pkgs; [
-        rofi
-        i3status
-        i3blocks
+      desktopManager = {
+        xterm.enable = false;
+      };
 
-        # Can query the window manager for information and is dependency for
-        # the rofi Firefox bookmars script.
-        wmctrl
+      windowManager.i3 = {
+        enable = true;
+        #configFile = "/etc/i3.conf";
+        extraPackages = with pkgs; [
+          rofi
+          i3status
+          i3blocks
 
-        # Monitor control
-        arandr
-        xorg.xrandr
+          # Can query the window manager for information and is dependency for
+          # the rofi Firefox bookmars script.
+          wmctrl
 
-        # debugging and information
-        xorg.xdpyinfo
-        glxinfo # query the properties of an OpenGL implementation
-      ];
+          # Monitor control
+          arandr
+          xorg.xrandr
+
+          # debugging and information
+          xorg.xdpyinfo
+          glxinfo # query the properties of an OpenGL implementation
+        ];
+      };
     };
   };
 }

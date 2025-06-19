@@ -1,11 +1,9 @@
-{ config, pkgs, ... }:
-
+{ config, lib,  ... }:
 {
 
-  programs.bash = {
-
-    enable = true;
-
+  config = lib.mkIf config.programs.bash.enable {
+    programs.bash = {
+    };
   };
-
 }
+

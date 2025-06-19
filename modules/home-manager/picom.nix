@@ -1,5 +1,9 @@
-{ ... }:
-{
+{ config, lib, ... }:
 
-  services.picom.enable = true;
+{
+  config = lib.mkIf config.services.picom.enable {
+    services.picom = {
+      backend = "xrender";
+    };
+  };
 }

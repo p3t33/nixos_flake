@@ -1,13 +1,15 @@
-{ config, ... }:
+{ config, lib, ... }:
+
 let
   serviceName = "jackett";
 in
 {
-  services.${serviceName} = {
-    enable = true;
-    openFirewall = true;
-    port = 9117;
-    user = "${serviceName}";
-    group = "${config.customGlobalOptions.mediaGroup}";
+  config = lib.mkIf config.services.${serviceName}.enable {
+    services.${serviceName} = {
+      openFirewall = true;
+      port = 9117;
+      user = "${serviceName}";
+      group = "${config.customGlobal.mediaGroup}";
+    };
   };
 }

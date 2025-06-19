@@ -1,25 +1,25 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
   serviceName = "prowlarr";
 in
 {
-  sops.secrets."${serviceName}/apiKey" = {};
+    config = lib.mkIf config.services.${serviceName}.enable {
+    sops.secrets."${serviceName}/apiKey" = {};
 
-  services.${serviceName} = {
-    enable = true;
-
-    openFirewall = true;
-    settings = {
-      server = {
-        port = 9696;
-        urlbase = "/${serviceName}";
+    services.${serviceName} = {
+      openFirewall = true;
+      settings = {
+        server = {
+          port = 9696;
+          urlbase = "/${serviceName}";
+        };
       };
+
+      environmentFiles = [
+        config.sops.secrets."${serviceName}/apiKey".path
+      ];
+
     };
-
-    environmentFiles = [
-      config.sops.secrets."${serviceName}/apiKey".path
-    ];
-
   };
 }

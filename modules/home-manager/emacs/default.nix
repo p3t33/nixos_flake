@@ -14,6 +14,8 @@
 # be sure it is covering 100% of all the edge cases, so the order should be kept as is.
 
 imports = [
+  # all moudles use config.programs.emacs.enable to be activate,
+  # with Core being the base of configuration.
   ./core.nix
   ./keybindings.nix
   ./ui.nix

@@ -1,18 +1,19 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
-  # Dependencies
-  home.packages = with pkgs; [
-    # Image preview in the terminal
-    fzf
-    ripgrep
-    fd
-    zoxide
-  ];
 
-  programs.yazi = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-  };
+  config = lib.mkIf config.programs.yazi.enable {
+    # Dependencies
+    home.packages = with pkgs; [
+      # Image preview in the terminal
+      fzf
+      ripgrep
+      fd
+      zoxide
+    ];
 
+    programs.yazi = {
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
+ };
 }

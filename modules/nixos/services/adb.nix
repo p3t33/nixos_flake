@@ -1,7 +1,8 @@
-{ hostSpecific, ... }:
+{ config, lib, hostSpecific, ... }:
 {
-  programs.adb.enable = true;
-  users.users.${hostSpecific.primeUsername} = {
-    extraGroups = [ "adbusers" ];
+  config = lib.mkIf config.programs.adb.enable {
+    users.users.${hostSpecific.primeUsername} = {
+      extraGroups = [ "adbusers" ];
+    };
   };
 }

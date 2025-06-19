@@ -1,116 +1,123 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+let
+  cfg = config.custom.apps.cliUtilities;
+in
 {
-  environment.systemPackages = with pkgs; [
-    # presentation
-    present
-    slides
-    haskellPackages.patat
-    w3m
+  options.custom.apps.cliUtilities.enable = lib.mkEnableOption "Enable general tools, utilities, and media/networking programs";
 
-    # media
-    mpv
-    ffmpeg_7-full # video editing.
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      # presentation
+      present
+      slides
+      haskellPackages.patat
+      w3m
 
-    # web
-    wget
-    speedtest-go
-    pkg-config # helper tool for more information during the update of nix.
+      # media
+      mpv
+      ffmpeg_7-full # video editing.
 
-    # process monitor
-    htop-vim
-    neovim
+      # web
+      wget
+      speedtest-go
+      pkg-config # helper tool for more information during the update of nix.
 
-    # networking
-    tcpdump
-    nmap
-    whois
-    openconnect
-    gp-saml-gui
+      # process monitor
+      htop-vim
+      neovim
 
-    # search
-    ripgrep
-    fd
-    fzf
+      # networking
+      tcpdump
+      nmap
+      whois
+      openconnect
+      gp-saml-gui
 
-    # system information
-    inxi
-    ncdu
-    du-dust
-    duf
-    gdu
+      # search
+      ripgrep
+      fd
+      fzf
 
-    # disk utils
-    gptfdisk
-    ntfs3g
-    geteltorito # extract boot image from CD/DVD/ISO. I used it to uprade bios.
+      # system information
+      inxi
+      ncdu
+      du-dust
+      duf
+      gdu
 
-    # general
-    sshfs
-    sshpass
-    lsyncd
-    rclone
-    watchman
-    restic
-    bat
-    unzip
-    zip
-    tmux
-    smug # Session manager for tmux.
-    moreutils # I need the sponge appliction to be used as part of tmux configuration.
-    exfat # required by Ventoy installer.
+      # disk utils
+      gptfdisk
+      ntfs3g
+      geteltorito # extract boot image from CD/DVD/ISO. I used it to uprade bios.
 
-    lshw
+      # general
+      sshfs
+      sshpass
+      lsyncd
+      rclone
+      watchman
+      restic
+      bat
+      unzip
+      zip
+      tmux
+      smug # Session manager for tmux.
+      moreutils # I need the sponge appliction to be used as part of tmux configuration.
+      exfat # required by Ventoy installer.
 
-    eza
-    tree
+      lshw
 
-    zsh
+      eza
+      tree
 
-    # A cross shell smarter cd command, inspired by z and autojump
-    zoxide
+      zsh
 
-    thefuck
-    expect
+      # A cross shell smarter cd command, inspired by z and autojump
+      zoxide
 
-    pciutils
+      thefuck
+      expect
 
-    # command-line YAML processor, Used by the tmux
-    # tmux-nerd-font-window-name.tmux plugin.
-    yq
+      pciutils
 
-    # Used for fetching source from github
-    # I used it to package tmux pluging that was not already available.
-    nix-prefetch-github
-    nix-prefetch-git
+      # command-line YAML processor, Used by the tmux
+      # tmux-nerd-font-window-name.tmux plugin.
+      yq
 
-    # added to get access to lsusb
-    usbutils
+      # Used for fetching source from github
+      # I used it to package tmux pluging that was not already available.
+      nix-prefetch-github
+      nix-prefetch-git
 
-    # Used to list the process that that open a file or using a path as
-    # a mounting point.
-    lsof
+      # added to get access to lsusb
+      usbutils
 
-    # Sound control
-    pulseaudio # installed for pactl(which is cli for pavucontrol) and uses alsa.
+      # Used to list the process that that open a file or using a path as
+      # a mounting point.
+      lsof
 
-    # Send notifications to the notification daemon, such as Dunst.
-    libnotify
+      # Sound control
+      pulseaudio # installed for pactl(which is cli for pavucontrol) and uses alsa.
 
-    # evalute key and mouse presses for xorg
-    xorg.xev
+      # Send notifications to the notification daemon, such as Dunst.
+      libnotify
 
-    # Searching nix packages
-    nix-search-cli # uses as "nix-search <name of package>"
+      # evalute key and mouse presses for xorg
+      xorg.xev
 
-    git-filter-repo
-    iperf3
-    dig
-    buku
-    wireguard-tools
-    upower
-    smartmontools # tool to assess hard drives(sudo smartctl -a /dev/sda).
+      # Searching nix packages
+      nix-search-cli # uses as "nix-search <name of package>"
 
-    pdftk # pdf editing.
-  ];
+      git-filter-repo
+      iperf3
+      dig
+      buku
+      wireguard-tools
+      upower
+      smartmontools # tool to assess hard drives(sudo smartctl -a /dev/sda).
 
+      pdftk # pdf editing.
+    ];
+  };
 }

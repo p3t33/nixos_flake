@@ -4,7 +4,7 @@
 }:
 {
   options = {
-    customGlobalOptions = {
+    customGlobal = {
       type = lib.types.attrsOf lib.types.str;
       description = "Defines the color palette for the user interface";
       colors = lib.mkOption {
