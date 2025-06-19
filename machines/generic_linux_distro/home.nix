@@ -53,6 +53,8 @@
     enableModule.starship = true;
     enableModule.fzf = true;
     enableModule.zoxide = true;
+    enableModule.zsh = true;
+    enableModule.bash = true;
     enableModule.tmux = true;
     enableModule.rofi = true;
     enableModule.gpgAgent = true;

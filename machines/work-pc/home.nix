@@ -52,6 +52,8 @@
     enableModule.git = true;
     enableModule.gitCommitSignaturesWithGpg = true;
     enableModule.zoxide = true;
+    enableModule.zsh = true;
+    enableModule.bash = true;
     enableModule.tmux = true;
     enableModule.alacritty = true;
     enableModule.rofi = true;

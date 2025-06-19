@@ -28,6 +28,8 @@
     enableModule.fzf = true;
     enableModule.git = true;
     enableModule.zoxide = true;
+    enableModule.zsh = true;
+    enableModule.bash = true;
     enableModule.atuin = true;
     enableModule.lazygit = true;
     enableModule.gpgAgent = true;
