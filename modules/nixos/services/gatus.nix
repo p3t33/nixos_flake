@@ -7,7 +7,6 @@ let
   files = "files";
   filtering = "filtering";
   remoteAccess =" remote access";
-  internal = "internal";
   external = "external";
 in
 {
@@ -321,5 +320,12 @@ in
         ];
       };
     };
+
+    # gatus fails to load if the database isn"t ready yet."
+    systemd.services.gatus = {
+      after = [ config.systemd.services.postgresql.name];
+      requires = [ config.systemd.services.postgresql.name];
+    };
+
   };
 }
