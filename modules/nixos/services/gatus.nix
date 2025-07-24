@@ -5,15 +5,13 @@ let
   files = "files";
   filtering = "filtering";
   remoteAccess =" remote access";
-  internal = "internal";
   external = "external";
 in
 {
   config = lib.mkIf config.services.gatus.enable {
     sops.secrets.gatus = {
-      restartUnits = [ "gatus.service" ];
+      restartUnits = [ config.systemd.services.gatus.name ];
     };
-
 
     services.gatus = {
       openFirewall = true; # Allows access to the Gatus UI from your network
@@ -317,5 +315,12 @@ in
         ];
       };
     };
+
+    # gatus will fail to load if the database isn"t ready yet."
+    systemd.services.gatus = {
+      after = [ config.systemd.services.postgresql.name];
+      requires = [ config.systemd.services.postgresql.name];
+    };
+
   };
 }
