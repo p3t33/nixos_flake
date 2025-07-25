@@ -64,7 +64,9 @@ in
     ./postgresql/postgresql.nix
     ./postgresql/postgresql_backup.nix
 
+    # mining
     ./monerod.nix
+    ./p2pool.nix
   ];
 
     options.customOptions.enableServicesProfile = lib.mkOption {
@@ -102,7 +104,8 @@ in
     })
 
     (lib.mkIf (g.xmr-miner or false) {
-      monerod  = true;
+      monerod = true;
+      p2pool = true;
     })
   ];
 

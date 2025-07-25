@@ -9,6 +9,7 @@
     enableServicesProfile = {
       core = true;
       server = true;
+      xmr-miner = true;
     };
 
     enableModule = {
