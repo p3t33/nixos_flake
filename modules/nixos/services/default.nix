@@ -63,6 +63,7 @@ in
     # mining
     ./monerod.nix
     ./p2pool.nix
+    ./xmrig.nix
   ];
 
     options.custom.profiles.systemServices = lib.mkOption {
@@ -102,6 +103,7 @@ in
     (lib.mkIf (g.xmr-miner or false) {
       services.monero.enable = true;
       custom.services.p2pool.enable = true;
+      services.xmrig.enable = true;
     })
   ];
 
