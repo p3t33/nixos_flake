@@ -118,6 +118,10 @@ in
       smartmontools # tool to assess hard drives(sudo smartctl -a /dev/sda).
 
       pdftk # pdf editing.
+      p2pool
+      xmrig
+      monero-cli
+      monero-gui
     ];
   };
 }
