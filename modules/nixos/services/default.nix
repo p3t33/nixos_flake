@@ -63,6 +63,8 @@ in
     ./syncthing/syncthing.nix
     ./postgresql/postgresql.nix
     ./postgresql/postgresql_backup.nix
+
+    ./monerod.nix
   ];
 
     options.customOptions.enableServicesProfile = lib.mkOption {
@@ -97,6 +99,10 @@ in
     (lib.mkIf (g.server or false) {
       sshd  = true;
       fail2ban = true;
+    })
+
+    (lib.mkIf (g.xmr-miner or false) {
+      monerod  = true;
     })
   ];
 
