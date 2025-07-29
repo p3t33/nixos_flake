@@ -4,6 +4,7 @@
 {
   config,
   modulesPath,
+  lib,
   ...
 }:
 {
@@ -34,6 +35,10 @@
     "wl"
   ];
   boot.extraModulePackages = [ config.boot.kernelPackages.broadcom_sta ];
+  # this is a temporary solution untill I get a new WiFi NIC
+  nixpkgs.config = {
+    allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [ "broadcom-sta" ];
+  };
 
   swapDevices = [ ];
 }
