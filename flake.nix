@@ -75,6 +75,25 @@
           ];
         };
 
+        sisyphus-miner = lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit inputs;
+            hostSpecific = {
+              hostName = "sisyphus-miner";
+              primeUsername = "kmedrish";
+            };
+
+          };
+          modules = [
+            ./machines/sisyphus-miner/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nix-index-database.nixosModules.nix-index
+            inputs.sops-nix.nixosModules.sops
+            inputs.disko.nixosModules.disko
+          ];
+        };
+
         homelab = lib.nixosSystem {
           inherit system;
           specialArgs = {
