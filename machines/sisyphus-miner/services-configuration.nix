@@ -9,6 +9,7 @@
     profiles.systemServices = {
       core = true;
       server = true;
+      xmr-miner = true;
     };
   };
 }
