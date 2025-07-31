@@ -3,6 +3,7 @@
 
   imports = [
     ../../modules/nixos/services # imported via default.nix
+    ../../modules/nixos/custom-global-options/networking.nix
   ];
 
   services.syncthing.enable = true;
@@ -12,6 +13,7 @@
     profiles.systemServices = {
       core = true;
       desktop = true;
+      xmr-miner = true;
     };
 
     services.syncthing = {
