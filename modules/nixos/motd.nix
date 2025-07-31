@@ -1,5 +1,10 @@
 # This unit was created mostly for readability and constituency with
 # the rest of the cofigurations, you can always use users.motd = <...>.
+#
+# I used figlet to genereate my motd, and to be more specific:
+#
+# figlet -t -f cricket "your text"
+
 {config, lib, ...}:
 let
   cfg = config.custom.motd;

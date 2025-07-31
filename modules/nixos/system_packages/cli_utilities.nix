@@ -118,6 +118,9 @@ in
       smartmontools # tool to assess hard drives(sudo smartctl -a /dev/sda).
 
       pdftk # pdf editing.
+
+      # used for generatig ascii art in terminal(use showfigfonts to see all fonts)
+      figlet
     ];
   };
 }
