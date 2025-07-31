@@ -12,8 +12,8 @@
 
   custom = {
     profiles.systemServices = {
-      core = true;
-      server = true;
+      core.enable = true;
+      server.enable = true;
     };
   };
 }

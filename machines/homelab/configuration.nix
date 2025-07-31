@@ -16,8 +16,8 @@
 
     custom = {
       profiles.system  = {
-        core = true;
-        server = true;
+        core.enable = true;
+        server.enable = true;
       };
 
       systemStateVersion = "24.05";

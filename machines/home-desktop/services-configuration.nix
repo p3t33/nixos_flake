@@ -11,9 +11,9 @@
 
   custom = {
     profiles.systemServices = {
-      core = true;
-      desktop = true;
-      xmr-miner = true;
+      core.enable = true;
+      desktop.enable = true;
+      xmr-miner.enable = true;
     };
 
     services.syncthing = {

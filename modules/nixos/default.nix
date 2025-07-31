@@ -45,40 +45,42 @@ in
   ];
 
   options.custom.profiles.system = lib.mkOption {
-    type = lib.types.attrsOf lib.types.bool;
+    type = lib.types.attrsOf (lib.types.submodule {
+      options.enable = lib.mkEnableOption "Enable this system profile.";
+    });
     default = {};
     description = "Enable system profiles like 'desktop', 'server', 'securityKeys', etc.";
   };
 
   config = lib.mkMerge [
-    (lib.mkIf (g.core or false) {
+    (lib.mkIf (g.core.enable or false) {
       custom.apps.development.enable  = true;
       custom.apps.cliUtilities.enable = true;
       custom.apps.encryption.enable   = true;
     })
 
-    (lib.mkIf (g.desktop or false) {
+    (lib.mkIf (g.desktop.enable or false) {
       custom.apps.desktopEnvironment.enable = true;
       custom.apps.gui.enable = true;
       programs.dconf.enable = true;
     })
 
-    (lib.mkIf (g.server or false) {
+    (lib.mkIf (g.server.enable or false) {
       virtualisation.docker.enable = true;
       custom.motd.enable = true; # moto of the day.
     })
 
-    (lib.mkIf (g.virtualization or false) {
+    (lib.mkIf (g.virtualization.enable or false) {
      virtualisation.docker.enable = true;
       virtualisation.libvirtd.enable = true;
     })
 
-    (lib.mkIf (g.securityKeys or false) {
+    (lib.mkIf (g.securityKeys.enable or false) {
       custom.security.nitrokey.enable = true;
       custom.security.solokey2.enable = true;
     })
 
-    (lib.mkIf (g.gaming or false) {
+    (lib.mkIf (g.gaming.enable or false) {
       programs.steam.enable = true;
     })
   ];

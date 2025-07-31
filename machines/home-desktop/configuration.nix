@@ -13,11 +13,11 @@
 
   custom = {
     profiles.system = {
-      core = true;
-      desktop = true;
-      securityKeys = true;
-      virtualization = true;
-      gaming = true;
+      core.enable = true;
+      desktop.enable = true;
+      securityKeys.enable = true;
+      virtualization.enable = true;
+      gaming.enable = true;
     };
 
     systemStateVersion = "24.05";

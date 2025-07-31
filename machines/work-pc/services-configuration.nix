@@ -10,8 +10,8 @@
 
   custom = {
     profiles.systemServices = {
-      core = true;
-      desktop = true;
+      core.enable = true;
+      desktop.enable = true;
     };
 
     connectivity.bluetooth.enable = true;

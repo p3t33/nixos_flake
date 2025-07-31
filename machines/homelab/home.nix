@@ -6,7 +6,7 @@
 
   custom = {
     profiles.homeManager = {
-      core = true;
+      core.enable = true;
     };
   };
 }

@@ -7,9 +7,9 @@
 
   custom = {
     profiles.systemServices = {
-      core = true;
-      server = true;
-      xmr-miner = true;
+      core.enable = true;
+      server.enable = true;
+      xmr-miner.enable = true;
     };
   };
 }

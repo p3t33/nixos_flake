@@ -66,22 +66,24 @@ in
     ./xmrig.nix
   ];
 
-    options.custom.profiles.systemServices = lib.mkOption {
-      type = lib.types.attrsOf lib.types.bool;
-      default = {};
-      description = "Enable system profiles like 'desktop', 'server', 'securityKeys', etc.";
-    };
+  options.custom.profiles.systemServices = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.submodule {
+      options.enable = lib.mkEnableOption "Enable this system service profile";
+    });
+    default = {};
+    description = "Enable system profiles like 'core', 'server', etc.";
+  };
 
      config  = lib.mkMerge [
 
     # Core profile enables CLI, dev, encryption
-    (lib.mkIf (g.core or false) {
+    (lib.mkIf (g.core.enable or false) {
       custom.services.tmuxd.enable = true;
       custom.services.watchman.enable = true;
     })
 
     # Desktop profile enables GUI etc.
-    (lib.mkIf (g.desktop or false) {
+    (lib.mkIf (g.desktop.enable or false) {
       services.avahi.enable = true;
       services.printing.enable = true;
       services.udisks2.enable = true; # mount and unmout USB drives
@@ -95,12 +97,12 @@ in
     })
 
     # Server profile enables minimal features
-    (lib.mkIf (g.server or false) {
+    (lib.mkIf (g.server.enable or false) {
       services.openssh.enable = true; # sshd
       services.fail2ban.enable = true;
     })
 
-    (lib.mkIf (g.xmr-miner or false) {
+    (lib.mkIf (g.xmr-miner.enable or false) {
       services.monero.enable = true;
       custom.services.p2pool.enable = true;
       services.xmrig.enable = true;

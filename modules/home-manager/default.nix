@@ -60,13 +60,15 @@ in
   ];
 
   options.custom.profiles.homeManager = lib.mkOption {
-    type = lib.types.attrsOf lib.types.bool;
+    type = lib.types.attrsOf (lib.types.submodule {
+      options.enable = lib.mkEnableOption "Enable this Home Manager profile.";
+    });
     default = {};
     description = "Enable system profiles like 'core', 'desktop', etc.";
   };
 
   config = lib.mkMerge [
-     (lib.mkIf (g.desktop or false) {
+     (lib.mkIf (g.desktop.enable or false) {
       programs.alacritty.enable = true;
       programs.ssh.enable = true;
       programs.rofi.enable = true;
@@ -86,7 +88,7 @@ in
       programs.ghostty.enable = true;
     })
 
-    (lib.mkIf (g.core or false) {
+    (lib.mkIf (g.core.enable or false) {
       programs.starship.enable = true;
       programs.tmux.enable = true;
       programs.zellij.enable = true;

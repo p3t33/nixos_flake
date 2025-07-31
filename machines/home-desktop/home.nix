@@ -11,8 +11,8 @@
     programs.gitCommitSignaturesWithGpg.enable = true;
 
     profiles.homeManager = {
-      core = true;
-      desktop = true;
+      core.enable = true;
+      desktop.enable = true;
     };
 
     file.smartcardPublicKey = {
