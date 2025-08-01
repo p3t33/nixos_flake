@@ -17,6 +17,7 @@
     };
 
     services.p2pool.extraArgs = [ "--mini" ];
+    services.xmrig.numberOfThreads = 24;
 
     services.syncthing = {
 

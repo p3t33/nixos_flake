@@ -1,5 +1,13 @@
 { config, lib, ... }:
+let
+  cfg = config.custom.services.xmrig;
+in
 {
+  options.custom.services.xmrig.numberOfThreads = lib.mkOption {
+    type = lib.types.ints.between 1 256; # You can raise the max as needed
+    default = 1;
+    description = "Number of threads for XMRig to use (via rx array)";
+  };
   config = lib.mkIf config.services.xmrig.enable {
     services.xmrig = {
       settings = {
@@ -25,7 +33,7 @@
           # execute nproc to find number of threads.
           # RandomX profile (used for Monero): 8 threads, no affinity, intensity = 1 (default)
           # intensity = 1, which is the max at the moment for all RandomX variants and all Argon2 variants.
-          rx = lib.genList (_: -1) 24;
+          rx = lib.genList (_: -1) cfg.numberOfThreads;
           #
         };
         opencl = false;
