@@ -19,6 +19,11 @@ in
       default = 37889;
       description = "Port used by P2Pool to sync with other P2Pool nodes (open in firewall).";
     };
+    p2pMiniPort = lib.mkOption {
+      type = lib.types.port;
+      default = 37888;
+      description = "Port used by P2Pool to sync with other P2Pool nodes (open in firewall).";
+    };
 
     address = lib.mkOption {
       type = lib.types.str;
@@ -112,6 +117,6 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ cfg.p2pPort ];
+    networking.firewall.allowedTCPPorts = [ cfg.p2pPort cfg.p2pMiniPort  ];
   };
 }

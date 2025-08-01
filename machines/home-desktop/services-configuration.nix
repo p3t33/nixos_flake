@@ -16,6 +16,8 @@
       xmr-miner.enable = true;
     };
 
+    services.p2pool.extraArgs = [ "--mini" ];
+
     services.syncthing = {
 
       remoteDevices = {
