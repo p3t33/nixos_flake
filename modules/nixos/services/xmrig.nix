@@ -16,6 +16,31 @@ in
         # configuration file and "point" miner explicitly to use them even if miner generates a file
         # it wil be ignored.
         autosave = false;
+        # xmrig provides an official client for the API at http://workers.xmrig.info/
+        # The http server acts in two modes:
+        #
+        # restrected, which provides read only informatoin which is set by:
+        # access-token = null;
+        # restrected = true;
+        # and can be tested by exectuing:
+        #
+        # curl http://127.0.0.1:18643/1/summary
+        #
+        # unrestricted, which provides a way to access and maybe even edit the config, which
+        # is not relevant in nixos generated config.
+        # access-token = "<your token>";
+        # restrected = false;
+        # and can be tested by executing:
+        #
+        # curl -H "Authorization: Bearer <your token>" http://127.0.0.1:18643/1/summary
+
+        http = {
+          enabled = true;
+          host = config.customGlobal.anyIPv4;
+          port = 18643;
+          access-token = null;
+          restricted = true;
+        };
         cpu = {
           enabled = true;
           # Not relevant as in the case of nixos there is always config file, meaning this hint will be
