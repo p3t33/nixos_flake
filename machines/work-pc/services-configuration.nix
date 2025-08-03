@@ -17,30 +17,30 @@
     connectivity.bluetooth.enable = true;
 
     services.syncthing = {
-
-      remoteDevices = {
-        homelab.enable = true;
-        home-desktop.enable = true;
-      };
-
-      foldersToShare = {
-        taskwarrior = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-            "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-          ];
+      settings = {
+        devices = {
+          homelab.enable = true;
+          home-desktop.enable = true;
         };
 
-        devResources = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-            "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-          ];
+        folders = {
+          taskwarrior = {
+            enable = true;
+            devices = [
+              "${config.services.syncthing.settings.devices.homelab.name}"
+              "${config.services.syncthing.settings.devices.home-desktop.name}"
+            ];
+          };
+
+          dev_resources = {
+            enable = true;
+            devices = [
+              "${config.services.syncthing.settings.devices.homelab.name}"
+              "${config.services.syncthing.settings.devices.home-desktop.name}"
+            ];
+          };
         };
       };
-
     };
   };
 }

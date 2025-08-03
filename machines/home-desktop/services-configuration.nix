@@ -6,8 +6,10 @@
     ../../modules/nixos/custom-global-options/networking.nix
   ];
 
-  services.syncthing.enable = true;
-  services.trezord.enable = true;
+  services = {
+    syncthing.enable = true;
+    trezord.enable = true;
+  };
 
   custom = {
     profiles.systemServices = {
@@ -16,57 +18,58 @@
       xmr-miner.enable = true;
     };
 
-    services.p2pool.extraArgs = [ "--mini" ];
-    services.xmrig.numberOfThreads = 24;
+    services = {
+      p2pool.extraArgs = [ "--mini" ];
+      xmrig.numberOfThreads = 24;
 
-    services.syncthing = {
+      syncthing = {
+        settings = {
 
-      remoteDevices = {
-        homelab.enable = true;
-        work-pc.enable = true;
+          devices = {
+            homelab.enable = true;
+            work-pc.enable = true;
+          };
+
+          folders = {
+            taskwarrior = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.homelab.name}"
+                "${config.services.syncthing.settings.devices.work-pc.name}"
+              ];
+            };
+
+            database = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.homelab.name}"
+              ];
+            };
+
+            documents = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.homelab.name}"
+              ];
+            };
+
+            study = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.homelab.name}"
+              ];
+            };
+
+            dev_resources = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.homelab.name}"
+                "${config.services.syncthing.settings.devices.work-pc.name}"
+              ];
+            };
+          };
+        };
       };
-
-      foldersToShare = {
-
-        taskwarrior = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-            "${config.custom.services.syncthing.remoteDevices.work-pc.name}"
-          ];
-        };
-
-        database = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-          ];
-        };
-
-        documents = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-          ];
-        };
-
-        study = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-          ];
-        };
-
-        devResources = {
-          enable = true;
-          devicesToShareWith = [
-            "${config.custom.services.syncthing.remoteDevices.homelab.name}"
-            "${config.custom.services.syncthing.remoteDevices.work-pc.name}"
-          ];
-        };
-
-      };
-
     };
   };
 }

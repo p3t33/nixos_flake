@@ -4,30 +4,32 @@
     ../../modules/nixos/services # imported via default.nix
   ];
 
-  services.nginx.enable = true;
-  services.syncthing.enable = true;
-  services.adguardhome.enable = true;
-  services.homepage-dashboard.enable = true;
-  services.calibre-web.enable = true;
-  services.jellyfin.enable = true;
-  services.prowlarr.enable = true;
-  services.jackett.enable = true;
-  services.sonarr.enable = true;
-  services.radarr.enable = true;
-  services.readarr.enable = true;
-  services.bazarr.enable = true;
-  services.deluge.enable = true;
-  services.sabnzbd.enable = true;
-  services.inadyn.enable = true;
-  services.gatus.enable = true;
-  services.prometheus.enable = true;
-  services.promtail.enable = true;
-  services.loki.enable = true;
-  services.grafana.enable = true;
-  services.samba.enable = true;
-  services.paperless.enable = true;
-  services.postgresql.enable = true;
-  services.postgresqlBackup.enable = true;
+  services = {
+    nginx.enable = true;
+    syncthing.enable = true;
+    adguardhome.enable = true;
+    homepage-dashboard.enable = true;
+    calibre-web.enable = true;
+    jellyfin.enable = true;
+    prowlarr.enable = true;
+    jackett.enable = true;
+    sonarr.enable = true;
+    radarr.enable = true;
+    readarr.enable = true;
+    bazarr.enable = true;
+    deluge.enable = true;
+    sabnzbd.enable = true;
+    inadyn.enable = true;
+    gatus.enable = true;
+    prometheus.enable = true;
+    promtail.enable = true;
+    loki.enable = true;
+    grafana.enable = true;
+    samba.enable = true;
+    paperless.enable = true;
+    postgresql.enable = true;
+    postgresqlBackup.enable = true;
+  };
 
   custom = {
     profiles.systemServices = {
@@ -52,51 +54,51 @@
           cleanupIntervalS = 3600;
         };
 
-        remoteDevices = {
-          home-desktop.enable = true;
-          work-pc.enable = true;
+        settings = {
+          devices = {
+            home-desktop.enable = true;
+            work-pc.enable = true;
+          };
+
+          folders = {
+            taskwarrior = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.work-pc.name}"
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            database = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            documents = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            study = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            dev_resources = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.work-pc.name}"
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+          };
         };
-
-        foldersToShare = {
-
-          taskwarrior = {
-            enable = true;
-            devicesToShareWith = [
-              "${config.custom.services.syncthing.remoteDevices.work-pc.name}"
-              "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-            ];
-          };
-
-          database = {
-            enable = true;
-            devicesToShareWith = [
-              "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-            ];
-          };
-
-          documents = {
-            enable = true;
-            devicesToShareWith = [
-              "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-            ];
-          };
-
-          study = {
-            enable = true;
-            devicesToShareWith = [
-              "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-            ];
-          };
-
-          devResources = {
-            enable = true;
-            devicesToShareWith = [
-              "${config.custom.services.syncthing.remoteDevices.work-pc.name}"
-              "${config.custom.services.syncthing.remoteDevices.home-desktop.name}"
-            ];
-          };
-        };
-
       };
     };
   };

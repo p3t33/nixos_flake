@@ -121,6 +121,8 @@ in
 
       # used for generatig ascii art in terminal(use showfigfonts to see all fonts)
       figlet
+      monero-cli
+      jq
     ];
   };
 }

@@ -56,7 +56,7 @@ in
 
     ./zfs/auto-scrub.nix
 
-    ./syncthing/syncthing.nix
+    ./syncthing
     ./postgresql/postgresql.nix
     ./postgresql/postgresql_backup.nix
 
