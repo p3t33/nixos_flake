@@ -19,6 +19,7 @@
     };
 
     services = {
+      gvfs.enable = true;
       p2pool.extraArgs = [ "--mini" ];
       xmrig.numberOfThreads = 24;
 

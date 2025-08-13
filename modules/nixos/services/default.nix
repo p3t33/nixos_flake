@@ -59,6 +59,7 @@ in
     ./syncthing
     ./postgresql/postgresql.nix
     ./postgresql/postgresql_backup.nix
+    ./gvfs.nix
 
     # mining
     ./monerod.nix
