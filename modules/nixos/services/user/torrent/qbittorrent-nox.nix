@@ -7,10 +7,10 @@
   ...
 }:
 let
-  cfg = config.services.qbittorrent;
+  cfg = config.custom.services.qbittorrent;
 in
 {
-  options.services.qbittorrent = {
+  options.custom.services.qbittorrent = {
     enable = lib.mkEnableOption "qBittorrent headless service";
 
     dataDir = lib.mkOption {
