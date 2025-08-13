@@ -32,6 +32,7 @@ in
 
     ./virtualization/docker.nix
     ./virtualization/kvm.nix
+    ./virtualization/virtualbox.nix
 
     ./networking/networkmanager.nix
     ./networking/hostname.nix
@@ -70,6 +71,7 @@ in
       custom.motd.enable = true; # moto of the day.
     })
 
+    # virtualbox is not enbled by default as it is mostly used for cross development.
     (lib.mkIf (g.virtualization.enable or false) {
      virtualisation.docker.enable = true;
       virtualisation.libvirtd.enable = true;
