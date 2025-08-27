@@ -20,6 +20,7 @@
       gaming.enable = true;
     };
 
+    apps.wireshark.enable = true;
     systemStateVersion = "24.05";
   };
 

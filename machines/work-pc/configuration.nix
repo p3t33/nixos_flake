@@ -16,6 +16,8 @@
       virtualization.enable = true;
     };
 
+    apps.wireshark.enable = true;
+
     networking = {
       bridgedInterface.enable = true;
       usb0StaticIp.enable = true;

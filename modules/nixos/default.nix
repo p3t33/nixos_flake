@@ -43,6 +43,8 @@ in
     ./security/solokey2.nix
 
     ./gaming/steam.nix
+
+    ./wireshark.nix
   ];
 
   options.custom.profiles.system = lib.mkOption {
