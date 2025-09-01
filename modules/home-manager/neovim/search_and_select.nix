@@ -20,6 +20,7 @@ in
       # ----------------
       gdb
       lldb
+      sqlite
     ];
 
     plugins = with pkgs.vimPlugins; [

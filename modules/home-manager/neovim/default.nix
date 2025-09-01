@@ -49,6 +49,5 @@
     ./debugger.nix
     ./search_and_select.nix
     ./git.nix
-    ./firefox_integration.nix
   ];
 }
