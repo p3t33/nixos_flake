@@ -124,6 +124,7 @@ in
       monero-cli
       jq
       dragon-drop
+      imv
     ];
   };
 }
