@@ -2,6 +2,7 @@
 let
   defaultWebBrowser = "firefox.desktop";
   defaultPdfReader = "org.pwmt.zathura.desktop";
+  defaultImageViewer = "imv.desktop";
 in
 {
 
@@ -22,6 +23,11 @@ in
         "application/x-extension-xhtml" = [ defaultWebBrowser ];
         "application/x-extension-xht" = [ defaultWebBrowser ];
         "application/pdf" = [ defaultPdfReader ];
+        # images
+        "image/jpeg" = [ defaultImageViewer ];
+        "image/png"  = [ defaultImageViewer ];
+        "image/webp" = [ defaultImageViewer ];
+        "image/gif"  = [ defaultImageViewer ];
       };
 
       defaultApplications = {
@@ -38,6 +44,11 @@ in
         "application/x-extension-xhtml" = [ defaultWebBrowser ];
         "application/x-extension-xht" = [ defaultWebBrowser ];
         "application/pdf" = [ defaultPdfReader ];
+        # images
+        "image/jpeg" = [ defaultImageViewer ];
+        "image/png"  = [ defaultImageViewer ];
+        "image/webp" = [ defaultImageViewer ];
+        "image/gif"  = [ defaultImageViewer ];
       };
     };
   };
