@@ -21,7 +21,7 @@ in
   config = lib.mkIf config.programs.tmux.enable {
     programs.tmux = {
       secureSocket = false;
-      terminal = "screen-256color";
+      terminal = "tmux-256color";
       disableConfirmationPrompt = true;
       prefix = "C-a";
       keyMode = "vi";
@@ -206,6 +206,11 @@ in
         # plugins use tools like xclip so not to depend on the graces of the terminal.
         # In order to avoid conflicts between the plugins and this option it should
         # not be enabled.
+
+        # --- Yazi / image preview essentials ---
+        set -g allow-passthrough on
+        set -ga update-environment TERM
+        set -ga update-environment TERM_PROGRAM
 
         # default scrollback buffer is 2000 lines.
         set -g history-limit 50000
