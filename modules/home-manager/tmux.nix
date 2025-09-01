@@ -72,16 +72,31 @@ in
 
             set -g @resurrect-capture-pane-contents 'on'
 
-            # This three lines are specific to NixOS and they are intended
+            # This section specific to NixOS and intended
             # to edit the tmux_resurrect_* files that are created when tmux
-            # session is saved using the tmux-resurrect plugin. Without going
-            # into too much details the strings that are saved for some applications
-            # such as nvim, vim, man... when using NixOS, appimage, asdf-vm into the
-            # tmux_resurrect_* files can't be parsed and restored. This addition
-            # makes sure to fix the tmux_resurrect_* files so they can be parsed by
-            # the tmux-resurrect plugin and successfully restored.
+            # session is saved using the tmux-resurrect plugin. NixOS
+            # adds stuff that can"t be parsed by tmux-resurrect.
+
             set -g @resurrect-dir ${resurrectDirPath}
-            set -g @resurrect-hook-post-save-all 'sed -i -E "s|(pane.*nvim\s*:)[^;]+;.*\s([^ ]+)$|\1nvim \2|" ${resurrectDirPath}/last'
+            set -g @resurrect-hook-post-save-all '\
+            # --- Pass 1: Normalize Neovim command lines ---
+            # tmux-resurrect on NixOS records Neovim as:
+            #   /nix/store/.../bin/nvim --cmd ... set packpath ... --cmd set rtp^=...
+            # which cannot be parsed back cleanly.
+            # This sed rule rewrites those long argv blobs into a simple
+            #   nvim <filename>
+            # (if a filename was present) or just "nvim" (if not).
+            sed -i -E "s|(pane.*nvim\s*:)[^;]+;.*\s([^ ]+)$|\1nvim \2|" ${resurrectDirPath}/last ; \
+            # --- Pass 2: Strip bogus runtimepath token when no file was given ---
+            # If Neovim was started with no args, Nix’s wrapper injects
+            #   rtp^=/nix/store/...-vim-pack-dir
+            # as the “argument”, so tmux-resurrect records
+            #   :nvim rtp^=/nix/store/…-vim-pack-dir
+            # On restore this opens a buffer named after the store path hash.
+            # This sed rule deletes that token, leaving just ":nvim"
+            # so Neovim comes up with Startify (or whatever your empty-start screen is).
+            sed -i -E "s|(.*:nvim)[[:space:]]+rtp\^=/nix/store/[^[:space:]]*|\1|" ${resurrectDirPath}/last \
+            '
           '';
         }
 
