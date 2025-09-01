@@ -53,7 +53,6 @@ in
       };
 
       initContent = ''
-        export LANG="en_US.UTF-8";
         function tmux-sesssion {
         BUFFER='tmux-sessionizer'
             zle accept-line
