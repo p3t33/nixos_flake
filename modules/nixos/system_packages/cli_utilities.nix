@@ -123,6 +123,7 @@ in
       figlet
       monero-cli
       jq
+      dragon-drop
     ];
   };
 }
