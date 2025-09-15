@@ -56,6 +56,25 @@
             inputs.disko.nixosModules.disko
           ];
         };
+
+        nas = lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit inputs;
+            hostSpecific = {
+              hostName = "nas";
+              primeUsername = "kmedrish";
+            };
+          };
+          modules = [
+            ./machines/nas/configuration.nix
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nix-index-database.nixosModules.nix-index
+            inputs.sops-nix.nixosModules.sops
+            inputs.disko.nixosModules.disko
+          ];
+        };
+
         home-assistant = lib.nixosSystem {
           inherit system;
           specialArgs = {
