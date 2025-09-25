@@ -6,17 +6,17 @@ let
   disks = {
     os = {
       name = "os";
-      path = "/dev/vda";
+      path = "/dev/disk/by-id/nvme-CT1000P510SSD8_2524E9C358AB";
     };
 
     ironWolfA = {
       name = "ironWolfA";
-      path = "/dev/vdb";
+      path = "/dev/disk/by-id/ata-ST12000NT001-3LX101_ZRT2EQAF";
       };
 
     ironWolfB = {
       name = "ironWolfB";
-      path = "/dev/vdc";
+      path = "/dev/disk/by-id/ata-ST12000NT001-3LX101_ZRT2GNH2";
     };
   };
 

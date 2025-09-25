@@ -19,6 +19,7 @@
     };
 
     systemStateVersion = "25.05";
+
     motd.message = ''
       .-----.---.-.-----.
       |     |  _  |__ --|
@@ -28,6 +29,7 @@
   };
 
   system.stateVersion = "25.05";
+  networking.hostId = "b8835c95";
 
   # Configure keymap in X11
   services.xserver = {
