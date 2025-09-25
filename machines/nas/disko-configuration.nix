@@ -1,14 +1,34 @@
 # uefi only which means that the VM needs to be set with uefi boot
 let
-  rootPool = "rpool";
-  tank = "tank";
+
+  pools = { rootPool = "rpool"; tank = "tank"; };
+
+  disks = {
+    os = {
+      name = "os";
+      path = "/dev/vda";
+    };
+
+    ironWolfA = {
+      name = "ironWolfA";
+      path = "/dev/vdb";
+      };
+
+    ironWolfB = {
+      name = "ironWolfB";
+      path = "/dev/vdc";
+    };
+  };
+
+  mirrorMembers = [ disks.ironWolfA.name disks.ironWolfB.name ];
+
 in
 {
   disko.devices = {
     disk = {
-      first = {
+      "${disks.os.name}" = {
         type = "disk";
-        device = "/dev/vda";
+        device = disks.os.path;
         content = {
           type = "gpt";
           partitions = {
@@ -28,16 +48,16 @@ in
               size = "100%";
               content = {
                 type = "zfs";
-                pool = rootPool;
+                pool = pools.rootPool;
               };
             };
           };
         };
       };
 
-      second = {
+      "${disks.ironWolfA.name}" = {
           type = "disk";
-          device = "/dev/vdb";
+          device = disks.ironWolfA.path;
           content = {
               type = "gpt";
               partitions = {
@@ -45,15 +65,15 @@ in
                       size = "100%";
                       content = {
                           type = "zfs";
-                          pool = tank;
+                          pool = pools.tank;
                       };
                   };
               };
           };
       };
-      third = {
+      "${disks.ironWolfB.name}" = {
           type = "disk";
-          device = "/dev/vdc";
+          device = disks.ironWolfB.path;
           content = {
               type = "gpt";
               partitions = {
@@ -61,7 +81,7 @@ in
                       size = "100%";
                       content = {
                           type = "zfs";
-                          pool = tank;
+                          pool = pools.tank;
                       };
                   };
               };
@@ -70,7 +90,7 @@ in
     };
 
     zpool = {
-      ${rootPool} = {
+      "${pools.rootPool}" = {
         type = "zpool";
         options = {
           ashift = "12";
@@ -134,7 +154,7 @@ in
 
       };
 
-      tank = {
+      "${pools.tank}" = {
           type = "zpool";
           mode = {
               topology = {
@@ -142,7 +162,7 @@ in
                   vdev = [
                   {
                       mode = "mirror";
-                      members = [ "second" "third" ];
+                      members = mirrorMembers;
                   }
                   ];
               };
