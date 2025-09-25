@@ -7,11 +7,14 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./global-options.nix
     ./services-configuration.nix
     ./disko-configuration.nix
     ./sops-configuration.nix
     ../../modules/nixos # imported via default.nix
   ];
+
+  customGlobal.${hostSpecific.hostName}.ip = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}63";
 
   custom = {
     profiles.system = {
