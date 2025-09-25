@@ -1,6 +1,7 @@
 {
   config,
   hostSpecific,
+  lib,
   ...
 }:
 {
@@ -28,6 +29,7 @@
     '';
   };
 
+  services.xserver.enable = lib.mkForce false;
   system.stateVersion = "25.05";
   networking.hostId = "b8835c95";
 
