@@ -7,22 +7,21 @@
 }:
 {
   imports = [
-  (modulesPath + "/profiles/qemu-guest.nix")
+  (modulesPath + "/installer/scan/not-detected.nix")
     ../../modules/nixos/hardware # uses default.nix
   ];
 
-  custom.hardware.cpuVendor = "intel";
+  custom = {
+    hardware = {
+      amd.enable = true;
+      # amdHardwareDecoding.enable  = true;
+      cpuVendor = "amd";
+    };
+  };
 
-
-  boot.initrd.availableKernelModules = [
-    "ahci"
-    "xhci_pci"
-    "virtio_pci"
-    "sr_mod"
-    "virtio_blk"
-  ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   swapDevices = [ ];
