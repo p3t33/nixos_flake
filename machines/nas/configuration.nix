@@ -7,11 +7,14 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./global-options.nix
     ./services-configuration.nix
     ./disko-configuration.nix
     ./sops-configuration.nix
     ../../modules/nixos # imported via default.nix
   ];
+
+  customGlobal.${hostSpecific.hostName}.ip = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}63";
 
   custom = {
     profiles.system = {
@@ -28,6 +31,17 @@
          powered by NixOS
     '';
   };
+
+  networking.interfaces.enp7s0.ipv4.addresses = [
+    {
+      address = "${config.customGlobal.${hostSpecific.hostName}.ip}";
+      prefixLength = 24;
+    }
+  ];
+
+  networking.defaultGateway = "${config.customGlobal.${hostSpecific.hostName}.gateway}";
+  networking.nameservers = [ "8.8.8.8" ];
+
 
   services.xserver.enable = lib.mkForce false;
   system.stateVersion = "25.05";
