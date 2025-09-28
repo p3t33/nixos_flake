@@ -31,7 +31,7 @@
     # samba.enable = true;
     # paperless.enable = true;
     postgresql.enable = true;
-    # postgresqlBackup.enable = true;
+    postgresqlBackup.enable = true;
   };
 
 
