@@ -22,7 +22,7 @@ in
     services.homepage-dashboard = {
       listenPort = 8082;
       openFirewall = true;
-      allowedHosts = "${config.customGlobal.localHostIPv4},${config.customGlobal.anyIPv4},homepage.homelab,${config.customGlobal.${hostSpecific.hostName}.ip}";
+      allowedHosts = "${config.customGlobal.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},homepage.homelab,${config.customGlobal.${hostSpecific.hostName}.ip},${config.customGlobal.${hostSpecific.hostName}.ip}:${toString config.services.homepage-dashboard.listenPort}";
       environmentFile = config.sops.secrets.homepage-dashboard.path;
 
 
