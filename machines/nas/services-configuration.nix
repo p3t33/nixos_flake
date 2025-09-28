@@ -14,7 +14,7 @@
     homepage-dashboard.enable = true;
     # calibre-web.enable = true;
     # jellyfin.enable = true;
-    # prowlarr.enable = true;
+    prowlarr.enable = true;
     # jackett.enable = true;
     # sonarr.enable = true;
     # radarr.enable = true;
