@@ -2,10 +2,16 @@
 
 let
   gatus = "gatus";
+  prowlarr = "prowlarr";
 in
 {
   config = lib.mkIf config.services.postgresql.enable {
     sops.secrets."postgresql/gatus" = {
+      owner = config.systemd.services.postgresql.serviceConfig.User;
+      restartUnits = [ config.systemd.services.postgresql.name ];
+    };
+
+    sops.secrets."postgresql/prowlarr" = {
       owner = config.systemd.services.postgresql.serviceConfig.User;
       restartUnits = [ config.systemd.services.postgresql.name ];
     };
@@ -20,7 +26,10 @@ in
       ensureUsers = [
         {
           name = "${gatus}";
-          ensureDBOwnership = true;
+          ensureDBOwnership = true; # owns DB named gatus.
+        }
+        {
+          name = "${prowlarr}"; # owner set via oneshot
         }
       ];
 
@@ -28,6 +37,8 @@ in
       # meanin you will need to do this manually.
       ensureDatabases = [
         "${gatus}"
+        "${prowlarr}_main"
+        "${prowlarr}_log"
       ];
 
       authentication = ''
@@ -55,6 +66,17 @@ in
              password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/gatus".path}'), E'\n', '''));
              EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD '''%s''';', password);
            END $$;
+
+           DO $$
+           DECLARE password TEXT;
+           BEGIN
+             password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/prowlarr".path}'), E'\n', '''));
+             EXECUTE format('ALTER ROLE ${prowlarr} WITH PASSWORD '''%s''';', password);
+           END $$;
+
+           -- Make prowlarr the owner of both databases (idempotent)
+           ALTER DATABASE "${prowlarr}_main" OWNER TO ${prowlarr};
+           ALTER DATABASE "${prowlarr}_log"  OWNER TO ${prowlarr};
          EOF
        '';
        # This is less PostgreSQL-idiomatic way to do it but it was tested to work.
