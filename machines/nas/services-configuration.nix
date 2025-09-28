@@ -14,7 +14,7 @@
     homepage-dashboard.enable = true;
     # calibre-web.enable = true;
     # jellyfin.enable = true;
-    # prowlarr.enable = true;
+    prowlarr.enable = true;
     # jackett.enable = true;
     # sonarr.enable = true;
     # radarr.enable = true;
@@ -30,8 +30,8 @@
     # grafana.enable = true;
     # samba.enable = true;
     # paperless.enable = true;
-    # postgresql.enable = true;
-    # postgresqlBackup.enable = true;
+    postgresql.enable = true;
+    postgresqlBackup.enable = true;
   };
 
 
