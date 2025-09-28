@@ -137,15 +137,16 @@ in
               "/sabnzbd/" = {
                 proxyPass = "${localHost}:${builtins.toString config.custom.servicePort.sabnzbd}/sabnzbd/";
                 extraConfig = ''
-                    proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
+                  proxy_set_header X-Forwarded-Host $host;
+                  proxy_set_header X-Forwarded-Server $host;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "upgrade";
                 '';
-            };
-  }
+              };
+            }
+
             // lib.optionalAttrs config.services.jellyfin.enable {
               "/jellyfin" = {
                 proxyPass = "${localHost}:${builtins.toString config.custom.servicePort.jellyfin}";
@@ -156,20 +157,18 @@ in
                   proxy_redirect off;
                 '';
               };
-              "/homepage/" =
-                {
-                }
-                // lib.optionalAttrs config.services.homepage-dashboard.enable {
-                  proxyPass = "${localHost}:${builtins.toString config.services.homepage-dashboard.listenPort}/";
-                  extraConfig = ''
-                     proxy_http_version 1.1;
-                    proxy_set_header Upgrade $http_upgrade;
-                    proxy_set_header Connection "upgrade";
-                    proxy_redirect off;
-                  '';
-                };
             }
-
+            // lib.optionalAttrs config.services.homepage-dashboard.enable {
+              "/homepage/" = {
+                proxyPass = "${localHost}:${builtins.toString config.services.homepage-dashboard.listenPort}/";
+                extraConfig = ''
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "upgrade";
+                  proxy_redirect off;
+                '';
+              };
+            }
           );
         };
 
