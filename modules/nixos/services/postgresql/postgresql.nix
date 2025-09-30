@@ -67,6 +67,7 @@ in
              EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD '''%s''';', password);
            END $$;
 
+            ${lib.optionalString config.services.prowlarr.enable ''
            DO $$
            DECLARE password TEXT;
            BEGIN
@@ -77,6 +78,7 @@ in
            -- Make prowlarr the owner of both databases (idempotent)
            ALTER DATABASE "${config.custom.services.${prowlarr}.mainDataBase}" OWNER TO ${config.custom.services.${prowlarr}.postgresUserName};
            ALTER DATABASE "${config.custom.services.${prowlarr}.logDataBase}"  OWNER TO ${config.custom.services.${prowlarr}.postgresUserName};
+           ''}
          EOF
        '';
        # This is less PostgreSQL-idiomatic way to do it but it was tested to work.
