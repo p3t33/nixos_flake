@@ -7,14 +7,14 @@
 
 
     services = {
-    zfs.autoScrub.enable = true;
-    nginx.enable = true;
+      zfs.autoScrub.enable = true;
+      nginx.enable = true;
     # syncthing.enable = true;
     # adguardhome.enable = true;
-    homepage-dashboard.enable = true;
+      homepage-dashboard.enable = true;
     # calibre-web.enable = true;
     # jellyfin.enable = true;
-    prowlarr.enable = true;
+      prowlarr.enable = true;
     # jackett.enable = true;
     # sonarr.enable = true;
     # radarr.enable = true;
@@ -23,15 +23,15 @@
     # deluge.enable = true;
     # sabnzbd.enable = true;
     # inadyn.enable = true;
-    # gatus.enable = true;
+      gatus.enable = true;
     # prometheus.enable = true;
     # promtail.enable = true;
     # loki.enable = true;
     # grafana.enable = true;
     # samba.enable = true;
     # paperless.enable = true;
-    postgresql.enable = true;
-    postgresqlBackup.enable = true;
+      postgresql.enable = true;
+      postgresqlBackup.enable = true;
   };
 
 
