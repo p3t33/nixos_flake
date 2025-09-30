@@ -6,15 +6,43 @@ let
 in
 {
   config = lib.mkIf config.services.postgresql.enable {
-    sops.secrets."postgresql/gatus" = {
-      owner = config.systemd.services.postgresql.serviceConfig.User;
-      restartUnits = [ config.systemd.services.postgresql.name ];
-    };
 
-    sops.secrets."postgresql/prowlarr" = {
-      owner = config.systemd.services.postgresql.serviceConfig.User;
-      restartUnits = [ config.systemd.services.postgresql.name ];
-    };
+
+    # sops.secrets =
+    #   {}
+    #   // lib.mkIf config.services.gatus.enable {
+    #      "postgresql/gatus" = {
+    #       owner = config.systemd.services.postgresql.serviceConfig.User;
+    #       restartUnits = [ config.systemd.services.postgresql.name ];
+    #     };
+    #   }
+    #   // lib.mkIf config.services.prowlarr.enable {
+    #      "postgresql/prowlarr" = {
+    #        owner = config.systemd.services.postgresql.serviceConfig.User;
+    #        restartUnits = [ config.systemd.services.postgresql.name ];
+    #      };
+    #   };
+
+    #     sops.secrets."postgresql/gatus" = {
+    #   owner = config.systemd.services.postgresql.serviceConfig.User;
+    #   restartUnits = [ config.systemd.services.postgresql.name ];
+    # };
+    #
+    # sops.secrets."postgresql/prowlarr" = {
+    #   owner = config.systemd.services.postgresql.serviceConfig.User;
+    #   restartUnits = [ config.systemd.services.postgresql.name ];
+    # };
+
+
+sops.secrets."postgresql/gatus" = lib.mkIf config.services.gatus.enable {
+  owner = config.systemd.services.postgresql.serviceConfig.User;
+  restartUnits = [ config.systemd.services.postgresql.name ];
+};
+
+sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
+  owner = config.systemd.services.postgresql.serviceConfig.User;
+  restartUnits = [ config.systemd.services.postgresql.name ];
+};
 
     services.postgresql = {
       settings = {
@@ -23,23 +51,31 @@ in
 
       # Removing users that were created using this confiugration will not remove them on postgresql side,
       # meanin you will need to do this manually.
-      ensureUsers = [
-        {
-          name = "${gatus}";
-          ensureDBOwnership = true; # owns DB named gatus.
-        }
-        {
-          name = "${config.custom.services.${prowlarr}.postgresUserName}";
-        }
-      ];
+      ensureUsers =
+        [ ]
+        ++ lib.optionals config.services.gatus.enable [
+          {
+            name = "${gatus}";
+            ensureDBOwnership = true; # owns DB named gatus.
+          }
+        ]
+        ++ lib.optionals config.services.${prowlarr}.enable [
+          {
+            name = "${config.custom.services.${prowlarr}.postgresUserName}";
+          }
+        ];
 
       # Removing databases that were created using this confiugration will not remove them on postgresql side,
       # meanin you will need to do this manually.
-      ensureDatabases = [
-        "${gatus}"
-        "${config.custom.services.${prowlarr}.mainDataBase}"
-        "${config.custom.services.${prowlarr}.logDataBase}"
-      ];
+      ensureDatabases =
+        []
+        ++ lib.optionals config.services.gatus.enable [
+          "${gatus}"
+        ]
+        ++ lib.optionals config.services.${prowlarr}.enable [
+          "${config.custom.services.${prowlarr}.mainDataBase}"
+          "${config.custom.services.${prowlarr}.logDataBase}"
+        ];
 
       authentication = ''
         local all all                peer
@@ -60,12 +96,14 @@ in
        User = config.systemd.services.postgresql.serviceConfig.User;
        ExecStart = pkgs.writeShellScript "set-non-peer-passwords" ''
          ${pkgs.postgresql}/bin/psql -U postgres -tA <<'EOF'
+           ${lib.optionalString config.services.gatus.enable ''
            DO $$
            DECLARE password TEXT;
            BEGIN
              password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/gatus".path}'), E'\n', '''));
              EXECUTE format('ALTER ROLE ${gatus} WITH PASSWORD '''%s''';', password);
            END $$;
+           ''}
 
             ${lib.optionalString config.services.prowlarr.enable ''
            DO $$
