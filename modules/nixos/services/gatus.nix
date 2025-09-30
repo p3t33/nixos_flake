@@ -125,7 +125,7 @@ in
           {
             name = "sabnzbd";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.servicePort.sabnzbd}";
+            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
