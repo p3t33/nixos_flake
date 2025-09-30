@@ -29,7 +29,7 @@ in
           ensureDBOwnership = true; # owns DB named gatus.
         }
         {
-          name = "${prowlarr}"; # owner set via oneshot
+          name = "${config.custom.services.${prowlarr}.postgresUserName}";
         }
       ];
 
@@ -37,8 +37,8 @@ in
       # meanin you will need to do this manually.
       ensureDatabases = [
         "${gatus}"
-        "${prowlarr}_main"
-        "${prowlarr}_log"
+        "${config.custom.services.${prowlarr}.mainDataBase}"
+        "${config.custom.services.${prowlarr}.logDataBase}"
       ];
 
       authentication = ''
@@ -71,12 +71,12 @@ in
            DECLARE password TEXT;
            BEGIN
              password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/prowlarr".path}'), E'\n', '''));
-             EXECUTE format('ALTER ROLE ${prowlarr} WITH PASSWORD '''%s''';', password);
+             EXECUTE format('ALTER ROLE ${config.custom.services.${prowlarr}.postgresUserName} WITH PASSWORD '''%s''';', password);
            END $$;
 
            -- Make prowlarr the owner of both databases (idempotent)
-           ALTER DATABASE "${prowlarr}_main" OWNER TO ${prowlarr};
-           ALTER DATABASE "${prowlarr}_log"  OWNER TO ${prowlarr};
+           ALTER DATABASE "${config.custom.services.${prowlarr}.mainDataBase}" OWNER TO ${config.custom.services.${prowlarr}.postgresUserName};
+           ALTER DATABASE "${config.custom.services.${prowlarr}.logDataBase}"  OWNER TO ${config.custom.services.${prowlarr}.postgresUserName};
          EOF
        '';
        # This is less PostgreSQL-idiomatic way to do it but it was tested to work.
