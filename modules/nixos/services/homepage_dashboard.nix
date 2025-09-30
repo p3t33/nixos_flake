@@ -17,7 +17,9 @@ in
     # HOMEPAGE_VAR_DELUGE=<deluge web gui password>
     # HOMEPAGE_VAR_RADARR=<radarr api key>
     # HOMEPAGE_VAR_SONARR=<sonarr api key>
-    sops.secrets.homepage-dashboard = {};
+    sops.secrets.homepage-dashboard = {
+        restartUnits = [ config.systemd.services.homepage-dashboard.name ];
+    };
 
     services.homepage-dashboard = {
       listenPort = 8082;
@@ -79,6 +81,11 @@ in
                   icon = "sabnzbd.png";
                   siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.custom.servicePort.sabnzbd}";
                   statusStyle = "dot";
+                  widget = {
+                      type = "sabnzbd";
+                      url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.custom.servicePort.sabnzbd}/sabnzbd";
+                      key = "{{HOMEPAGE_VAR_SABNZBD}}";
+                  };
                 };
               }
             ];
