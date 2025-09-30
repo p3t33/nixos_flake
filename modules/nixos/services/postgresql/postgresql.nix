@@ -3,6 +3,7 @@
 let
   gatus = "gatus";
   prowlarr = "prowlarr";
+  sonarr = "sonarr";
 in
 {
   config = lib.mkIf config.services.postgresql.enable {
@@ -34,15 +35,20 @@ in
     # };
 
 
-sops.secrets."postgresql/gatus" = lib.mkIf config.services.gatus.enable {
-  owner = config.systemd.services.postgresql.serviceConfig.User;
-  restartUnits = [ config.systemd.services.postgresql.name ];
-};
+    sops.secrets."postgresql/gatus" = lib.mkIf config.services.gatus.enable {
+      owner = config.systemd.services.postgresql.serviceConfig.User;
+      restartUnits = [ config.systemd.services.postgresql.name ];
+    };
 
-sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
-  owner = config.systemd.services.postgresql.serviceConfig.User;
-  restartUnits = [ config.systemd.services.postgresql.name ];
-};
+    sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
+      owner = config.systemd.services.postgresql.serviceConfig.User;
+      restartUnits = [ config.systemd.services.postgresql.name ];
+    };
+
+    sops.secrets."postgresql/sonarr" = lib.mkIf config.services.sonarr.enable {
+      owner = config.systemd.services.postgresql.serviceConfig.User;
+      restartUnits = [ config.systemd.services.postgresql.name ];
+    };
 
     services.postgresql = {
       settings = {
@@ -63,6 +69,11 @@ sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
           {
             name = "${config.custom.services.${prowlarr}.postgresUserName}";
           }
+        ]
+        ++ lib.optionals config.services.${sonarr}.enable [
+          {
+            name = "${config.custom.services.${sonarr}.postgresUserName}";
+          }
         ];
 
       # Removing databases that were created using this confiugration will not remove them on postgresql side,
@@ -75,6 +86,10 @@ sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
         ++ lib.optionals config.services.${prowlarr}.enable [
           "${config.custom.services.${prowlarr}.mainDataBase}"
           "${config.custom.services.${prowlarr}.logDataBase}"
+        ]
+        ++ lib.optionals config.services.${sonarr}.enable [
+          "${config.custom.services.${sonarr}.mainDataBase}"
+          "${config.custom.services.${sonarr}.logDataBase}"
         ];
 
       authentication = ''
@@ -105,7 +120,7 @@ sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
            END $$;
            ''}
 
-            ${lib.optionalString config.services.prowlarr.enable ''
+           ${lib.optionalString config.services.prowlarr.enable ''
            DO $$
            DECLARE password TEXT;
            BEGIN
@@ -116,6 +131,19 @@ sops.secrets."postgresql/prowlarr" = lib.mkIf config.services.prowlarr.enable {
            -- Make prowlarr the owner of both databases (idempotent)
            ALTER DATABASE "${config.custom.services.${prowlarr}.mainDataBase}" OWNER TO ${config.custom.services.${prowlarr}.postgresUserName};
            ALTER DATABASE "${config.custom.services.${prowlarr}.logDataBase}"  OWNER TO ${config.custom.services.${prowlarr}.postgresUserName};
+           ''}
+
+           ${lib.optionalString config.services.sonarr.enable ''
+           DO $$
+           DECLARE password TEXT;
+           BEGIN
+             password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/sonarr".path}'), E'\n', '''));
+             EXECUTE format('ALTER ROLE ${config.custom.services.sonarr.postgresUserName} WITH PASSWORD '''%s''';', password);
+           END $$;
+
+           -- Make sonarr the owner of both databases (idempotent)
+           ALTER DATABASE "${config.custom.services.sonarr.mainDataBase}" OWNER TO ${config.custom.services.sonarr.postgresUserName};
+           ALTER DATABASE "${config.custom.services.sonarr.logDataBase}"  OWNER TO ${config.custom.services.sonarr.postgresUserName};
            ''}
          EOF
        '';
