@@ -10,7 +10,7 @@
       zfs.autoScrub.enable = true;
       nginx.enable = true;
     # syncthing.enable = true;
-    # adguardhome.enable = true;
+      adguardhome.enable = true;
       homepage-dashboard.enable = true;
     # calibre-web.enable = true;
     # jellyfin.enable = true;
