@@ -20,7 +20,7 @@
       radarr.enable = true;
     # readarr.enable = true;
     # bazarr.enable = true;
-    # deluge.enable = true;
+      deluge.enable = true;
     # sabnzbd.enable = true;
     # inadyn.enable = true;
       gatus.enable = true;

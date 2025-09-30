@@ -1,6 +1,11 @@
 { config, lib, pkgs, ... }:
 {
   config = lib.mkIf config.services.deluge.enable {
+
+    systemd.tmpfiles.rules = [
+      "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents 0770 ${config.services.deluge.user} ${config.customGlobal.mediaGroup} -"
+    ];
+
     services.deluge = {
       group = "${config.customGlobal.mediaGroup}";
       # Only works when declarative = true and only for non random ports.
