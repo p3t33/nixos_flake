@@ -16,7 +16,7 @@
     # jellyfin.enable = true;
       prowlarr.enable = true;
     # jackett.enable = true;
-    # sonarr.enable = true;
+      sonarr.enable = true;
     # radarr.enable = true;
     # readarr.enable = true;
     # bazarr.enable = true;
