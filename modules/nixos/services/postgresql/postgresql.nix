@@ -4,6 +4,7 @@ let
   gatus = "gatus";
   prowlarr = "prowlarr";
   sonarr = "sonarr";
+  radarr = "radarr";
 in
 {
   config = lib.mkIf config.services.postgresql.enable {
@@ -50,6 +51,11 @@ in
       restartUnits = [ config.systemd.services.postgresql.name ];
     };
 
+    sops.secrets."postgresql/radarr" = lib.mkIf config.services.radarr.enable {
+      owner = config.systemd.services.postgresql.serviceConfig.User;
+      restartUnits = [ config.systemd.services.postgresql.name ];
+    };
+
     services.postgresql = {
       settings = {
         port = 5432;
@@ -74,6 +80,11 @@ in
           {
             name = "${config.custom.services.${sonarr}.postgresUserName}";
           }
+        ]
+        ++ lib.optionals config.services.${radarr}.enable [
+          {
+            name = "${config.custom.services.${radarr}.postgresUserName}";
+          }
         ];
 
       # Removing databases that were created using this confiugration will not remove them on postgresql side,
@@ -90,6 +101,10 @@ in
         ++ lib.optionals config.services.${sonarr}.enable [
           "${config.custom.services.${sonarr}.mainDataBase}"
           "${config.custom.services.${sonarr}.logDataBase}"
+        ]
+        ++ lib.optionals config.services.${radarr}.enable [
+          "${config.custom.services.${radarr}.mainDataBase}"
+          "${config.custom.services.${radarr}.logDataBase}"
         ];
 
       authentication = ''
@@ -144,6 +159,19 @@ in
            -- Make sonarr the owner of both databases (idempotent)
            ALTER DATABASE "${config.custom.services.sonarr.mainDataBase}" OWNER TO ${config.custom.services.sonarr.postgresUserName};
            ALTER DATABASE "${config.custom.services.sonarr.logDataBase}"  OWNER TO ${config.custom.services.sonarr.postgresUserName};
+           ''}
+
+           ${lib.optionalString config.services.radarr.enable ''
+           DO $$
+           DECLARE password TEXT;
+           BEGIN
+             password := trim(both from replace(pg_read_file('${config.sops.secrets."postgresql/radarr".path}'), E'\n', '''));
+             EXECUTE format('ALTER ROLE ${config.custom.services.radarr.postgresUserName} WITH PASSWORD '''%s''';', password);
+           END $$;
+
+           -- Make radarr the owner of both databases (idempotent)
+           ALTER DATABASE "${config.custom.services.radarr.mainDataBase}" OWNER TO ${config.custom.services.radarr.postgresUserName};
+           ALTER DATABASE "${config.custom.services.radarr.logDataBase}"  OWNER TO ${config.custom.services.radarr.postgresUserName};
            ''}
          EOF
        '';
