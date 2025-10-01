@@ -3,8 +3,8 @@ let
   pathToUsenetDirectory = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/usenet";
 in
 {
-  options.custom = {
-    servicePort.sabnzbd = lib.mkOption {
+  options.custom.services.sabnzbd = {
+    httpPort = lib.mkOption {
       type = lib.types.int;
       default = 8080;
       description = "sabnzbd port";
@@ -35,6 +35,7 @@ in
     sops.secrets."sabnzbd/servers/zero/host" = { };
     sops.secrets."sabnzbd/servers/zero/username" = { };
     sops.secrets."sabnzbd/servers/zero/password" = { };
+    sops.secrets."sabnzbd/servers/zero/port" = { };
 
 
 
@@ -65,8 +66,8 @@ in
         auto_browser = 0
         language = en
         enable_https_verification = 1
-        host = 0.0.0.0
-        port = 8080
+        host = "${config.customGlobal.anyIPv4}"
+        port = "${toString config.custom.services.sabnzbd.httpPort}"
         https_port = ""
         username = ""
         password = ""
@@ -372,7 +373,7 @@ in
         name = "${config.sops.placeholder."sabnzbd/servers/zero/name"}"
         displayname = "${config.sops.placeholder."sabnzbd/servers/zero/displayname"}"
         host = "${config.sops.placeholder."sabnzbd/servers/zero/host"}"
-        port = 563
+        port = ${config.sops.placeholder."sabnzbd/servers/zero/port"}
         timeout = 60
         username = "${config.sops.placeholder."sabnzbd/servers/zero/username"}"
         password = "${config.sops.placeholder."sabnzbd/servers/zero/password"}"
