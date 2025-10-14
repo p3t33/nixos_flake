@@ -6,6 +6,7 @@ let
     { name = "home-desktop"; id = "TQ34X45-BKERB7F-LBQSEGR-ZAGQITL-RL5B242-PQSTHCX-2XBQBYL-ORMFTAH"; }
     { name = "homelab"; id = "XPCO572-XPKAN7M-BXTAVRT-2WZGOBR-QWMG6F7-3EHJ276-GUZJ2UW-ZVLRCQK"; }
     { name = "kvm-nixos-server"; id = "VMTWSEY-4TLKW4M-5KWF4NP-R44ZCUB-532E53K-WGO2YX3-GCRDHBV-3WGSHAI"; }
+    { name = "nas"; id = "QZUWJON-LJGIKE7-EUZDUMN-EZGMKQ6-ET3QJ67-QTTJJOQ-NK3YB7A-52P76AE"; }
   ];
 
   deviceImports = builtins.map (device: import ./devices.nix {

@@ -23,6 +23,7 @@
         devices = {
           homelab.enable = true;
           home-desktop.enable = true;
+          nas.enable = true;
         };
 
         folders = {
@@ -31,6 +32,7 @@
             devices = [
               "${config.services.syncthing.settings.devices.homelab.name}"
               "${config.services.syncthing.settings.devices.home-desktop.name}"
+              "${config.services.syncthing.settings.devices.nas.name}"
             ];
           };
 
@@ -39,6 +41,7 @@
             devices = [
               "${config.services.syncthing.settings.devices.homelab.name}"
               "${config.services.syncthing.settings.devices.home-desktop.name}"
+              "${config.services.syncthing.settings.devices.nas.name}"
             ];
           };
         };
