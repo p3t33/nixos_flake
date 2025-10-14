@@ -60,6 +60,7 @@
         settings = {
           devices = {
             home-desktop.enable = true;
+            work-pc.enable = true;
           };
 
           folders = {
@@ -67,6 +68,7 @@
               enable = true;
               devices = [
                 "${config.services.syncthing.settings.devices.home-desktop.name}"
+                "${config.services.syncthing.settings.devices.work-pc.name}"
               ];
             };
 
@@ -94,8 +96,8 @@
             dev_resources = {
               enable = true;
               devices = [
-                # "${config.services.syncthing.settings.devices.work-pc.name}"
                 "${config.services.syncthing.settings.devices.home-desktop.name}"
+                "${config.services.syncthing.settings.devices.work-pc.name}"
               ];
             };
           };
