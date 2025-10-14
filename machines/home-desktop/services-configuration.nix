@@ -29,6 +29,7 @@
           devices = {
             homelab.enable = true;
             work-pc.enable = true;
+            nas.enable = true;
           };
 
           folders = {
@@ -37,6 +38,7 @@
               devices = [
                 "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.work-pc.name}"
+                "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
 
@@ -44,6 +46,7 @@
               enable = true;
               devices = [
                 "${config.services.syncthing.settings.devices.homelab.name}"
+                "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
 
@@ -51,6 +54,7 @@
               enable = true;
               devices = [
                 "${config.services.syncthing.settings.devices.homelab.name}"
+                "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
 
@@ -58,6 +62,7 @@
               enable = true;
               devices = [
                 "${config.services.syncthing.settings.devices.homelab.name}"
+                "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
 
@@ -66,6 +71,7 @@
               devices = [
                 "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.work-pc.name}"
+                "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
           };

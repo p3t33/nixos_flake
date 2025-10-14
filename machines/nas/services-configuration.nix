@@ -57,51 +57,49 @@
           cleanupIntervalS = 3600;
         };
 
-        # settings = {
-        #   devices = {
-        #     home-desktop.enable = true;
-        #     work-pc.enable = true;
-        #   };
-        #
-        #   folders = {
-        #     taskwarrior = {
-        #       enable = true;
-        #       devices = [
-        #         "${config.services.syncthing.settings.devices.work-pc.name}"
-        #         "${config.services.syncthing.settings.devices.home-desktop.name}"
-        #       ];
-        #     };
-        #
-        #     database = {
-        #       enable = true;
-        #       devices = [
-        #         "${config.services.syncthing.settings.devices.home-desktop.name}"
-        #       ];
-        #     };
-        #
-        #     documents = {
-        #       enable = true;
-        #       devices = [
-        #         "${config.services.syncthing.settings.devices.home-desktop.name}"
-        #       ];
-        #     };
-        #
-        #     study = {
-        #       enable = true;
-        #       devices = [
-        #         "${config.services.syncthing.settings.devices.home-desktop.name}"
-        #       ];
-        #     };
-        #
-        #     dev_resources = {
-        #       enable = true;
-        #       devices = [
-        #         "${config.services.syncthing.settings.devices.work-pc.name}"
-        #         "${config.services.syncthing.settings.devices.home-desktop.name}"
-        #       ];
-        #     };
-        #   };
-        # };
+        settings = {
+          devices = {
+            home-desktop.enable = true;
+          };
+
+          folders = {
+            taskwarrior = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            database = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            documents = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            study = {
+              enable = true;
+              devices = [
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+
+            dev_resources = {
+              enable = true;
+              devices = [
+                # "${config.services.syncthing.settings.devices.work-pc.name}"
+                "${config.services.syncthing.settings.devices.home-desktop.name}"
+              ];
+            };
+          };
+        };
       };
     };
 
