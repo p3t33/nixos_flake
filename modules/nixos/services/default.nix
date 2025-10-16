@@ -29,7 +29,6 @@ in
     ./promtail.nix
     ./prowlarr.nix
     ./radarr.nix
-    ./readarr.nix
     ./restic.nix
     ./sabnzbd.nix
     ./samba.nix

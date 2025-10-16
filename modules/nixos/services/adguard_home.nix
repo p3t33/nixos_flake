@@ -57,12 +57,6 @@ in
                 answer = "${config.customGlobal.${hostSpecific.hostName}.ip}";
               }
             ]
-            ++ lib.optionals config.services.readarr.enable [
-              {
-                domain = "readarr.${hostSpecific.hostName}";
-                answer = "${config.customGlobal.${hostSpecific.hostName}.ip}";
-              }
-            ]
             ++ lib.optionals config.services.radarr.enable [
               {
                 domain = "radarr.${hostSpecific.hostName}";

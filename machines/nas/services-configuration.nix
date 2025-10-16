@@ -17,7 +17,6 @@
   # jackett.enable = true;
     sonarr.enable = true;
     radarr.enable = true;
-  # readarr.enable = true;
   # bazarr.enable = true;
     deluge.enable = true;
     sabnzbd.enable = true;
