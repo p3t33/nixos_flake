@@ -185,23 +185,6 @@ in
                 };
               }
             ]
-            ++ lib.optionals config.services.readarr.enable [
-              {
-                "readarr" = {
-                  description = "Ebooks";
-                  href = "http://${config.customGlobal.${hostSpecific.hostName}.ip}/readarr";
-                  icon = "readarr.png";
-                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.services.readarr.settings.server.port}";
-                  statusStyle = "dot";
-                  widget = {
-                    type = "readarr";
-                    url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.services.readarr.settings.server.port}";
-                    key = "{{HOMEPAGE_VAR_READARR}}"; #
-                    enableQueue = true;
-                  };
-                };
-              }
-            ]
             ++ lib.optionals config.services.bazarr.enable [
               {
                 "bazarr" = {
