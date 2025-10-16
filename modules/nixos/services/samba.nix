@@ -59,17 +59,28 @@
     # 4. Encrypt this smbpasswd line using sops-nix and add it as a secret in your Nix configuration.
     #
     # The following activation script then automatically imports these credentials into Samba's database.
-    system.activationScripts.sambaUserSetup = {
-      # Ensures this runs after sops secrets are decrypted and available.
-      deps = [ "setupSecrets" ];
+    systemd.services.sambaUserSetup = {
+      description = "Import Samba user from sops secret into Samba database";
+      after = [ "smbd.service" ];
+      wantedBy = [ "multi-user.target" ];
 
-      text = ''
-        if ! ${pkgs.samba}/bin/pdbedit -L | grep -q '^${hostSpecific.primeUsername}:'; then
-          ${pkgs.samba}/bin/pdbedit \
-            -i smbpasswd:${config.sops.secrets.smbpasswd.path} \
-            -e tdbsam:/var/lib/samba/private/passdb.tdb
-            fi
-      '';
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = pkgs.writeShellScript "samba-user-setup" ''
+          set -euo pipefail
+
+          echo "Checking for existing Samba user: ${hostSpecific.primeUsername}"
+          if ! ${pkgs.samba}/bin/pdbedit -L | grep -q '^${hostSpecific.primeUsername}:'; then
+            echo "Importing Samba user ${hostSpecific.primeUsername}..."
+            ${pkgs.samba}/bin/pdbedit \
+              -i smbpasswd:${config.sops.secrets.smbpasswd.path} \
+              -e tdbsam:/var/lib/samba/private/passdb.tdb
+            echo "Samba user ${hostSpecific.primeUsername} imported successfully."
+          else
+            echo "Samba user ${hostSpecific.primeUsername} already exists, skipping."
+          fi
+        '';
+      };
     };
   };
 
@@ -99,4 +110,3 @@
   #    ------------------------------------------------------------
   #    private      1234    <ip of connected device> Fri Mar 28 00:28:44 2025
 }
-

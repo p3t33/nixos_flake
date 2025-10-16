@@ -26,7 +26,7 @@
     # promtail.enable = true;
     # loki.enable = true;
     # grafana.enable = true;
-  # samba.enable = true;
+    samba.enable = true;
   # paperless.enable = true;
     postgresql.enable = true;
     postgresqlBackup.enable = true;
