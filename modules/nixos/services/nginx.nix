@@ -70,9 +70,6 @@ in
                 proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
                 proxyWebsockets = true;
                 extraConfig = ''
-                  proxy_set_header Host $host;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_set_header X-Forwarded-Proto $scheme;
                   proxy_set_header X-Script-Name /calibre-web;
                   client_max_body_size 1024M;
                '';
@@ -346,10 +343,6 @@ in
               proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
 
               extraConfig = ''
-                proxy_http_version 1.1;
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
                 client_max_body_size 1024M;
               '';
             };
