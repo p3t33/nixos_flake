@@ -12,7 +12,7 @@
     adguardhome.enable = true;
     homepage-dashboard.enable = true;
     calibre-web.enable = true;
-  # jellyfin.enable = true;
+    jellyfin.enable = true;
     prowlarr.enable = true;
     # jackett.enable = true; # No real need for now
     sonarr.enable = true;
