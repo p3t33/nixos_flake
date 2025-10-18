@@ -4,6 +4,12 @@ let
 in
 {
 
+  # external interface needs to match actual interface that is used for outside access
+  # When moving the server form one machine to another(or just updating ip) it is
+  # important to update port forwording of the router as well.
+  #
+  # To test connection(beside using systemd tools), use;
+  # sudo wg show
   options.custom.vpn.wireguardServer =
   {
     enable = lib.mkEnableOption "Enable WireGuard server configuration";
@@ -16,7 +22,7 @@ in
 
     externalInterface = lib.mkOption {
       type = lib.types.str;
-      default = "eno1";
+      default = "enp7s0";
       description = "External network interface for WireGuard";
     };
 

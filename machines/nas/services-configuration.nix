@@ -20,7 +20,6 @@
   # bazarr.enable = true; # needs to be added at a later point
     deluge.enable = true;
     sabnzbd.enable = true;
-  # inadyn.enable = true; # will be added as part of the vpn.
     gatus.enable = true;
     # prometheus.enable = true; # Not sure I want or need this.
     # promtail.enable = true;  # Not sure I want or need this.
@@ -40,6 +39,7 @@
     profiles.systemServices = {
       core.enable = true;
       server.enable = true;
+      wireguardServer.enable = true;
     };
 
     services = {
