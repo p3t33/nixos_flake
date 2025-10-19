@@ -5,7 +5,6 @@ let
   media = "media";
   devices = "devices";
   routerIP = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}1";
-  proxmoxIP = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}74";
 
 in
 {
@@ -24,7 +23,7 @@ in
     services.homepage-dashboard = {
       listenPort = 8082;
       openFirewall = true;
-      allowedHosts = "${config.customGlobal.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},homepage.homelab,${config.customGlobal.${hostSpecific.hostName}.ip},${config.customGlobal.${hostSpecific.hostName}.ip}:${toString config.services.homepage-dashboard.listenPort}";
+      allowedHosts = "${config.customGlobal.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},homepage.nas,${config.customGlobal.${hostSpecific.hostName}.ip},${config.customGlobal.${hostSpecific.hostName}.ip}:${toString config.services.homepage-dashboard.listenPort}";
       environmentFile = config.sops.secrets.homepage-dashboard.path;
 
 
@@ -260,13 +259,6 @@ in
                 description = "router ui";
                 href = "http://${routerIP}";
                 icon = "router.png";
-              };
-            }
-            {
-              "proxmox" = {
-                description = "Proxmox VE Dashboard";
-                href = "http://${proxmoxIP}:8006";
-                icon = "proxmox.png";
               };
             }
           ];
