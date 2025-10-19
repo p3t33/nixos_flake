@@ -43,6 +43,7 @@
     };
 
     services = {
+      restic.enable = true;
 
       syncthing = {
         syncDir = "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/syncthing";
@@ -103,7 +104,5 @@
         };
       };
     };
-
-
   };
 }

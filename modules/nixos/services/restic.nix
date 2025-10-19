@@ -46,7 +46,7 @@ in
           passwordFile = config.sops.secrets."restic/local/passwordFile".path;
 
           # Paths to backup.
-          paths = [ "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync" ];
+          paths = [ "${config.custom.services.syncthing.syncDir}" ];
 
           pruneOpts = [
             pruneDaily
@@ -77,7 +77,7 @@ in
           passwordFile = config.sops.secrets."restic/gdrive/passwordFile".path; # <-- clearly points here
 
           paths = [
-            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync"
+            "${config.custom.services.syncthing.syncDir}"
             "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
           ];
           pruneOpts = [
@@ -107,7 +107,7 @@ in
           passwordFile = config.sops.secrets."restic/amazon/passwordFile".path;
 
           paths = [
-            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/Sync"
+            "${config.custom.services.syncthing.syncDir}"
             "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
           ];
 
