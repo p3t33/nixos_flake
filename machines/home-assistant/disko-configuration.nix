@@ -1,14 +1,21 @@
 # uefi only which means that the VM needs to be set with uefi boot
 { ... }:
 let
-  rootPool = "rpool";
+  pools = { rootPool = "rpool"; };
+  disks = {
+    os = {
+      name = "os";
+      path = "/dev/disk/by-id/ata-KINGSTON_SKC600MS256G_50026B76874BAFE5";
+    };
+  };
+
 in
 {
   disko.devices = {
     disk = {
-      first = {
+      "${disks.os.name}" = {
         type = "disk";
-        device = "/dev/sda";
+        device = disks.os.path;
         content = {
           type = "gpt";
           partitions = {
@@ -28,7 +35,7 @@ in
               size = "100%";
               content = {
                 type = "zfs";
-                pool = rootPool;
+                pool = pools.rootPool;
               };
             };
           };
@@ -36,7 +43,7 @@ in
       };
     };
     zpool = {
-      ${rootPool} = {
+      ${pools.rootPool} = {
         type = "zpool";
         options = {
           ashift = "12";

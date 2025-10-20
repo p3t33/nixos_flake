@@ -22,7 +22,7 @@
         server.enable = true;
       };
 
-      systemStateVersion = "24.11";
+      systemStateVersion = "25.05";
       motd.message = ''
          ___ ___                             _______             __       __               __
         |   |   .-----.--------.-----.______|   _   .-----.-----|__.-----|  |_.---.-.-----|  |_
