@@ -29,7 +29,6 @@ in
     ./promtail.nix
     ./prowlarr.nix
     ./radarr.nix
-    ./readarr.nix
     ./restic.nix
     ./sabnzbd.nix
     ./samba.nix
@@ -108,6 +107,10 @@ in
       custom.services.p2pool.enable = true;
       services.xmrig.enable = true;
     })
-  ];
 
+    (lib.mkIf (g.wireguardServer.enable or false) {
+      custom.vpn.wireguardServer.enable = true;
+      services.inadyn.enable = true;
+    })
+  ];
 }

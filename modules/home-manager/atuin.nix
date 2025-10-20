@@ -8,11 +8,12 @@ in
   config = lib.mkIf config.programs.atuin.enable {
     programs.atuin = {
       enableZshIntegration = true;
+      daemon.enable = true;
 
       flags = [ "--disable-up-arrow" ];
 
       settings = {
-
+        local_timeout = 20;
         style = "compact";
         # for some reason this directive has no effect.
         show_help = false;

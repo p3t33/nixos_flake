@@ -70,9 +70,6 @@ in
                 proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
                 proxyWebsockets = true;
                 extraConfig = ''
-                  proxy_set_header Host $host;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_set_header X-Forwarded-Proto $scheme;
                   proxy_set_header X-Script-Name /calibre-web;
                   client_max_body_size 1024M;
                '';
@@ -81,17 +78,6 @@ in
             // lib.optionalAttrs config.services.bazarr.enable {
               "/bazarr" = {
                 proxyPass = "${localHost}:${builtins.toString config.services.bazarr.listenPort}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.readarr.enable {
-              "/readarr" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.readarr.settings.server.port}";
                 extraConfig = ''
                   proxy_http_version 1.1;
                   proxy_set_header Upgrade $http_upgrade;
@@ -135,17 +121,18 @@ in
             }
             // lib.optionalAttrs config.services.sabnzbd.enable {
               "/sabnzbd/" = {
-                proxyPass = "${localHost}:${builtins.toString config.custom.servicePort.sabnzbd}/sabnzbd/";
+                proxyPass = "${localHost}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd/";
                 extraConfig = ''
-                    proxy_set_header X-Forwarded-Host $host;
-                proxy_set_header X-Forwarded-Server $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_http_version 1.1;
-                proxy_set_header Upgrade $http_upgrade;
-                proxy_set_header Connection "upgrade";
+                  proxy_set_header X-Forwarded-Host $host;
+                  proxy_set_header X-Forwarded-Server $host;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "upgrade";
                 '';
-            };
-  }
+              };
+            }
+
             // lib.optionalAttrs config.services.jellyfin.enable {
               "/jellyfin" = {
                 proxyPass = "${localHost}:${builtins.toString config.custom.servicePort.jellyfin}";
@@ -156,20 +143,18 @@ in
                   proxy_redirect off;
                 '';
               };
-              "/homepage/" =
-                {
-                }
-                // lib.optionalAttrs config.services.homepage-dashboard.enable {
-                  proxyPass = "${localHost}:${builtins.toString config.services.homepage-dashboard.listenPort}/";
-                  extraConfig = ''
-                     proxy_http_version 1.1;
-                    proxy_set_header Upgrade $http_upgrade;
-                    proxy_set_header Connection "upgrade";
-                    proxy_redirect off;
-                  '';
-                };
             }
-
+            // lib.optionalAttrs config.services.homepage-dashboard.enable {
+              "/homepage/" = {
+                proxyPass = "${localHost}:${builtins.toString config.services.homepage-dashboard.listenPort}/";
+                extraConfig = ''
+                  proxy_http_version 1.1;
+                  proxy_set_header Upgrade $http_upgrade;
+                  proxy_set_header Connection "upgrade";
+                  proxy_redirect off;
+                '';
+              };
+            }
           );
         };
 
@@ -214,7 +199,7 @@ in
           }
           ];
           locations."/" = {
-            proxyPass = "${localHost}:${builtins.toString config.custom.servicePort.sabnzbd}/sabnzbd/";
+            proxyPass = "${localHost}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd/";
             extraConfig = ''
             proxy_http_version 1.1;
             proxy_set_header Upgrade $http_upgrade;
@@ -276,26 +261,6 @@ in
               ];
               locations."/" = {
                 proxyPass = "${localHost}:${builtins.toString config.services.bazarr.listenPort}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            };
-
-        "readarr.${hostSpecific.hostName}" =
-          lib.optionalAttrs config.services.readarr.enable
-            {
-              listen = [
-                {
-                  addr = "${allInterfaces}";
-                  port = httpPort;
-                }
-              ];
-              locations."/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.readarr.settings.server.port}";
                 extraConfig = ''
                   proxy_http_version 1.1;
                   proxy_set_header Upgrade $http_upgrade;
@@ -378,10 +343,6 @@ in
               proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
 
               extraConfig = ''
-                proxy_http_version 1.1;
-                proxy_set_header Host $host;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
                 client_max_body_size 1024M;
               '';
             };

@@ -125,7 +125,7 @@ in
           {
             name = "sabnzbd";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.servicePort.sabnzbd}";
+            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -166,22 +166,6 @@ in
               failure-threshold = 2;
               success-threshold = 1;
               description = "Sonarr is down!";
-            }];
-          }
-        ]
-        ++ lib.optionals config.services.readarr.enable [
-          {
-            name = "readarr";
-            group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.readarr.settings.server.port}";
-            interval = "30s";
-            conditions = [ "[STATUS] == 200" ];
-            alerts = [{
-              type = "telegram";
-              enabled = true;
-              failure-threshold = 2;
-              success-threshold = 1;
-              description = "Readarr is down!";
             }];
           }
         ]

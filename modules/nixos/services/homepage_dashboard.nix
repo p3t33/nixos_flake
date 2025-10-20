@@ -5,7 +5,6 @@ let
   media = "media";
   devices = "devices";
   routerIP = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}1";
-  proxmoxIP = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}74";
 
 in
 {
@@ -17,12 +16,14 @@ in
     # HOMEPAGE_VAR_DELUGE=<deluge web gui password>
     # HOMEPAGE_VAR_RADARR=<radarr api key>
     # HOMEPAGE_VAR_SONARR=<sonarr api key>
-    sops.secrets.homepage-dashboard = {};
+    sops.secrets.homepage-dashboard = {
+        restartUnits = [ config.systemd.services.homepage-dashboard.name ];
+    };
 
     services.homepage-dashboard = {
       listenPort = 8082;
       openFirewall = true;
-      allowedHosts = "${config.customGlobal.localHostIPv4},${config.customGlobal.anyIPv4},homepage.homelab,${config.customGlobal.${hostSpecific.hostName}.ip}";
+      allowedHosts = "${config.customGlobal.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},homepage.nas,${config.customGlobal.${hostSpecific.hostName}.ip},${config.customGlobal.${hostSpecific.hostName}.ip}:${toString config.services.homepage-dashboard.listenPort}";
       environmentFile = config.sops.secrets.homepage-dashboard.path;
 
 
@@ -77,8 +78,13 @@ in
                   description = "Usenet client";
                   href = "http://${config.customGlobal.${hostSpecific.hostName}.ip}/sabnzbd";
                   icon = "sabnzbd.png";
-                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.custom.servicePort.sabnzbd}";
+                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.custom.services.sabnzbd.httpPort}";
                   statusStyle = "dot";
+                  widget = {
+                      type = "sabnzbd";
+                      url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd";
+                      key = "{{HOMEPAGE_VAR_SABNZBD}}";
+                  };
                 };
               }
             ];
@@ -178,23 +184,6 @@ in
                 };
               }
             ]
-            ++ lib.optionals config.services.readarr.enable [
-              {
-                "readarr" = {
-                  description = "Ebooks";
-                  href = "http://${config.customGlobal.${hostSpecific.hostName}.ip}/readarr";
-                  icon = "readarr.png";
-                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.services.readarr.settings.server.port}";
-                  statusStyle = "dot";
-                  widget = {
-                    type = "readarr";
-                    url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.services.readarr.settings.server.port}";
-                    key = "{{HOMEPAGE_VAR_READARR}}"; #
-                    enableQueue = true;
-                  };
-                };
-              }
-            ]
             ++ lib.optionals config.services.bazarr.enable [
               {
                 "bazarr" = {
@@ -270,13 +259,6 @@ in
                 description = "router ui";
                 href = "http://${routerIP}";
                 icon = "router.png";
-              };
-            }
-            {
-              "proxmox" = {
-                description = "Proxmox VE Dashboard";
-                href = "http://${proxmoxIP}:8006";
-                icon = "proxmox.png";
               };
             }
           ];
