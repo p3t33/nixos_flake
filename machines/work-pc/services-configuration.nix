@@ -21,7 +21,6 @@
     services.syncthing = {
       settings = {
         devices = {
-          homelab.enable = true;
           home-desktop.enable = true;
           nas.enable = true;
         };
@@ -30,7 +29,6 @@
           taskwarrior = {
             enable = true;
             devices = [
-              "${config.services.syncthing.settings.devices.homelab.name}"
               "${config.services.syncthing.settings.devices.home-desktop.name}"
               "${config.services.syncthing.settings.devices.nas.name}"
             ];
@@ -39,7 +37,6 @@
           dev_resources = {
             enable = true;
             devices = [
-              "${config.services.syncthing.settings.devices.homelab.name}"
               "${config.services.syncthing.settings.devices.home-desktop.name}"
               "${config.services.syncthing.settings.devices.nas.name}"
             ];

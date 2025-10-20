@@ -27,7 +27,6 @@
         settings = {
 
           devices = {
-            homelab.enable = true;
             work-pc.enable = true;
             nas.enable = true;
           };
@@ -36,7 +35,6 @@
             taskwarrior = {
               enable = true;
               devices = [
-                "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.work-pc.name}"
                 "${config.services.syncthing.settings.devices.nas.name}"
               ];
@@ -45,7 +43,6 @@
             database = {
               enable = true;
               devices = [
-                "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
@@ -53,7 +50,6 @@
             documents = {
               enable = true;
               devices = [
-                "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
@@ -61,7 +57,6 @@
             study = {
               enable = true;
               devices = [
-                "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.nas.name}"
               ];
             };
@@ -69,7 +64,6 @@
             dev_resources = {
               enable = true;
               devices = [
-                "${config.services.syncthing.settings.devices.homelab.name}"
                 "${config.services.syncthing.settings.devices.work-pc.name}"
                 "${config.services.syncthing.settings.devices.nas.name}"
               ];
