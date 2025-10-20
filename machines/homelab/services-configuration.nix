@@ -18,7 +18,7 @@
     bazarr.enable = true;
     deluge.enable = true;
     sabnzbd.enable = true;
-    inadyn.enable = true;
+    # inadyn.enable = true;
     gatus.enable = true;
     prometheus.enable = true;
     promtail.enable = true;
@@ -36,10 +36,10 @@
       server.enable = true;
     };
 
-    vpn.wireguardServer.enable = true;
+    # vpn.wireguardServer.enable = true;
 
     services = {
-      restic.enable = true;
+      # restic.enable = true;
 
       syncthing = {
         syncDir = "/mnt/data/Sync";
