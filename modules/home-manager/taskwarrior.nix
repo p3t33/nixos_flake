@@ -12,7 +12,7 @@
         weekstart = "Sunday";
         confirmation = true;
         dateformat = "Y-M-D H:N";
-        news.version = "3.1.0"; # this settings supress the random news message.
+        news.version = "3.4.1"; # this settings supress the random news message.
 
         alias."@" = "context";
         context."work" = "project:work";
