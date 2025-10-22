@@ -81,6 +81,27 @@ in
 
         # Ensure custom bindings are applied after zsh-vi-mode initializes
         zvm_after_init_commands+=(zvm_custom_bindings)
+
+        # --- Navi widget setup ---
+        autoload -Uz add-zle-hook-widget
+
+        _navi_setup_widget() {
+          eval "$(navi widget zsh)"
+        }
+
+        if [[ $options[zle] = on ]]; then
+          _navi_setup_widget
+        else
+          add-zle-hook-widget line-init _navi_setup_widget
+        fi
+
+        # Ensure Navi keeps Ctrl-G binding after zsh-vi-mode initializes
+        function _navi_rebind_ctrl_g() {
+          zle -N _navi_widget
+          bindkey '^G' _navi_widget
+        }
+        zvm_after_init_commands+=(_navi_rebind_ctrl_g)
+        # --- End Navi setup ---
       '';
 
       # There are four types of plugins in this config
