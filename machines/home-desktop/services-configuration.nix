@@ -15,7 +15,6 @@
     profiles.systemServices = {
       core.enable = true;
       desktop.enable = true;
-      xmr-miner.enable = true;
     };
 
     services = {
