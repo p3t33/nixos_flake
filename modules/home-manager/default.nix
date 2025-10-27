@@ -49,6 +49,7 @@ in
     ./ghostty.nix
     ./services/dnust.nix
     ./navi.nix
+    ./tealdeer.nix
 
     # scripts
     ./scripts/i3-monitor.nix
@@ -104,6 +105,7 @@ in
       programs.atuin.enable = true;
       programs.yazi.enable = true;
       programs.navi.enable = true;
+      programs.tealdeer.enable = true;
       custom.scripts.cheatSh.enable = true;
     })
   ];

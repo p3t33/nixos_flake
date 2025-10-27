@@ -125,7 +125,7 @@ in
       jq
       dragon-drop
       imv
-      tldr
+      tealdeer
     ];
   };
 }
