@@ -32,15 +32,15 @@
     '';
   };
 
-  networking.interfaces.enp7s0.ipv4.addresses = [
-    {
-      address = "${config.customGlobal.${hostSpecific.hostName}.ip}";
-      prefixLength = 24;
-    }
-  ];
-
-  networking.defaultGateway = "${config.customGlobal.${hostSpecific.hostName}.gateway}";
-  networking.nameservers = [ "8.8.8.8" ];
+  # networking.interfaces.enp7s0.ipv4.addresses = [
+  #   {
+  #     address = "${config.customGlobal.${hostSpecific.hostName}.ip}";
+  #     prefixLength = 24;
+  #   }
+  # ];
+  #
+  # networking.defaultGateway = "${config.customGlobal.${hostSpecific.hostName}.gateway}";
+  # networking.nameservers = [ "8.8.8.8" ];
 
 
   services.xserver.enable = lib.mkForce false;
