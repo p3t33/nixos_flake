@@ -3,7 +3,7 @@
   options.customGlobal = {
     ${hostSpecific.hostName} = {
       subnetPrefix = lib.mkOption {
-        default = "10.100.102.";
+        default = "192.168.1.";
         type = lib.types.str;
         description = "Defines the static IP subnet prefix used by homelab machines";
       };
