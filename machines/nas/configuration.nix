@@ -14,7 +14,7 @@
     ../../modules/nixos # imported via default.nix
   ];
 
-  customGlobal.${hostSpecific.hostName}.ip = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}63";
+  customGlobal.${hostSpecific.hostName}.ip = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}122";
 
   custom = {
     profiles.system = {
