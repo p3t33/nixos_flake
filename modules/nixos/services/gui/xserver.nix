@@ -36,7 +36,7 @@
 
           # debugging and information
           xorg.xdpyinfo
-          glxinfo # query the properties of an OpenGL implementation
+          mesa-demos # query the properties of an OpenGL implementation
         ];
       };
     };

@@ -42,7 +42,7 @@ in
       # system information
       inxi
       ncdu
-      du-dust
+      dust
       duf
       gdu
 
@@ -76,7 +76,6 @@ in
       # A cross shell smarter cd command, inspired by z and autojump
       zoxide
 
-      thefuck
       expect
 
       pciutils

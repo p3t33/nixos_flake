@@ -18,6 +18,7 @@ in
     ./bat.nix
     ./neovim
     ./git/git.nix
+    ./delta.nix
     ./git/git_commit_signatures_with_gpg.nix
     ./git/lazygit.nix
     ./zoxide.nix
@@ -50,6 +51,7 @@ in
     ./services/dnust.nix
     ./navi.nix
     ./tealdeer.nix
+    ./pay-respects.nix
 
     # scripts
     ./scripts/i3-monitor.nix
@@ -97,6 +99,7 @@ in
       programs.fzf.enable = true;
       programs.neovim.enable = true;
       programs.git.enable = true;
+      programs.delta.enable = true;
       programs.zoxide.enable = true;
       programs.zsh.enable = true;
       programs.bash.enable = true;
@@ -106,6 +109,7 @@ in
       programs.yazi.enable = true;
       programs.navi.enable = true;
       programs.tealdeer.enable = true;
+      programs.pay-respects.enable = true;
       custom.scripts.cheatSh.enable = true;
     })
   ];

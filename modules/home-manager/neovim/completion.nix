@@ -9,7 +9,7 @@ in
     extraPackages = with pkgs; [
       # LSP servers
       # ----------------
-      sumneko-lua-language-server # lua
+      lua-language-server # lua
       clang-tools # c/c++
       nixd # nix
       nixfmt-rfc-style # nix formator used by nixd
@@ -72,85 +72,81 @@ in
         plugin = nvim-lspconfig;
         type = "lua";
         config = ''
-          local opts = { noremap=true, silent=true }
+          local opts = { noremap = true, silent = true }
 
-          -- Use an on_attach function to only map the following keys
-          -- after the language server attaches to the current buffer
           local on_attach = function(client, bufnr)
+            -- Enable completion triggered by <c-x><c-o>
+            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-          -- Enable completion triggered by <c-x><c-o>
-          vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
-          -- Mappings.
-          -- See `:help vim.lsp.*` for documentation on any of the below functions
-          local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-          -- go to definition.
-          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-          vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-          vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, bufopts)
-          vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, bufopts)
-          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-          vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-          -- clang-tidy code actions
-          vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, bufopts)
-          vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, bufopts)
-          vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, bufopts)
-          vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, bufopts)
-
-          -- Can be used to replace plugin trouble-nvim(and dependencie nvim-web-devicons)
-          vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
-
-          -- clang format.
-          vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+            -- Keymaps
+            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+            vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, bufopts)
+            vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, bufopts)
+            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+            vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, bufopts)
+            vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, bufopts)
+            vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, bufopts)
+            vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, bufopts)
+            vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+            vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
           end
 
-          local lsp_flags = {
-              -- This is the default in Nvim 0.7+
-                  debounce_text_changes = 150,
-          }
-
-          -- cmp-nvim completion framework specifics
+          local flags = { debounce_text_changes = 150 }
           local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-          local function setup_lsp_server(server_name)
-              local setup_table = {
-                  on_attach = on_attach,
-                  flags = lsp_flags,
-                  capabilities = capabilities,
-              }
-              -- Fix for warning multiple different client offset encodings detected for buffer this is not support ed yet
-              if server_name == 'clangd' then
-                  setup_table.cmd = { 'clangd', '--offset-encoding=utf-16' }
-              elseif server_name == 'nixd' then
-                  setup_table.cmd = { 'nixd' }
-                  setup_table.settings = {
-                      nixd = {
-                          formatting = {
-                              command = { "nixfmt" },
-                          },
-                      },
-                  }
-              elseif server_name == 'jdtls' then
-                  -- Ensure jdtls uses the correct workspace directory
-                  setup_table.cmd = {
-                      "jdtls",
-                      "-configuration", vim.fn.stdpath("cache") .. "/jdtls/config",
-                      "-data", vim.fn.stdpath("cache") .. "/jdtls/workspace"
-                  }
-                  setup_table.root_dir = require("lspconfig.util").root_pattern("pom.xml", "gradle.build", ".git")
-              else
-                  setup_table.cmd = nil
-              end
-              require('lspconfig')[server_name].setup(setup_table)
-              -- ------------
-          end
+          -- --- LSP SERVER CONFIGS ---
+          vim.lsp.config.lua_ls = {
+            on_attach = on_attach,
+            flags = flags,
+            capabilities = capabilities,
+          }
 
-          setup_lsp_server('lua_ls')
-          setup_lsp_server('clangd')
-          setup_lsp_server('pyright')
-          setup_lsp_server('nixd')
-          setup_lsp_server('jdtls')
+          vim.lsp.config.clangd = {
+            on_attach = on_attach,
+            flags = flags,
+            capabilities = capabilities,
+            cmd = { "clangd", "--offset-encoding=utf-16" },
+          }
+
+          vim.lsp.config.pyright = {
+            on_attach = on_attach,
+            flags = flags,
+            capabilities = capabilities,
+          }
+
+          vim.lsp.config.nixd = {
+            on_attach = on_attach,
+            flags = flags,
+            capabilities = capabilities,
+            settings = {
+              nixd = { formatting = { command = { "nixfmt" } } }
+            },
+          }
+
+          vim.lsp.config.jdtls = {
+            on_attach = on_attach,
+            flags = flags,
+            capabilities = capabilities,
+            cmd = {
+              "jdtls",
+              "-configuration", vim.fn.stdpath("cache") .. "/jdtls/config",
+              "-data", vim.fn.stdpath("cache") .. "/jdtls/workspace",
+            },
+            root_markers = { "pom.xml", "gradle.build", ".git" },
+          }
+
+          -- --- ENABLE THEM ---
+          vim.lsp.enable({
+            "lua_ls",
+            "clangd",
+            "pyright",
+            "nixd",
+            "jdtls",
+        })
 
         '';
       }

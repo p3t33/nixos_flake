@@ -13,7 +13,7 @@
 
     environment.systemPackages = with pkgs; [
       mangohud
-      protonup # GE-proton.
+      protonup-ng # GE-proton.
     ];
 
     # Ensures that steam can recognize and use custom proton versions(like GE-proton).

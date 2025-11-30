@@ -13,7 +13,6 @@ in
       zsh-syntax-highlighting
       zsh-autosuggestions
       zsh-fzf-tab
-      thefuck
       eza
     ];
 
@@ -130,7 +129,6 @@ in
         plugins = [
           "git"
           "command-not-found"
-          "thefuck"
           "history-substring-search"
           "colored-man-pages"
           "last-working-dir"
