@@ -32,13 +32,13 @@ in
       lazydocker
 
       # lua
-      sumneko-lua-language-server
+      lua-language-server
       lua
 
       # C/C++
       valgrind
-      libsForQt5.kcachegrind # front end for callgrind and cachegrind.
-      linuxPackages.perf # profiling tool.
+      kdePackages.kcachegrind # front end for callgrind and cachegrind.
+      perf # profiling tool.
       cppcheck # static analysis tool for c/c++
       gcc
       ccls # LSP for C/CPP

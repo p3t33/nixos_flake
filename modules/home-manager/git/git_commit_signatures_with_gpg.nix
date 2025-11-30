@@ -9,7 +9,7 @@ in
   config = lib.mkIf cfg.enable {
     programs.git = {
 
-      extraConfig = {
+      settings = {
 
         commit = {
           gpgSign = true;

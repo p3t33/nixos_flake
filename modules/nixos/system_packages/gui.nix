@@ -30,12 +30,10 @@ in
       gpick # color picker.
       pcmanfm
 
-      gpt4all # generative AI packages.
-
       # Media
       obs-studio # video recorder / live streming.
       audacity # audio editing
-      libsForQt5.kdenlive # video editing.
+      kdePackages.kdenlive # video editing.
 
       # Remote control
       tigervnc

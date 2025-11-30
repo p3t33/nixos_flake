@@ -13,10 +13,10 @@
           vhostUserPackages = [ pkgs.virtiofsd ];
 
           # Enable UEFI firmware support (Full = with Secure Boot and extra features)
-          ovmf = {
-            enable = true;
-            packages = [ pkgs.OVMFFull.fd ];  # ← Full UEFI support, including secure boot.
-          };
+          # ovmf = {
+          #   enable = true;
+          #   packages = [ pkgs.OVMFFull.fd ];  # ← Full UEFI support, including secure boot.
+          # };
 
           # Trusted Platform Module: lets VM emulate a hardware TPM (needed by Windows 11 and Secure Boot)
           swtpm = {

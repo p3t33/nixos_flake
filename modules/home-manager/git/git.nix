@@ -4,16 +4,6 @@
 
   config = lib.mkIf config.programs.git.enable {
     programs.git = {
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          line-numbers = true;
-          side-by-side = false;
-          theme = "Nord";
-        };
-      };
-
       # will create ~/.config/git/ingore file
       # This file will be used as a global ignore file for git
       ignores = [
@@ -31,7 +21,7 @@
         "*.launch"
       ];
 
-      extraConfig = {
+      settings = {
 
         core = {
           editor = "${config.home.sessionVariables.EDITOR}";
@@ -152,30 +142,31 @@
           # executing git config user.[name/email] inside of a repo works just fine.
           path = config.sops.secrets.git.path;
         };
+
+        alias = {
+          cp = "cherry-pick";
+          st = "status";
+          cma = "commit --amend";
+
+          # add all uncommitted and un-staged changes currently in the working
+          # directory and add them to the previous commit, stopping for amending
+          caa = "commit -a --amend -C HEAD";
+          co = "checkout";
+          br = "branch";
+          cc = "commit";
+          cm = "commit -m";
+          amend = "commit --amend";
+          ls = "log --stat";
+          aa = "add --all";
+
+          rem = "remote -v";
+          rebi = "rebase -i";
+
+          pl = "pull";
+          ph = "push";
+        };
       };
 
-      aliases = {
-        cp = "cherry-pick";
-        st = "status";
-        cma = "commit --amend";
-
-        # add all uncommitted and un-staged changes currently in the working
-        # directory and add them to the previous commit, stopping for amending
-        caa = "commit -a --amend -C HEAD";
-        co = "checkout";
-        br = "branch";
-        cc = "commit";
-        cm = "commit -m";
-        amend = "commit --amend";
-        ls = "log --stat";
-        aa = "add --all";
-
-        rem = "remote -v";
-        rebi = "rebase -i";
-
-        pl = "pull";
-        ph = "push";
-      };
     };
   };
 }

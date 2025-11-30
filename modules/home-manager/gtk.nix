@@ -6,8 +6,8 @@
     home.packages = with pkgs; [
       arc-theme
       arc-icon-theme
-      papirus-icon-theme
-      tela-icon-theme
+      # papirus-icon-theme
+      # tela-icon-theme
     ];
 
     gtk = {
