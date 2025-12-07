@@ -4,7 +4,6 @@ let
   syncthingDevices = [
     { name = "work-pc"; id = "Z47X7UP-AFRW6CM-UUWCAFF-A5BA6C4-PKEU7IR-XDHH6IE-N7JL54R-RTWLNAG"; }
     { name = "home-desktop"; id = "TQ34X45-BKERB7F-LBQSEGR-ZAGQITL-RL5B242-PQSTHCX-2XBQBYL-ORMFTAH"; }
-    { name = "homelab"; id = "XPCO572-XPKAN7M-BXTAVRT-2WZGOBR-QWMG6F7-3EHJ276-GUZJ2UW-ZVLRCQK"; }
     { name = "kvm-nixos-server"; id = "VMTWSEY-4TLKW4M-5KWF4NP-R44ZCUB-532E53K-WGO2YX3-GCRDHBV-3WGSHAI"; }
     { name = "nas"; id = "QZUWJON-LJGIKE7-EUZDUMN-EZGMKQ6-ET3QJ67-QTTJJOQ-NK3YB7A-52P76AE"; }
   ];
@@ -67,7 +66,7 @@ in
           simpleFileVersioningForBackUpMachinesOnly = lib.mkOption {
             type = lib.types.nullOr lib.types.attrs;
             default = null;
-            description = "Syncthing simple versioning config, only enabled for homelab.";
+            description = "Syncthing simple versioning config, only enabled for nas.";
           };
         };
       };

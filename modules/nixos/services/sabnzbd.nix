@@ -201,7 +201,7 @@ in
         nomedia_marker = ""
         ipv6_servers = 1
         url_base = /sabnzbd
-        host_whitelist = homelab, sabnzbd.homelab
+        host_whitelist = nas, sabnzbd.nas
         local_ranges = ,
         max_url_retries = 10
         downloader_sleep_time = 10

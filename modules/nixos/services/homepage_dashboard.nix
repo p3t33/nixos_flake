@@ -265,7 +265,7 @@ in
         }
       ];
       settings = {
-        title = "homelab Dashboard";
+        title = "nas Dashboard";
         # order of items in [] is the order of itmes on actual gui.
         layout = [
           { ${monitoring} = { style = "row"; columns = 3; }; }

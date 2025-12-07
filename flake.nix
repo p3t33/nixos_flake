@@ -113,25 +113,6 @@
           ];
         };
 
-        homelab = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "homelab";
-              primeUsername = "kmedrish";
-            };
-
-          };
-          modules = [
-            ./machines/homelab/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
-
         work-pc = lib.nixosSystem {
           inherit system;
           specialArgs = {

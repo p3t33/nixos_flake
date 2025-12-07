@@ -9,13 +9,13 @@
       pathToDataDirectory = lib.mkOption {
         default = "/data";
         type = lib.types.str;
-        description = "Path to the data directory on the homelab host";
+        description = "Path to the data directory on the nas host";
       };
 
       pathToMediaDirectory = lib.mkOption {
         default = "/media";
         type = lib.types.str;
-        description = "Path to the media directory on the homelab host";
+        description = "Path to the media directory on the nas host";
       };
   };
 }

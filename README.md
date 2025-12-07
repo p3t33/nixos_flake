@@ -66,8 +66,8 @@ dotfiles to the possible extent.
   I used it to rsync files I changed locally to a remote automatically.
 - **moolticuted**: a daemon used to interact with mooltipass the hardware password manager.
 
-# Homelab
-![homelab](snapshots/homelab.png)
+# nas
+![nas](snapshots/nas.png)
 
 # Repo Structure
 - **flake.nix**: The entry point for machines and home configurations.

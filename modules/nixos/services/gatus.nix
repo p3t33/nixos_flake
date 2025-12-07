@@ -18,7 +18,7 @@ in
       environmentFile = config.sops.secrets.gatus.path;
       settings = {
         ui = {
-          title = "homelab Status";
+          title = "nas Status";
           dark-mode = true;
         };
 
