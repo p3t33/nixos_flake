@@ -64,6 +64,8 @@ in
     ./monerod.nix
     ./p2pool.nix
     ./xmrig.nix
+
+    ./imminch.nix
   ];
 
   options.custom.profiles.systemServices = lib.mkOption {

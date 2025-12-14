@@ -234,6 +234,23 @@ in
                 };
               }
             ]
+            ++ lib.optionals config.services.gatus.enable [
+              {
+                "immich" = {
+                  description = "image service";
+                  href = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.services.immich.port}";
+                  icon = "immich.png";
+                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.services.immich.port}";
+                  statusStyle = "dot";
+                  widget = {
+                    type = "immich";
+                    url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.services.immich.port}";
+                    key = "{{HOMEPAGE_VAR_IMMICH}}";
+                    version = 2;
+                  };
+                };
+              }
+            ]
             ++ lib.optionals config.services.calibre-web.enable [
               {
                 "calibre-web" = {

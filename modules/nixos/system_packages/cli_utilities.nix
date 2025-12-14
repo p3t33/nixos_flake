@@ -125,6 +125,7 @@ in
       dragon-drop
       imv
       tealdeer
+      immich-go # used for mass importing into immich.
     ];
   };
 }

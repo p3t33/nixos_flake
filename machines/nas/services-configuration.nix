@@ -29,6 +29,7 @@
   # paperless.enable = true; # This needs to be worked on.
     postgresql.enable = true;
     postgresqlBackup.enable = true;
+    immich.enable = true;
   };
 
   systemd.tmpfiles.rules = lib.mkIf config.services.syncthing.enable [

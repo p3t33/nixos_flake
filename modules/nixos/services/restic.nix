@@ -39,6 +39,8 @@ in
           # for syncthing versioning
           exclude = [
             "**/.stversions/**"
+            "${config.services.immich.mediaLocation}/thumbs/**"
+            "${config.services.immich.mediaLocation}/encoded-video/**"
           ];
 
           # A file with restic repository path.
@@ -46,7 +48,10 @@ in
           passwordFile = config.sops.secrets."restic/local/passwordFile".path;
 
           # Paths to backup.
-          paths = [ "${config.custom.services.syncthing.syncDir}" ];
+          paths = [
+            "${config.custom.services.syncthing.syncDir}"
+            "${config.services.immich.mediaLocation}"
+          ];
 
           pruneOpts = [
             pruneDaily
@@ -70,6 +75,8 @@ in
           # for syncthing versioning
           exclude = [
             "**/.stversions/**"
+            "${config.services.immich.mediaLocation}/thumbs/**"
+            "${config.services.immich.mediaLocation}/encoded-video/**"
           ];
 
           repositoryFile = config.sops.secrets."restic/gdrive/repositoryPathFile".path;
@@ -79,6 +86,7 @@ in
           paths = [
             "${config.custom.services.syncthing.syncDir}"
             "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+            "${config.services.immich.mediaLocation}"
           ];
           pruneOpts = [
             pruneDaily
@@ -100,6 +108,8 @@ in
           # for syncthing versioning
           exclude = [
             "**/.stversions/**"
+            "${config.services.immich.mediaLocation}/thumbs/**"
+            "${config.services.immich.mediaLocation}/encoded-video/**"
           ];
 
           repositoryFile = config.sops.secrets."restic/amazon/repositoryPathFile".path;
@@ -109,6 +119,7 @@ in
           paths = [
             "${config.custom.services.syncthing.syncDir}"
             "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+            "${config.services.immich.mediaLocation}"
           ];
 
           pruneOpts = [
