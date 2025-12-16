@@ -74,6 +74,7 @@ in
         # mod + d
         menu = "${pkgs.rofi}/bin/rofi -modi drun -show drun";
 
+        # startup is divided into two "sections" backgournd commands and the start of gui applications.
         startup = [
           {
             command = "systemctl --user restart polybar";
@@ -81,16 +82,6 @@ in
             # always = false --> exec
             always = true;
             # notification = false --> --no-startup-id
-            notification = false;
-          }
-          {
-            command = "${pkgs.firefox}/bin/firefox";
-            always = false;
-            notification = false;
-          }
-          {
-            command = "${pkgs.google-chrome}/bin/google-chrome-stable";
-            always = false;
             notification = false;
           }
           # wallpaper.
@@ -105,10 +96,26 @@ in
             always = true;
             notification = false;
           }
+          {
+            command = "${pkgs.google-chrome}/bin/google-chrome-stable";
+            always = false;
+            notification = false;
+          }
+          # makes sure that firefox starts on ws1 and that when I log into the system it is the first thing I see on my main
+          # screen, ready for work.
+          {
+            command = "${pkgs.i3}/bin/i3-msg 'workspace number ${ws1}; exec --no-startup-id ${pkgs.firefox}/bin/firefox'";
+            always = false;
+            notification = false;
+          }
         ];
 
+        # assignt of firefox is having race conditons on startup so I completly removed it from
+        # this sectioh and intead using i3-msg start it in ws1 using the startup section.
+        #
+        # setting firefox in this section as well brakes startup, and firefox gets started(sometimes)
+        # on ws4 or ws10.
         assigns = {
-          "${ws1}" = [ { class = "firefox"; } ];
           "${ws2}" = [ { class = "Code"; } ];
           "${ws3}" = [ { class = "Cherrytree"; } ];
           "${ws4}" = [
