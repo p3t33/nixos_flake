@@ -126,6 +126,27 @@ in
             ];
           }
         ]
+        ++ lib.optionals config.services.paperless.enable [
+          {
+            name = "paperless";
+            group = "${remoteAccess}";
+            url = "tcp://${config.customGlobal.localHostIPv4}:${toString config.services.paperless.port}";
+            interval = "30s";
+            conditions = [
+              "[CONNECTED] == true"
+            ];
+
+            alerts = [
+            {
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 3;
+              success-threshold = 1;
+              description = "SSH service is unreachable";
+            }
+            ];
+          }
+        ]
         ++ lib.optionals config.services.deluge.enable [
           {
             name = "deluge";

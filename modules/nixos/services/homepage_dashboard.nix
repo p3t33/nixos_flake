@@ -87,6 +87,22 @@ in
                   };
                 };
               }
+            ]
+            ++ lib.optionals config.services.paperless.enable [
+              {
+                "paperlessngx" = {
+                  description = "Usenet client";
+                  href = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.services.paperless.port}";
+                  icon = "paperless.png";
+                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.services.paperless.port}";
+                  statusStyle = "dot";
+                  # widget = {
+                  #     type = "sabnzbd";
+                  #     url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.custom.services.paperless.}/sabnzbd";
+                  #     key = "{{HOMEPAGE_VAR_SABNZBD}}";
+                  # };
+                };
+              }
             ];
         }
         {

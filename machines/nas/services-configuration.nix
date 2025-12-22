@@ -26,7 +26,7 @@
     # loki.enable = true; # Not sure I want or need this.
     # grafana.enable = true;  # Not sure I want or need this.
     samba.enable = true;
-  # paperless.enable = true; # This needs to be worked on.
+    paperless.enable = true;
     postgresql.enable = true;
     postgresqlBackup.enable = true;
     immich.enable = true;

@@ -51,6 +51,7 @@ in
           paths = [
             "${config.custom.services.syncthing.syncDir}"
             "${config.services.immich.mediaLocation}"
+            "${config.services.paperless.exporter.directory}"
           ];
 
           pruneOpts = [
@@ -87,6 +88,7 @@ in
             "${config.custom.services.syncthing.syncDir}"
             "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
             "${config.services.immich.mediaLocation}"
+            "${config.services.paperless.exporter.directory}"
           ];
           pruneOpts = [
             pruneDaily
@@ -120,6 +122,7 @@ in
             "${config.custom.services.syncthing.syncDir}"
             "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
             "${config.services.immich.mediaLocation}"
+            "${config.services.paperless.exporter.directory}"
           ];
 
           pruneOpts = [
