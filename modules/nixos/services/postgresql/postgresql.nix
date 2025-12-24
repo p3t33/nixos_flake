@@ -5,6 +5,7 @@ let
   prowlarr = "prowlarr";
   sonarr = "sonarr";
   radarr = "radarr";
+  n8n = "n8n";
 in
 {
   config = lib.mkIf config.services.postgresql.enable {
@@ -85,6 +86,12 @@ in
           {
             name = "${config.custom.services.${radarr}.postgresUserName}";
           }
+        ]
+        ++ lib.optionals config.services.${n8n}.enable [
+          {
+            name = "${config.services.n8n.environment.DB_POSTGRESDB_USER}";
+            ensureDBOwnership = true; # <-- add this
+          }
         ];
 
       # Removing databases that were created using this confiugration will not remove them on postgresql side,
@@ -105,6 +112,9 @@ in
         ++ lib.optionals config.services.${radarr}.enable [
           "${config.custom.services.${radarr}.mainDataBase}"
           "${config.custom.services.${radarr}.logDataBase}"
+        ]
+        ++ lib.optionals config.services.n8n.enable [
+          "${config.services.n8n.environment.DB_POSTGRESDB_DATABASE}"
         ];
 
       authentication = ''

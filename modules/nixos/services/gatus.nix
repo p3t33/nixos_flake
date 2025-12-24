@@ -147,6 +147,27 @@ in
             ];
           }
         ]
+        ++ lib.optionals config.services.n8n.enable [
+          {
+            name = "n8n";
+            group = "${remoteAccess}";
+            url = "tcp://${config.customGlobal.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
+            interval = "30s";
+            conditions = [
+              "[CONNECTED] == true"
+            ];
+
+            alerts = [
+            {
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 3;
+              success-threshold = 1;
+              description = "SSH service is unreachable";
+            }
+            ];
+          }
+        ]
         ++ lib.optionals config.services.deluge.enable [
           {
             name = "deluge";

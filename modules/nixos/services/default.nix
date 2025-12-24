@@ -24,6 +24,7 @@ in
     ./mosquitto.nix
     ./nginx.nix
     ./paperless.nix
+    ./n8n.nix
     ./printer.nix
     ./prometheus.nix
     ./promtail.nix

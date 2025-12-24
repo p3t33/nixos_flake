@@ -140,6 +140,21 @@ in
                 };
               }
             ]
+            ++ lib.optionals config.services.n8n.enable [
+              {
+                "n8n" = {
+                  description = "Serivce health monitoring and alerting";
+                  href = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${config.services.n8n.environment.N8N_PORT}";
+                  icon = "n8n.png";
+                  siteMonitor = "http://${config.customGlobal.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
+                  statusStyle = "dot";
+                  # widget = {
+                  #   type = "gatus";
+                  #   url = "http://${config.customGlobal.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
+                  # };
+                };
+              }
+            ]
             ++ lib.optionals config.services.prometheus.enable [
               {
                 "prometheus" = {
