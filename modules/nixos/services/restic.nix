@@ -2,10 +2,36 @@
 let
 cfg = config.custom.services.restic;
 
-  pruneDaily = "--keep-daily 7";
-  pruneWeekly = "--keep-weekly 4";
-  pruneYearly = "--keep-yearly 3";
+  pruneOptions = [
+    "--keep-daily 7"
+    "--keep-weekly 4"
+    "--keep-yearly 3"
+  ];
+
   compressionMax = "--compression max";
+
+  backupPaths =
+    []
+    ++ lib.optionals config.services.syncthing.enable [
+      config.custom.services.syncthing.syncDir
+    ]
+    ++ lib.optionals config.services.immich.enable [
+      config.services.immich.mediaLocation
+    ]
+    ++ lib.optionals config.services.paperless.enable [
+      config.services.paperless.exporter.directory
+    ];
+
+  backupExclude =
+    []
+    ++ lib.optionals config.services.syncthing.enable [
+      # for syncthing versioning
+      "**/.stversions/**"
+    ]
+    ++ lib.optionals config.services.immich.enable [
+      "${config.services.immich.mediaLocation}/thumbs/**"
+      "${config.services.immich.mediaLocation}/encoded-video/**"
+    ];
 in
 {
   options.custom.services.restic.enable = lib.mkEnableOption "Enable Restic backups and Restic REST server";
@@ -25,7 +51,7 @@ in
       server = {
         enable = true;
         extraFlags = [ "--no-auth" ];
-        listenAddress = "0.0.0.0:9005"; # Expose Restic API & metrics
+        listenAddress = "${config.customGlobal.anyIPv4}:9005"; # Expose Restic API & metrics
         prometheus = true; # Enable Prometheus metrics
         appendOnly = true; # Ensure backups are append-only for safty from being hacked.
       };
@@ -37,28 +63,23 @@ in
           # will create restic repo if it does not exit yet.
           initialize = true;
           # for syncthing versioning
-          exclude = [
-            "**/.stversions/**"
-            "${config.services.immich.mediaLocation}/thumbs/**"
-            "${config.services.immich.mediaLocation}/encoded-video/**"
-          ];
+
+          exclude =
+            []
+            ++ backupExclude;
 
           # A file with restic repository path.
           repositoryFile = config.sops.secrets."restic/local/repositoryPathFile".path;
           passwordFile = config.sops.secrets."restic/local/passwordFile".path;
 
           # Paths to backup.
-          paths = [
-            "${config.custom.services.syncthing.syncDir}"
-            "${config.services.immich.mediaLocation}"
-            "${config.services.paperless.exporter.directory}"
-          ];
+          paths =
+            []
+            ++ backupPaths;
 
-          pruneOpts = [
-            pruneDaily
-            pruneWeekly
-            pruneYearly
-          ];
+          pruneOpts =
+            []
+            ++ pruneOptions;
 
           extraBackupArgs = [ compressionMax ];
 
@@ -74,27 +95,23 @@ in
         gdrive = {
           initialize = true;
           # for syncthing versioning
-          exclude = [
-            "**/.stversions/**"
-            "${config.services.immich.mediaLocation}/thumbs/**"
-            "${config.services.immich.mediaLocation}/encoded-video/**"
-          ];
+          exclude =
+            []
+            ++ backupExclude;
 
           repositoryFile = config.sops.secrets."restic/gdrive/repositoryPathFile".path;
           rcloneConfigFile = config.sops.secrets."restic/gdrive/rcloneConfigFile".path;
           passwordFile = config.sops.secrets."restic/gdrive/passwordFile".path; # <-- clearly points here
 
-          paths = [
-            "${config.custom.services.syncthing.syncDir}"
-            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
-            "${config.services.immich.mediaLocation}"
-            "${config.services.paperless.exporter.directory}"
-          ];
-          pruneOpts = [
-            pruneDaily
-            pruneWeekly
-            pruneYearly
-          ];
+          paths =
+            [
+              "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+            ]
+            ++ backupPaths;
+
+          pruneOpts =
+            []
+            ++ pruneOptions;
 
           extraBackupArgs = [ compressionMax ];
 
@@ -107,29 +124,23 @@ in
 
         amazon = {
           initialize = true;
-          # for syncthing versioning
-          exclude = [
-            "**/.stversions/**"
-            "${config.services.immich.mediaLocation}/thumbs/**"
-            "${config.services.immich.mediaLocation}/encoded-video/**"
-          ];
+          exclude =
+            []
+            ++ backupExclude;
 
           repositoryFile = config.sops.secrets."restic/amazon/repositoryPathFile".path;
           rcloneConfigFile = config.sops.secrets."restic/amazon/rcloneConfigFile".path;
           passwordFile = config.sops.secrets."restic/amazon/passwordFile".path;
 
-          paths = [
-            "${config.custom.services.syncthing.syncDir}"
-            "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
-            "${config.services.immich.mediaLocation}"
-            "${config.services.paperless.exporter.directory}"
-          ];
+          paths =
+            [
+              "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+            ]
+            ++ backupPaths;
 
-          pruneOpts = [
-            pruneDaily
-            pruneWeekly
-            pruneYearly
-          ];
+          pruneOpts =
+            []
+            ++ pruneOptions;
 
           extraBackupArgs = [ compressionMax ];
 
