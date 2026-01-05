@@ -75,6 +75,7 @@ in
       package = pkgs.calibre-web;
       user = "calibre-web";
       group = config.customGlobal.mediaGroup;
+      dataDir = "/var/lib/calibre-web";
       listen = {
         ip = "${config.customGlobal.anyIPv4}";
         port = 8083;
