@@ -52,6 +52,7 @@ in
     ./navi.nix
     ./tealdeer.nix
     ./pay-respects.nix
+    ./zathura.nix
 
     # scripts
     ./scripts/i3-monitor.nix
@@ -90,6 +91,7 @@ in
       services.dunst.enable = true;
       programs.firefox.enable = true;
       programs.ghostty.enable = true;
+      programs.zathura.enable = true;
     })
 
     (lib.mkIf (g.core.enable or false) {
