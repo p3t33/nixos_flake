@@ -3,8 +3,8 @@
 Personal [NixOS] configurations utilizing [home-manager] both as an integrated OS module and
 standalone for generic GNU/Linux systems, structured using a flake. This repository contains
 configuration files tailored specifically to manage my desktop environments and dedicated homelab
-infrastructure. It aims to simplify and automate deployment and maintenance, streamlining
-operations across my desktops and homelab.
+infrastructure(nas, xmr miner, virtual machines, and home assistant). It aims to simplify and automate deployment
+and maintenance, streamlining operations across my desktops and homelab.
 
 
 > [!IMPORTANT]
@@ -23,6 +23,8 @@ operations across my desktops and homelab.
 - Multiple machines are defined with emphasis on shared code between them
 in order to achieve consistency and to avoid code repeat where possible. With
 each machine having its own separate responsibility.
+- [Import all and enable pattern](https://kobimedrish.com/posts/scaling_nixos_with_import_all_and_enable_pattern/) has been implemented for scaling the number
+of machines a simple task.
 - Work flow is heavily skewed towards the use of the keyboard and the terminal.
 Some keyboard bindings may look strange but they are effected by the fact
 that I am using a programmable keyboard(configurations in
@@ -32,18 +34,22 @@ that I am using a programmable keyboard(configurations in
 dotfiles to the possible extent.
 
 # Highlights
-- Multiple machines configurations using [home-manager] as a NixOS module, allowing for
+- Multiple machine configurations using [home-manager] as a NixOS module, allowing for
   shared configurations across systems, with an option for standalone home-manager
   configurations to be used on generic Linux machines, such as Ubuntu.
+- Configurations wrapped inside an enable options, and aggregated into profiles,
+allowing fast and easy way to build assemble machines.
 - Secrets deployment using [sops-nix]. Handling secrets on OS level and on home-manger level.
 - Extensively configured xorg and terminal environment.
-- Configuration for KVM, VirtualBox, and docker.
+- Virtualization configurations for KVM, VirtualBox, and docker.
 - Integration of [disko] to partition hard drives during NixOS installing
   and to create /etc/fstab.
 - Some of the machines use zfs.
+- Much effort was put into making all of my services preconfigured, so once a fresh
+installation is made everything will "just work".
 
 # My Desktops
-![My i3 Desktop](snapshots/desktop.png)
+![My i3 Desktops](snapshots/desktop.png)
 ## Daily Driver Software
 - **Desktop**: xorg with i3 and polybar.
 - **Launcher**: Rofi.
@@ -66,8 +72,46 @@ dotfiles to the possible extent.
   I used it to rsync files I changed locally to a remote automatically.
 - **moolticuted**: a daemon used to interact with mooltipass the hardware password manager.
 
-# nas
+# Homelab
+## NAS
 ![nas](snapshots/nas.png)
+Storing all my data and media on a zfs mirror(set on two hard drives) is just the tip of the
+responsibility of this server,
+- syncthing: acts as the main node for all my synchronization needs.
+- **nginx**: provides secure access to all the services running on the machine.
+- **adguard** home: acts as the DNS service for my entire home network, and ad blocker.
+- **jellyfin**: acts as my home media center along with services such as sonarr, raddar, deglue
+torrent service, and sabnzbd usenet client.
+- **gatus**: responsible for notifying me(via telegram) about services and
+websites(like my website [kobimedrish]) going down.
+- **samba**: provides a folder that is accessible over the network.
+- **calibre-web**: manages self hosted books collection.
+- **paperless-ngx**: manages digitized documents.
+- **immich**: manages self hosted images.
+- **n8n**: automation.
+- **restic**: responsible for periodically backing up all of my important data in an
+incremental way, creating local and remote backups.
+- **homepage-dashboard**: web gui with all the important services on the machine and
+network, with green dot for status and widget for extra information.
+
+## home-assistant
+Responsible to host the home-assistant and to mange all my smart home devices
+over zigbee protocol.
+
+- **home-assistant**: is a home automation platform.
+- **zigbee2mqtt**: acts as a bridge between zigbee devices and MQTT messages.
+- **mosquitto**: enables communication between zigbee devices and home-assistant.
+
+## sisyphus-miner
+Is fully declared to to mine xmr once installed on a new machine.
+
+- **monero**: is the service responsible for communication with the monero block chain.
+- **p2pool**: is the pool that provides the miner work to do.
+- **xmrig**: is the miner responsible for doing the actual computational work.
+
+## kvm-nixos-server
+A headless virtual machine for to play with to use for development purposes.
+
 
 # Repo Structure
 - **flake.nix**: The entry point for machines and home configurations.
@@ -81,11 +125,13 @@ then be including by the various machines to achieve code reuse.
 - **wallpaper**: self explanatory :)
 
 # ToDo
-- [ ] I am not sure that emacs systemd unit can communicate with ssh-agnet, this is a very low
-      priority.
+- [ ] look into declaring home-assistant machine as much as possible.
+- [ ] Finish making sure that all the important data is being backed up with restic and that
+      it can be restored automatically from a remote backup on a fresh installation.
 - [ ] Look into automating home-manger installation as a stand alone on
       generic Linux using Ansible.
-
+- [ ] I am not sure that emacs systemd unit can communicate with ssh-agnet, this is a very low
+      priority.
 <!-- variables -->
 [NixOS]: <https://nixos.org>
 [home-manager]: <https://github.com/nix-community/home-manager/>
@@ -93,3 +139,4 @@ then be including by the various machines to achieve code reuse.
 [disko]: <https://github.com/nix-community/disko>
 [sops-nix]: <https://github.com/Mic92/sops-nix>
 [nixos-anywhere]: <https://github.com/nix-community/nixos-anywhere>
+[kobimedrish]: <https://kobimedrish.com/>
