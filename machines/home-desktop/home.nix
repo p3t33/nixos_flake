@@ -9,6 +9,7 @@
 
   custom = {
     programs.gitCommitSignaturesWithGpg.enable = true;
+    programs.aichat.enable = true;
 
     profiles.homeManager = {
       core.enable = true;

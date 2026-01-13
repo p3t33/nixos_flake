@@ -62,6 +62,7 @@ in
     ./scripts/cheat-sh.nix
 
     ./emacs
+    ./aichat.nix
   ];
 
   options.custom.profiles.homeManager = lib.mkOption {
