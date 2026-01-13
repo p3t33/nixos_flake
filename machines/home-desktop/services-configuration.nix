@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
 
   imports = [
@@ -9,6 +9,10 @@
   services = {
     syncthing.enable = true;
     trezord.enable = true;
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-cpu;
+    };
   };
 
   custom = {

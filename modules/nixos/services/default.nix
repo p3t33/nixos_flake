@@ -67,6 +67,7 @@ in
     ./xmrig.nix
 
     ./imminch.nix
+    ./ollama.nix
   ];
 
   options.custom.profiles.systemServices = lib.mkOption {
