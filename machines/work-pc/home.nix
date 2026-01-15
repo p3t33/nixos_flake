@@ -6,6 +6,7 @@
 
 
   programs.gpg.enable = true;
+  programs.aider-chat.enable = true;
 
   custom = {
     programs.gitCommitSignaturesWithGpg.enable = true;
