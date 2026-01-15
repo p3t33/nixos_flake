@@ -63,6 +63,7 @@ in
 
     ./emacs
     ./aichat.nix
+    ./aider.nix
   ];
 
   options.custom.profiles.homeManager = lib.mkOption {
