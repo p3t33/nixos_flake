@@ -6,15 +6,14 @@
   ];
 
   programs.gpg.enable = true;
-  programs.aider-chat.enable = true;
 
   custom = {
     programs.gitCommitSignaturesWithGpg.enable = true;
-    programs.aichat.enable = true;
 
     profiles.homeManager = {
       core.enable = true;
       desktop.enable = true;
+      ai.enable = true;
     };
 
     file.smartcardPublicKey = {

@@ -116,6 +116,12 @@ in
       programs.pay-respects.enable = true;
       custom.scripts.cheatSh.enable = true;
     })
+
+    (lib.mkIf (g.ai.enable or false) {
+      custom.programs.aichat.enable = true;
+      programs.aider-chat.enable = true;
+    })
+
   ];
 }
 
