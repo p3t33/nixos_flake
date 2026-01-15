@@ -3,6 +3,8 @@ let
   cfg = config.custom.programs.aichat;
 in
 {
+  # Can be used both with local models(via ollama) and with remote once.
+  # intended for level 1(prompt) and 2(file scoped) models(as described in ollama.nix file).
   options.custom.programs.aichat.enable = lib.mkEnableOption "Enable aichat (local Ollama backend)";
 
   config = lib.mkIf cfg.enable {
