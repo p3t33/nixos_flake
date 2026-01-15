@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   cfg = config.services.ollama;
 in
@@ -57,9 +57,9 @@ in
       # - Maintains state across steps via the controlling tool.
       # - Does not load the entire repository, instead decides what to inspect.
       loadModels = [
-        "llama3:8b"          # level 1.
-        "qwen2.5-coder:14b"  # level 2.
-        "devstral"           # level 3.
+        config.customGlobal.AIDefaultModels.prompt  # level 1.
+        config.customGlobal.AIDefaultModels.fileScoped   # level 1.
+        config.customGlobal.AIDefaultModels.agent # level 1.
         # "devstral-small-2"   # level 3 - needs newer version of ollama.
       ];
 

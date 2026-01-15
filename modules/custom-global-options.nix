@@ -79,6 +79,16 @@
         description = "Fonts to be used on the system";
       };
 
+      AIDefaultModels = lib.mkOption {
+        default = {
+          prompt = "llama3:8b";
+          fileScoped = "qwen2.5-coder:14b";
+          agent = "devstral";
+        };
+        type = lib.types.attrsOf lib.types.str;
+        description = "Fonts to be used on the system";
+      };
+
       # shared between home-manger and nixos and multiple hosts
       sshPublicKeys = lib.mkOption {
           default = {
