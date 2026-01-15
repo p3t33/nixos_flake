@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, osConfig, ... }:
 let
   cfg = config.custom.programs.aichat;
 in
@@ -11,18 +11,18 @@ in
     home.packages = [ pkgs.aichat ];
 
     programs.zsh.shellAliases = {
-      ai = "aichat --model ollama:llama3:8b";
+      ai = "aichat --model ollama:${config.customGlobal.AIDefaultModels.prompt}";
     };
 
     xdg.configFile."aichat/config.yaml".text = ''
-      model: ollama:llama3:8b
+      model: ollama:${config.customGlobal.AIDefaultModels.prompt}
       clients:
       - type: openai-compatible
         name: ollama
-        api_base: http://127.0.0.1:11434/v1
+        api_base: http://${osConfig.services.ollama.host}:${builtins.toString osConfig.services.ollama.port}/v1
         api_key: ollama
         models:
-        - name: llama3:8b
+        - name: ${config.customGlobal.AIDefaultModels.prompt}
         '';
   };
 }
