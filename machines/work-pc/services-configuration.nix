@@ -1,13 +1,21 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
 
   imports = [
     ../../modules/nixos/services # imported via default.nix
+    ../../modules/nixos/custom-global-options/networking.nix
   ];
 
   virtualisation.virtualbox.host.enable = true;
-  services.fwupd.enable = true;
-  services.syncthing.enable = true;
+  services = {
+    fwupd.enable = true;
+    syncthing.enable = true;
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-cuda;
+    };
+  };
+
   programs.adb.enable = true;
 
   custom = {
