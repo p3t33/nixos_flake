@@ -22,8 +22,8 @@ in
         # gpg-agent as a ssh-agnet.
         Environment = "SSH_AUTH_SOCK=/run/user/%U/gnupg/S.gpg-agent.ssh";
         Type = "forking";
-        Restart = "always";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; exec ${pkgs.watchman}/bin/watchman'";
+        Restart = "on-failure";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; ${pkgs.watchman}/bin/watchman'";
         ExecStop = "${pkgs.watchman}/bin/watchman shutdown-server";
       };
 
