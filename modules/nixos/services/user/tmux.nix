@@ -16,8 +16,8 @@ in
       # just add -l(E.g bash -cl "...").
       serviceConfig = {
         Type = "forking";
-        Restart = "always";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; exec ${pkgs.tmux}/bin/tmux start-server'";
+        Restart = "on-failure";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; ${pkgs.tmux}/bin/tmux start-server'";
         ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
       };
 
