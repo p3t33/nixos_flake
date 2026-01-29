@@ -69,9 +69,12 @@
         description = "The relative path to the SOPS key file";
       };
 
+      # To get the list of all avaliable fonts
+      #
+      # fc-list : family | sort -u
       font = lib.mkOption {
         default = {
-          mono = "JetBrainsMono Nerd Font";
+          mono = "JetBrainsMono Nerd Font Mono";
           serif = "DejaVu Serif";
           sansSerif = "DejaVu Sans";
         };
