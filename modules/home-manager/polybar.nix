@@ -18,9 +18,28 @@ let
   ws4Icon = "${config.custom.i3.workspacesIcons.chrome}";
   ws5Icon = "${config.custom.i3.workspacesIcons.terminal}";
   ws6Icon = "${config.custom.i3.workspacesIcons.buildserver}";
-  ws8Icon = "${config.custom.i3.workspacesIcons.vm}";
+  ws8Icon = "${config.custom.i3.workspacesIcons.default}";
+  defaultIcon = "${config.custom.i3.workspacesIcons.default}";
 in
 {
+  options.custom.polybar = {
+    enableWlan = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the wlan module in polybar.";
+    };
+    enableBattery = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the battery module in polybar.";
+    };
+    enableAllenTxTime = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable the Allen, TX time module in polybar.";
+    };
+  };
+
   config = lib.mkIf config.services.polybar.enable {
     services.polybar = {
       package = pkgs.polybar.override {
@@ -53,7 +72,13 @@ in
           font-0 = "${config.customGlobal.font.mono}:style=Regular:size=15;4";
           # Just sticking them together in the center for now
           modules-left = "i3";
-          modules-right = "filesystem memory cpu wlan battery volume date allen_tx ";
+          modules-right = lib.strings.concatStringsSep " " ([
+            "filesystem" "memory" "cpu"
+          ]
+          ++ (lib.optionals config.custom.polybar.enableWlan [ "wlan" ])
+          ++ (lib.optionals config.custom.polybar.enableBattery [ "battery" ])
+          ++ [ "volume" "date" ]
+          ++ (lib.optionals config.custom.polybar.enableAllenTxTime [ "allen_tx" ]));
           #modules-center = "i3";
 
           cursor-click = "pointer";
@@ -91,17 +116,17 @@ in
           # Default: false
           fuzzy-match = true;
 
-          icon-0 = "${ws10};";
+          icon-0 = "${ws10};${defaultIcon}";
           icon-1 = "${ws1};${ws1Icon}";
           icon-2 = "${ws2};${ws2Icon}";
           icon-3 = "${ws3};${ws3Icon}";
           icon-4 = "${ws4};${ws4Icon}";
           icon-5 = "${ws5};${ws5Icon}";
           icon-6 = "${ws6};${ws6Icon}";
-          icon-7 = "${ws7};";
+          icon-7 = "${ws7};${defaultIcon}";
           icon-8 = "${ws8};${ws8Icon}";
-          icon-9 = "${ws9};";
-          icon-default = "";
+          icon-9 = "${ws9};${defaultIcon}";
+          icon-default = "${defaultIcon}";
 
           format = "<label-state>";
 
@@ -197,7 +222,7 @@ in
           format-padding = 2;
         };
         "module/volume" = {
-          type = "internal/volume";
+          type = "internal/alsa";
 
           #Volume display settings
           format-volume = "<ramp-volume> <label-volume>";
@@ -207,11 +232,6 @@ in
           ramp-volume-0 = "󰕿"; # Icon for low volume
           ramp-volume-1 = "󰖀"; # Icon for medium volume
           ramp-volume-2 = "󰕾"; # Icon for high volume
-
-          # Define volume mixer control
-          master-mixer = "Master";
-          mixer = "default";
-          mixer-idx = 0;
 
           #Color customization (optional)
           label-volume-foreground = "${config.customGlobal.colors.foreground}";
@@ -271,17 +291,17 @@ in
 
           # ws-icon-[0-9]+ = <label>;<icon>
           # NOTE: The <label> needs to match the name of the i3 workspace
-          ws-icon-0 = "${ws10};";
+          ws-icon-0 = "${ws10};${defaultIcon}";
           ws-icon-1 = "${ws1};${ws1Icon}";
           ws-icon-2 = "${ws2};${ws2Icon}";
           ws-icon-3 = "${ws3};${ws3Icon}";
           ws-icon-4 = "${ws4};${ws4Icon}";
           ws-icon-5 = "${ws5};${ws5Icon}";
           ws-icon-6 = "${ws6};${ws6Icon}";
-          ws-icon-7 = "${ws7};";
+          ws-icon-7 = "${ws7};${defaultIcon}";
           ws-icon-8 = "${ws8};${ws8Icon}";
-          ws-icon-9 = "${ws9};";
-          ws-icon-default = "";
+          ws-icon-9 = "${ws9};${defaultIcon}";
+          ws-icon-default = "${defaultIcon}";
 
           format = "<label-state> <label-mode>";
           label-dimmed-underline = "${config.customGlobal.colors.background}";
