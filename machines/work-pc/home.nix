@@ -22,5 +22,11 @@
     };
 
     desktop.wallpaper.name = "watchtower.png";
+
+    polybar = {
+      enableWlan = true;
+      enableBattery = true;
+      enableAllenTxTime = true;
+    };
   };
 }

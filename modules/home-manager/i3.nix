@@ -28,7 +28,7 @@ in
         chrome = "";
         terminal = "";
         buildserver = "";
-        vm = "";
+        default = "";
       };
       type = lib.types.attrsOf lib.types.str;
       description = "Icon definitions for workspace labels";
@@ -43,7 +43,7 @@ in
         ws5 = "5: ${config.custom.i3.workspacesIcons.buildserver} BuildServer";
         ws6 = "6: ${config.custom.i3.workspacesIcons.terminal} Terminal";
         ws7 = "7";
-        ws8 = "8: ${config.custom.i3.workspacesIcons.vm} VM";
+        ws8 = "8: ${config.custom.i3.workspacesIcons.default} VM";
         ws9 = "9: VPN";
         ws10 = "10";
       };
