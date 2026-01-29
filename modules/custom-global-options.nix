@@ -69,11 +69,14 @@
         description = "The relative path to the SOPS key file";
       };
 
+      # To get the list of all avaliable fonts
+      #
+      # fc-list : family | sort -u
       font = lib.mkOption {
         default = {
-          mono = "JetBrainsMono Nerd Font";
-          serif = "DejaVu Serif";
-          sansSerif = "DejaVu Sans";
+          mono = "JetBrainsMono Nerd Font Mono";  # Monospaced: every character same width (i == w). Used for code/terminal
+          serif = "DejaVu Serif";  # Proportional with decorative strokes/feet on letters (i < w). Example: Times New Roman. Used for formal documents
+          sansSerif = "UbuntuSans Nerd Font";  # Proportional without decorative strokes (i < w). Example: Arial/Ubuntu. Used for modern UI/reading
         };
         type = lib.types.attrsOf lib.types.str;
         description = "Fonts to be used on the system";

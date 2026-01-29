@@ -24,15 +24,15 @@ in
       ;; Font settings
       ;; ============
       (set-face-attribute 'default nil
-          :font "JetBrainsMono Nerd Font"
+          :font "${config.customGlobal.font.mono}"
           :height 110
           :weight 'medium)
       (set-face-attribute 'variable-pitch nil
-          :font "Ubuntu Nerd Font"
+          :font "${config.customGlobal.font.sansSerif}"
           :height 120
           :weight 'medium)
       (set-face-attribute 'fixed-pitch nil
-          :font "JetBrainsMono Nerd Font"
+          :font "${config.customGlobal.font.mono}"
           :height 110
           :weight 'medium)
       ;; Makes commented text and keywords italics.
