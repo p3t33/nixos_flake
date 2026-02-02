@@ -20,7 +20,10 @@
 
     networking = {
       bridgedInterface.enable = true;
-      usb0StaticIp.enable = true;
+      interfaces = {
+        usbeth0.enable = true;
+        alpha-sniffer.enable = true;
+      };
     };
 
     systemStateVersion = "24.05";

@@ -37,7 +37,7 @@ in
     ./networking/networkmanager.nix
     ./networking/hostname.nix
     ./networking/br0_interface.nix
-    ./networking/usb0.nix
+    ./networking/interfaces
 
     ./security/nitrokey.nix
     ./security/solokey2.nix
