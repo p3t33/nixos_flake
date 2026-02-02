@@ -184,6 +184,14 @@ in
       ];
 
       extraConfig = ''
+        # Enable focus events to allow applications running inside tmux to receive
+        # focus-in/focus-out notifications when switching between tmux panes/windows.
+        # This is essential for neovim's autoread functionality to work properly inside tmux.
+        # Without this, neovim won't automatically reload files that were modified externally
+        # (e.g., by AI coding assistants like Cursor, Aider, or other tools).
+        # With this enabled, files will auto-reload when you switch back to the tmux pane.
+        set -g focus-events on
+
         # This command is executed to address an edge case where after a fresh install of the OS no resurrect
         # directory exist which means that the continuum plugin will not work. And so without user
         # manually saving the first session(prfix + Ctrl+s) no resurrect-continuum will occur.
