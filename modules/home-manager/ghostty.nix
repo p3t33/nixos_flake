@@ -5,6 +5,11 @@
     programs.ghostty = {
       installBatSyntax = true;
       installVimSyntax = true;
+      
+      # Enable systemd integration for better performance and features
+      # See: https://ghostty.org/docs/linux/systemd
+      systemd.enable = true;
+      
       settings = {
         font-size = 16;
         window-decoration = "server";
@@ -20,7 +25,10 @@
         copy-on-select = "clipboard";
         app-notifications = "no-clipboard-copy";
 
-        theme = "nord";
+        # to list all avaliable themes(names might change like nord -> Nord).
+        #
+        # ghostty +list-themes 2>&1
+        theme = "Nord";
       };
     };
   };
