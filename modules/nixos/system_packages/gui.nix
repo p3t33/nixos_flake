@@ -50,6 +50,7 @@ in
       # comics readar
       foliate
       mcomix
+      code-cursor
     ];
   };
 }
