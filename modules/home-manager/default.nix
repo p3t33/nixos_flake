@@ -53,6 +53,7 @@ in
     ./tealdeer.nix
     ./pay-respects.nix
     ./zathura.nix
+    ./lnav.nix
 
     # scripts
     ./scripts/i3-monitor.nix
@@ -114,6 +115,7 @@ in
       programs.navi.enable = true;
       programs.tealdeer.enable = true;
       programs.pay-respects.enable = true;
+      custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
     })
 
