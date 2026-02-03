@@ -22,7 +22,7 @@ in
         # Failed to attach to shared segment:  "QSharedMemoryPrivate::initKey: unable to set key on lock"
         ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
         ExecStart = "${pkgs.moolticute}/bin/moolticuted";
-        killMode = "process";
+        KillMode = "process";
         Restart = "always";
         User = "${hostSpecific.primeUsername}";
         # --- Why 'Group=' is Not Used ---
