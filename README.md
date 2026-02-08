@@ -10,14 +10,17 @@ and maintenance, streamlining operations across my desktops and homelab.
 > [!IMPORTANT]
 > Since I'm employing [sops-nix] for secret management (such as user password)
 > within this repository, complete deployment is not feasible without the necessary
-> encryption key. Consequently, certain configurations will not function properly.
+> encryption key. Consequently, you won"t be able to build machines in this repository
+> without some changes.
 >
-> Use this repository as a blueprint for setting up your own system. The individual
-> configuration files (such as tmux, neovim, etc.) can serve as a reference.
+> You will ether have to replace my secrets with yours, or remove the parts
+> that uses secrets, or do some mix of both. I strongly recommend reading my
+> post [Keeping Nix Secrets with Sops: Integration and Applications](https://kobimedrish.com/posts/keeping_nix_secrets_with_sops_integratoin_and_applictions/) to get
+> a better understanding how secrets are integrated into the configurations.
 >
-> If you still thinking using the repository "as is" then you will need to remove the
-> high level sops file(sops-configuration.nix) from the import list and editing the
-> password for the prime user.
+> You can always use this repository as a blueprint for setting up your own system.
+> be it for design and stricture or individual configuration files (such as tmux, neovim, etc.)
+> can serve as a reference.
 
 # Overall Design Philosophy
 - Multiple machines are defined with emphasis on shared code between them
