@@ -71,7 +71,7 @@
           export LIBVIRT_DEFAULT_URI="qemu:///system"
 
           echo "Checking current libvirt network state..."
-          output="$(${pkgs.libvirt}/bin/virsh net-list --all)"
+          output="$(${lib.getExe' pkgs.libvirt "virsh"} net-list --all)"
           echo "Output:"
           echo "$output"
           echo "---- end of virsh net-list --all ----"
@@ -84,19 +84,19 @@
             exit 0
           fi
 
-          state=$(echo "$state_line" | ${pkgs.gawk}/bin/awk '{print $2}')
-          autostart=$(echo "$state_line" | ${pkgs.gawk}/bin/awk '{print $3}')
+          state=$(echo "$state_line" | ${lib.getExe' pkgs.gawk "awk"} '{print $2}')
+          autostart=$(echo "$state_line" | ${lib.getExe' pkgs.gawk "awk"} '{print $3}')
 
           if [ "$state" != "active" ]; then
             echo "Starting default network..."
-            ${pkgs.libvirt}/bin/virsh net-start default
+            ${lib.getExe' pkgs.libvirt "virsh"} net-start default
           else
             echo "Default network already active."
           fi
 
           if [ "$autostart" != "yes" ]; then
             echo "Enabling autostart for default network..."
-            ${pkgs.libvirt}/bin/virsh net-autostart default
+            ${lib.getExe' pkgs.libvirt "virsh"} net-autostart default
           else
             echo "Autostart already enabled."
           fi

@@ -20,8 +20,8 @@ in
         Type = "simple";
         # handles some race conditions, without this sleep, service fails with:
         # Failed to attach to shared segment:  "QSharedMemoryPrivate::initKey: unable to set key on lock"
-        ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
-        ExecStart = "${pkgs.moolticute}/bin/moolticuted";
+        ExecStartPre = "${lib.getExe' pkgs.coreutils "sleep"} 5";
+        ExecStart = "${lib.getExe' pkgs.moolticute "moolticuted"}";
         KillMode = "process";
         Restart = "always";
         User = "${hostSpecific.primeUsername}";

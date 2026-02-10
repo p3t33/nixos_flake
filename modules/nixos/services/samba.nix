@@ -70,9 +70,9 @@
           set -euo pipefail
 
           echo "Checking for existing Samba user: ${hostSpecific.primeUsername}"
-          if ! ${pkgs.samba}/bin/pdbedit -L | grep -q '^${hostSpecific.primeUsername}:'; then
+          if ! ${lib.getExe' pkgs.samba "pdbedit"} -L | grep -q '^${hostSpecific.primeUsername}:'; then
             echo "Importing Samba user ${hostSpecific.primeUsername}..."
-            ${pkgs.samba}/bin/pdbedit \
+            ${lib.getExe' pkgs.samba "pdbedit"} \
               -i smbpasswd:${config.sops.secrets.smbpasswd.path} \
               -e tdbsam:/var/lib/samba/private/passdb.tdb
             echo "Samba user ${hostSpecific.primeUsername} imported successfully."

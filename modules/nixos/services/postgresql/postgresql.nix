@@ -135,7 +135,7 @@ in
        Type = "oneshot";
        User = config.systemd.services.postgresql.serviceConfig.User;
        ExecStart = pkgs.writeShellScript "set-non-peer-passwords" ''
-         ${pkgs.postgresql}/bin/psql -U postgres -tA <<'EOF'
+         ${lib.getExe' pkgs.postgresql "psql"} -U postgres -tA <<'EOF'
            ${lib.optionalString config.services.gatus.enable ''
            DO $$
            DECLARE password TEXT;

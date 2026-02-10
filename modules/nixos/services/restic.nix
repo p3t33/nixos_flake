@@ -136,7 +136,7 @@ let
     lib.concatStringsSep "\n" (map (e: ''
       if [ -f "${e.src}" ]; then
         echo "SQLite snapshot: ${e.src} -> ${e.dst}"
-        ${pkgs.sqlite}/bin/sqlite3 "${e.src}" ".backup '${e.dst}'"
+        ${lib.getExe' pkgs.sqlite "sqlite3"} "${e.src}" ".backup '${e.dst}'"
       fi
     '') sqliteSnapshotEntries);
 

@@ -90,7 +90,7 @@ in
        :mode ("\\.plantuml\\'" . plantuml-mode)
        :config
        ;; Use executable for .plantuml file editing
-       (setq plantuml-executable-path "${pkgs.plantuml}/bin/plantuml")
+       (setq plantuml-executable-path "${lib.getExe pkgs.plantuml}")
        (setq plantuml-default-exec-mode 'executable)
 
        ;; Only add the preview-on-save hook in plantuml-mode buffers

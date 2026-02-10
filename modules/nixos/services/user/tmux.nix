@@ -17,8 +17,8 @@ in
       serviceConfig = {
         Type = "forking";
         Restart = "on-failure";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; ${pkgs.tmux}/bin/tmux start-server'";
-        ExecStop = "${pkgs.tmux}/bin/tmux kill-server";
+        ExecStart = "${lib.getExe' pkgs.bash "bash"} -c 'source ${config.system.build.setEnvironment} ; ${lib.getExe pkgs.tmux} start-server'";
+        ExecStop = "${lib.getExe pkgs.tmux} kill-server";
       };
 
       wantedBy = [ "default.target" ];

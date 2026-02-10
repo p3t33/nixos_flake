@@ -23,8 +23,8 @@ in
         Environment = "SSH_AUTH_SOCK=/run/user/%U/gnupg/S.gpg-agent.ssh";
         Type = "forking";
         Restart = "on-failure";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; ${pkgs.watchman}/bin/watchman'";
-        ExecStop = "${pkgs.watchman}/bin/watchman shutdown-server";
+        ExecStart = "${lib.getExe' pkgs.bash "bash"} -c 'source ${config.system.build.setEnvironment} ; ${lib.getExe pkgs.watchman}'";
+        ExecStop = "${lib.getExe pkgs.watchman} shutdown-server";
       };
 
       wantedBy = [ "default.target" ];

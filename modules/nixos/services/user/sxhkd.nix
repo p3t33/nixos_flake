@@ -12,8 +12,8 @@ in
       description = "Simple X Hotkey Daemon";
       serviceConfig = {
         # the -c source... is used to get $PATH so I can execute software such as rofi.
-        ExecStart = "${pkgs.bash}/bin/bash -c 'source ${config.system.build.setEnvironment} ; exec ${pkgs.sxhkd}/bin/sxhkd'";
-        ExecReload = "${pkgs.coreutils}/bin/kill -SIGUSR1 $MAINPID";
+        ExecStart = "${lib.getExe' pkgs.bash "bash"} -c 'source ${config.system.build.setEnvironment} ; exec ${lib.getExe pkgs.sxhkd}'";
+        ExecReload = "${lib.getExe' pkgs.util-linux "kill"} -SIGUSR1 $MAINPID";
         Restart = "always";
         RestartSec = "2s";
         Environment = [

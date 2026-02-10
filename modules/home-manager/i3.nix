@@ -72,7 +72,7 @@ in
         bars = [ ];
 
         # mod + d
-        menu = "${pkgs.rofi}/bin/rofi -modi drun -show drun";
+        menu = "${lib.getExe pkgs.rofi} -modi drun -show drun";
 
         # startup is divided into two "sections" backgournd commands and the start of gui applications.
         startup = [
@@ -86,25 +86,25 @@ in
           }
           # wallpaper.
           {
-            command = "${pkgs.nitrogen}/bin/nitrogen --set-scaled  ${config.xdg.configHome}/${config.custom.desktop.wallpaper.pathOut} --head=-1";
+            command = "${lib.getExe pkgs.nitrogen} --set-scaled  ${config.xdg.configHome}/${config.custom.desktop.wallpaper.pathOut} --head=-1";
             always = true;
             notification = false;
           }
           # togheter with udisks2 provides auto mount of thumb drives.
           {
-            command = "${pkgs.udiskie}/bin/udiskie";
+            command = "${lib.getExe' pkgs.udiskie "udiskie"}";
             always = true;
             notification = false;
           }
           {
-            command = "${pkgs.google-chrome}/bin/google-chrome-stable";
+            command = "${lib.getExe' pkgs.google-chrome "google-chrome-stable"}";
             always = false;
             notification = false;
           }
           # makes sure that firefox starts on ws1 and that when I log into the system it is the first thing I see on my main
           # screen, ready for work.
           {
-            command = "${pkgs.i3}/bin/i3-msg 'workspace number ${ws1}; exec --no-startup-id ${pkgs.firefox}/bin/firefox'";
+            command = "${lib.getExe' pkgs.i3 "i3-msg"} 'workspace number ${ws1}; exec --no-startup-id ${lib.getExe pkgs.firefox}'";
             always = false;
             notification = false;
           }

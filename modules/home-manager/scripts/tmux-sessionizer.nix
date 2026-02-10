@@ -22,7 +22,7 @@ let
     __get_existing_tmux_sessions()
     {
         # List tmux sessions and get the names
-        ${pkgs.tmux}/bin/tmux list-sessions -F "#{session_activity} #{session_name}" 2>/dev/null | sort -rn | awk '{print "\033[1;34m" $2 "\033[0m"}' || true
+        ${lib.getExe pkgs.tmux} list-sessions -F "#{session_activity} #{session_name}" 2>/dev/null | sort -rn | awk '{print "\033[1;34m" $2 "\033[0m"}' || true
     }
 
     _generate_list_of_existing_sessions_and_most_frequently_accessed_paths()
@@ -32,8 +32,8 @@ let
         # the order.
         {
             __get_existing_tmux_sessions
-            ${pkgs.zoxide}/bin/zoxide query --list
-        } | ${pkgs.fzf}/bin/fzf --ansi
+            ${lib.getExe pkgs.zoxide} query --list
+        } | ${lib.getExe pkgs.fzf} --ansi
 
     }
 
@@ -73,13 +73,13 @@ let
     # detach is one side effect).
     create_new_detached_tmux_session()
     {
-        ${pkgs.tmux}/bin/tmux  new-session -ds$1 -c $2
+        ${lib.getExe pkgs.tmux}  new-session -ds$1 -c $2
     }
 
     _is_session_name_already_exit()
     {
         # will return 1 if session does not exist
-        ${pkgs.tmux}/bin/tmux  has-session -t=$1 2> /dev/null;
+        ${lib.getExe pkgs.tmux}  has-session -t=$1 2> /dev/null;
         return $?
     }
 
@@ -90,20 +90,20 @@ let
                 create_new_detached_tmux_session $1 $2
             fi
 
-            ${pkgs.tmux}/bin/tmux  switch-client -t $1
+            ${lib.getExe pkgs.tmux}  switch-client -t $1
         else
             if ! _is_session_name_already_exit $1; then
                 create_new_detached_tmux_session $1 $2
             fi
 
-            ${pkgs.tmux}/bin/tmux  attach-session -t $1
+            ${lib.getExe pkgs.tmux}  attach-session -t $1
         fi
 
     }
 
     switch_to_the_requsted_session()
     {
-        ${pkgs.tmux}/bin/tmux  switch-client -t $1
+        ${lib.getExe pkgs.tmux}  switch-client -t $1
     }
 
 

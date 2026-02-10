@@ -67,12 +67,12 @@ in
         # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
         # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
         postSetup = ''
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s ${cfg.network} -o ${cfg.externalInterface} -j MASQUERADE
+          ${lib.getExe pkgs.iptables} -t nat -A POSTROUTING -s ${cfg.network} -o ${cfg.externalInterface} -j MASQUERADE
         '';
 
         # This undoes the above command
         postShutdown = ''
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.network} -o ${cfg.externalInterface} -j MASQUERADE
+          ${lib.getExe pkgs.iptables} -t nat -D POSTROUTING -s ${cfg.network} -o ${cfg.externalInterface} -j MASQUERADE
         '';
 
         privateKeyFile = config.sops.secrets.wireguard_key.path;

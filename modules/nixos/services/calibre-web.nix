@@ -44,19 +44,19 @@ in
 
             touch ${dummyBookPath}
             echo "Adding dummy book to trigger metadata.db creation"
-            ${pkgs.util-linux}/bin/runuser -u ${config.services.calibre-web.user} -- \
-              ${pkgs.calibre}/bin/calibredb add ${dummyBookPath} \
+            ${lib.getExe' pkgs.util-linux "runuser"} -u ${config.services.calibre-web.user} -- \
+              ${lib.getExe' pkgs.calibre "calibredb"} add ${dummyBookPath} \
               --with-library ${calibreLibraryPath}
             sleep 2
 
             echo "Find id of dummy book to be removed"
-            book_id=$(${pkgs.util-linux}/bin/runuser -u ${config.services.calibre-web.user} -- \
-              ${pkgs.calibre}/bin/calibredb list --with-library ${calibreLibraryPath} \
+            book_id=$(${lib.getExe' pkgs.util-linux "runuser"} -u ${config.services.calibre-web.user} -- \
+              ${lib.getExe' pkgs.calibre "calibredb"} list --with-library ${calibreLibraryPath} \
               | ${pkgs.gawk}/bin/awk '/calibre_dummy_book/{print $1}')
 
             if [ -n "$book_id" ]; then
-              ${pkgs.util-linux}/bin/runuser -u ${config.services.calibre-web.user} -- \
-                ${pkgs.calibre}/bin/calibredb remove "$book_id" --with-library ${calibreLibraryPath}
+              ${lib.getExe' pkgs.util-linux "runuser"} -u ${config.services.calibre-web.user} -- \
+                ${lib.getExe' pkgs.calibre "calibredb"} remove "$book_id" --with-library ${calibreLibraryPath}
               echo "Dummy book removed (id=$book_id)."
             else
               echo "No dummy book found to remove."

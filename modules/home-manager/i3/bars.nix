@@ -20,7 +20,7 @@ in
       # By default i3status will look for config files at specific paths.
       # I have a seperate file with definitions for i3status bar and it will
       # generate a config file for i3status to look at.
-      statusCommand = "${pkgs.i3status}/bin/i3status";
+      statusCommand = "${lib.getExe pkgs.i3status}";
       colors = {
         background = config.customGlobal.colors.bg;
         separator = "#757575";

@@ -55,7 +55,7 @@ in
       after = [ config.systemd.targets.network.name];
       wantedBy = [ config.systemd.targets.multi-user.name];
       serviceConfig = {
-        ExecStart = "${pkgs.qbittorrent-nox}/bin/qbittorrent-nox --webui-port=${toString cfg.port}";
+        ExecStart = "${lib.getExe pkgs.qbittorrent-nox} --webui-port=${toString cfg.port}";
         User = cfg.user;
         Restart = "always";
       };
