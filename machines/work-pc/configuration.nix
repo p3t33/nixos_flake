@@ -23,6 +23,13 @@
       interfaces = {
         usbeth0.enable = true;
         alpha-sniffer.enable = true;
+        svx = {
+          enable = true;
+          staticIp = {
+            enable = true;
+            address = "192.168.99.1/24";
+          };
+        };
       };
     };
 
