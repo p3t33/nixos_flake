@@ -36,6 +36,7 @@
     systemStateVersion = "24.05";
   };
 
+  hardware.i2c.enable = true;
   # As the intel GPU in this machine is too new to be officially supported by the i915 driver
   # it needs to be forced, if this is not done the main gpu won't work and this will cause bunch
   # of bad things, including the external monitors connected via the dock not to work.

@@ -37,6 +37,10 @@
       ${config.customGlobal.dataGroup} = {
         members = [ hostSpecific.primeUsername ];
       };
+
+      ${config.hardware.i2c.group} = {
+        members = [ hostSpecific.primeUsername ];
+      };
     };
   };
 }
