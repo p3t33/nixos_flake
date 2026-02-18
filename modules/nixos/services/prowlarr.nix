@@ -26,7 +26,7 @@ in
     postgresUserName = lib.mkOption {
       type = lib.types.str;
       default = "${serviceName}";
-      description = "Log DB name for Prowlarr. Null -> <user>_log.";
+      description = "PostgreSQL username for Prowlarr.";
     };
   };
 

@@ -49,13 +49,13 @@
       secretsPath = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/secrets;
         type = lib.types.path;
-        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        description = "Path to the machine-specific secrets directory";
       };
 
       databaseSecret = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/prowlarr.db;
         type = lib.types.path;
-        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        description = "Path to the Prowlarr database secret file";
       };
 
       sopsKeyPath = lib.mkOption {
@@ -84,7 +84,7 @@
           agent = "devstral";
         };
         type = lib.types.attrsOf lib.types.str;
-        description = "Fonts to be used on the system";
+        description = "Default AI models for different use cases";
       };
 
       # shared between home-manger and nixos and multiple hosts
@@ -104,7 +104,7 @@
                   (lib.types.attrsOf lib.types.str)
           ]);
 
-          description = "Default ports used by various services (single port or multiple ports per service, as strings)";
+          description = "SSH public keys for machines that need passwordless login";
       };
 
       pathToDataDirectory = lib.mkOption {
