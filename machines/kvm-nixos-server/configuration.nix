@@ -27,8 +27,6 @@
     '';
   };
 
-  system.stateVersion = "25.05";
-
   # Configure keymap in X11
   services.xserver = {
     xkb = {
