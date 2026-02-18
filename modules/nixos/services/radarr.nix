@@ -37,7 +37,7 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.customGlobal.mediaGroup} -"
+      "d ${config.customGlobal.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.customGlobal.mediaGroup} -"
     ];
 
     services.${serviceName} = {

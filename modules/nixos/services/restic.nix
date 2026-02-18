@@ -284,7 +284,7 @@ in
 
           paths =
             [
-              "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+              "${config.customGlobal.pathToDataDirectory}/pictures"
             ]
             ++ backupPaths;
 
@@ -315,7 +315,7 @@ in
 
           paths =
             [
-              "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/pictures"
+              "${config.customGlobal.pathToDataDirectory}/pictures"
             ]
             ++ backupPaths;
 

@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 let
-  calibreLibraryPath = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/calibre";
+  calibreLibraryPath = "${config.customGlobal.pathToMediaDirectory}/calibre";
   dummyBookPath = "/tmp/calibre_dummy_book.txt";
 in
 {

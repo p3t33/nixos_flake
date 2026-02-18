@@ -37,7 +37,7 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.customGlobal.mediaGroup} -"
+      "d ${config.customGlobal.pathToMediaDirectory}/tv 0770 ${config.services.sonarr.user} ${config.customGlobal.mediaGroup} -"
     ];
 
     # Enable the Sonarr service(as of now there is no config for default sonarr port)

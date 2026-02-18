@@ -10,7 +10,7 @@
       openFirewall = true;
 
       # Where photos/videos are stored
-      mediaLocation = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/immich";
+      mediaLocation = "${config.customGlobal.pathToMediaDirectory}/immich";
 
       # Creates postgres database.
       #

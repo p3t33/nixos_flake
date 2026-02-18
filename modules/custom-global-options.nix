@@ -112,6 +112,18 @@
           description = "Default ports used by various services (single port or multiple ports per service, as strings)";
       };
 
+      pathToDataDirectory = lib.mkOption {
+        default = "/data";
+        type = lib.types.str;
+        description = "Path to the data directory";
+      };
+
+      pathToMediaDirectory = lib.mkOption {
+        default = "/media";
+        type = lib.types.str;
+        description = "Path to the media directory";
+      };
+
       # shared between home-manger and nixos.
       syncthing = lib.mkOption {
         type = lib.types.submodule {

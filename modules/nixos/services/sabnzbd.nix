@@ -1,6 +1,6 @@
 {config, lib, hostSpecific, ...}:
 let
-  pathToUsenetDirectory = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/usenet";
+  pathToUsenetDirectory = "${config.customGlobal.pathToMediaDirectory}/usenet";
 in
 {
   options.custom.services.sabnzbd = {

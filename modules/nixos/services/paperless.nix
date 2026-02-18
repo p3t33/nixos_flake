@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  paperlessPath = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/paperless";
+  paperlessPath = "${config.customGlobal.pathToMediaDirectory}/paperless";
 in
 {
   config = lib.mkIf config.services.paperless.enable {

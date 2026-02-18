@@ -48,7 +48,7 @@
       restic.enable = true;
 
       syncthing = {
-        syncDir = "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/syncthing";
+        syncDir = "${config.customGlobal.pathToDataDirectory}/syncthing";
         user = "syncthing";
         simpleFileVersioningForBackUpMachinesOnly = {
           type = "simple";

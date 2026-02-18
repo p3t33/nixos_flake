@@ -3,7 +3,7 @@
   config = lib.mkIf config.services.deluge.enable {
 
     systemd.tmpfiles.rules = [
-      "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents 0770 ${config.services.deluge.user} ${config.customGlobal.mediaGroup} -"
+      "d ${config.customGlobal.pathToMediaDirectory}/torrents 0770 ${config.services.deluge.user} ${config.customGlobal.mediaGroup} -"
     ];
 
     services.deluge = {
@@ -28,7 +28,7 @@
       config = {
         # /mnt/media is a mount point with defined owner, and permissions
         # so I was getting warning when NixOS was switching.
-        download_location = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents";
+        download_location = "${config.customGlobal.pathToMediaDirectory}/torrents";
         max_active_seeding = 200;
         max_active_downloading = 200;
         max_active_limit = 200;
