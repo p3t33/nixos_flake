@@ -33,7 +33,7 @@ in
         enableOffloadCmd = true;
       };
 
-      # values in configurations(custom-global-options.nix) were found by executing lspci | grep -E 'VGA|3D'
+      # values in configurations(shared.nix) were found by executing lspci | grep -E 'VGA|3D'
       nvidiaBusId = config.custom.hardware.nvidiaHybridWithIntel.nvidiaBusId;
       intelBusId = config.custom.hardware.nvidiaHybridWithIntel.intelBusId;
     };

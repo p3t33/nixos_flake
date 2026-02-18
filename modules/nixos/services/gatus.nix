@@ -25,7 +25,7 @@ in
         storage = {
           type = "postgres";
           # passwrod for gatus postgresql database is stored inside of environmentFile provided to the gatus service.
-          path = "postgres://${config.systemd.services.gatus.serviceConfig.User}:\${GATUS_DB_PASSWORD}@${config.customGlobal.localHostIPv4}:${builtins.toString config.services.postgresql.settings.port}/${config.systemd.services.gatus.serviceConfig.User}?sslmode=disable";
+          path = "postgres://${config.systemd.services.gatus.serviceConfig.User}:\${GATUS_DB_PASSWORD}@${config.custom.shared.localHostIPv4}:${builtins.toString config.services.postgresql.settings.port}/${config.systemd.services.gatus.serviceConfig.User}?sslmode=disable";
           caching = true;
           maximum-number-of-results = 800;
           maximum-number-of-events = 50;
@@ -43,7 +43,7 @@ in
         };
 
         web = {
-          address = "${config.customGlobal.anyIPv4}"; # Listen on all interfaces
+          address = "${config.custom.shared.anyIPv4}"; # Listen on all interfaces
           port = 8081;
           root = "/gatus";
         };
@@ -70,7 +70,7 @@ in
           {
             name = "sshd";
             group = "${remoteAccess}";
-            url = "tcp://${config.customGlobal.localHostIPv4}:22";
+            url = "tcp://${config.custom.shared.localHostIPv4}:22";
             interval = "30s";
             conditions = [
               "[CONNECTED] == true"
@@ -91,7 +91,7 @@ in
           {
             name = "calibre-web";
             group = "${media}";
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.calibre-web.listen.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.calibre-web.listen.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [
@@ -109,7 +109,7 @@ in
           {
             name = "immich";
             group = "${remoteAccess}";
-            url = "tcp://${config.customGlobal.localHostIPv4}:${toString config.services.immich.port}";
+            url = "tcp://${config.custom.shared.localHostIPv4}:${toString config.services.immich.port}";
             interval = "30s";
             conditions = [
               "[CONNECTED] == true"
@@ -130,7 +130,7 @@ in
           {
             name = "paperless";
             group = "${remoteAccess}";
-            url = "tcp://${config.customGlobal.localHostIPv4}:${toString config.services.paperless.port}";
+            url = "tcp://${config.custom.shared.localHostIPv4}:${toString config.services.paperless.port}";
             interval = "30s";
             conditions = [
               "[CONNECTED] == true"
@@ -151,7 +151,7 @@ in
           {
             name = "n8n";
             group = "${remoteAccess}";
-            url = "tcp://${config.customGlobal.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
+            url = "tcp://${config.custom.shared.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
             interval = "30s";
             conditions = [
               "[CONNECTED] == true"
@@ -172,7 +172,7 @@ in
           {
             name = "deluge";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.deluge.web.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.deluge.web.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -188,7 +188,7 @@ in
           {
             name = "sabnzbd";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -204,7 +204,7 @@ in
           {
             name = "bazarr";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.bazarr.listenPort}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.bazarr.listenPort}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -220,7 +220,7 @@ in
           {
             name = "sonarr";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.sonarr.settings.server.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.sonarr.settings.server.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -236,7 +236,7 @@ in
           {
             name = "radarr";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.radarr.settings.server.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.radarr.settings.server.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -252,7 +252,7 @@ in
           {
             name = "prowlarr";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -268,7 +268,7 @@ in
           {
             name = "jackett";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.jackett.port}/favicon.ico";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.jackett.port}/favicon.ico";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -284,7 +284,7 @@ in
           {
             name = "jellyfin";
             group = media;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.servicePort.jellyfin}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.servicePort.jellyfin}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -300,7 +300,7 @@ in
           {
             name = "prometheus";
             group = monitoring;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.prometheus.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prometheus.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -316,7 +316,7 @@ in
           {
             name = "grafana";
             group = monitoring;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.grafana.settings.server.http_port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.grafana.settings.server.http_port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -332,7 +332,7 @@ in
           {
             name = "syncthing";
             group = files;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.custom.services.syncthing.httpPort}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.syncthing.httpPort}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -348,7 +348,7 @@ in
           {
             name = "adguard";
             group = filtering;
-            url = "http://${config.customGlobal.localHostIPv4}:${toString config.services.adguardhome.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.adguardhome.port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{

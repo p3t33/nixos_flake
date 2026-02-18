@@ -5,9 +5,9 @@ let
 in
 {
   imports = [
-    ../custom-global-options.nix # used both for nixos and home-manager
-    ./custom-global-options/networking.nix
-    ./custom-global-options/static-ip.nix
+    ../shared.nix # used both for nixos and home-manager
+    ./shared/networking.nix
+    ./shared/static-ip.nix
     ./auto_upgrade.nix
     ./dconf.nix
     ./defaults_for_system_build.nix

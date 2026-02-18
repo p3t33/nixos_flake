@@ -12,7 +12,7 @@
 
     gtk = {
       font = {
-        name = config.customGlobal.font.sansSerif;
+        name = config.custom.shared.font.sansSerif;
         size = 12;
       };
 

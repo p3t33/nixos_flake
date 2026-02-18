@@ -45,7 +45,7 @@ in
         };
 
         postgres = {
-          host   = "${config.customGlobal.localHostIPv4}";
+          host   = "${config.custom.shared.localHostIPv4}";
           port   = config.services.postgresql.settings.port;
           user   = "${config.custom.services.${serviceName}.postgresUserName}";
           maindb = "${config.custom.services.${serviceName}.mainDataBase}";

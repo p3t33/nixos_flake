@@ -37,13 +37,13 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d ${config.customGlobal.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.customGlobal.mediaGroup} -"
+      "d ${config.custom.shared.pathToMediaDirectory}/movies 0770 ${config.services.radarr.user} ${config.custom.shared.mediaGroup} -"
     ];
 
     services.${serviceName} = {
       openFirewall = true; # Opens Sonarr's port on the firewall (default 8989)
       user = "${serviceName}";
-      group = "${config.customGlobal.mediaGroup}";
+      group = "${config.custom.shared.mediaGroup}";
       settings = {
         server = {
           port = 7878;
@@ -51,7 +51,7 @@ in
         };
 
         postgres = {
-          host   = "${config.customGlobal.localHostIPv4}";
+          host   = "${config.custom.shared.localHostIPv4}";
           port   = config.services.postgresql.settings.port;
           user   = "${config.custom.services.${serviceName}.postgresUserName}";
           maindb = "${config.custom.services.${serviceName}.mainDataBase}";

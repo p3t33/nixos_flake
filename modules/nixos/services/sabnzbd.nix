@@ -1,6 +1,6 @@
 {config, lib, hostSpecific, ...}:
 let
-  pathToUsenetDirectory = "${config.customGlobal.pathToMediaDirectory}/usenet";
+  pathToUsenetDirectory = "${config.custom.shared.pathToMediaDirectory}/usenet";
 in
 {
   options.custom.services.sabnzbd = {
@@ -13,7 +13,7 @@ in
 
   config = lib.mkIf config.services.sabnzbd.enable {
     services.sabnzbd = {
-      group = config.customGlobal.mediaGroup;
+      group = config.custom.shared.mediaGroup;
       # configFile = "/var/lib/sabnzbd/sabnzbd.ini"; # will be created if not exist
       openFirewall = true;     # expose web interface port (8080 by default)
       # log_dir and admin_dir needs to be defined with absolute paths or they will try to write
@@ -22,9 +22,9 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d ${pathToUsenetDirectory} 0770 ${config.services.sabnzbd.user} ${config.customGlobal.mediaGroup} -"
-      "d ${pathToUsenetDirectory}/complete 0770 ${config.services.sabnzbd.user} ${config.customGlobal.mediaGroup} -"
-      "d ${pathToUsenetDirectory}/incomplete 0770 ${config.services.sabnzbd.user} ${config.customGlobal.mediaGroup} -"
+      "d ${pathToUsenetDirectory} 0770 ${config.services.sabnzbd.user} ${config.custom.shared.mediaGroup} -"
+      "d ${pathToUsenetDirectory}/complete 0770 ${config.services.sabnzbd.user} ${config.custom.shared.mediaGroup} -"
+      "d ${pathToUsenetDirectory}/incomplete 0770 ${config.services.sabnzbd.user} ${config.custom.shared.mediaGroup} -"
     ];
 
 
@@ -66,7 +66,7 @@ in
         auto_browser = 0
         language = en
         enable_https_verification = 1
-        host = "${config.customGlobal.anyIPv4}"
+        host = "${config.custom.shared.anyIPv4}"
         port = "${toString config.custom.services.sabnzbd.httpPort}"
         https_port = ""
         username = ""

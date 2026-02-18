@@ -13,7 +13,7 @@
     ../../modules/nixos # imported via default.nix
   ];
 
-  customGlobal.${hostSpecific.hostName}.ip = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}122";
+  custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}122";
 
   custom = {
     profiles.system = {
@@ -33,12 +33,12 @@
 
   # networking.interfaces.enp7s0.ipv4.addresses = [
   #   {
-  #     address = "${config.customGlobal.${hostSpecific.hostName}.ip}";
+  #     address = "${config.custom.shared.${hostSpecific.hostName}.ip}";
   #     prefixLength = 24;
   #   }
   # ];
   #
-  # networking.defaultGateway = "${config.customGlobal.${hostSpecific.hostName}.gateway}";
+  # networking.defaultGateway = "${config.custom.shared.${hostSpecific.hostName}.gateway}";
   # networking.nameservers = [ "8.8.8.8" ];
 
 
@@ -59,8 +59,8 @@
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
-      config.customGlobal.sshPublicKeys.home-desktop.key
-      config.customGlobal.sshPublicKeys.work-pc.key
+      config.custom.shared.sshPublicKeys.home-desktop.key
+      config.custom.shared.sshPublicKeys.work-pc.key
     ];
   };
 

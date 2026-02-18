@@ -12,12 +12,12 @@
   #  secrets = {
 
   #    "syncthing/key.pem" = {
-  #      path = "${config.customGlobal.syncthing.configDirectory}/key.pem";
+  #      path = "${config.custom.shared.syncthing.configDirectory}/key.pem";
   #      mode = "0600";
   #    };
 
   #    "syncthing/cert.pem" = {
-  #      path = "${config.customGlobal.syncthing.configDirectory}/cert.pem";
+  #      path = "${config.custom.shared.syncthing.configDirectory}/cert.pem";
   #      mode = "0600";
   #    };
   #  };

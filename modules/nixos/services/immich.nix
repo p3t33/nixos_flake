@@ -5,12 +5,12 @@
     services.immich = {
 
       # Where immich web gui listens
-      host = config.customGlobal.anyIPv4;
+      host = config.custom.shared.anyIPv4;
       port = 2283;
       openFirewall = true;
 
       # Where photos/videos are stored
-      mediaLocation = "${config.customGlobal.pathToMediaDirectory}/immich";
+      mediaLocation = "${config.custom.shared.pathToMediaDirectory}/immich";
 
       # Creates postgres database.
       #

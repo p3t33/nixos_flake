@@ -9,8 +9,8 @@ in
   # ./generic_linux_fonts.nix used by stand alone home-manger.
   imports = [
     ./session-variables.nix
-    ./custom-global-options/colors.nix
-    ../custom-global-options.nix
+    ./shared/colors.nix
+    ../shared.nix
 
     ./core.nix
     ./starship.nix

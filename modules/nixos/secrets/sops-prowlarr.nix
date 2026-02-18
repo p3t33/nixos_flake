@@ -5,11 +5,11 @@
   # prowlarr.db
   # sops.secrets.prowlarr-db = {
   #   format = "binary";
-  #   sopsFile = config.customGlobal.databaseSecret;
+  #   sopsFile = config.custom.shared.databaseSecret;
   # };
 
   sops.secrets.prowlarr-db = {
     format = "binary";
-    sopsFile = "${config.customGlobal.secretsPath}/nixos/prowlarr/prowlarr.db";
+    sopsFile = "${config.custom.shared.secretsPath}/nixos/prowlarr/prowlarr.db";
   };
 }

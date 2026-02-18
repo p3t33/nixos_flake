@@ -18,7 +18,7 @@
 
     file.smartcardPublicKey = {
       enable = true;
-      value = config.customGlobal.sshPublicKeys.work-pc.key;
+      value = config.custom.shared.sshPublicKeys.work-pc.key;
     };
 
     desktop.wallpaper.name = "watchtower.png";

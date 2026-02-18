@@ -24,15 +24,15 @@ in
       ;; Font settings
       ;; ============
       (set-face-attribute 'default nil
-          :font "${config.customGlobal.font.mono}"
+          :font "${config.custom.shared.font.mono}"
           :height 110
           :weight 'medium)
       (set-face-attribute 'variable-pitch nil
-          :font "${config.customGlobal.font.sansSerif}"
+          :font "${config.custom.shared.font.sansSerif}"
           :height 120
           :weight 'medium)
       (set-face-attribute 'fixed-pitch nil
-          :font "${config.customGlobal.font.mono}"
+          :font "${config.custom.shared.font.mono}"
           :height 110
           :weight 'medium)
       ;; Makes commented text and keywords italics.
@@ -46,7 +46,7 @@ in
       ;; This sets the default font on all graphical frames created after restarting Emacs.
       ;; Does the same thing as 'set-face-attribute default' above, but emacsclient fonts
       ;; are not right unless I also add this method of setting the default font.
-      (add-to-list 'default-frame-alist '(font . "${config.customGlobal.font.mono}-16"))
+      (add-to-list 'default-frame-alist '(font . "${config.custom.shared.font.mono}-16"))
       ;;================================
 
       ;; When used by other plugins, can hide thier

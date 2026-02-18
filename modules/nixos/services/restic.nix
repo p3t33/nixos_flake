@@ -228,7 +228,7 @@ in
       server = {
         enable = true;
         extraFlags = [ "--no-auth" ];
-        listenAddress = "${config.customGlobal.anyIPv4}:9005"; # Expose Restic API & metrics
+        listenAddress = "${config.custom.shared.anyIPv4}:9005"; # Expose Restic API & metrics
         prometheus = true; # Enable Prometheus metrics
         appendOnly = true; # Ensure backups are append-only for safty from being hacked.
       };
@@ -284,7 +284,7 @@ in
 
           paths =
             [
-              "${config.customGlobal.pathToDataDirectory}/pictures"
+              "${config.custom.shared.pathToDataDirectory}/pictures"
             ]
             ++ backupPaths;
 
@@ -315,7 +315,7 @@ in
 
           paths =
             [
-              "${config.customGlobal.pathToDataDirectory}/pictures"
+              "${config.custom.shared.pathToDataDirectory}/pictures"
             ]
             ++ backupPaths;
 

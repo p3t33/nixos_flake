@@ -18,7 +18,7 @@
 
     file.smartcardPublicKey = {
       enable = true;
-      value = config.customGlobal.sshPublicKeys.home-desktop.key;
+      value = config.custom.shared.sshPublicKeys.home-desktop.key;
     };
 
     desktop.wallpaper.name = "crane_at_night.png";

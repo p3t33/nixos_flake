@@ -7,10 +7,10 @@
   ];
 
   imports = [
-    ../../modules/custom-global-options.nix
+    ../../modules/shared.nix
     ./sops-home.nix
     ../../modules/home-manager/core.nix # enables home manger and sets the bare minimum.
-    #../../modules/home-manager/custom-global-options/colors.nix
+    #../../modules/home-manager/shared/colors.nix
     ../../modules/home-manager/session-variables.nix
     ../../modules/home-manager/starship.nix
     ../../modules/home-manager/fzf.nix
@@ -64,6 +64,6 @@
   programs.yazi.enable = true;
   programs.gpg.enable = true;
 
-  customGlobal.sopsKeyPath = "${config.customGlobal.primeUserHomeDirectory }/.config/sops/age/keys.txt";
+  custom.shared.sopsKeyPath = "${config.custom.shared.primeUserHomeDirectory }/.config/sops/age/keys.txt";
   targets.genericLinux.enable = true;
 }

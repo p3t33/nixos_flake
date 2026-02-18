@@ -17,7 +17,7 @@
 
     services.jellyfin = {
       openFirewall = true;
-      group = "${config.customGlobal.mediaGroup}";
+      group = "${config.custom.shared.mediaGroup}";
     };
   };
 }

@@ -11,18 +11,18 @@ in
     home.packages = [ pkgs.aichat ];
 
     programs.zsh.shellAliases = {
-      ai = "aichat --model ollama:${config.customGlobal.AIDefaultModels.prompt}";
+      ai = "aichat --model ollama:${config.custom.shared.AIDefaultModels.prompt}";
     };
 
     xdg.configFile."aichat/config.yaml".text = ''
-      model: ollama:${config.customGlobal.AIDefaultModels.prompt}
+      model: ollama:${config.custom.shared.AIDefaultModels.prompt}
       clients:
       - type: openai-compatible
         name: ollama
         api_base: http://${osConfig.services.ollama.host}:${builtins.toString osConfig.services.ollama.port}/v1
         api_key: ollama
         models:
-        - name: ${config.customGlobal.AIDefaultModels.prompt}
+        - name: ${config.custom.shared.AIDefaultModels.prompt}
         '';
   };
 }

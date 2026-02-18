@@ -5,7 +5,7 @@
       options = {
         selection-clipboard = "clipboard";
         selection-notification = false;
-        font = "${config.customGlobal.font.mono} normal 16";
+        font = "${config.custom.shared.font.mono} normal 16";
         scroll-page-aware = true;
 
         recolor = false; # start OFF, toggle with a key

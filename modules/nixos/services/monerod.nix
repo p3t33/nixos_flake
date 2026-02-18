@@ -20,7 +20,7 @@ in
       rpc.port = 18081;
       extraConfig = ''
         prune-blockchain=1
-        zmq-pub=tcp://${config.customGlobal.localHostIPv4}:${toString config.custom.monerod.zmqPort}
+        zmq-pub=tcp://${config.custom.shared.localHostIPv4}:${toString config.custom.monerod.zmqPort}
         out-peers=32
         in-peers=64
         disable-dns-checkpoints=1

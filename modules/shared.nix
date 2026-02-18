@@ -1,9 +1,5 @@
-# The custom-global-options.nix was created in order to encapsulate variables with same values
-# that are being set across multiple files. Some of the values are
-# evaluated "dynamically" via an if statement based on the value that machines
-# sets for its hostname.
-# The custom-global-options.nix was created to encapsulate variables with the same values
-# that are being set across multiple files.
+# Shared options consumed by multiple configuration files.
+# Some values are derived from the machine's hostname.
 {
   config,
   pkgs,
@@ -12,8 +8,7 @@
   ...
 }:
 {
-  options = {
-    customGlobal = {
+  options.custom.shared = {
       fontPackages = lib.mkOption {
         default = [
           pkgs.powerline-fonts
@@ -130,7 +125,7 @@
           options = {
 
             syncDir = lib.mkOption {
-              default = "${config.customGlobal.primeUserHomeDirectory}/Sync";
+              default = "${config.custom.shared.primeUserHomeDirectory}/Sync";
               type = lib.types.str;
               description = "Defines the Syncthing sync directory";
             };
@@ -140,5 +135,4 @@
         description = "Syncthing related configuration";
         };
     };
-  };
 }

@@ -3,9 +3,8 @@
   ...
 }:
 {
-  options = {
-    customGlobal = {
-      colors = lib.mkOption {
+  options.custom.shared = {
+    colors = lib.mkOption {
         type = lib.types.attrsOf lib.types.str;
         default = {
           background = "#312f2f";
@@ -21,8 +20,7 @@
           inactive-text = "#676E70";
           urgent-bg = "#E53935";
         };
-        description = "Defines the color palette for the user interface";
-      };
+      description = "Defines the color palette for the user interface";
     };
   };
 }

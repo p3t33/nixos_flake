@@ -34,7 +34,7 @@
   };
 
   systemd.tmpfiles.rules = lib.mkIf config.services.syncthing.enable [
-      "d ${config.custom.services.syncthing.syncDir} 0770 ${config.services.syncthing.user} ${config.customGlobal.dataGroup} -"
+      "d ${config.custom.services.syncthing.syncDir} 0770 ${config.services.syncthing.user} ${config.custom.shared.dataGroup} -"
   ];
 
   custom = {
@@ -48,7 +48,7 @@
       restic.enable = true;
 
       syncthing = {
-        syncDir = "${config.customGlobal.pathToDataDirectory}/syncthing";
+        syncDir = "${config.custom.shared.pathToDataDirectory}/syncthing";
         user = "syncthing";
         simpleFileVersioningForBackUpMachinesOnly = {
           type = "simple";

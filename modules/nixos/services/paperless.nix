@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  paperlessPath = "${config.customGlobal.pathToMediaDirectory}/paperless";
+  paperlessPath = "${config.custom.shared.pathToMediaDirectory}/paperless";
 in
 {
   config = lib.mkIf config.services.paperless.enable {
@@ -11,7 +11,7 @@ in
     services.paperless = {
       # This is the default package, I state this for readability.
       package = pkgs.paperless-ngx;
-      address = config.customGlobal.anyIPv4;
+      address = config.custom.shared.anyIPv4;
       port = 28981;
       database.createLocally = true;
       environmentFile = config.sops.secrets.paperless-ngx-env.path;
@@ -44,10 +44,10 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d ${paperlessPath} 0770 ${config.services.paperless.user} ${config.customGlobal.mediaGroup} -"
-      "d ${config.services.paperless.mediaDir} 0770 ${config.services.paperless.user} ${config.customGlobal.mediaGroup} -"
-      "d ${config.services.paperless.consumptionDir} 0770 ${config.services.paperless.user} ${config.customGlobal.mediaGroup} -"
-      "d ${config.services.paperless.exporter.directory} 0770 ${config.services.paperless.user} ${config.customGlobal.mediaGroup} -"
+      "d ${paperlessPath} 0770 ${config.services.paperless.user} ${config.custom.shared.mediaGroup} -"
+      "d ${config.services.paperless.mediaDir} 0770 ${config.services.paperless.user} ${config.custom.shared.mediaGroup} -"
+      "d ${config.services.paperless.consumptionDir} 0770 ${config.services.paperless.user} ${config.custom.shared.mediaGroup} -"
+      "d ${config.services.paperless.exporter.directory} 0770 ${config.services.paperless.user} ${config.custom.shared.mediaGroup} -"
     ];
 
     networking.firewall.allowedTCPPorts = [ config.services.paperless.port ];

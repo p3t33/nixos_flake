@@ -59,7 +59,7 @@ in
         defaultWorkspace = "workspace number 1";
 
         fonts = {
-          names = [ config.customGlobal.font.sansSerif ];
+          names = [ config.custom.shared.font.sansSerif ];
           # There is also an option to set style for the font
           # style = "Bold Italic";
           size = 20.0;
@@ -237,27 +237,27 @@ in
 
         colors = {
           focused = {
-            text = config.customGlobal.colors.text;
-            background = config.customGlobal.colors.background-alt;
-            border = config.customGlobal.colors.primary;
-            childBorder = config.customGlobal.colors.primary;
-            indicator = config.customGlobal.colors.alert;
+            text = config.custom.shared.colors.text;
+            background = config.custom.shared.colors.background-alt;
+            border = config.custom.shared.colors.primary;
+            childBorder = config.custom.shared.colors.primary;
+            indicator = config.custom.shared.colors.alert;
           };
 
           focusedInactive = {
-            text = config.customGlobal.colors.inactive-text;
-            background = config.customGlobal.colors.inactive-bg;
-            border = config.customGlobal.colors.inactive-bg;
-            childBorder = config.customGlobal.colors.secondary;
-            indicator = config.customGlobal.colors.alert;
+            text = config.custom.shared.colors.inactive-text;
+            background = config.custom.shared.colors.inactive-bg;
+            border = config.custom.shared.colors.inactive-bg;
+            childBorder = config.custom.shared.colors.secondary;
+            indicator = config.custom.shared.colors.alert;
           };
 
           unfocused = {
-            text = config.customGlobal.colors.inactive-text;
-            background = config.customGlobal.colors.inactive-bg;
-            border = config.customGlobal.colors.background;
-            childBorder = config.customGlobal.colors.background;
-            indicator = config.customGlobal.colors.alert;
+            text = config.custom.shared.colors.inactive-text;
+            background = config.custom.shared.colors.inactive-bg;
+            border = config.custom.shared.colors.background;
+            childBorder = config.custom.shared.colors.background;
+            indicator = config.custom.shared.colors.alert;
           };
         };
 

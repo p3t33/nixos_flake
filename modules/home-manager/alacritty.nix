@@ -13,15 +13,15 @@
         font = {
           size = 16;
           normal = {
-            family = config.customGlobal.font.mono;
+            family = config.custom.shared.font.mono;
             style = "Regular";
           };
           bold = {
-            family = config.customGlobal.font.mono;
+            family = config.custom.shared.font.mono;
             style = "Bold";
           };
           italic = {
-            family = config.customGlobal.font.mono;
+            family = config.custom.shared.font.mono;
             style = "Italic";
           };
         };
