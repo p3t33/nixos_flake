@@ -5,9 +5,8 @@
 {
   options = {
     customGlobal = {
-      type = lib.types.attrsOf lib.types.str;
-      description = "Defines the color palette for the user interface";
       colors = lib.mkOption {
+        type = lib.types.attrsOf lib.types.str;
         default = {
           background = "#312f2f";
           background-alt = "#3b4354";
@@ -22,6 +21,7 @@
           inactive-text = "#676E70";
           urgent-bg = "#E53935";
         };
+        description = "Defines the color palette for the user interface";
       };
     };
   };
