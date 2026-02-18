@@ -1,10 +1,5 @@
 { config, lib, ... }:
 {
-
-  imports = [
-    ../../modules/nixos/services # imported via default.nix
-  ];
-
   services = {
     zfs.autoScrub.enable = true;
     nginx.enable = true;

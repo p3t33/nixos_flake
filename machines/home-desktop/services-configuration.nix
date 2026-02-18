@@ -1,10 +1,5 @@
 { pkgs, config, ... }:
 {
-
-  imports = [
-    ../../modules/nixos/services # imported via default.nix
-  ];
-
   services = {
     syncthing.enable = true;
     trezord.enable = true;

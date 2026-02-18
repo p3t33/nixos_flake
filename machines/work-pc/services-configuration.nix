@@ -1,10 +1,5 @@
 { pkgs, config, ... }:
 {
-
-  imports = [
-    ../../modules/nixos/services # imported via default.nix
-  ];
-
   virtualisation.virtualbox.host.enable = true;
   services = {
     fwupd.enable = true;

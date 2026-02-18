@@ -41,6 +41,9 @@ in
     ./networking/br0_interface.nix
     ./networking/interfaces
 
+    ./services
+    ./hardware
+
     ./security/nitrokey.nix
     ./security/solokey2.nix
 

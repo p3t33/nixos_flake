@@ -8,7 +8,6 @@
 {
   imports = [
   (modulesPath + "/installer/scan/not-detected.nix")
-    ../../modules/nixos/hardware # uses default.nix
   ];
 
   custom = {
