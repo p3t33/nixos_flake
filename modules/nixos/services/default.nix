@@ -66,7 +66,7 @@ in
     ./p2pool.nix
     ./xmrig.nix
 
-    ./imminch.nix
+    ./immich.nix
     ./ollama.nix
   ];
 

@@ -48,7 +48,7 @@ in
     ./zellij.nix
     ./yazi.nix
     ./ghostty.nix
-    ./services/dnust.nix
+    ./services/dunst.nix
     ./navi.nix
     ./tealdeer.nix
     ./pay-respects.nix

@@ -24,7 +24,7 @@ imports = [
   ./org.nix
   ./search_and_select.nix
   ./dired.nix
-  ./navegation_and_shell.nix
+  ./navigation_and_shell.nix
   ./rss.nix
   ./git.nix
   ./completion.nix
