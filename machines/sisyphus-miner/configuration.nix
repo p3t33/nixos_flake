@@ -9,7 +9,6 @@
     ./services-configuration.nix
     ./disko-configuration.nix
     ./sops-configuration.nix
-    ../../modules/nixos/custom-global-options/networking.nix
     ../../modules/nixos # imported via default.nix
   ];
 

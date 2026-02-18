@@ -7,7 +7,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./global-options.nix
     ./services-configuration.nix
     ./disko-configuration.nix
     ./sops-configuration.nix

@@ -3,7 +3,6 @@
 
   imports = [
     ../../modules/nixos/services # imported via default.nix
-    ../../modules/nixos/custom-global-options/networking.nix
   ];
 
   services = {

@@ -7,7 +7,6 @@
   imports = [
     ./hardware-configuration.nix
     ./services-configuration.nix
-    ./global-options.nix
     ./sops-configuration.nix
     ./disko-configuration.nix
     ../../modules/nixos # imported via default.nix
