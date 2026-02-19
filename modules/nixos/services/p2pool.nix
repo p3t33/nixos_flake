@@ -33,7 +33,7 @@ in
 
     monerodHost = lib.mkOption {
       type = lib.types.str;
-      default = config.customGlobal.localHostIPv4;
+      default = config.custom.shared.localHostIPv4;
       description = "The Monero daemon RPC host.";
     };
 
@@ -51,7 +51,7 @@ in
 
     stratum = lib.mkOption {
       type = lib.types.str;
-      default = "${config.customGlobal.anyIPv4}:${toString config.custom.services.p2pool.stratumPort}";
+      default = "${config.custom.shared.anyIPv4}:${toString config.custom.services.p2pool.stratumPort}";
       description = "The full address (IP:port) the P2Pool stratum server binds to, used by miners (e.g., xmrig) to submit shares.";
     };
 

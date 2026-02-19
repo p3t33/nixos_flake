@@ -52,7 +52,7 @@ in
           };
 
           syncDir = lib.mkOption {
-            default = "${config.customGlobal.syncthing.syncDir}";
+            default = "${config.custom.shared.syncthing.syncDir}";
             type = lib.types.str;
             description = "Defines the Syncthing sync directory";
           };
@@ -78,7 +78,7 @@ in
   config = lib.mkIf config.services.syncthing.enable {
 
     systemd.tmpfiles.rules = [
-      "d ${cfg.dataDirectory} 0750 ${cfg.user} ${config.customGlobal.dataGroup} -"
+      "d ${cfg.dataDirectory} 0750 ${cfg.user} ${config.custom.shared.dataGroup} -"
     ];
 
     sops.secrets."syncthing/cert.pem" = {
@@ -93,7 +93,7 @@ in
     };
 
     services.syncthing = {
-      group = "${config.customGlobal.dataGroup}";
+      group = "${config.custom.shared.dataGroup}";
       user = "${cfg.user}";
       key = config.sops.secrets."syncthing/key.pem".path;
       cert = config.sops.secrets."syncthing/cert.pem".path;

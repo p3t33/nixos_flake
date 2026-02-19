@@ -3,7 +3,7 @@
 
 { pkgs, config, ... }:
 {
-  home.packages = config.customGlobal.fontPackages;
+  home.packages = config.custom.shared.fontPackages;
   # Required to autoload fonts from packages for the system to use.
   fonts.fontconfig.enable = true;
 }

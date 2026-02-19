@@ -1,10 +1,5 @@
 { ... }:
 {
-
-  imports = [
-    ../../modules/nixos/services # imported via default.nix
-  ];
-
   services.syncthing.enable = true;
 
   # Only intended for the use of NixOS that runs as a VM(guest) and has a GUI.

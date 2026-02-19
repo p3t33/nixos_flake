@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 let
-  calibreLibraryPath = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/calibre";
+  calibreLibraryPath = "${config.custom.shared.pathToMediaDirectory}/calibre";
   dummyBookPath = "/tmp/calibre_dummy_book.txt";
 in
 {
@@ -13,7 +13,7 @@ in
 
     # create directory for calibre database if it does not exist yet.
     systemd.tmpfiles.rules = [
-      "d ${calibreLibraryPath} 0770 ${config.services.calibre-web.user} ${config.customGlobal.mediaGroup} -"
+      "d ${calibreLibraryPath} 0770 ${config.services.calibre-web.user} ${config.custom.shared.mediaGroup} -"
     ];
 
     # Calibre-web is just a web based gui front end that requires an actual database to work
@@ -74,10 +74,10 @@ in
     services.calibre-web = {
       package = pkgs.calibre-web;
       user = "calibre-web";
-      group = config.customGlobal.mediaGroup;
+      group = config.custom.shared.mediaGroup;
       dataDir = "/var/lib/calibre-web";
       listen = {
-        ip = "${config.customGlobal.anyIPv4}";
+        ip = "${config.custom.shared.anyIPv4}";
         port = 8083;
       };
       openFirewall = true;

@@ -1,6 +1,6 @@
 { config, lib, hostSpecific, ...}:
 {
-  options.customGlobal = {
+  options.custom.shared = {
     ${hostSpecific.hostName} = {
       subnetPrefix = lib.mkOption {
         default = "192.168.1.";
@@ -9,13 +9,13 @@
       };
 
       ip = lib.mkOption {
-        default = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}73";
+        default = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}73";
         type = lib.types.str;
         description = "Defines the static IP used by the specific machine";
       };
 
       gateway = lib.mkOption {
-        default = "${config.customGlobal.${hostSpecific.hostName}.subnetPrefix}1";
+        default = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}1";
         type = lib.types.str;
         description = "Defines the gateway IP";
       };

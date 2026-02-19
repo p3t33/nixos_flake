@@ -30,11 +30,11 @@
         members = [ hostSpecific.primeUsername ];
       };
 
-      ${config.customGlobal.mediaGroup} = {
+      ${config.custom.shared.mediaGroup} = {
         members = [ hostSpecific.primeUsername ];
       };
 
-      ${config.customGlobal.dataGroup} = {
+      ${config.custom.shared.dataGroup} = {
         members = [ hostSpecific.primeUsername ];
       };
 

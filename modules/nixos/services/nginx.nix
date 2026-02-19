@@ -9,7 +9,7 @@ let
   httpPort = 80;
   httpsPort = 443;
   allInterfaces = "0.0.0.0";
-  localHost = "http://${builtins.toString config.customGlobal.localHostIPv4}";
+  localHost = "http://${builtins.toString config.custom.shared.localHostIPv4}";
 in
 {
   config = lib.mkIf config.services.nginx.enable {
@@ -20,7 +20,7 @@ in
       recommendedTlsSettings = true;
 
       virtualHosts = {
-        "${config.customGlobal.${hostSpecific.hostName}.ip}" = {
+        "${config.custom.shared.${hostSpecific.hostName}.ip}" = {
           listen = [
             {
               addr = "${allInterfaces}"; # Listen on all available network interfaces

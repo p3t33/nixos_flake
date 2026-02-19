@@ -1,10 +1,5 @@
 { config, lib, ... }:
 {
-
-  imports = [
-    ../../modules/nixos/services # imported via default.nix
-  ];
-
   services = {
     zfs.autoScrub.enable = true;
     nginx.enable = true;
@@ -34,7 +29,7 @@
   };
 
   systemd.tmpfiles.rules = lib.mkIf config.services.syncthing.enable [
-      "d ${config.custom.services.syncthing.syncDir} 0770 ${config.services.syncthing.user} ${config.customGlobal.dataGroup} -"
+      "d ${config.custom.services.syncthing.syncDir} 0770 ${config.services.syncthing.user} ${config.custom.shared.dataGroup} -"
   ];
 
   custom = {
@@ -48,7 +43,7 @@
       restic.enable = true;
 
       syncthing = {
-        syncDir = "${config.customHostSpecificGlobalOptions.pathToDataDirectory}/syncthing";
+        syncDir = "${config.custom.shared.pathToDataDirectory}/syncthing";
         user = "syncthing";
         simpleFileVersioningForBackUpMachinesOnly = {
           type = "simple";

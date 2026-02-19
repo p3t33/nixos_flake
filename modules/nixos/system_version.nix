@@ -1,10 +1,10 @@
 { config, lib, ... }:
 {
-  options.custom = {
-      systemStateVersion = lib.mkOption {
-      type = lib.types.str;
-      description = "define system version";
-    };
+  # Wraps system.stateVersion so every machine only sets a value while
+  # the warning comment and wiring live here once, not copy-pasted everywhere.
+  options.custom.systemStateVersion = lib.mkOption {
+    type = lib.types.str;
+    description = "NixOS stateVersion for the machine — set once at install time, rarely change";
   };
 
   # This value determines the NixOS release from which the default

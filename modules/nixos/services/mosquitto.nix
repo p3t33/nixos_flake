@@ -22,7 +22,7 @@
     services.mosquitto = {
       listeners = [
         {
-          address = "${config.customGlobal.anyIPv4}";  # Listen on all interfaces
+          address = "${config.custom.shared.anyIPv4}";  # Listen on all interfaces
           port = config.custom.servicePort.mosquitto;  # Explicitly set the MQTT port
           acl = [ "pattern readwrite #" ];
           omitPasswordAuth = true;

@@ -3,11 +3,11 @@
   config = lib.mkIf config.services.deluge.enable {
 
     systemd.tmpfiles.rules = [
-      "d ${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents 0770 ${config.services.deluge.user} ${config.customGlobal.mediaGroup} -"
+      "d ${config.custom.shared.pathToMediaDirectory}/torrents 0770 ${config.services.deluge.user} ${config.custom.shared.mediaGroup} -"
     ];
 
     services.deluge = {
-      group = "${config.customGlobal.mediaGroup}";
+      group = "${config.custom.shared.mediaGroup}";
       # Only works when declarative = true and only for non random ports.
       openFirewall = true;
       web = {
@@ -28,7 +28,7 @@
       config = {
         # /mnt/media is a mount point with defined owner, and permissions
         # so I was getting warning when NixOS was switching.
-        download_location = "${config.customHostSpecificGlobalOptions.pathToMediaDirectory}/torrents";
+        download_location = "${config.custom.shared.pathToMediaDirectory}/torrents";
         max_active_seeding = 200;
         max_active_downloading = 200;
         max_active_limit = 200;
@@ -64,7 +64,7 @@
 
     sops.secrets.deluge_auth_file = {
       mode = "0660";
-      group = "${config.customGlobal.mediaGroup}";
+      group = "${config.custom.shared.mediaGroup}";
     };
   };
 }

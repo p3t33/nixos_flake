@@ -8,7 +8,7 @@
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
     username = hostSpecific.primeUsername;
-    homeDirectory = config.customGlobal.primeUserHomeDirectory;
+    homeDirectory = config.custom.shared.primeUserHomeDirectory;
 
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage

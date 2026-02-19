@@ -36,118 +36,30 @@
       };
 
       lib = nixpkgs.lib;
+
+      mkHost = { hostName, primeUsername ? "kmedrish" }: lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          inherit inputs;
+          hostSpecific = { inherit hostName primeUsername; };
+        };
+        modules = [
+          ./machines/${hostName}/configuration.nix
+          inputs.home-manager.nixosModules.home-manager
+          inputs.nix-index-database.nixosModules.nix-index
+          inputs.sops-nix.nixosModules.sops
+          inputs.disko.nixosModules.disko
+        ];
+      };
     in
     {
       nixosConfigurations = {
-        kvm-nixos-server = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "kvm-nixos-server";
-              primeUsername = "drone";
-            };
-          };
-          modules = [
-            ./machines/kvm-nixos-server/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
-
-        nas = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "nas";
-              primeUsername = "kmedrish";
-            };
-          };
-          modules = [
-            ./machines/nas/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
-
-        home-assistant = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "home-assistant";
-              primeUsername = "kmedrish";
-            };
-
-          };
-          modules = [
-            ./machines/home-assistant/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
-
-        sisyphus-miner = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "sisyphus-miner";
-              primeUsername = "kmedrish";
-            };
-
-          };
-          modules = [
-            ./machines/sisyphus-miner/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
-
-        work-pc = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "work-pc";
-              primeUsername = "kmedrish";
-            };
-          };
-          modules = [
-            ./machines/work-pc/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
-
-        home-desktop = lib.nixosSystem {
-          inherit system;
-          specialArgs = {
-            inherit inputs;
-            hostSpecific = {
-              hostName = "home-desktop";
-              primeUsername = "kmedrish";
-            };
-          };
-          modules = [
-            ./machines/home-desktop/configuration.nix
-            inputs.home-manager.nixosModules.home-manager
-            inputs.nix-index-database.nixosModules.nix-index
-            inputs.sops-nix.nixosModules.sops
-            inputs.disko.nixosModules.disko
-          ];
-        };
+        kvm-nixos-server = mkHost { hostName = "kvm-nixos-server"; primeUsername = "drone"; };
+        nas              = mkHost { hostName = "nas"; };
+        home-assistant   = mkHost { hostName = "home-assistant"; };
+        sisyphus-miner   = mkHost { hostName = "sisyphus-miner"; };
+        work-pc          = mkHost { hostName = "work-pc"; };
+        home-desktop     = mkHost { hostName = "home-desktop"; };
       };
 
       # Created for the case I would like to apply home manger settings on non NixOS

@@ -1,9 +1,5 @@
-# The custom-global-options.nix was created in order to encapsulate variables with same values
-# that are being set across multiple files. Some of the values are
-# evaluated "dynamically" via an if statement based on the value that machines
-# sets for its hostname.
-# The custom-global-options.nix was created to encapsulate variables with the same values
-# that are being set across multiple files.
+# Shared options consumed by multiple configuration files.
+# Some values are derived from the machine's hostname.
 {
   config,
   pkgs,
@@ -12,8 +8,7 @@
   ...
 }:
 {
-  options = {
-    customGlobal = {
+  options.custom.shared = {
       fontPackages = lib.mkOption {
         default = [
           pkgs.powerline-fonts
@@ -54,13 +49,13 @@
       secretsPath = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/secrets;
         type = lib.types.path;
-        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        description = "Path to the machine-specific secrets directory";
       };
 
       databaseSecret = lib.mkOption {
         default = ../machines/${hostSpecific.hostName}/prowlarr.db;
         type = lib.types.path;
-        description = "the relative path inside the repository of the wallpaper file and the .nix file that will be sourcing it";
+        description = "Path to the Prowlarr database secret file";
       };
 
       sopsKeyPath = lib.mkOption {
@@ -89,7 +84,7 @@
           agent = "devstral";
         };
         type = lib.types.attrsOf lib.types.str;
-        description = "Fonts to be used on the system";
+        description = "Default AI models for different use cases";
       };
 
       # shared between home-manger and nixos and multiple hosts
@@ -109,7 +104,19 @@
                   (lib.types.attrsOf lib.types.str)
           ]);
 
-          description = "Default ports used by various services (single port or multiple ports per service, as strings)";
+          description = "SSH public keys for machines that need passwordless login";
+      };
+
+      pathToDataDirectory = lib.mkOption {
+        default = "/data";
+        type = lib.types.str;
+        description = "Path to the data directory";
+      };
+
+      pathToMediaDirectory = lib.mkOption {
+        default = "/media";
+        type = lib.types.str;
+        description = "Path to the media directory";
       };
 
       # shared between home-manger and nixos.
@@ -118,7 +125,7 @@
           options = {
 
             syncDir = lib.mkOption {
-              default = "${config.customGlobal.primeUserHomeDirectory}/Sync";
+              default = "${config.custom.shared.primeUserHomeDirectory}/Sync";
               type = lib.types.str;
               description = "Defines the Syncthing sync directory";
             };
@@ -128,5 +135,4 @@
         description = "Syncthing related configuration";
         };
     };
-  };
 }

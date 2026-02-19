@@ -8,7 +8,6 @@
 {
   imports = [
   (modulesPath + "/profiles/qemu-guest.nix")
-    ../../modules/nixos/hardware # uses default.nix
   ];
 
   custom.hardware.cpuVendor = "intel";

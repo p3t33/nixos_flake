@@ -9,7 +9,7 @@ in
       openFirewall = true;
       port = 9117;
       user = "${serviceName}";
-      group = "${config.customGlobal.mediaGroup}";
+      group = "${config.custom.shared.mediaGroup}";
     };
   };
 }

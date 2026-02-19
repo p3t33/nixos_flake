@@ -36,7 +36,7 @@ in
 
         http = {
           enabled = true;
-          host = config.customGlobal.anyIPv4;
+          host = config.custom.shared.anyIPv4;
           port = 18643;
           access-token = null;
           restricted = true;
@@ -65,7 +65,7 @@ in
         cuda = false;
         pools = [
           {
-            url = "${config.customGlobal.localHostIPv4}:${toString config.custom.services.p2pool.stratumPort}";
+            url = "${config.custom.shared.localHostIPv4}:${toString config.custom.services.p2pool.stratumPort}";
             keepalive = true;
             tls = false;
           }

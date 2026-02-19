@@ -26,7 +26,7 @@ in
     postgresUserName = lib.mkOption {
       type = lib.types.str;
       default = "${serviceName}";
-      description = "Log DB name for Prowlarr. Null -> <user>_log.";
+      description = "PostgreSQL username for Prowlarr.";
     };
   };
 
@@ -45,7 +45,7 @@ in
         };
 
         postgres = {
-          host   = "${config.customGlobal.localHostIPv4}";
+          host   = "${config.custom.shared.localHostIPv4}";
           port   = config.services.postgresql.settings.port;
           user   = "${config.custom.services.${serviceName}.postgresUserName}";
           maindb = "${config.custom.services.${serviceName}.mainDataBase}";

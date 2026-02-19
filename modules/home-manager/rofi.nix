@@ -8,12 +8,12 @@
 let
 
   colors = rec {
-    bg0 = "${config.customGlobal.colors.background}E6";
-    bg1 = "${config.customGlobal.colors.background-alt}80";
-    bg2 = "${config.customGlobal.colors.primary}E6";
+    bg0 = "${config.custom.shared.colors.background}E6";
+    bg1 = "${config.custom.shared.colors.background-alt}80";
+    bg2 = "${config.custom.shared.colors.primary}E6";
     fg0 = "#DEDEDE";
-    fg1 = "${config.customGlobal.colors.foreground}";
-    fg2 = "${config.customGlobal.colors.disabled}80";
+    fg1 = "${config.custom.shared.colors.foreground}";
+    fg2 = "${config.custom.shared.colors.disabled}80";
   };
 in
 {
@@ -26,7 +26,7 @@ in
         rofi-power-menu
       ];
 
-      font = "${config.customGlobal.font.sansSerif} 20";
+      font = "${config.custom.shared.font.sansSerif} 20";
       theme =
         let
           mkL = config.lib.formats.rasi.mkLiteral;

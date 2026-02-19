@@ -58,18 +58,18 @@ in
 
           # put the bar at the top
           bottom = true;
-          foreground = "${config.customGlobal.colors.foreground}";
-          background = "${config.customGlobal.colors.background}";
+          foreground = "${config.custom.shared.colors.foreground}";
+          background = "${config.custom.shared.colors.background}";
 
           # underline / overline
           line-size = 2;
-          line-color = "${config.customGlobal.colors.primary}";
+          line-color = "${config.custom.shared.colors.primary}";
           border-size = 0;
           padding = 0;
           module-margin = 1;
 
           # using patched mono font for the icons might change it later on.
-          font-0 = "${config.customGlobal.font.mono}:style=Regular:size=15;4";
+          font-0 = "${config.custom.shared.font.mono}:style=Regular:size=15;4";
           # Just sticking them together in the center for now
           modules-left = "i3";
           modules-right = lib.strings.concatStringsSep " " ([
@@ -90,16 +90,16 @@ in
           type = "custom/script";
           exec = "TZ=America/Chicago /run/current-system/sw/bin/date +\"US: %H:%M\"";
           interval = 30;
-          format-foreground = "${config.customGlobal.colors.foreground}";
-          format-background = "${config.customGlobal.colors.background-alt}";
+          format-foreground = "${config.custom.shared.colors.foreground}";
+          format-background = "${config.custom.shared.colors.background-alt}";
           format-padding = 2;
         };
 
         "module/oslogo" = {
           type = "custom/text";
           content = " NixOS";
-          content-foreground = "${config.customGlobal.colors.foreground}";
-          content-background = "${config.customGlobal.colors.background-alt}";
+          content-foreground = "${config.custom.shared.colors.foreground}";
+          content-background = "${config.custom.shared.colors.background-alt}";
           content-padding = 2;
         };
 
@@ -131,17 +131,17 @@ in
           format = "<label-state>";
 
           label-active = "%name%";
-          label-active-foreground = "${config.customGlobal.colors.primary}";
-          label-active-background = "${config.customGlobal.colors.background-alt}";
-          label-active-underline = "${config.customGlobal.colors.primary}";
+          label-active-foreground = "${config.custom.shared.colors.primary}";
+          label-active-background = "${config.custom.shared.colors.background-alt}";
+          label-active-underline = "${config.custom.shared.colors.primary}";
 
           label-occupied = "%name%";
 
           label-urgent = "%icon%";
-          label-urgent-foreground = "${config.customGlobal.colors.alert}";
+          label-urgent-foreground = "${config.custom.shared.colors.alert}";
 
           label-empty = "%icon%";
-          label-empty-foreground = "${config.customGlobal.colors.disabled}";
+          label-empty-foreground = "${config.custom.shared.colors.disabled}";
 
           label-active-padding = 2;
           label-occupied-padding = 2;
@@ -154,7 +154,7 @@ in
           label = "%title:0:40:...%";
           format = "<label>";
           format-prefix = "  ";
-          format-prefix-foreground = "${config.customGlobal.colors.primary}";
+          format-prefix-foreground = "${config.custom.shared.colors.primary}";
           label-empty = "NixOS";
         };
 
@@ -162,16 +162,16 @@ in
           type = "internal/fs";
           interval = 25;
           mount-0 = "/";
-          label-mounted = "%{F${config.customGlobal.colors.primary}}󱛟 DISK:%{F-} %percentage_used:2%%";
+          label-mounted = "%{F${config.custom.shared.colors.primary}}󱛟 DISK:%{F-} %percentage_used:2%%";
           label-unmounted = "%mountpoint% not mounted";
-          label-unmounted-foreground = "${config.customGlobal.colors.disabled}";
+          label-unmounted-foreground = "${config.custom.shared.colors.disabled}";
         };
 
         "module/memory" = {
           type = "internal/memory";
           interval = 2;
           format-prefix = "󰍛 RAM:";
-          format-prefix-foreground = "${config.customGlobal.colors.primary}";
+          format-prefix-foreground = "${config.custom.shared.colors.primary}";
           label = "%percentage_used:2%%";
         };
 
@@ -179,7 +179,7 @@ in
           type = "internal/cpu";
           interval = 2;
           format-prefix = "󰻠 CPU:";
-          format-prefix-foreground = "${config.customGlobal.colors.primary}";
+          format-prefix-foreground = "${config.custom.shared.colors.primary}";
           label = "%percentage:2%%";
         };
 
@@ -195,19 +195,19 @@ in
 
           # Define signal strength icons (can be customized)
           ramp-signal-0 = "󰤟";
-          ramp-signal-0-foreground = "${config.customGlobal.colors.primary}";
+          ramp-signal-0-foreground = "${config.custom.shared.colors.primary}";
           ramp-signal-1 = "󰤟";
-          ramp-signal-1-foreground = "${config.customGlobal.colors.primary}";
+          ramp-signal-1-foreground = "${config.custom.shared.colors.primary}";
           ramp-signal-2 = "󰤢";
-          ramp-signal-2-foreground = "${config.customGlobal.colors.primary}";
+          ramp-signal-2-foreground = "${config.custom.shared.colors.primary}";
           ramp-signal-3 = "󰤥";
-          ramp-signal-3-foreground = "${config.customGlobal.colors.primary}";
+          ramp-signal-3-foreground = "${config.custom.shared.colors.primary}";
           ramp-signal-4 = "󰤨";
-          ramp-signal-4-foreground = "${config.customGlobal.colors.primary}";
+          ramp-signal-4-foreground = "${config.custom.shared.colors.primary}";
 
           format-disconnected = "<label-disconnected>";
           label-disconnected = "󰖪";
-          format-disconnected-foreground = "${config.customGlobal.colors.disabled}";
+          format-disconnected-foreground = "${config.custom.shared.colors.disabled}";
         };
 
         "module/date" = {
@@ -217,8 +217,8 @@ in
           label = "%date%";
           format = "<label>";
           format-prefix = " ";
-          format-foreground = "${config.customGlobal.colors.foreground}";
-          format-background = "${config.customGlobal.colors.background-alt}";
+          format-foreground = "${config.custom.shared.colors.foreground}";
+          format-background = "${config.custom.shared.colors.background-alt}";
           format-padding = 2;
         };
         "module/volume" = {
@@ -234,12 +234,12 @@ in
           ramp-volume-2 = "󰕾"; # Icon for high volume
 
           #Color customization (optional)
-          label-volume-foreground = "${config.customGlobal.colors.foreground}";
+          label-volume-foreground = "${config.custom.shared.colors.foreground}";
 
-          label-muted-foreground = "${config.customGlobal.colors.primary}";
-          ramp-volume-0-foreground = "${config.customGlobal.colors.primary}";
-          ramp-volume-1-foreground = "${config.customGlobal.colors.primary}";
-          ramp-volume-2-foreground = "${config.customGlobal.colors.primary}";
+          label-muted-foreground = "${config.custom.shared.colors.primary}";
+          ramp-volume-0-foreground = "${config.custom.shared.colors.primary}";
+          ramp-volume-1-foreground = "${config.custom.shared.colors.primary}";
+          ramp-volume-2-foreground = "${config.custom.shared.colors.primary}";
         };
 
         # uses the upower service
@@ -258,11 +258,11 @@ in
           ramp-capacity-4 = "󰁹";
 
           # No specific charging icons, use the same as discharging
-          ramp-capacity-0-foreground = "${config.customGlobal.colors.primary}";
-          ramp-capacity-1-foreground = "${config.customGlobal.colors.primary}";
-          ramp-capacity-2-foreground = "${config.customGlobal.colors.primary}";
-          ramp-capacity-3-foreground = "${config.customGlobal.colors.primary}";
-          ramp-capacity-4-foreground = "${config.customGlobal.colors.primary}";
+          ramp-capacity-0-foreground = "${config.custom.shared.colors.primary}";
+          ramp-capacity-1-foreground = "${config.custom.shared.colors.primary}";
+          ramp-capacity-2-foreground = "${config.custom.shared.colors.primary}";
+          ramp-capacity-3-foreground = "${config.custom.shared.colors.primary}";
+          ramp-capacity-4-foreground = "${config.custom.shared.colors.primary}";
 
           label-charging = "%percentage:3%%";
           label-discharging = "%percentage:3%%";
@@ -271,9 +271,9 @@ in
           format-charging = "<ramp-capacity> <label-charging>";
           format-discharging = "<ramp-capacity> <label-discharging>";
           format-full = "<ramp-capacity> <label-full>";
-          format-charging-prefix-foreground = "${config.customGlobal.colors.primary}";
-          format-discharging-prefix-foreground = "${config.customGlobal.colors.primary}";
-          format-full-prefix-foreground = "${config.customGlobal.colors.primary}";
+          format-charging-prefix-foreground = "${config.custom.shared.colors.primary}";
+          format-discharging-prefix-foreground = "${config.custom.shared.colors.primary}";
+          format-full-prefix-foreground = "${config.custom.shared.colors.primary}";
       };
 
 
@@ -304,28 +304,28 @@ in
           ws-icon-default = "${defaultIcon}";
 
           format = "<label-state> <label-mode>";
-          label-dimmed-underline = "${config.customGlobal.colors.background}";
+          label-dimmed-underline = "${config.custom.shared.colors.background}";
 
           label-mode = "%mode%";
           label-mode-padding = 2;
 
           label-focused = "%name%";
-          label-focused-foreground = "${config.customGlobal.colors.primary}";
-          label-focused-background = "${config.customGlobal.colors.background-alt}";
-          label-focused-underline = "${config.customGlobal.colors.primary}";
+          label-focused-foreground = "${config.custom.shared.colors.primary}";
+          label-focused-background = "${config.custom.shared.colors.background-alt}";
+          label-focused-underline = "${config.custom.shared.colors.primary}";
           label-focused-padding = 2;
 
           label-unfocused = "%icon%";
           label-unfocused-padding = 2;
 
-          #label-unfocused-foreground = "${config.customGlobal.colors.primary}";
-          #label-unfocused-background = "${config.customGlobal.colors.background-alt}";
-          #label-unfocused-underline = "${config.customGlobal.colors.primary}";
+          #label-unfocused-foreground = "${config.custom.shared.colors.primary}";
+          #label-unfocused-background = "${config.custom.shared.colors.background-alt}";
+          #label-unfocused-underline = "${config.custom.shared.colors.primary}";
           label-visible = "%icon%";
           label-visible-padding = 2;
 
           label-urgent = "%icon%";
-          label-urgent-foreground = "${config.customGlobal.colors.alert}";
+          label-urgent-foreground = "${config.custom.shared.colors.alert}";
           label-urgent-padding = 2;
 
           #label-separator = "|";

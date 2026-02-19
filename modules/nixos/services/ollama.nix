@@ -10,7 +10,7 @@ in
     # - Runs locally an interface with the models(GPU/CPU) and exposes API via HTTP.
     #   Tools like aichat and adir connect to that API to provide workflows.
     services.ollama = {
-      host = config.customGlobal.localHostIPv4;
+      host = config.custom.shared.localHostIPv4;
       port = 11434;
       openFirewall = false;
 
@@ -57,9 +57,9 @@ in
       # - Maintains state across steps via the controlling tool.
       # - Does not load the entire repository, instead decides what to inspect.
       loadModels = [
-        config.customGlobal.AIDefaultModels.prompt  # level 1.
-        config.customGlobal.AIDefaultModels.fileScoped   # level 1.
-        config.customGlobal.AIDefaultModels.agent # level 1.
+        config.custom.shared.AIDefaultModels.prompt  # level 1.
+        config.custom.shared.AIDefaultModels.fileScoped   # level 1.
+        config.custom.shared.AIDefaultModels.agent # level 1.
         # "devstral-small-2"   # level 3 - needs newer version of ollama.
       ];
 

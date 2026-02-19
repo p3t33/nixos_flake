@@ -8,7 +8,7 @@ in
     services.${serviceName} = {
       openFirewall = true;
       user = "${serviceName}";
-      group = "${config.customGlobal.mediaGroup}";
+      group = "${config.custom.shared.mediaGroup}";
       listenPort = 6767;
     };
   };

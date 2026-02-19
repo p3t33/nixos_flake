@@ -7,7 +7,6 @@
   imports = [
     ./hardware-configuration.nix
     ./services-configuration.nix
-    ./global-options.nix
     ./sops-configuration.nix
     ./disko-configuration.nix
     ../../modules/nixos # imported via default.nix
@@ -47,8 +46,8 @@
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.
     # This key is added for passwordless login and this key is for VM only
     openssh.authorizedKeys.keys = [
-      config.customGlobal.sshPublicKeys.home-desktop.key
-      config.customGlobal.sshPublicKeys.work-pc.key
+      config.custom.shared.sshPublicKeys.home-desktop.key
+      config.custom.shared.sshPublicKeys.work-pc.key
     ];
   };
 

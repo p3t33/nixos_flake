@@ -11,7 +11,7 @@
         clients = [ ]
           ++ lib.optionals config.services.loki.enable [
             {
-              url = "http://${config.customGlobal.localHostIPv4}:${builtins.toString config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push";
+              url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.loki.configuration.server.http_listen_port}/loki/api/v1/push";
             }
         ];
 

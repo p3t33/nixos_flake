@@ -9,8 +9,8 @@ in
   # ./generic_linux_fonts.nix used by stand alone home-manger.
   imports = [
     ./session-variables.nix
-    ./custom-global-options/colors.nix
-    ../custom-global-options.nix
+    ./shared/colors.nix
+    ../shared.nix
 
     ./core.nix
     ./starship.nix
@@ -48,7 +48,7 @@ in
     ./zellij.nix
     ./yazi.nix
     ./ghostty.nix
-    ./services/dnust.nix
+    ./services/dunst.nix
     ./navi.nix
     ./tealdeer.nix
     ./pay-respects.nix
@@ -67,16 +67,14 @@ in
     ./aider.nix
   ];
 
-  options.custom.profiles.homeManager = lib.mkOption {
-    type = lib.types.attrsOf (lib.types.submodule {
-      options.enable = lib.mkEnableOption "Enable this Home Manager profile.";
-    });
-    default = {};
-    description = "Enable system profiles like 'core', 'desktop', etc.";
+  options.custom.profiles.homeManager = {
+    core.enable = lib.mkEnableOption "core home-manager profile (shell, terminal, editor, git, CLI tools)";
+    desktop.enable = lib.mkEnableOption "desktop home-manager profile (WM, GUI apps, desktop environment)";
+    ai.enable = lib.mkEnableOption "AI home-manager profile (aichat, aider)";
   };
 
   config = lib.mkMerge [
-     (lib.mkIf (g.desktop.enable or false) {
+    (lib.mkIf g.desktop.enable {
       programs.alacritty.enable = true;
       programs.ssh.enable = true;
       programs.rofi.enable = true;
@@ -97,7 +95,7 @@ in
       programs.zathura.enable = true;
     })
 
-    (lib.mkIf (g.core.enable or false) {
+    (lib.mkIf g.core.enable {
       programs.starship.enable = true;
       programs.tmux.enable = true;
       programs.zellij.enable = true;
@@ -119,7 +117,7 @@ in
       custom.scripts.cheatSh.enable = true;
     })
 
-    (lib.mkIf (g.ai.enable or false) {
+    (lib.mkIf g.ai.enable {
       custom.programs.aichat.enable = true;
       programs.aider-chat.enable = true;
     })
