@@ -38,6 +38,18 @@
 
   hardware.i2c.enable = true;
 
+  # HP ZBook Firefly 14 G11: the mei_me driver blocks the ACPI S5 (power-off)
+  # transition. During shutdown the driver tries to gracefully disconnect from
+  # the Intel Management Engine firmware, but the handshake hangs — the kernel
+  # waits for the callback to finish and never reaches power-off.
+  #
+  # The ME hardware runs independently on its own embedded processor and does
+  # not need a Linux driver to function. Blacklisting mei_me simply prevents
+  # the driver from loading, so there is no stuck shutdown callback to block
+  # the power-off path. The only features lost are AMT remote management and
+  # OS-level ME firmware updates (still possible via BIOS/UEFI).
+  boot.blacklistedKernelModules = [ "mei_me" ];
+
   environment.systemPackages = with pkgs; [
     moolticute
     syncthing
