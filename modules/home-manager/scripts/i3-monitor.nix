@@ -66,18 +66,17 @@ let
     fi
 
     # Re-probe all outputs and re-establish MST links through the dock.
-    # We intentionally do NOT --off the laptop screen here. The laptop panel
-    # may briefly light up, but that's preferable to going completely dark
-    # while waiting for the dock/KVM to finish link training.
-    xrandr --auto
+    # Disable the laptop screen in the same command to avoid it briefly turning on.
+    xrandr --auto ''${builtin_display:+--output "$builtin_display" --off}
 
-    # Poll xrandr until external outputs appear with valid modes (max 5s)
-    xrandr_external=""
-    for attempt in $(seq 1 10); do
-      xrandr_external=$(xrandr | grep " connected" | grep -v "$builtin_display" | cut -d " " -f1 | grep -E '^(DP|HDMI|DVI|VGA)-')
-      [ -n "$xrandr_external" ] && break
-      sleep 0.5
-    done
+    # Fixed wait for MST link retraining to complete. Polling xrandr is useless
+    # here because EDID emulation makes monitors appear "connected" instantly,
+    # but the actual DisplayPort link needs time to retrain through the dock.
+    sleep 2
+
+    # Get external monitor names from xrandr
+    xrandr_external=$(xrandr | grep " connected" | grep -v "''${builtin_display:-eDP-NONE}" \
+      | cut -d " " -f1 | grep -E '^(DP|HDMI|DVI|VGA)-')
 
     if [ -z "$xrandr_external" ]; then
       [ -n "$builtin_display" ] && xrandr --output "$builtin_display" --auto
@@ -89,23 +88,16 @@ let
       xrandr --output "$monitor" --auto
     done
 
-    # Poll ddcutil until monitors respond or timeout (max 5s, 3 attempts).
-    # Monitors sometimes need a moment after link training to answer DDC/CI.
-    # We distinguish three cases:
-    #   1. ddcutil succeeded + found displays   -> monitors are real
-    #   2. ddcutil succeeded + no displays       -> KVM on other machine
-    #   3. ddcutil failed (permissions, i2c, etc) -> unknown, don't change state
+    # Fixed wait for monitors to finish initializing before querying DDC/CI.
+    # The monitors need time after link training to start responding.
+    sleep 3
+
+    # Verify with ddcutil if the monitors actually responded over DDC/CI.
+    # Three cases: succeeded + displays = real, succeeded + none = KVM elsewhere,
+    # failed = unknown (don't change state).
     ddc_stderr=$(mktemp)
     ddc_rc=0
-    ddc_external=""
-    for attempt in $(seq 1 3); do
-      ddc_rc=0
-      ddc_output=$(ddcutil detect 2>"$ddc_stderr") || ddc_rc=$?
-      [ "$ddc_rc" -ne 0 ] && break
-      ddc_external=$(echo "$ddc_output" | grep "Display [0-9]")
-      [ -n "$ddc_external" ] && break
-      sleep 1.5
-    done
+    ddc_output=$(ddcutil detect 2>"$ddc_stderr") || ddc_rc=$?
 
     if [ "$ddc_rc" -ne 0 ]; then
       echo "ddcutil failed (rc=$ddc_rc): $(cat "$ddc_stderr")"
@@ -115,11 +107,11 @@ let
     fi
     rm -f "$ddc_stderr"
 
+    ddc_external=$(echo "$ddc_output" | grep "Display [0-9]")
+
     if [ -n "$ddc_external" ]; then
-      # Monitors are real - only now disable laptop screen
       [ -n "$builtin_display" ] && xrandr --output "$builtin_display" --off
     else
-      # Monitors didn't respond - KVM is on another machine, fall back to laptop
       [ -n "$builtin_display" ] && xrandr --output "$builtin_display" --auto
     fi
   '';
