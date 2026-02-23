@@ -17,38 +17,9 @@ in
 
       pyright # python
       # ----------------
-
-      # copilot dependencie
-      nodejs_22
-
     ];
 
     plugins = with pkgs.vimPlugins; [
-      {
-
-        # ==================================================
-        # copilot configuration
-        # ==================================================
-        # This plugin is used to configure and manage the copilot service,
-        # and integagrate it into neovim.
-        #
-        # This plugin is used with the token provided by github.
-        #
-        # This pluing can be used as a stand alone without any completion framework.it
-        # but as I would like to pipe everything via cmp-nvim I am disabling
-        # the defualt functionality of the pluing.
-        #
-        # On first run you will need to authenticate with github using:
-        # :Copilot auth
-        plugin = copilot-lua;
-        type = "lua";
-        config = ''
-          require("copilot").setup({
-              suggestion = { enabled = false },
-              panel = { enabled = false },
-          })
-        '';
-      }
       {
         # ==================================================
         # LSP configuration
@@ -154,17 +125,6 @@ in
       # inputs/sources/adapters for nvim-cmp autocomplete framework
       # ==================================================
 
-      # copilot source
-      # --------------
-      # "pipes" copilot-lua output into cmp-nvim.
-      {
-        plugin = copilot-cmp;
-        type = "lua";
-        config = ''
-          require("copilot_cmp").setup()
-        '';
-      }
-
       # lsp source
       # ----------
       # "pipes" nvim-lspconfig into cmp-nvim
@@ -209,7 +169,6 @@ in
               end
             },
             sources = {
-              {name = "copilot", keyword_length = 1 },
               {name = 'nvim_lsp', keyword_length = 3},
               {name = 'buffer', keyword_length = 3},
               {name = 'path'},
@@ -222,7 +181,6 @@ in
               fields = {'kind', 'abbr', 'menu'},
               format = function(entry, item)
               local menu_icon = {
-                copilot = '',
                 nvim_lsp = 'λ',
                 luasnip = '',
                 buffer = '󰂡',
