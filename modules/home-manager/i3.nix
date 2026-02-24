@@ -77,6 +77,11 @@ in
         # startup is divided into two "sections" backgournd commands and the start of gui applications.
         startup = [
           {
+            command = "i3-monitor";
+            always = true;
+            notification = false;
+          }
+          {
             command = "systemctl --user restart polybar";
             # always = true --> exec_always
             # always = false --> exec
