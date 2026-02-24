@@ -68,6 +68,7 @@ in
 
     ./immich.nix
     ./ollama.nix
+    ./minecraft.nix
   ];
 
   options.custom.profiles.systemServices = {

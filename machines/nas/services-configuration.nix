@@ -26,6 +26,7 @@
     postgresqlBackup.enable = true;
     immich.enable = true;
     n8n.enable = true;
+    minecraft-server.enable = true;
   };
 
   systemd.tmpfiles.rules = lib.mkIf config.services.syncthing.enable [
