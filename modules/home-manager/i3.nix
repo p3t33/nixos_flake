@@ -101,20 +101,13 @@ in
             always = false;
             notification = false;
           }
-          # makes sure that firefox starts on ws1 and that when I log into the system it is the first thing I see on my main
-          # screen, ready for work.
           {
-            command = "${lib.getExe' pkgs.i3 "i3-msg"} 'workspace number ${ws1}; exec --no-startup-id ${lib.getExe pkgs.firefox}'";
+            command = "${lib.getExe pkgs.firefox}";
             always = false;
             notification = false;
           }
         ];
 
-        # assignt of firefox is having race conditons on startup so I completly removed it from
-        # this sectioh and intead using i3-msg start it in ws1 using the startup section.
-        #
-        # setting firefox in this section as well brakes startup, and firefox gets started(sometimes)
-        # on ws4 or ws10.
         assigns = {
           "${ws2}" = [ { class = "Code"; } ];
           "${ws3}" = [ { class = "Cherrytree"; } ];
@@ -123,6 +116,13 @@ in
             { class = "Slack"; }
           ];
         };
+
+        window.commands = [
+          {
+            command = "move to workspace number ${ws1}";
+            criteria = { class = "firefox"; };
+          }
+        ];
 
         keybindings = lib.mkOptionDefault {
           # lunch alacritty.
