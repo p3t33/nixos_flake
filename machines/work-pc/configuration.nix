@@ -50,6 +50,10 @@
   # OS-level ME firmware updates (still possible via BIOS/UEFI).
   boot.blacklistedKernelModules = [ "mei_me" ];
 
+  # HP ZBook Firefly 14 G11: the default ACPI reboot method hangs — black
+  # screen with power LED on. reboot=efi also hangs. Trying PCI bus reset.
+  boot.kernelParams = [ "reboot=pci" ];
+
   environment.systemPackages = with pkgs; [
     moolticute
     syncthing
