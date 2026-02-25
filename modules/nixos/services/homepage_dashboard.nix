@@ -265,7 +265,7 @@ in
                 };
               }
             ]
-            ++ lib.optionals config.services.gatus.enable [
+            ++ lib.optionals config.services.immich.enable [
               {
                 "immich" = {
                   description = "image service";
