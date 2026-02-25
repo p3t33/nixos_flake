@@ -19,7 +19,14 @@ in
       # ----------------
     ];
 
-    plugins = with pkgs.vimPlugins; [
+    plugins = lib.mkOrder 400 (with pkgs.vimPlugins; [
+      {
+        plugin = lazydev-nvim;
+        type = "lua";
+        config = ''
+          require("lazydev").setup({})
+        '';
+      }
       {
         # ==================================================
         # LSP configuration
@@ -47,7 +54,7 @@ in
 
           local on_attach = function(client, bufnr)
             -- Enable completion triggered by <c-x><c-o>
-            vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+            vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
             local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
@@ -267,7 +274,7 @@ in
 
         '';
       }
-    ];
+    ]);
   };
   };
 }

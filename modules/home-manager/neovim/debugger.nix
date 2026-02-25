@@ -13,19 +13,8 @@ in
       lldb
     ];
 
-    plugins = with pkgs.vimPlugins; [
-      neodev-nvim
-      {
-        plugin = nvim-dap-ui;
-        type = "lua";
-        config = ''
-          require("neodev").setup({
-              library = { plugins = { "nvim-dap-ui" }, types = true },
-          })
-
-          require("dapui").setup()
-        '';
-      }
+    plugins = lib.mkOrder 500 (with pkgs.vimPlugins; [
+      nvim-dap-ui
       {
         plugin = nvim-dap;
         type = "lua";
@@ -36,14 +25,14 @@ in
             -- requres gdb 14.0+ which I didn't installed yet.
             dap.adapters.gdb = {
                 type = "executable",
-                command = "gdb",
+                command = "${lib.getExe pkgs.gdb}",
                 args = { "-i", "dap" }
             }
 
 
             dap.adapters.lldb = {
                 type = 'executable',
-                command = 'lldb-vscode', -- or 'lldb-dap', depending on your LLDB version and installation
+                command = '${lib.getExe' pkgs.lldb "lldb-dap"}',
                 name = 'lldb'
             }
 
@@ -96,7 +85,7 @@ in
         '';
       }
 
-    ];
+    ]);
   };
   };
 }

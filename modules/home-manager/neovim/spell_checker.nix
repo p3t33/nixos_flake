@@ -5,7 +5,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    programs.neovim.extraLuaConfig = ''
+    programs.neovim.extraLuaConfig = lib.mkOrder 200 ''
       -- ----------------------------------------------------------
       -- spelling and costum dictrionary use
       -- ----------------------------------------------------------

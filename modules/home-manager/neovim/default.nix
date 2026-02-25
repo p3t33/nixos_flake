@@ -22,22 +22,13 @@
 # provided by the plugins that are not defined as lua.
 #
 #
-# There are two degrees of freedom when it comes to configuration(both plugins
-# and configuration in extraCofnig/extraLuaConfig).
-# - The order of imports at the top of the file.
-# - The order of plugins.
+# Each module uses lib.mkOrder to control evaluation order:
+#   100 = core, 200 = spell_checker, 300 = ui, 400 = completion,
+#   500 = debugger, 600 = search_and_select, 700 = git.
+# This applies to both extraLuaConfig and plugins lists.
 #
-# Meaning:
-# - The first plugin in the first import will be the first
-# plugin configuration to be generated right after the configuration in
-# extraLuaConfig/extraConfig.
-# - The first extraConfig/extraLuaConfig in the first import will be at the very
-# top of init.lua or the vim typescript files.
-#
-# To make things more redable, in .nix files that have both plugins and extraConfig/extraLuaConfig
+# To make things more readable, in .nix files that have both plugins and extraConfig/extraLuaConfig
 # I put the extraConfig/extraLuaConfig block to the top(as they will be generated).
-#
-# *for some reason extraLuaConfig inside of spell_checker got to the top of the init.lua
 {
   imports = [
      # All modules use config.programs.neovim.enable to be activated, with

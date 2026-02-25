@@ -12,7 +12,7 @@
         xclip
       ];
 
-      extraLuaConfig = ''
+      extraLuaConfig = lib.mkOrder 100 ''
            -- ============
            -- Editor setup
            -- ============
@@ -187,7 +187,7 @@
         vim.keymap.set('n', '<leader>cf', function() vim.lsp.buf.format({ async = true }) end, opts)
       '';
 
-      plugins = with pkgs.vimPlugins; [
+      plugins = lib.mkOrder 100 (with pkgs.vimPlugins; [
 
         #
         # Utils
@@ -396,9 +396,6 @@
           '';
         }
 
-        # Automatic closing of quotes, parenthesis, brackets...
-        delimitMate
-
         # org-mode support
         {
           plugin = orgmode;
@@ -417,7 +414,7 @@
             cnoremap w!! :SudaWrite<CR>
           '';
         }
-      ];
+      ]);
 
     };
   };

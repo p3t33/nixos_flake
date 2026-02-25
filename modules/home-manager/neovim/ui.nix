@@ -5,7 +5,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-  programs.neovim.plugins = with pkgs.vimPlugins; [
+  programs.neovim.plugins = lib.mkOrder 300 (with pkgs.vimPlugins; [
     {
       plugin = rainbow-delimiters-nvim;
       type = "lua";
@@ -133,11 +133,11 @@ in
       plugin = markdown-nvim;
       type = "lua";
       config = ''
-        require('render-markdown').setup({})
+        require('markdown').setup({})
 
       '';
 
     }
-  ];
+  ]);
   };
 }

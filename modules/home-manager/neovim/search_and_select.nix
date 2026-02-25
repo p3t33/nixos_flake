@@ -18,12 +18,10 @@ in
     extraPackages = with pkgs; [
       # Dependencies
       # ----------------
-      gdb
-      lldb
       sqlite
     ];
 
-    plugins = with pkgs.vimPlugins; [
+    plugins = lib.mkOrder 600 (with pkgs.vimPlugins; [
       {
         plugin = fzf-lua;
         type = "lua";
@@ -226,7 +224,7 @@ in
           -- Insted I am using a lower level function for telescope key bindings
           -- By using telescope-ui-select-nvim vim.ui.select will go to telescope.
           -- This way I am getting a "picker" that feels native to telescope.
-          vim.keymap.set("n", "<leader>xd", vim.lsp.buf.code_action, bufopts)
+          vim.keymap.set("n", "<leader>xd", vim.lsp.buf.code_action, { noremap = true, silent = true })
 
           -- As an extention ignores globaly layout config.
           vim.keymap.set('n', '<leader><leader>', function()
@@ -290,7 +288,7 @@ in
           -- vim.keymap.set("n", "<C-s>", require("arrow.persist").toggle)
         '';
       }
-    ];
+    ]);
   };
   };
 }

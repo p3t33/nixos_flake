@@ -12,7 +12,7 @@ in
       git
     ];
 
-    plugins = with pkgs.vimPlugins; [
+    plugins = lib.mkOrder 700 (with pkgs.vimPlugins; [
     {
       plugin = gitsigns-nvim;
       type = "lua";
@@ -37,7 +37,7 @@ in
         }
       '';
     }
-    ];
+    ]);
   };
   };
 }
