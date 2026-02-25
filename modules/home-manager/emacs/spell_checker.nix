@@ -24,9 +24,9 @@ in
        (setq ispell-program-name "aspell")
        :config
 
-       ;; A more vim like keybindis for flyspell
+       ;; A more vim like keybindings for flyspell
        ;;---------------------------------------
-       (defun costum-flyspell-previous-and-correct ()
+       (defun custom-flyspell-previous-and-correct ()
         "Correct previous misspelling or current if already on a misspelled word."
         (interactive)
         (unless (flyspell-overlay-p (point))
@@ -35,7 +35,7 @@ in
         ;; Correct word at point (Flyspell's function)
         (call-interactively 'flyspell-correct-word-before-point))
 
-       (defun costum-flyspell-next-and-correct ()
+       (defun custom-flyspell-next-and-correct ()
         "Correct next misspelling or current if already on a misspelled word."
         (interactive)
         (unless (flyspell-overlay-p (point))
@@ -48,8 +48,8 @@ in
        ;; Keybindings using general.el (ensure general is loaded first)
        (with-eval-after-load 'general
         (general-def :states 'normal
-         "]s" #'costum-flyspell-next-and-correct   ;; Use #' for functions
-         "[s" #'costum-flyspell-previous-and-correct)) ;; Use #' for functions
+         "]s" #'custom-flyspell-next-and-correct   ;; Use #' for functions
+         "[s" #'custom-flyspell-previous-and-correct)) ;; Use #' for functions
        )
   '';
   };

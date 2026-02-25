@@ -65,7 +65,7 @@ in
          :ensure nil
          :after evil
          :config
-         ;; limites the mode list to intergrate with, might chagne this
+         ;; limits the mode list to integrate with, might change this
          ;; in the future.
          (setq evil-collection-mode-list '(dashboard dired ibuffer))
          (evil-collection-init))

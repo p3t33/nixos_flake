@@ -269,7 +269,7 @@
           type = "lua";
           config = ''
             require('nvim-treesitter.configs').setup {
-            -- depending on nvim-treesitter-textobjects pluging
+            -- depending on nvim-treesitter-textobjects plugin
             textobjects = {
                 lsp_interop = {
                     enable = true,

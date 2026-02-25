@@ -2,7 +2,7 @@
 {
   # NOTICE: This module is not used and not maintained at the moment.
   #
-  # The init.el that is created by the extraConfig in for Emacs by home-manger
+  # The init.el that is created by the extraConfig in for Emacs by home-manager
   # does not gets picked up by the service, instead you need to make sure
   # that ~/.emacs.d/init.el exist(I used home.file to create one instead of
   # using extraConfig).
@@ -20,7 +20,7 @@
     # I was getting a lot of errors.
     #
     # When emacs executed as server from cli and not inside systemd unit
-    # it is able to find the packges with thatout the need to explicitly set
+    # it is able to find the packages without the need to explicitly set
     # them here as well.
     package =
       with pkgs;

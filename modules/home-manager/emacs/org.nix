@@ -2,7 +2,7 @@
 
 let
   cfg = config.programs.emacs;
-  orgRoamDirctoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
+  orgRoamDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
 in
 {
   config = lib.mkIf cfg.enable {
@@ -83,7 +83,7 @@ in
       ;; ============
 
       ;; =================================
-      ;; plantuml setitngs
+      ;; plantuml settings
       ;; =================================
       (use-package plantuml-mode
        :ensure nil
@@ -191,7 +191,7 @@ in
        ;; then org-roam will handle where to store the
        ;; file and creat place for it.
        ;; if you want to specify the directory then
-       ;; org-download-method needs to be chagned to directory
+       ;; org-download-method needs to be changed to directory
        ;; and you will need to set org-download-image-dir, E.g:
        ;; Set the default directory where images will be downloaded
        ;; ONLY WORKS WITH org-download-method set to directory
@@ -207,7 +207,7 @@ in
                 (timestamp (car (split-string org-base-name "-")))
                 (target-dir (expand-file-name
                              (concat "images/" timestamp)
-                             (file-truename "${orgRoamDirctoryPath}"))))
+                             (file-truename "${orgRoamDirectoryPath}"))))
           (setq-local org-download-image-dir target-dir))))
 
        ;; Hook it to org-mode
@@ -216,7 +216,7 @@ in
 
 
       ;;(with-eval-after-load 'org
-      ;;    (setq org-agenda-files '("${orgRoamDirctoryPath}")))
+      ;;    (setq org-agenda-files '("${orgRoamDirectoryPath}")))
 
 
       ;; =====================
@@ -226,7 +226,7 @@ in
        :ensure nil
        :after org
        :custom
-       (org-roam-directory (file-truename "${orgRoamDirctoryPath}"))
+       (org-roam-directory (file-truename "${orgRoamDirectoryPath}"))
        :bind (("C-c n l" . org-roam-buffer-toggle)
               ("C-c n f" . org-roam-node-find)
               ("C-c n g" . org-roam-graph)
@@ -236,7 +236,7 @@ in
               ("C-c n j" . org-roam-dailies-capture-today))
        :config
 
-       ;; Define the costum function to delete nodes and sync database.
+       ;; Define the custom function to delete nodes and sync database.
        (defun custom-org-roam-delete-node-and-sync ()
         "Delete the current Org-roam node file with confirmation,
         delete the associated image folder (based on timestamp), then sync the Org-roam database."
@@ -249,7 +249,7 @@ in
                 (timestamp (car (split-string file-base "-")))
                 (image-dir (expand-file-name
                             (concat "images/" timestamp)
-                            (file-truename "${orgRoamDirctoryPath}"))))
+                            (file-truename "${orgRoamDirectoryPath}"))))
           ;; Delete the org file
           (delete-file file-to-delete)
           (message "Deleted file %s" file-to-delete)
@@ -261,7 +261,7 @@ in
           (kill-buffer)
           (org-roam-db-sync))))
 
-       ;; Define the costum function to rename existing node and sync database.
+       ;; Define the custom function to rename existing node and sync database.
        ;; This function will preserve timestamp, update the name of the file and the name of the title in it.
        (defun custom-org-roam-rename-node ()
         "Rename the current org-roam file and update the #+title."
@@ -293,7 +293,7 @@ in
           (org-roam-db-sync)
           (message "Renamed to %s and updated #+title." new-title))))
 
-       ;; puting the remplate setitngs under :costum did not work for me.
+       ;; putting the template settings under :custom did not work for me.
        (setq org-roam-capture-templates
         '(
             ("d" "default" plain "* Table of Contents :toc:noexport:\n\n%?"
@@ -317,7 +317,7 @@ in
        (require 'org-roam-protocol))
 
 
-       ;; for now unly used by org-roam-ui so I did not put it inot core.nix
+       ;; for now only used by org-roam-ui so I did not put it into core.nix
        (use-package websocket
            :ensure nil
            :after org-roam)

@@ -4,7 +4,7 @@ let
   # in the same path.
   autoSaveDirectoryName = "emacs_autosave";
   autoSaveDirectoryPath = "${config.xdg.dataHome}/${autoSaveDirectoryName}";
-  autoBackupDirectoryPatch = "${config.xdg.dataHome}/Trash/files";
+  autoBackupDirectoryPath = "${config.xdg.dataHome}/Trash/files";
 
 in
 {
@@ -12,7 +12,7 @@ in
   config = lib.mkIf config.programs.emacs.enable {
   # This is a fix to make the system use universal-ctags package instead
   # of the ctags package that is provided by emacs. The order in which
-  # the packges are listed is important and by listing universal-ctags first
+  # the packages are listed is important and by listing universal-ctags first
   # I am making sure that it will be the one used by the system.
   #
   # Note I am not sure if this is the right way to go about this problem
@@ -30,7 +30,7 @@ in
   ];
 
 
-  # Will create the dedined path for emacs auto save
+  # Will create the defined path for emacs auto save
   # an empty .keep file is a workaround to create an empty directory.
   xdg.dataFile."${autoSaveDirectoryName}/.keep".text = "";
 
@@ -40,7 +40,7 @@ in
   programs.emacs = {
     package = pkgs.emacs30;
 
-    # programs.emcas.extraConfig is responsible to create a configuration file for
+    # programs.emacs.extraConfig is responsible to create a configuration file for
     # Emacs but this file, although interpreted as init.el(in logs) isn't located in ~/.emacs.d.
     extraConfig = lib.mkOrder 100 ''
       ;; disabling the default built int plugin manager
@@ -62,7 +62,7 @@ in
       (set-terminal-coding-system 'utf-8)
       (set-keyboard-coding-system 'utf-8)
 
-      ;; smoth scroll with mergin of lines
+      ;; smooth scroll with margin of lines
       ;; =================================
       (setq scroll-margin 8)
       (setq-default scroll-conservatively 100 scroll-up-aggressively 0.01 scroll-down-aggressively 0.01)
@@ -74,7 +74,7 @@ in
       ;; original directories, such “file.el” and the backup “file.el~”.
       ;; This leads to a lot of clutter, so this setting defines a single
       ;; path to put all the backup into.
-      (setq backup-directory-alist '((".*" . "${autoBackupDirectoryPatch}")))
+      (setq backup-directory-alist '((".*" . "${autoBackupDirectoryPath}")))
 
 
       ;; By default, Emacs creates automatic saves of files in their
@@ -90,7 +90,7 @@ in
 
       ;; Ensure the use-package macro is available
       ;; This needs to be the first plugin related settings as
-      ;; every pluging that uses this macro in order to use it
+      ;; every plugin that uses this macro in order to use it
       ;; for its own configuration needs to be loaded only after
       ;; this macro has been loaded.
       (require 'use-package)

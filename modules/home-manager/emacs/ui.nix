@@ -87,7 +87,7 @@ in
 
 
       ;; ======
-      ;; Iconns
+      ;; Icons
       ;; ======
       (use-package all-the-icons
           :ensure nil
@@ -112,8 +112,8 @@ in
           (setq dashboard-banner-logo-title "Emacs is a great operating system, lacking only a decent text editor")
           (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
           ;; I will need to first create it using home manager and it is a very
-          ;; low priority. For the time being I will be using the defatul log for emacs.
-          ;;(setq dashboard-startup-banner "some path to costum logo")  ;; use custom image as banner
+          ;; low priority. For the time being I will be using the default logo for emacs.
+          ;;(setq dashboard-startup-banner "some path to custom logo")  ;; use custom image as banner
           (setq dashboard-center-content nil) ;; set to 't' for centered content
           (setq dashboard-items '((recents . 5)
                                   (agenda . 5 )

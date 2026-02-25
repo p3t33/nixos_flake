@@ -21,8 +21,6 @@
         "networkmanager"
         "wheel"
       ];
-
-       packages = with pkgs; [ ];
     };
 
     groups = {

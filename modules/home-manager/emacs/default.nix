@@ -1,6 +1,6 @@
 {
 
-# NOTE: I mosly use emacs for org-roam so the reset of the config were not fully
+# NOTE: I mostly use emacs for org-roam so the rest of the config were not fully
 # tested(E.g git) when I started refactoring.
 #
 # programs.emacs.extraConfig is responsible to create a configuration file for
@@ -8,13 +8,13 @@
 # To find the generated default.el, follow:
 #   $(which emacs) → bin/.emacs-wrapped → emacs-packages-deps → share/emacs/site-lisp/default.el
 
-# The imports will create programs.emcas.extraConfig that creates the configuration files
+# The imports will create programs.emacs.extraConfig that creates the configuration files
 # that will be evaluated by emacs. extraConfig is "stitched" from multiple files.
 # Each module uses lib.mkOrder to control evaluation order:
 #   100 = core, 200 = evil, 300 = ui, 400 = keybindings, 500 = everything else.
 
 imports = [
-  # all moudles use config.programs.emacs.enable to be activate,
+  # all modules use config.programs.emacs.enable to be activated,
   # with Core being the base of configuration.
   ./core.nix
   ./keybindings.nix

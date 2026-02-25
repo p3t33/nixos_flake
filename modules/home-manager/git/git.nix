@@ -102,8 +102,8 @@
         };
 
         branch = {
-          # This directive will rebase local chagnes on top of the remote branch
-          # in case branches diverged instead of the defualt of creating a commit
+          # This directive will rebase local changes on top of the remote branch
+          # in case branches diverged instead of the default of creating a commit
           # on the local branch which will diverge from the remote branch.
           # using rebase is a cleaner solution and will keep the history linear.
           #

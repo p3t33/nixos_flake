@@ -134,7 +134,7 @@ in
            :config
            (general-evil-setup)
 
-           ;; I treid to use general-create-definer and had some issues
+           ;; I tried to use general-create-definer and had some issues
            ;; so for now general-def will do.
            (general-def :states '(normal insert visual emacs)
             :keymaps 'override

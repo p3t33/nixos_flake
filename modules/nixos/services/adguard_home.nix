@@ -1,6 +1,37 @@
 { config, lib, hostSpecific, ... }:
 let
   dnsPort = 53;
+  hostIP = config.custom.shared.${hostSpecific.hostName}.ip;
+
+  # To add a DNS rewrite for a new service, append an entry here.
+  # The domain defaults to "${name}.${hostName}" but can be overridden.
+  rewriteEntries = [
+    { name = "deluge";    cond = config.services.deluge.enable; }
+    { name = "syncthing"; cond = config.services.syncthing.enable; }
+    { name = "adguard";   cond = config.services.adguardhome.enable; }
+    { name = "sonarr";    cond = config.services.sonarr.enable; }
+    { name = "bazarr";    cond = config.services.bazarr.enable; }
+    { name = "radarr";    cond = config.services.radarr.enable; }
+    { name = "prowlarr";  cond = config.services.prowlarr.enable; }
+    { name = "jackett";   cond = config.services.jackett.enable; }
+    { name = "jellyfin";  cond = config.services.jellyfin.enable; }
+    { name = "calibre-web"; cond = config.services.calibre-web.enable; }
+    { name = "homepage";  cond = config.services.homepage-dashboard.enable; }
+    { name = "prometheus"; cond = config.services.prometheus.enable; }
+    { name = "sabnzbd";   cond = config.services.sabnzbd.enable; }
+    { name = "grafana";   cond = config.services.grafana.enable; }
+  ];
+
+  # lib.concatMap iterates over rewriteEntries, passing each element as `entry`
+  # to the lambda. lib.optional returns [ attrset ] when entry.cond is true,
+  # or [] when false. concatMap then flattens all the results into one list.
+  mkRewrites = lib.concatMap (entry:
+    lib.optional entry.cond {
+      domain = "${entry.name}.${hostSpecific.hostName}";
+      answer = hostIP;
+      enabled = true;
+    }
+  ) rewriteEntries;
 in
 {
 
@@ -33,106 +64,7 @@ in
         filtering = {
           protection_enabled = true;
           filtering_enabled = true;
-          rewrites =
-            [ ]
-            ++ lib.optionals config.services.deluge.enable [
-              {
-                domain = "deluge.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.syncthing.enable [
-              {
-                domain = "syncthing.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.adguardhome.enable [
-              {
-                domain = "adguard.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.sonarr.enable [
-              {
-                domain = "sonarr.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.bazarr.enable [
-              {
-                domain = "bazarr.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.radarr.enable [
-              {
-                domain = "radarr.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.prowlarr.enable [
-              {
-                domain = "prowlarr.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.jackett.enable [
-              {
-                domain = "jackett.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.jellyfin.enable [
-              {
-                domain = "jellyfin.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.calibre-web.enable [
-              {
-                domain = "calibre-web.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.homepage-dashboard.enable [
-              {
-                domain = "homepage.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.prometheus.enable [
-              {
-                domain = "prometheus.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.sabnzbd.enable [
-              {
-                domain = "sabnzbd.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ]
-            ++ lib.optionals config.services.grafana.enable [
-              {
-                domain = "grafana.${hostSpecific.hostName}";
-                answer = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-                enabled = true;
-              }
-            ];
+          rewrites = mkRewrites;
         };
       };
     };
