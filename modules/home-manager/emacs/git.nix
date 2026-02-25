@@ -11,7 +11,7 @@ in
       git-timemachine
     ];
 
-    extraConfig = ''
+    extraConfig = lib.mkOrder 500 ''
       ;; ===================
       ;; git stack
       ;; ============

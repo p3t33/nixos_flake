@@ -10,7 +10,7 @@ in
     peep-dired
   ];
 
-  programs.emacs.extraConfig = ''
+  programs.emacs.extraConfig = lib.mkOrder 500 ''
       ;; dired is part of emacs so no need to install it.
 
       (with-eval-after-load 'general

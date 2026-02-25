@@ -3,15 +3,15 @@
 # NOTE: I mosly use emacs for org-roam so the reset of the config were not fully
 # tested(E.g git) when I started refactoring.
 #
-# programs.emcas.extraConfig is responsible to create a configuration file for
+# programs.emacs.extraConfig is responsible to create a configuration file for
 # Emacs but this file, although interpreted as init.el(in logs) isn't located in ~/.emacs.d.
+# To find the generated default.el, follow:
+#   $(which emacs) → bin/.emacs-wrapped → emacs-packages-deps → share/emacs/site-lisp/default.el
 
 # The imports will create programs.emcas.extraConfig that creates the configuration files
-# that will be evaluated by emacs. extraConfig is "stitched" from multiple files and
-# the order in which they are imported is important.
-#
-# I did use use-package with :after to control how the packages are evaluated but I can't
-# be sure it is covering 100% of all the edge cases, so the order should be kept as is.
+# that will be evaluated by emacs. extraConfig is "stitched" from multiple files.
+# Each module uses lib.mkOrder to control evaluation order:
+#   100 = core, 200 = evil, 300 = ui, 400 = keybindings, 500 = everything else.
 
 imports = [
   # all moudles use config.programs.emacs.enable to be activate,

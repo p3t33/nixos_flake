@@ -13,16 +13,15 @@ in
       neotree
     ];
 
-     extraConfig = ''
+     extraConfig = lib.mkOrder 500 ''
       ;;=======================
       ;; shell settings
       ;;=======================
-      ;; TODO: this setting made some erros and I will need to look into it.
-      ;;(use-package eshell-syntax-highlighting
-      ;;    :after esh-mode
-      ;;    :config
-      ;;    (eshell-syntax-highlighting-global-mode +1))
-      ;;    ;; eshell-syntax-highlighting -- adds fish/zsh-like syntax highlighting.
+      (use-package eshell-syntax-highlighting
+          :ensure nil
+          :after esh-mode
+          :config
+          (eshell-syntax-highlighting-global-mode +1))
 
           ;; eshell-rc-script -- your profile for eshell; like a bashrc for eshell.
           ;; eshell-aliases-file -- sets an aliases file for the eshell.

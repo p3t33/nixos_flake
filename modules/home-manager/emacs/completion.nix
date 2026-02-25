@@ -14,7 +14,7 @@ in
       flycheck
     ];
 
- extraConfig = ''
+ extraConfig = lib.mkOrder 500 ''
       ;; =====================
       ;; Language Support and Completion (LSP + Company)
       ;; =====================

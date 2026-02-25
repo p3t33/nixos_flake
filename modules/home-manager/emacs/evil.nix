@@ -9,8 +9,9 @@ in
   programs.emacs.extraPackages = epkgs: with epkgs; [
     evil
     evil-collection
+    undo-tree
   ];
-  programs.emacs.extraConfig = ''
+  programs.emacs.extraConfig = lib.mkOrder 200 ''
       ;; =================================
       ;; Configure and initialize evil-mode
       ;; =================================
@@ -86,6 +87,13 @@ in
         (evil-define-key 'normal 'global (kbd "C-k") 'evil-window-up)
         (evil-define-key 'normal 'global (kbd "C-l") 'evil-window-right)
            ;; =================================
+
+      (evil-set-undo-system 'undo-tree)
+
+      (use-package undo-tree
+       :ensure nil
+       :config
+       (global-undo-tree-mode))
   '';
 };
 }

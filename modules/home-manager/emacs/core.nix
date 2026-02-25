@@ -23,7 +23,6 @@ in
   ];
 
   programs.emacs.extraPackages = epkgs: with epkgs; [
-    undo-tree
     sudo-edit
     use-package
     tldr
@@ -43,7 +42,7 @@ in
 
     # programs.emcas.extraConfig is responsible to create a configuration file for
     # Emacs but this file, although interpreted as init.el(in logs) isn't located in ~/.emacs.d.
-    extraConfig = ''
+    extraConfig = lib.mkOrder 100 ''
       ;; disabling the default built int plugin manager
       ;; in context of nix these settings are essentially ensuring a
       ;; clean slate" in terms of package management behavior in Emacs
@@ -106,15 +105,6 @@ in
        :ensure nil
        :config
        (projectile-mode 1))
-
-      ;; needs to be here of the undo won't work in evil mode, will need to
-      ;; look into why.
-      (evil-set-undo-system 'undo-tree)
-
-      (use-package undo-tree
-       :ensure nil
-       :config
-       (global-undo-tree-mode))
 
       ;; Sane defaults
       ;;=======================

@@ -22,7 +22,7 @@ in
     ];
 
 
-    extraConfig = ''
+    extraConfig = lib.mkOrder 500 ''
             ;; ivy settings
       ;; ============
 

@@ -19,7 +19,7 @@ in
     which-key
   ];
 
-  programs.emacs.extraConfig = ''
+  programs.emacs.extraConfig = lib.mkOrder 300 ''
       ;; ============
       ;; Font settings
       ;; ============
@@ -61,14 +61,14 @@ in
           :ensure nil
           :init
           (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-           doom-themes-enable-italic t)) ; if nil, italics is universally disabled
+           doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
           :config
           ;; this is the line that loads the theme(E.g 'vscode-dark-plus)
           ;; TODO: I had a few warnings when using a theme from the pack so at least for now
           ;; I will be using a theme that I had no warning for as this is a low priority.
           ;; TODO: My current theme gets a few warning
-          (load-theme 'doom-one t)
+          (load-theme 'doom-one t))
       ;; =====================
 
       ;; =========

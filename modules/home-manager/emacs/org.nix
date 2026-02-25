@@ -31,7 +31,7 @@ in
     toc-org
   ];
 
-  programs.emacs.extraConfig = ''
+  programs.emacs.extraConfig = lib.mkOrder 500 ''
 
       ;; ============
       ;; org

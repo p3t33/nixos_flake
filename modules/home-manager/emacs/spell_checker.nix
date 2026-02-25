@@ -11,7 +11,7 @@ in
     flycheck
   ];
 
-  programs.emacs.extraConfig = ''
+  programs.emacs.extraConfig = lib.mkOrder 500 ''
       ;; ===================
       ;; setup spell checker
       ;; ===================

@@ -11,7 +11,7 @@ in
       elfeed-goodies
     ];
 
-    extraConfig = ''
+    extraConfig = lib.mkOrder 500 ''
       ;; ====================
       ;; RSS feed
       ;; ====================
