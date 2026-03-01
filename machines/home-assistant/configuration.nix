@@ -15,6 +15,8 @@
     # openssl rand -hex 4
     networking.hostId = "cf97b6ff";
 
+    custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}63";
+
     custom = {
       profiles.system = {
         core.enable = true;

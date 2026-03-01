@@ -1,9 +1,10 @@
-{ config, lib, hostSpecific, ... }:
+{ config, lib, hostSpecific, inputs, ... }:
 let
   monitoring = "monitoring";
   files = "files";
   media = "media";
   devices = "devices";
+  automation = "automation";
   routerIP = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}1";
 
 in
@@ -137,21 +138,6 @@ in
                     type = "gatus";
                     url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
                   };
-                };
-              }
-            ]
-            ++ lib.optionals config.services.n8n.enable [
-              {
-                "n8n" = {
-                  description = "Serivce health monitoring and alerting";
-                  href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${config.services.n8n.environment.N8N_PORT}";
-                  icon = "n8n.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
-                  statusStyle = "dot";
-                  # widget = {
-                  #   type = "gatus";
-                  #   url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
-                  # };
                 };
               }
             ]
@@ -311,6 +297,47 @@ in
             }
           ];
         }
+        {
+          "${automation}" =
+            [ ]
+            ++ lib.optionals config.services.n8n.enable [
+              {
+                "n8n" = {
+                  description = "Serivce health monitoring and alerting";
+                  href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${config.services.n8n.environment.N8N_PORT}";
+                  icon = "n8n.png";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
+                  statusStyle = "dot";
+                  # widget = {
+                  #   type = "gatus";
+                  #   url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
+                  # };
+                };
+              }
+            ]
+            ++ lib.optionals inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.enable [
+              {
+                "home-assistant" = {
+                  description = "Home automation platform";
+                  href = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
+                  icon = "home-assistant.png";
+                  siteMonitor = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
+                  statusStyle = "dot";
+                };
+              }
+            ]
+            ++ lib.optionals inputs.self.nixosConfigurations."home-assistant".config.services.zigbee2mqtt.enable [
+              {
+                "zigbee2mqtt" = {
+                  description = "Zigbee to MQTT bridge";
+                  href = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
+                  icon = "zigbee2mqtt.png";
+                  siteMonitor = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
+                  statusStyle = "dot";
+                };
+              }
+            ];
+        }
       ];
       settings = {
         title = "nas Dashboard";
@@ -319,6 +346,7 @@ in
           { ${monitoring} = { style = "row"; columns = 3; }; }
           { ${files} = { style = "row"; columns = 3; }; }
           { ${media} = { style = "row"; columns = 3; }; }
+          { ${automation} = { style = "row"; columns = 3; }; }
           { ${devices} = { style = "row"; columns = 3; }; }
         ];
       };
