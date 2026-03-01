@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, inputs, ... }:
 let
   media = "media";
   monitoring = "monitoring";
@@ -6,6 +6,7 @@ let
   filtering = "filtering";
   remoteAccess =" remote access";
   external = "external";
+  automation = "automation";
 in
 {
   config = lib.mkIf config.services.gatus.enable {
@@ -150,7 +151,7 @@ in
         ++ lib.optionals config.services.n8n.enable [
           {
             name = "n8n";
-            group = "${remoteAccess}";
+            group = automation;
             url = "tcp://${config.custom.shared.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
             interval = "30s";
             conditions = [
@@ -163,7 +164,7 @@ in
               enabled = true;
               failure-threshold = 3;
               success-threshold = 1;
-              description = "SSH service is unreachable";
+              description = "n8n service is unreachable";
             }
             ];
           }
@@ -357,6 +358,38 @@ in
               failure-threshold = 2;
               success-threshold = 1;
               description = "AdGuard Home is down!";
+            }];
+          }
+        ]
+        ++ lib.optionals inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.enable [
+          {
+            name = "home-assistant";
+            group = automation;
+            url = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [{
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "Home Assistant is down!";
+            }];
+          }
+        ]
+        ++ lib.optionals inputs.self.nixosConfigurations."home-assistant".config.services.zigbee2mqtt.enable [
+          {
+            name = "zigbee2mqtt";
+            group = automation;
+            url = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [{
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "Zigbee2MQTT is down!";
             }];
           }
         ];
