@@ -126,7 +126,6 @@ in
       imv
       tealdeer
       immich-go # used for mass importing into immich.
-      gemini-cli
       cursor-cli
       ddcutil
     ];

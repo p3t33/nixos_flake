@@ -15,6 +15,7 @@ in
     ./core.nix
     ./starship.nix
     ./fzf.nix
+    ./gemini.nix
     ./bat.nix
     ./neovim
     ./git/git.nix
@@ -113,6 +114,7 @@ in
       programs.navi.enable = true;
       programs.tealdeer.enable = true;
       programs.pay-respects.enable = true;
+      programs.gemini-cli.enable = true;
       custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
     })
