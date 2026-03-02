@@ -72,6 +72,11 @@ in
                                  `(lambda (c)
                                      (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
+      ;; scroll-margin 8 causes jumps near tall inline images (one buffer line
+      ;; can be 30+ visual lines), so reduce it locally in org-mode.
+      (add-hook 'org-mode-hook (lambda ()
+        (setq-local scroll-margin 2)))
+
       ;; --- Load Sub-Features & Templates ---
       ;; provides support for "easy org mode templates".
       ;; this is what makes <s (among other things) to work.
