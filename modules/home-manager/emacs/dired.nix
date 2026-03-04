@@ -20,7 +20,6 @@ in
         "d" '(:ignore t :which-key "Dired")
         "d d" '(dired :which-key "Open dired")
         "d j" '(dired-jump :which-key "Jump to current dir")
-        "d n" '(neotree-dir :which-key "Neotree directory")
         "d p" '(dired-preview-mode :which-key "Dired preview")))
 
       ;; =====================
