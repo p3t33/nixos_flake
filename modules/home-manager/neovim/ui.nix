@@ -39,7 +39,6 @@ in
 
     # Icons
     # -----
-    vim-devicons
     nvim-web-devicons
     {
       plugin = render-markdown-nvim;
