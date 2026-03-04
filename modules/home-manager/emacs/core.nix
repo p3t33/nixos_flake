@@ -26,7 +26,6 @@ in
     sudo-edit
     use-package
     tldr
-    projectile
   ];
 
 
@@ -61,12 +60,6 @@ in
       (set-default-coding-systems 'utf-8)
       (set-terminal-coding-system 'utf-8)
       (set-keyboard-coding-system 'utf-8)
-
-      ;; Separate Emacs internal clipboard from the system clipboard
-      ;; This allows 'y' to yank only into Emacs, and requires explicit
-      ;; use of the '+' register (or a custom keybind) to yank to the OS clipboard.
-      (setq select-enable-clipboard nil)
-      (setq select-enable-primary nil)
 
       ;; Separate Emacs internal clipboard from the system clipboard
       ;; This allows 'y' to yank only into Emacs, and requires explicit
@@ -112,11 +105,6 @@ in
 
       (use-package tldr
        :ensure nil)
-
-      (use-package projectile
-       :ensure nil
-       :config
-       (projectile-mode 1))
 
       ;; Sane defaults
       ;;=======================

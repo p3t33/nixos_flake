@@ -107,6 +107,7 @@ in
           (setq dashboard-icon-type 'nerd-icons)
           (setq dashboard-set-heading-icons t)
           (setq dashboard-set-file-icons t)
+          (setq dashboard-projects-backend 'project-el)
           (setq dashboard-banner-logo-title "Emacs is a great operating system, lacking only a decent text editor")
           (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
           ;; I will need to first create it using home manager and it is a very
