@@ -191,14 +191,14 @@ in
             ;;
             ;; general
             ;; -------
-            "SPC" '(counsel-M-x :wk "Counsel M-x")
+            "SPC" '(execute-extended-command :wk "M-x")
             "." '(find-file :wk "Find file")
-            "f r" '(counsel-recentf :wk "Find recent files")
-            "f f" '(counsel-fzf :wk "Find files")
+            "f r" '(recentf-open :wk "Find recent files")
+            "f f" '(consult-find :wk "Find files")
             "f n" '(org-roam-node-find :which-key "find org-roam node")
-            "f s" '(counsel-rg :wk "Find string")
-            "f b" '(counsel-switch-buffer :wk "Find buffer")
-            "f h" '(counsel-org-goto :wk "Find org file header")
+            "f s" '(consult-ripgrep :wk "Find string")
+            "f b" '(consult-buffer :wk "Find buffer")
+            "f h" '(consult-org-heading :wk "Find org file header")
             "TAB TAB" '(comment-line :wk "Comment lines")
             
             ;; Clipboard operations using the '+' register
@@ -230,7 +230,7 @@ in
             ;; Buffer/bookmarks
             ;; -----
             "b" '(:ignore t :wk "Bookmarks/Buffers")
-            "b b" '(counsel-switch-buffer :wk "Switch buffer")
+            "b b" '(consult-buffer :wk "Switch buffer")
             "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
             "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
             "b d" '(bookmark-delete :wk "Delete bookmark")
@@ -275,7 +275,7 @@ in
             ;; emacs help
             ;; ----------
             "h" '(:ignore t :wk "Help")
-            "h a" '(counsel-apropos :wk "Apropos")
+            "h a" '(apropos :wk "Apropos")
             "h b" '(describe-bindings :wk "Describe bindings")
             "h c" '(describe-char :wk "Describe character under cursor")
             "h d" '(:ignore t :wk "Emacs documentation")
@@ -389,7 +389,7 @@ in
                     "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
                     "ec" '(my/reload-nix-config :wk "Evaluate Nix config (default.el)")
                     "ed" '(eval-defun :wk "Evaluate defun containing or after point")            "ee" '(eval-expression :wk "Evaluate and elisp expression")
-            "eh" '(counsel-esh-history :which-key "Eshell history")
+            "eh" '(consult-history :which-key "Eshell history")
             "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
             "er" '(eval-region :wk "Evaluate elisp in region")
             "es" '(eshell :which-key "Eshell"))

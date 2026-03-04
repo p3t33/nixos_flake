@@ -10,7 +10,6 @@ in
   programs.emacs.extraPackages = epkgs: with epkgs; [
     flycheck
     flyspell-correct
-    flyspell-correct-ivy
   ];
 
   programs.emacs.extraConfig = lib.mkOrder 500 ''
@@ -57,19 +56,12 @@ in
 
       (use-package flyspell-correct
        :ensure nil
-       :after flyspell)
-
-      ;; Use ivy as the interface: vertical list at the bottom, navigable with
-      ;; ivy keybindings. M-o inside the ivy session exposes extra actions
-      ;; (save to dictionary, accept for session, skip, etc.).
-      (use-package flyspell-correct-ivy
-       :ensure nil
-       :after flyspell-correct
+       :after flyspell
        :config
-       ;; Wrap the ivy interface to cap candidates at 5, matching vim's "best,5"
-       (defun my/flyspell-correct-ivy-limited (candidates word)
-        (flyspell-correct-ivy (seq-take candidates 5) word))
-       (setq flyspell-correct-interface #'my/flyspell-correct-ivy-limited))
+       ;; Wrap the default completing-read interface to cap candidates at 5, matching vim's "best,5"
+       (defun my/flyspell-correct-limited (candidates word)
+        (completing-read "Correct: " (seq-take candidates 5) nil t nil nil word))
+       (setq flyspell-correct-interface #'my/flyspell-correct-limited))
   '';
   };
 }

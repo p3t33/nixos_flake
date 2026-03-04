@@ -6,8 +6,8 @@ in
 {
   config = lib.mkIf cfg.enable {
   programs.emacs.extraPackages = epkgs: with epkgs; [
-    all-the-icons
-    all-the-icons-dired
+    nerd-icons
+    nerd-icons-dired
     dashboard
     diminish
     doom-modeline
@@ -89,14 +89,12 @@ in
       ;; ======
       ;; Icons
       ;; ======
-      (use-package all-the-icons
-          :ensure nil
-          :if (display-graphic-p))
+      (use-package nerd-icons
+          :ensure nil)
 
-      (use-package all-the-icons-dired
-          :after all-the-icons
+      (use-package nerd-icons-dired
           :ensure nil
-          :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+          :hook (dired-mode . nerd-icons-dired-mode))
       ;; ======
 
       ;; ============
@@ -104,9 +102,9 @@ in
       ;; ============
       (use-package dashboard
           :ensure nil
-          :after all-the-icons
           :init
           (setq initial-buffer-choice 'dashboard-open)
+          (setq dashboard-icon-type 'nerd-icons)
           (setq dashboard-set-heading-icons t)
           (setq dashboard-set-file-icons t)
           (setq dashboard-banner-logo-title "Emacs is a great operating system, lacking only a decent text editor")
