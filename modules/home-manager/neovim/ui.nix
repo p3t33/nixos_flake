@@ -29,11 +29,16 @@ in
     vim-code-dark
 
     # Adds actual color to hex value.
-    colorizer
+    {
+      plugin = nvim-colorizer-lua;
+      type = "lua";
+      config = ''
+        require('colorizer').setup()
+      '';
+    }
 
     # Icons
     # -----
-    vim-devicons
     nvim-web-devicons
     {
       plugin = render-markdown-nvim;
@@ -101,42 +106,48 @@ in
       plugin = indent-blankline-nvim;
       type = "lua";
       config = ''
-        require("ibl").setup()
+        require("ibl").setup {
+          exclude = {
+            filetypes = { "dashboard" },
+          },
+        }
       '';
     }
     {
-      # Manages the start screen for vim and also sessions
-      plugin = vim-startify;
+      # Modern, fast Lua dashboard
+      plugin = dashboard-nvim;
+      type = "lua";
       config = ''
-        let g:startify_session_persistence = 1
-        let g:startify_session_autoload = 1
-        let g:startify_custom_header = [
-        \' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-        \' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-        \' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-        \' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-        \' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-        \' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-        \]
+        local logo = {
+        [[ ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗]],
+        [[ ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║]],
+        [[ ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║]],
+        [[ ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║]],
+        [[ ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║]],
+        [[ ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝]],
+        [[]],
+        [[]],
+        }
 
-        let g:startify_lists = [
-           \ { 'type': 'sessions',  'header': ['   Sessions']       },
-           \ { 'type': 'files',     'header': ['   Recent files']            },
-           \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
-           \]
+        require('dashboard').setup {
+          theme = 'doom',
+          config = {
+            header = logo,
+            center = {
+              { action = 'FzfLua files',                 desc = ' Find file',       icon = ' ', key = 'f' },
+              { action = 'FzfLua oldfiles',              desc = ' Recent files',    icon = ' ', key = 'r' },
+              { action = 'AutoSession search',           desc = ' Sessions',        icon = ' ', key = 's' },
+              { action = 'FzfLua live_grep',             desc = ' Find text',       icon = ' ', key = 'g' },
+              { action = 'e $MYVIMRC',                   desc = ' Config',          icon = ' ', key = 'c' },
+              { action = 'qa',                           desc = ' Quit',            icon = ' ', key = 'q' },
+            },
+            footer = {}
+          }
+        }
       '';
     }
     {
       plugin = mini-nvim;
-    }
-    {
-      plugin = markdown-nvim;
-      type = "lua";
-      config = ''
-        require('markdown').setup({})
-
-      '';
-
     }
   ]);
   };
