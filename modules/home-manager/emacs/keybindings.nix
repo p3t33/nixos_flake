@@ -362,13 +362,12 @@ in
             "o f" '(make-frame :wk "Open buffer in new frame")
             "o F" '(select-frame-by-name :wk "Select frame by name")
 
-            ;; Evaluate
-            ;; -------
-            "e" '(:ignore t :wk "Eshell/Evaluate")
-            "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
-            "ec" '((lambda () (interactive) (load-file user-init-file)) :wk "Evaluate config")
-            "ed" '(eval-defun :wk "Evaluate defun containing or after point")
-            "ee" '(eval-expression :wk "Evaluate and elisp expression")
+                    ;; Evaluate
+                    ;; -------
+                    "e" '(:ignore t :wk "Eshell/Evaluate")
+                    "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
+                    "ec" '((lambda () (interactive) (load-library "default")) :wk "Evaluate Nix config (default.el)")
+                    "ed" '(eval-defun :wk "Evaluate defun containing or after point")            "ee" '(eval-expression :wk "Evaluate and elisp expression")
             "eh" '(counsel-esh-history :which-key "Eshell history")
             "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
             "er" '(eval-region :wk "Evaluate elisp in region")
