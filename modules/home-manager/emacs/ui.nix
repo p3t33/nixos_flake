@@ -13,7 +13,7 @@ in
     doom-modeline
     doom-themes
     hl-todo
-    org-bullets
+    org-superstar
     rainbow-delimiters
     rainbow-mode
     which-key
@@ -163,12 +163,15 @@ in
       ;;=======================
 
       ;; =====================
-      ;; org-bullets
+      ;; org-superstar
       ;; =====================
-      (use-package org-bullets
+      (use-package org-superstar
        :ensure nil
        :after org
-       :hook (org-mode . org-bullets-mode))
+       :hook (org-mode . org-superstar-mode)
+       :config
+       (setq org-superstar-leading-bullet ?\s
+             org-hide-leading-stars t))
       ;; =====================
 
       ;; =====================
