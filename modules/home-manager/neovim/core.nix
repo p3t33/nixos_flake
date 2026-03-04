@@ -372,6 +372,11 @@
           '';
         }
         {
+          # While Neovim 0.10+ has built-in native commenting (using gcc/gc), 
+          # comment-nvim is intentionally kept here. The native API only toggles 
+          # existing lines, whereas this plugin provides advanced features like 
+          # adding comments at the end of a line (eol), or inserting new commented 
+          # lines above/below the cursor, which are mapped in the 'extra' table below.
           plugin = comment-nvim;
           type = "lua";
           config = ''
