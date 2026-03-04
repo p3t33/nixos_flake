@@ -149,15 +149,6 @@ in
     {
       plugin = mini-nvim;
     }
-    {
-      plugin = markdown-nvim;
-      type = "lua";
-      config = ''
-        require('markdown').setup({})
-
-      '';
-
-    }
   ]);
   };
 }
