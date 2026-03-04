@@ -29,7 +29,13 @@ in
     vim-code-dark
 
     # Adds actual color to hex value.
-    colorizer
+    {
+      plugin = nvim-colorizer-lua;
+      type = "lua";
+      config = ''
+        require('colorizer').setup()
+      '';
+    }
 
     # Icons
     # -----
