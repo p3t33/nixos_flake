@@ -185,6 +185,18 @@ in
             "Y" '(my-yank-line-to-os-clipboard :wk "Yank line to OS clipboard")
             "p" '(my-paste-from-os-clipboard :wk "Paste from OS clipboard")
             "P" '(my-paste-before-from-os-clipboard :wk "Paste before from OS clipboard")
+            )
+           
+           ;; Special visual-mode only void-paste (matches Neovim <leader>p)
+           (general-def :states 'visual
+            :keymaps 'override
+            :prefix "SPC"
+            "p" (general-simulate-key "\"_dP" :which-key "Paste without replacing clipboard"))
+
+           (general-def :states '(normal insert visual emacs)
+            :keymaps 'override
+            :prefix "SPC"
+            :global-prefix "M-SPC"
             ;;
             ;; sudo on files
             ;; -------------
