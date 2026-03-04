@@ -7,7 +7,7 @@ in
   config = lib.mkIf cfg.enable {
   programs.emacs.extraPackages = epkgs: with epkgs; [
     dired-open
-    peep-dired
+    dired-preview
   ];
 
   programs.emacs.extraConfig = lib.mkOrder 500 ''
@@ -21,7 +21,7 @@ in
         "d d" '(dired :which-key "Open dired")
         "d j" '(dired-jump :which-key "Jump to current dir")
         "d n" '(neotree-dir :which-key "Neotree directory")
-        "d p" '(peep-dired :which-key "Peep-dired preview")))
+        "d p" '(dired-preview-mode :which-key "Dired preview")))
 
       ;; =====================
       ;; dired
@@ -39,16 +39,21 @@ in
                                         ("mp4" . "mpv"))))
 
       ;; Used to provide a preview of a file.
-      ;; looks like this plugin is archived.
-      (use-package peep-dired
-      :ensure nil
-      :after (dired evil)
-      :hook (evil-normalize-keymaps . peep-dired-hook)
-      :config
-          (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
-          (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file) ; use dired-find-file instead if not using dired-open package
-          (evil-define-key 'normal peep-dired-mode-map (kbd "j") 'peep-dired-next-file)
-          (evil-define-key 'normal peep-dired-mode-map (kbd "k") 'peep-dired-prev-file))
+      (use-package dired-preview
+       :ensure nil
+       :after (dired evil)
+       :config
+       (setq dired-preview-delay 0.1)
+       (setq dired-preview-max-size (expt 2 20))
+       (setq dired-preview-ignored-extensions-regexp
+             (concat "\\."
+                     "\\(mkv\\|webm\\|mp4\\|mp3\\|ogg\\|wav\\|m4a\\|flac\\|"
+                     "gz\\|z\\|tar\\|tgz\\|rar\\|7z\\|zip\\|jar\\|xz\\|"
+                     "iso\\|epub\\|pdf\\|"
+                     "jpg\\|jpeg\\|png\\|gif\\|svg\\|bmp\\|tiff\\|webp\\|heic"
+                     "\\)$"))
+       (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+       (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-open-file))
 
   '';
 
