@@ -54,7 +54,9 @@ in
           (setq enable-recursive-minibuffers t)
           (setq ivy-use-selectable-prompt t)
           :config
-          (ivy-mode))
+          (ivy-mode)
+          ;; Allow pasting from OS clipboard directly into Ivy minibuffer
+          (define-key ivy-minibuffer-map (kbd "C-S-v") (lambda () (interactive) (insert (gui-get-selection 'CLIPBOARD 'STRING)))))
 
       (use-package counsel
        :ensure nil
