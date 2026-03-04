@@ -106,28 +106,44 @@ in
       plugin = indent-blankline-nvim;
       type = "lua";
       config = ''
-        require("ibl").setup()
+        require("ibl").setup {
+          exclude = {
+            filetypes = { "dashboard" },
+          },
+        }
       '';
     }
     {
-      # Manages the start screen for vim (session management disabled in favor of auto-session)
-      plugin = vim-startify;
+      # Modern, fast Lua dashboard
+      plugin = dashboard-nvim;
+      type = "lua";
       config = ''
-        let g:startify_session_persistence = 0
-        let g:startify_session_autoload = 0
-        let g:startify_custom_header = [
-        \' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
-        \' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
-        \' ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║',
-        \' ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║',
-        \' ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║',
-        \' ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝',
-        \]
+        local logo = {
+        [[ ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗]],
+        [[ ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║]],
+        [[ ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║]],
+        [[ ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║]],
+        [[ ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║]],
+        [[ ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝]],
+        [[]],
+        [[]],
+        }
 
-        let g:startify_lists = [
-           \ { 'type': 'files',     'header': ['   Recent files']            },
-           \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
-           \]
+        require('dashboard').setup {
+          theme = 'doom',
+          config = {
+            header = logo,
+            center = {
+              { action = 'FzfLua files',                 desc = ' Find file',       icon = ' ', key = 'f' },
+              { action = 'FzfLua oldfiles',              desc = ' Recent files',    icon = ' ', key = 'r' },
+              { action = 'AutoSession search',           desc = ' Sessions',        icon = ' ', key = 's' },
+              { action = 'FzfLua live_grep',             desc = ' Find text',       icon = ' ', key = 'g' },
+              { action = 'e $MYVIMRC',                   desc = ' Config',          icon = ' ', key = 'c' },
+              { action = 'qa',                           desc = ' Quit',            icon = ' ', key = 'q' },
+            },
+            footer = {}
+          }
+        }
       '';
     }
     {
