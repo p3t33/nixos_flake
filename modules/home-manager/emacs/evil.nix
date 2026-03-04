@@ -45,7 +45,10 @@ in
 
         ;; Set the key bindings for normal and insert modes
         (define-key evil-normal-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
-        (define-key evil-insert-state-map (kbd "C-s") 'save-and-switch-to-normal-mode))
+        (define-key evil-insert-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
+
+        ;; Allow pasting from OS clipboard in Insert mode using Ctrl+Shift+v
+        (define-key evil-insert-state-map (kbd "C-S-v") (lambda () (interactive) (evil-paste-from-register ?+))))
 
         ;; recenter org around search string
         ;; same as:

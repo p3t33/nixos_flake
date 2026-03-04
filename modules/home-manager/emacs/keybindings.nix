@@ -129,6 +129,33 @@ in
 
 
 
+      (evil-define-operator my-yank-to-os-clipboard (beg end type register yank-handler)
+        "Yank text to OS clipboard."
+        :move-point nil
+        :repeat nil
+        (interactive "<R><x><y>")
+        (evil-yank beg end type ?+ yank-handler))
+
+      (evil-define-operator my-yank-line-to-os-clipboard (beg end type register yank-handler)
+        "Yank line to OS clipboard."
+        :motion evil-line
+        :move-point nil
+        :repeat nil
+        (interactive "<R><x><y>")
+        (evil-yank-line beg end type ?+ yank-handler))
+
+      (defun my-paste-from-os-clipboard ()
+        "Paste from OS clipboard."
+        (interactive)
+        (let ((evil-this-register ?+))
+          (call-interactively 'evil-paste-after)))
+
+      (defun my-paste-before-from-os-clipboard ()
+        "Paste before from OS clipboard."
+        (interactive)
+        (let ((evil-this-register ?+))
+          (call-interactively 'evil-paste-before)))
+
       (use-package general
            :ensure nil
            :config
@@ -152,6 +179,12 @@ in
             "f b" '(counsel-switch-buffer :wk "Find buffer")
             "f h" '(counsel-org-goto :wk "Find org file header")
             "TAB TAB" '(comment-line :wk "Comment lines")
+            
+            ;; Clipboard operations using the '+' register
+            "y" '(my-yank-to-os-clipboard :wk "Yank to OS clipboard")
+            "Y" '(my-yank-line-to-os-clipboard :wk "Yank line to OS clipboard")
+            "p" '(my-paste-from-os-clipboard :wk "Paste from OS clipboard")
+            "P" '(my-paste-before-from-os-clipboard :wk "Paste before from OS clipboard")
             ;;
             ;; sudo on files
             ;; -------------

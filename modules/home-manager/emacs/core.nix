@@ -62,6 +62,18 @@ in
       (set-terminal-coding-system 'utf-8)
       (set-keyboard-coding-system 'utf-8)
 
+      ;; Separate Emacs internal clipboard from the system clipboard
+      ;; This allows 'y' to yank only into Emacs, and requires explicit
+      ;; use of the '+' register (or a custom keybind) to yank to the OS clipboard.
+      (setq select-enable-clipboard nil)
+      (setq select-enable-primary nil)
+
+      ;; Separate Emacs internal clipboard from the system clipboard
+      ;; This allows 'y' to yank only into Emacs, and requires explicit
+      ;; use of the '+' register (or a custom keybind) to yank to the OS clipboard.
+      (setq select-enable-clipboard nil)
+      (setq select-enable-primary nil)
+
       ;; smooth scroll with margin of lines
       ;; =================================
       (setq scroll-margin 8)
