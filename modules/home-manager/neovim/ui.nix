@@ -110,11 +110,11 @@ in
       '';
     }
     {
-      # Manages the start screen for vim and also sessions
+      # Manages the start screen for vim (session management disabled in favor of auto-session)
       plugin = vim-startify;
       config = ''
-        let g:startify_session_persistence = 1
-        let g:startify_session_autoload = 1
+        let g:startify_session_persistence = 0
+        let g:startify_session_autoload = 0
         let g:startify_custom_header = [
         \' ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗',
         \' ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║',
@@ -125,7 +125,6 @@ in
         \]
 
         let g:startify_lists = [
-           \ { 'type': 'sessions',  'header': ['   Sessions']       },
            \ { 'type': 'files',     'header': ['   Recent files']            },
            \ { 'type': 'dir',       'header': ['   CWD '. getcwd()] },
            \]

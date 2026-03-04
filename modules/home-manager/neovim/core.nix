@@ -414,6 +414,23 @@
           '';
         }
         {
+          plugin = auto-session;
+          type = "lua";
+          config = ''
+            require("auto-session").setup({
+              suppressed_dirs = { "~/", "~/Downloads", "~/projects", "/" },
+              bypass_save_filetypes = { "dashboard" },
+              
+              -- Garbage Collection
+              auto_delete_empty_sessions = true,
+              purge_after_minutes = 129600, -- 90 days
+            })
+
+            -- Session search using fzf-lua/telescope
+            vim.keymap.set("n", "<leader>wr", "<cmd>AutoSession search<CR>", { desc = "Session search" })
+          '';
+        }
+        {
           plugin = vim-suda;
           config = ''
             cnoremap w!! :SudaWrite<CR>

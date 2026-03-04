@@ -61,11 +61,11 @@ in
             # Session.vim in it but vim was not open at the time of the save of the sessions then when
             # tmux-resurrect restore the window with the path with Session.vim nothing will happen.
 
-            # Furthermore I am currently using vim-startify which among other things is able to restore
+            # Furthermore I am currently using auto-session which among other things is able to restore
             # from Session.vim if neovim is opened from the path where Session.vim exist. So in a
             # sense I don't really need tmux resurrect to restore the session as this already
             # taken care of and this functionality becomes redundant. But as I am not sure if I keep
-            # using vim-startify or its auto restore feature and it do not conflict in any way that
+            # using auto-session or its auto restore feature and it do not conflict in any way that
             # I know of with set -g @resurrect-strategy-* I decided to keep it enabled for the time being.
             set -g @resurrect-strategy-nvim 'session'
             set -g @resurrect-strategy-vim 'session'
@@ -94,7 +94,7 @@ in
             #   :nvim rtp^=/nix/store/…-vim-pack-dir
             # On restore this opens a buffer named after the store path hash.
             # This sed rule deletes that token, leaving just ":nvim"
-            # so Neovim comes up with Startify (or whatever your empty-start screen is).
+            # so Neovim comes up with dashboard-nvim (or whatever your empty-start screen is).
             sed -i -E "s|(.*:nvim)[[:space:]]+rtp\^=/nix/store/[^[:space:]]*|\1|" ${resurrectDirPath}/last \
             '
           '';
