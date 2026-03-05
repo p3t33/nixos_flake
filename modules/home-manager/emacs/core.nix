@@ -24,7 +24,6 @@ in
 
   programs.emacs.extraPackages = epkgs: with epkgs; [
     sudo-edit
-    use-package
     tldr
   ];
 
@@ -92,13 +91,6 @@ in
       ;; Load windmove for directional window navigation
       ;; Used by buf-move-* functions in keybindings.nix
       (require 'windmove)
-
-      ;; Ensure the use-package macro is available
-      ;; This needs to be the first plugin related settings as
-      ;; every plugin that uses this macro in order to use it
-      ;; for its own configuration needs to be loaded only after
-      ;; this macro has been loaded.
-      (require 'use-package)
 
       (use-package sudo-edit
           :ensure nil)
