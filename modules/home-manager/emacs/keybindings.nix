@@ -156,6 +156,27 @@ in
         (let ((evil-this-register ?+))
           (call-interactively 'evil-paste-before)))
 
+      ;; Reload the Nix-generated default.el from the CURRENT home-manager
+      ;; generation by following the live 'emacs' binary on PATH to its
+      ;; .emacs-wrapped script and extracting the emacs-packages-deps
+      ;; site-lisp path from there.  This is necessary because the running
+      ;; daemon has an old Nix store path baked into its load-path, so a plain
+      ;; (load-library "default") would silently load the stale config.
+      (defun my/reload-nix-config ()
+       "Reload default.el from the current home-manager generation."
+       (interactive)
+       (let* ((emacs-real    (string-trim (shell-command-to-string "readlink -f $(which emacs)")))
+              (wrapped       (replace-regexp-in-string "/bin/emacs\\'" "/bin/.emacs-wrapped" emacs-real))
+              (site-lisp     (string-trim (shell-command-to-string
+                              (concat "grep -m1 -o '/nix/store/[^/]*/share/emacs/site-lisp' " wrapped))))
+              (default-el    (expand-file-name "default.el" site-lisp)))
+        (if (file-exists-p default-el)
+         (progn
+          (add-to-list 'load-path site-lisp)
+          (load default-el nil nil t)
+          (message "Nix config reloaded from %s" site-lisp))
+         (message "Could not locate default.el for current generation"))))
+
       (use-package general
            :ensure nil
            :config
@@ -366,7 +387,7 @@ in
                     ;; -------
                     "e" '(:ignore t :wk "Eshell/Evaluate")
                     "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
-                    "ec" '((lambda () (interactive) (load-library "default")) :wk "Evaluate Nix config (default.el)")
+                    "ec" '(my/reload-nix-config :wk "Evaluate Nix config (default.el)")
                     "ed" '(eval-defun :wk "Evaluate defun containing or after point")            "ee" '(eval-expression :wk "Evaluate and elisp expression")
             "eh" '(counsel-esh-history :which-key "Eshell history")
             "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
