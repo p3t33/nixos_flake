@@ -54,7 +54,9 @@ in
        (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous`
        (corfu-preselect 'prompt)      ;; Preselect the prompt, don't automatically select the first candidate
        :init
-       (global-corfu-mode))
+       (global-corfu-mode)
+       :config
+       (set-face-attribute 'corfu-current nil :background "#2257a0" :weight 'bold))
 
       ;; Cape (Completion At Point Extensions) provides the actual backend data 
       ;; (like words from open buffers) to the Corfu frontend.

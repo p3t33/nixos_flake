@@ -36,6 +36,12 @@ in
        :init
        (vertico-mode)
        :config
+       ;; Strong blue selection highlight to match the old ivy look
+       (set-face-attribute 'vertico-current nil :background "#2257a0" :extend t :weight 'bold)
+       ;; Use yellow for fuzzy match highlights so they are visible on both
+       ;; the dark unselected background and the blue selected background
+       (with-eval-after-load 'orderless
+        (set-face-attribute 'orderless-match-face-0 nil :foreground "#ecbe7b" :weight 'bold))
        ;; Allow pasting from OS clipboard directly into Vertico minibuffer
        (define-key vertico-map (kbd "C-S-v") (lambda () (interactive) (insert (gui-get-selection 'CLIPBOARD 'STRING)))))
 
