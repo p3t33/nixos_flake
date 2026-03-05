@@ -129,6 +129,54 @@ in
 
 
 
+      (evil-define-operator my-yank-to-os-clipboard (beg end type register yank-handler)
+        "Yank text to OS clipboard."
+        :move-point nil
+        :repeat nil
+        (interactive "<R><x><y>")
+        (evil-yank beg end type ?+ yank-handler))
+
+      (evil-define-operator my-yank-line-to-os-clipboard (beg end type register yank-handler)
+        "Yank line to OS clipboard."
+        :motion evil-line
+        :move-point nil
+        :repeat nil
+        (interactive "<R><x><y>")
+        (evil-yank-line beg end type ?+ yank-handler))
+
+      (defun my-paste-from-os-clipboard ()
+        "Paste from OS clipboard."
+        (interactive)
+        (let ((evil-this-register ?+))
+          (call-interactively 'evil-paste-after)))
+
+      (defun my-paste-before-from-os-clipboard ()
+        "Paste before from OS clipboard."
+        (interactive)
+        (let ((evil-this-register ?+))
+          (call-interactively 'evil-paste-before)))
+
+      ;; Reload the Nix-generated default.el from the CURRENT home-manager
+      ;; generation by following the live 'emacs' binary on PATH to its
+      ;; .emacs-wrapped script and extracting the emacs-packages-deps
+      ;; site-lisp path from there.  This is necessary because the running
+      ;; daemon has an old Nix store path baked into its load-path, so a plain
+      ;; (load-library "default") would silently load the stale config.
+      (defun my/reload-nix-config ()
+       "Reload default.el from the current home-manager generation."
+       (interactive)
+       (let* ((emacs-real    (string-trim (shell-command-to-string "readlink -f $(which emacs)")))
+              (wrapped       (replace-regexp-in-string "/bin/emacs\\'" "/bin/.emacs-wrapped" emacs-real))
+              (site-lisp     (string-trim (shell-command-to-string
+                              (concat "grep -m1 -o '/nix/store/[^/]*/share/emacs/site-lisp' " wrapped))))
+              (default-el    (expand-file-name "default.el" site-lisp)))
+        (if (file-exists-p default-el)
+         (progn
+          (add-to-list 'load-path site-lisp)
+          (load default-el nil nil t)
+          (message "Nix config reloaded from %s" site-lisp))
+         (message "Could not locate default.el for current generation"))))
+
       (use-package general
            :ensure nil
            :config
@@ -143,15 +191,33 @@ in
             ;;
             ;; general
             ;; -------
-            "SPC" '(counsel-M-x :wk "Counsel M-x")
+            "SPC" '(execute-extended-command :wk "M-x")
             "." '(find-file :wk "Find file")
-            "f r" '(counsel-recentf :wk "Find recent files")
-            "f f" '(counsel-fzf :wk "Find files")
+            "f r" '(recentf-open :wk "Find recent files")
+            "f f" '(consult-find :wk "Find files")
             "f n" '(org-roam-node-find :which-key "find org-roam node")
-            "f s" '(counsel-rg :wk "Find string")
-            "f b" '(counsel-switch-buffer :wk "Find buffer")
-            "f h" '(counsel-org-goto :wk "Find org file header")
+            "f s" '(consult-ripgrep :wk "Find string")
+            "f b" '(consult-buffer :wk "Find buffer")
+            "f h" '(consult-org-heading :wk "Find org file header")
             "TAB TAB" '(comment-line :wk "Comment lines")
+            
+            ;; Clipboard operations using the '+' register
+            "y" '(my-yank-to-os-clipboard :wk "Yank to OS clipboard")
+            "Y" '(my-yank-line-to-os-clipboard :wk "Yank line to OS clipboard")
+            "p" '(my-paste-from-os-clipboard :wk "Paste from OS clipboard")
+            "P" '(my-paste-before-from-os-clipboard :wk "Paste before from OS clipboard")
+            )
+           
+           ;; Special visual-mode only void-paste (matches Neovim <leader>p)
+           (general-def :states 'visual
+            :keymaps 'override
+            :prefix "SPC"
+            "p" (general-simulate-key "\"_dP" :which-key "Paste without replacing clipboard"))
+
+           (general-def :states '(normal insert visual emacs)
+            :keymaps 'override
+            :prefix "SPC"
+            :global-prefix "M-SPC"
             ;;
             ;; sudo on files
             ;; -------------
@@ -164,7 +230,7 @@ in
             ;; Buffer/bookmarks
             ;; -----
             "b" '(:ignore t :wk "Bookmarks/Buffers")
-            "b b" '(counsel-switch-buffer :wk "Switch buffer")
+            "b b" '(consult-buffer :wk "Switch buffer")
             "b c" '(clone-indirect-buffer :wk "Create indirect buffer copy in a split")
             "b C" '(clone-indirect-buffer-other-window :wk "Clone indirect buffer in new window")
             "b d" '(bookmark-delete :wk "Delete bookmark")
@@ -209,7 +275,7 @@ in
             ;; emacs help
             ;; ----------
             "h" '(:ignore t :wk "Help")
-            "h a" '(counsel-apropos :wk "Apropos")
+            "h a" '(apropos :wk "Apropos")
             "h b" '(describe-bindings :wk "Describe bindings")
             "h c" '(describe-char :wk "Describe character under cursor")
             "h d" '(:ignore t :wk "Emacs documentation")
@@ -317,14 +383,13 @@ in
             "o f" '(make-frame :wk "Open buffer in new frame")
             "o F" '(select-frame-by-name :wk "Select frame by name")
 
-            ;; Evaluate
-            ;; -------
-            "e" '(:ignore t :wk "Eshell/Evaluate")
-            "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
-            "ec" '((lambda () (interactive) (load-file user-init-file)) :wk "Evaluate config")
-            "ed" '(eval-defun :wk "Evaluate defun containing or after point")
-            "ee" '(eval-expression :wk "Evaluate and elisp expression")
-            "eh" '(counsel-esh-history :which-key "Eshell history")
+                    ;; Evaluate
+                    ;; -------
+                    "e" '(:ignore t :wk "Eshell/Evaluate")
+                    "eb" '(eval-buffer :wk "Evaluate elisp in buffer")
+                    "ec" '(my/reload-nix-config :wk "Evaluate Nix config (default.el)")
+                    "ed" '(eval-defun :wk "Evaluate defun containing or after point")            "ee" '(eval-expression :wk "Evaluate and elisp expression")
+            "eh" '(consult-history :which-key "Eshell history")
             "el" '(eval-last-sexp :wk "Evaluate elisp expression before point")
             "er" '(eval-region :wk "Evaluate elisp in region")
             "es" '(eshell :which-key "Eshell"))

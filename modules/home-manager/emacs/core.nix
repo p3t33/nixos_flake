@@ -24,9 +24,7 @@ in
 
   programs.emacs.extraPackages = epkgs: with epkgs; [
     sudo-edit
-    use-package
     tldr
-    projectile
   ];
 
 
@@ -62,6 +60,12 @@ in
       (set-terminal-coding-system 'utf-8)
       (set-keyboard-coding-system 'utf-8)
 
+      ;; Separate Emacs internal clipboard from the system clipboard
+      ;; This allows 'y' to yank only into Emacs, and requires explicit
+      ;; use of the '+' register (or a custom keybind) to yank to the OS clipboard.
+      (setq select-enable-clipboard nil)
+      (setq select-enable-primary nil)
+
       ;; smooth scroll with margin of lines
       ;; =================================
       (setq scroll-margin 8)
@@ -88,23 +92,11 @@ in
       ;; Used by buf-move-* functions in keybindings.nix
       (require 'windmove)
 
-      ;; Ensure the use-package macro is available
-      ;; This needs to be the first plugin related settings as
-      ;; every plugin that uses this macro in order to use it
-      ;; for its own configuration needs to be loaded only after
-      ;; this macro has been loaded.
-      (require 'use-package)
-
       (use-package sudo-edit
           :ensure nil)
 
       (use-package tldr
        :ensure nil)
-
-      (use-package projectile
-       :ensure nil
-       :config
-       (projectile-mode 1))
 
       ;; Sane defaults
       ;;=======================

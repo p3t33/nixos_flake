@@ -6,14 +6,14 @@ in
 {
   config = lib.mkIf cfg.enable {
   programs.emacs.extraPackages = epkgs: with epkgs; [
-    all-the-icons
-    all-the-icons-dired
+    nerd-icons
+    nerd-icons-dired
     dashboard
     diminish
     doom-modeline
     doom-themes
     hl-todo
-    org-bullets
+    org-superstar
     rainbow-delimiters
     rainbow-mode
     which-key
@@ -89,14 +89,12 @@ in
       ;; ======
       ;; Icons
       ;; ======
-      (use-package all-the-icons
-          :ensure nil
-          :if (display-graphic-p))
+      (use-package nerd-icons
+          :ensure nil)
 
-      (use-package all-the-icons-dired
-          :after all-the-icons
+      (use-package nerd-icons-dired
           :ensure nil
-          :hook (dired-mode . (lambda () (all-the-icons-dired-mode t))))
+          :hook (dired-mode . nerd-icons-dired-mode))
       ;; ======
 
       ;; ============
@@ -104,11 +102,12 @@ in
       ;; ============
       (use-package dashboard
           :ensure nil
-          :after all-the-icons
           :init
           (setq initial-buffer-choice 'dashboard-open)
+          (setq dashboard-icon-type 'nerd-icons)
           (setq dashboard-set-heading-icons t)
           (setq dashboard-set-file-icons t)
+          (setq dashboard-projects-backend 'project-el)
           (setq dashboard-banner-logo-title "Emacs is a great operating system, lacking only a decent text editor")
           (setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
           ;; I will need to first create it using home manager and it is a very
@@ -163,12 +162,15 @@ in
       ;;=======================
 
       ;; =====================
-      ;; org-bullets
+      ;; org-superstar
       ;; =====================
-      (use-package org-bullets
+      (use-package org-superstar
        :ensure nil
        :after org
-       :hook (org-mode . org-bullets-mode))
+       :hook (org-mode . org-superstar-mode)
+       :config
+       (setq org-superstar-leading-bullet ?\s
+             org-hide-leading-stars t))
       ;; =====================
 
       ;; =====================

@@ -9,12 +9,12 @@ in
     extraPackages = epkgs: with epkgs; [
       lsp-mode
       lua-mode
-      company
-      company-box
+      corfu
+      cape
       flycheck
     ];
 
- extraConfig = lib.mkOrder 500 ''
+ extraConfig = lib.mkOrder 600 ''
       ;; =====================
       ;; Language Support and Completion (LSP + Company)
       ;; =====================
@@ -43,50 +43,30 @@ in
           :hook ((c-mode c++-mode) . lsp)
           :commands lsp)
 
-      ;; company can be used to provide the frontend for code
-      ;; completions that the Language Server (like clangd for C++)
-      ;; sends to the client (in this case, lsp-mode in Emacs).
-      ;; in in essence this is the popup box with completion suggestions.
-      (use-package company
+      ;; Corfu provides a modern, fast, and minimal in-buffer completion popup.
+      ;; It perfectly replaces both company and company-box without the lag.
+      (use-package corfu
        :ensure nil
-       :defer 2
-       :diminish
+       :custom
+       (corfu-auto t)                 ;; Enable auto completion
+       (corfu-auto-delay 0.1)         ;; Delay before popup appears
+       (corfu-auto-prefix 2)          ;; Minimum length of prefix before completion kicks in
+       (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous`
+       (corfu-preselect 'prompt)      ;; Preselect the prompt, don't automatically select the first candidate
        :init
-       (setq company-begin-commands '(self-insert-command)
-        company-idle-delay 0.1
-        company-minimum-prefix-length 2
-        company-show-numbers t
-        company-tooltip-align-annotations t)
+       (global-corfu-mode)
        :config
-       (global-company-mode t)
-       ;; Define helper function for pcomplete integration here
-       (defun add-pcomplete-to-capf ()
-        "Add pcomplete to completion-at-point-functions for company-capf."
-        (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point nil t))
+       (set-face-attribute 'corfu-current nil :background "#2257a0" :weight 'bold))
 
-       ;; Hook 1: Integrate pcomplete via company-capf when in Org mode
-       (add-hook 'org-mode-hook #'add-pcomplete-to-capf)
-
-       ;; Hook 2: Set specific, simpler backends when in Org mode
-       (add-hook 'org-mode-hook (lambda ()
-                                 (setq-local company-backends '(company-capf company-dabbrev))))
-       )
-
-
-      ;; company-box is an extension for company that provides a visually
-      ;; enhanced dropdown for completions. It makes the completion menu
-      ;; more aesthetically pleasing and can display additional information,
-      ;; such as icons for different types of completion
-      ;; candidates (e.g., a function, variable, or class).
-      (use-package company-box
+      ;; Cape (Completion At Point Extensions) provides the actual backend data 
+      ;; (like words from open buffers) to the Corfu frontend.
+      (use-package cape
        :ensure nil
-       :after company
-       :diminish
-       :hook (company-mode . company-box-mode))
-
-      ;; Make company-mode work with org-mode's org-self-insert-command
-      (with-eval-after-load 'company
-       (add-to-list 'company-begin-commands 'org-self-insert-command))
+       :init
+       ;; Add dabbrev (dynamic abbreviation) to the global completion functions.
+       ;; This brings back the "word suggestions" from open buffers that company provided.
+       (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+       (add-to-list 'completion-at-point-functions #'cape-file))
 
       ;; ====================
 
