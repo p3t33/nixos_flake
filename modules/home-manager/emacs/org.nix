@@ -278,25 +278,32 @@ in
                (file-ext (file-name-extension old-file))
                ;; Extract the timestamp or number at the beginning
                (timestamp (car (split-string file-base "-")))
-               ;; Get the current title part
-               (current-title (mapconcat 'identity (cdr (split-string file-base "-")) " "))
-               ;; Prompt for new title
-               (new-title (read-string "New title: " current-title))
+               ;; Prompt for new title using the actual old title
+               (new-title (org-roam-node-title (org-roam-node-read old-title nil nil nil "New title: ")))
+               ;; Create a slug from the new title (lowercase, non-alphanumeric to underscores)
+               (new-slug (replace-regexp-in-string "_+$" "" (replace-regexp-in-string "^_+" "" (replace-regexp-in-string "[^[:alnum:]]+" "_" (downcase new-title)))))
                ;; Construct the new file name
-               (new-file (concat file-dir timestamp "-" new-title "." file-ext)))
+               (new-file (concat file-dir timestamp "-" new-slug "." file-ext)))
          (when (and new-title (not (string= new-title "")))
-          ;; Rename the file
-          (rename-file old-file new-file)
-          ;; Update buffer name
+          (let ((existing-node (org-roam-node-from-title-or-alias new-title)))
+           (when (or (not existing-node)
+                     (string= (org-roam-node-file existing-node) old-file)
+                     (y-or-n-p (format "A node titled '%s' already exists. Rename anyway? " new-title)))
+            ;; Rename the file
+            (rename-file old-file new-file)
+            ;; Update buffer name
           (set-visited-file-name new-file)
-          ;; Update #+title
+          ;; Update #+title and #+category
           (goto-char (point-min))
           (when (re-search-forward "^#\\+title:.*$" nil t)
            (replace-match (concat "#+title: " new-title)))
+          (goto-char (point-min))
+          (when (re-search-forward "^#\\+category:.*$" nil t)
+           (replace-match (concat "#+category: " new-title)))
           (save-buffer)
           ;; Update org-roam cache
           (org-roam-db-sync)
-          (message "Renamed to %s and updated #+title." new-title))))
+          (message "Renamed to %s and updated #+title and #+category." new-title))))))
 
        ;; putting the template settings under :custom did not work for me.
        (setq org-roam-capture-templates
