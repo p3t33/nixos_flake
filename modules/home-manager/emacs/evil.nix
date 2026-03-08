@@ -54,13 +54,10 @@ in
         ;; same as:
         ;;vim.keymap.set('n', 'n', "nzzzv", opts)
         ;; --------------------------------------
-        (defadvice evil-search-next
-         (after advice-for-evil-search-next activate)
-         (evil-scroll-line-to-center (line-number-at-pos)))
-
-        (defadvice evil-search-previous
-         (after advice-for-evil-search-previous activate)
-         (evil-scroll-line-to-center (line-number-at-pos)))
+        (advice-add 'evil-search-next :after
+          (lambda (&rest _) (evil-scroll-line-to-center (line-number-at-pos))))
+        (advice-add 'evil-search-previous :after
+          (lambda (&rest _) (evil-scroll-line-to-center (line-number-at-pos))))
            ;; --------------------------------------
 
         (use-package evil-collection
