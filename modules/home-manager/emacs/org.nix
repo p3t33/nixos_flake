@@ -256,10 +256,19 @@ in
        ;; Define the custom function to delete nodes and sync database.
        (defun custom-org-roam-delete-node-and-sync ()
         "Delete the current Org-roam node file with confirmation,
-        delete the associated image folder (based on timestamp), then sync the Org-roam database."
+        warn about existing backlinks, delete the associated image folder (based on timestamp),
+        then sync the Org-roam database."
         (interactive)
-        (when (and (buffer-file-name)
-               (y-or-n-p "Are you sure you want to delete this node and its associated image directory?"))
+        (let* ((node (org-roam-node-at-point))
+               (backlinks (when node (org-roam-backlinks-get node :unique t)))
+               (backlink-titles (when backlinks (mapcar (lambda (b) (org-roam-node-title (org-roam-backlink-source-node b))) backlinks)))
+               (prompt-msg (if backlinks
+                               (format "Warning: Node has %d backlink(s) from:\n- %s\n\nAre you sure you want to delete this node and its associated image directory?"
+                                       (length backlinks)
+                                       (string-join backlink-titles "\n- "))
+                             "Are you sure you want to delete this node and its associated image directory?")))
+         (when (and (buffer-file-name)
+                (y-or-n-p prompt-msg))
          (let* ((file-to-delete (buffer-file-name))
                 (file-base (file-name-base file-to-delete))
                 ;; Extract the timestamp (part before the first dash)
@@ -276,7 +285,7 @@ in
            (message "Deleted image directory %s" image-dir))
           ;; Kill buffer and sync
           (kill-buffer)
-          (org-roam-db-sync))))
+          (org-roam-db-sync)))))
 
        ;; Define the custom function to rename existing node and sync database.
        ;; This function will preserve timestamp, update the name of the file and the name of the title in it.
