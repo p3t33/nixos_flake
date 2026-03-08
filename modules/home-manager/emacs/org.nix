@@ -29,6 +29,7 @@ in
     org-transclusion
     ox-hugo
     toc-org
+    org-appear
   ];
 
   programs.emacs.extraConfig = lib.mkOrder 500 ''
@@ -178,6 +179,17 @@ in
        :hook (org-mode . org-transclusion-mode))
       ;; =================================
 
+      ;; org-appear: reveal emphasis markers when cursor is on them
+      ;; =================================
+      (use-package org-appear
+       :ensure nil
+       :hook (org-mode . org-appear-mode)
+       :custom
+       (org-appear-autolinks t)
+       (org-appear-autosubmarkers t)
+       (org-appear-autoentities t))
+      ;; =================================
+
 
       ;; ============
       ;; org-download
@@ -244,10 +256,19 @@ in
        ;; Define the custom function to delete nodes and sync database.
        (defun custom-org-roam-delete-node-and-sync ()
         "Delete the current Org-roam node file with confirmation,
-        delete the associated image folder (based on timestamp), then sync the Org-roam database."
+        warn about existing backlinks, delete the associated image folder (based on timestamp),
+        then sync the Org-roam database."
         (interactive)
-        (when (and (buffer-file-name)
-               (y-or-n-p "Are you sure you want to delete this node and its associated image directory?"))
+        (let* ((node (org-roam-node-at-point))
+               (backlinks (when node (org-roam-backlinks-get node :unique t)))
+               (backlink-titles (when backlinks (mapcar (lambda (b) (org-roam-node-title (org-roam-backlink-source-node b))) backlinks)))
+               (prompt-msg (if backlinks
+                               (format "Warning: Node has %d backlink(s) from:\n- %s\n\nAre you sure you want to delete this node and its associated image directory?"
+                                       (length backlinks)
+                                       (string-join backlink-titles "\n- "))
+                             "Are you sure you want to delete this node and its associated image directory?")))
+         (when (and (buffer-file-name)
+                (y-or-n-p prompt-msg))
          (let* ((file-to-delete (buffer-file-name))
                 (file-base (file-name-base file-to-delete))
                 ;; Extract the timestamp (part before the first dash)
@@ -264,7 +285,7 @@ in
            (message "Deleted image directory %s" image-dir))
           ;; Kill buffer and sync
           (kill-buffer)
-          (org-roam-db-sync))))
+          (org-roam-db-sync)))))
 
        ;; Define the custom function to rename existing node and sync database.
        ;; This function will preserve timestamp, update the name of the file and the name of the title in it.
@@ -278,25 +299,32 @@ in
                (file-ext (file-name-extension old-file))
                ;; Extract the timestamp or number at the beginning
                (timestamp (car (split-string file-base "-")))
-               ;; Get the current title part
-               (current-title (mapconcat 'identity (cdr (split-string file-base "-")) " "))
-               ;; Prompt for new title
-               (new-title (read-string "New title: " current-title))
+               ;; Prompt for new title using the actual old title
+               (new-title (org-roam-node-title (org-roam-node-read old-title nil nil nil "New title: ")))
+               ;; Create a slug from the new title (lowercase, non-alphanumeric to underscores)
+               (new-slug (replace-regexp-in-string "_+$" "" (replace-regexp-in-string "^_+" "" (replace-regexp-in-string "[^[:alnum:]]+" "_" (downcase new-title)))))
                ;; Construct the new file name
-               (new-file (concat file-dir timestamp "-" new-title "." file-ext)))
+               (new-file (concat file-dir timestamp "-" new-slug "." file-ext)))
          (when (and new-title (not (string= new-title "")))
-          ;; Rename the file
-          (rename-file old-file new-file)
-          ;; Update buffer name
+          (let ((existing-node (org-roam-node-from-title-or-alias new-title)))
+           (when (or (not existing-node)
+                     (string= (org-roam-node-file existing-node) old-file)
+                     (y-or-n-p (format "A node titled '%s' already exists. Rename anyway? " new-title)))
+            ;; Rename the file
+            (rename-file old-file new-file)
+            ;; Update buffer name
           (set-visited-file-name new-file)
-          ;; Update #+title
+          ;; Update #+title and #+category
           (goto-char (point-min))
           (when (re-search-forward "^#\\+title:.*$" nil t)
            (replace-match (concat "#+title: " new-title)))
+          (goto-char (point-min))
+          (when (re-search-forward "^#\\+category:.*$" nil t)
+           (replace-match (concat "#+category: " new-title)))
           (save-buffer)
           ;; Update org-roam cache
           (org-roam-db-sync)
-          (message "Renamed to %s and updated #+title." new-title))))
+          (message "Renamed to %s and updated #+title and #+category." new-title))))))
 
        ;; putting the template settings under :custom did not work for me.
        (setq org-roam-capture-templates
