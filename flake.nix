@@ -24,6 +24,11 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    tmux-nerd-font-window-name = {
+      url = "github:joshmedeski/tmux-nerd-font-window-name";
+      flake = false;
+    };
   };
 
   outputs =
