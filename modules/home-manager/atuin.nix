@@ -17,6 +17,7 @@ in
         style = "compact";
         # for some reason this directive has no effect.
         show_help = false;
+        enter_accept = true;
 
         theme = {
           name = catppuccinTheme;
