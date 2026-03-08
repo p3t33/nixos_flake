@@ -68,12 +68,11 @@ in
             vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, bufopts)
             vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, bufopts)
             vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, bufopts)
-            vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, bufopts)
+            vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, bufopts)
             vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
-            vim.keymap.set('n', '<leader>f', function() vim.lsp.buf.format { async = true } end, bufopts)
           end
 
-          local flags = { debounce_text_changes = 150 }
+          local flags = {}
           local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
           -- --- LSP SERVER CONFIGS ---
