@@ -83,7 +83,8 @@
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "tmux-nerd-font-window-name": "tmux-nerd-font-window-name"
       }
     },
     "sops-nix": {
@@ -103,6 +104,22 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "tmux-nerd-font-window-name": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771362252,
+        "narHash": "sha256-i3DT+r7WUvutRhob+tHZOe8TBUxpe4JflS9e1dgkg6s=",
+        "owner": "joshmedeski",
+        "repo": "tmux-nerd-font-window-name",
+        "rev": "7c08b6be2a1d0502d5c5cc7171f8507502ca3e25",
+        "type": "github"
+      },
+      "original": {
+        "owner": "joshmedeski",
+        "repo": "tmux-nerd-font-window-name",
         "type": "github"
       }
     }
