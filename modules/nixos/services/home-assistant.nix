@@ -2,6 +2,8 @@
 {
 
   config = lib.mkIf config.services.home-assistant.enable {
+    services.postgresql.enable = true;
+
     services.home-assistant = {
     # Home Assistant runs in an isolated NixOS service environment, so system-wide
     # Python packages are not available to it. We must explicitly declare additional
@@ -18,11 +20,18 @@
         zlib-ng
         aiohttp-fast-zlib
         isal
+        psycopg2
     ];
 
     openFirewall = true;
-    # only install components but does not enable them.
-    extraComponents = [ "mqtt" ];  # Enables MQTT integration to use the MQTT broker provided by services.mosquitto.
+    extraComponents = [
+      "sun"          # sunrise/sunset, used by automations
+      "met"          # free weather forecast, no API key needed
+      "mobile_app"   # companion app on your phone
+      "isal"         # compression performance improvement
+      "camera"       # core component — pulls in pyturbojpeg
+      "conversation" # core component — pulls in hassil + home-assistant-intents
+    ] ++ lib.optional config.services.mosquitto.enable "mqtt";
     config = {
       homeassistant = {
         name = "Home";
@@ -34,6 +43,10 @@
         server_host = "${config.custom.shared.anyIPv4}";
         server_port = 8123;
       };
+      # Use PostgreSQL instead of the default SQLite for better performance
+      # and reliability with large history datasets.
+      # Connects via Unix socket using peer auth (hass user → hass db).
+      recorder.db_url = "postgresql://@/hass";
     };
   };
  };
