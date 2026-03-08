@@ -17,6 +17,7 @@ in
     ];
 
     programs.zsh = {
+      history.share = true;
       history.ignorePatterns = [
         "ls"
         "cd *"
@@ -76,6 +77,10 @@ in
         source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
         function zvm_custom_bindings() {
             bindkey '^R' _atuin_search_widget
+            # Atuin's init prepends itself to ZSH_AUTOSUGGEST_STRATEGY. Reset it here
+            # so autosuggestions use zsh's native history (local machine only) instead
+            # of Atuin's cross-machine synced database.
+            ZSH_AUTOSUGGEST_STRATEGY=(history)
         }
 
         # Ensure custom bindings are applied after zsh-vi-mode initializes
