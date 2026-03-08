@@ -29,6 +29,7 @@ in
     org-transclusion
     ox-hugo
     toc-org
+    org-appear
   ];
 
   programs.emacs.extraConfig = lib.mkOrder 500 ''
@@ -176,6 +177,17 @@ in
        :config
        :after org
        :hook (org-mode . org-transclusion-mode))
+      ;; =================================
+
+      ;; org-appear: reveal emphasis markers when cursor is on them
+      ;; =================================
+      (use-package org-appear
+       :ensure nil
+       :hook (org-mode . org-appear-mode)
+       :custom
+       (org-appear-autolinks t)
+       (org-appear-autosubmarkers t)
+       (org-appear-autoentities t))
       ;; =================================
 
 
