@@ -51,8 +51,9 @@ in
            (evil-append-line 1))) ;; Enters insert mode at end of new line
          (org-meta-return)))
 
-       ;; Override M-RET behavior in Org Mode
-       (define-key org-mode-map (kbd "M-RET") 'my/org-meta-return-dwim))
+       ;; Override M-RET in all evil states so it reaches our handler
+       ;; (define-key on org-mode-map alone is shadowed by evil's state maps in normal mode)
+       (evil-define-key '(normal insert) org-mode-map (kbd "M-RET") 'my/org-meta-return-dwim))
       ;; ==============================
 
 
