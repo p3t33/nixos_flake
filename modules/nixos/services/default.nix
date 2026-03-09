@@ -15,7 +15,7 @@ in
     ./fail2ban.nix
     ./gatus.nix
     ./grafana.nix
-    ./home-assistant.nix
+    ./home-assistant
     ./homepage_dashboard.nix
     ./inadyn.nix
     ./jackett.nix
