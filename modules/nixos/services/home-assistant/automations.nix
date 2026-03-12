@@ -16,7 +16,9 @@ let
       for.minutes = 5;
     }];
     action = [{
-      service = "notify.notify";
+      # Use persistent_notification until mobile app service name is known.
+      # Replace with notify.mobile_app_<device> once the app is paired.
+      service = "notify.persistent_notification";
       data    = {
         title   = "${plug.name} finished";
         message = "${plug.name} cycle is complete.";

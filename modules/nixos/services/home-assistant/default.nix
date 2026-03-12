@@ -54,6 +54,9 @@
         # history depends on recorder and enables the History panel
         # and statistics-graph cards in Lovelace
         history = {};
+        # Required to load the mobile_app domain — extraComponents installs
+        # the Python deps but this entry enables it in configuration.yaml
+        mobile_app = {};
       };
     };
   };
