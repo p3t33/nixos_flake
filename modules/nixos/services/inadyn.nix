@@ -26,6 +26,8 @@
         # Cloudflare is a *provider*, not a custom section
         provider."cloudflare.com" = {
           include = config.sops.secrets."inadyn/cloudflare".path;
+          checkip-server = "ifconfig.me";
+          checkip-path = "/ip";
         };
       };
     };
