@@ -23,6 +23,7 @@
         aiohttp-fast-zlib
         isal
         psycopg2
+        hassil
       ];
 
       openFirewall = true;
@@ -30,6 +31,7 @@
         "sun"          # sunrise/sunset, used by automations
         "met"          # free weather forecast, no API key needed
         "mobile_app"   # companion app on your phone
+        "zeroconf"     # mDNS — advertises HA on the LAN for mobile app discovery
         "isal"         # compression performance improvement
         "camera"       # core component — pulls in pyturbojpeg
         "conversation" # core component — pulls in hassil + home-assistant-intents
@@ -54,9 +56,10 @@
         # history depends on recorder and enables the History panel
         # and statistics-graph cards in Lovelace
         history = {};
-        # Required to load the mobile_app domain — extraComponents installs
-        # the Python deps but this entry enables it in configuration.yaml
-        mobile_app = {};
+        # extraComponents installs Python deps but does not enable domains
+        # in configuration.yaml — these entries are required for that.
+        mobile_app = {}; # companion app on your phone
+        zeroconf   = {}; # mDNS — required even though HA uses python-zeroconf, not Avahi
       };
     };
   };
