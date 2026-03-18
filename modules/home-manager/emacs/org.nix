@@ -3,6 +3,7 @@
 let
   cfg = config.programs.emacs;
   orgRoamDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
+  documentsDir = config.xdg.userDirs.documents;
 in
 {
   config = lib.mkIf cfg.enable {
@@ -62,6 +63,17 @@ in
       (setq org-startup-with-inline-images t)
       (setq org-hide-emphasis-markers t)
       (setq org-edit-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
+
+      ;; Export settings - save exported files to a dedicated directory
+      (setq org-export-in-background nil)
+      (defun my/org-export-output-file-name (orig-fun extension &optional subtreep pub-dir)
+        "Redirect exports to Documents/org_exports/ directory"
+        (let* ((export-dir (expand-file-name "org_exports" "${documentsDir}"))
+               (pub-dir (or pub-dir export-dir)))
+          (unless (file-directory-p pub-dir)
+            (make-directory pub-dir t))
+          (funcall orig-fun extension subtreep pub-dir)))
+      (advice-add 'org-export-output-file-name :around #'my/org-export-output-file-name)
 
       :config
 
