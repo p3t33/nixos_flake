@@ -44,6 +44,7 @@ in
     ./wallpaper.nix
     ./clipmenu.nix
     ./xdg/mime_apps.nix
+    ./xdg/user_dirs.nix
     ./gtk.nix
     ./qt.nix
     ./firefox.nix
