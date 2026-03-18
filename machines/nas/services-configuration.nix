@@ -42,6 +42,7 @@
 
     services = {
       avahi.publisher.enable  = true;
+      printing.server.enable  = true;
       restic.enable = true;
 
       syncthing = {

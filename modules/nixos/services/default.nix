@@ -87,7 +87,7 @@ in
 
     (lib.mkIf g.desktop.enable {
       services.avahi.enable = true;
-      services.printing.enable = true;
+      custom.services.printing.client.enable = true;
       services.udisks2.enable = true; # mount and unmout USB drives
       services.pipewire.enable = true; # sound
       services.xserver.enable = true;
@@ -99,7 +99,7 @@ in
     })
 
     (lib.mkIf g.server.enable {
-      services.openssh.enable = true; # sshd
+      services.openssh.enable  = true; # sshd
       services.fail2ban.enable = true;
     })
 
