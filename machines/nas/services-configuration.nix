@@ -41,6 +41,7 @@
     };
 
     services = {
+      avahi.publisher.enable  = true;
       restic.enable = true;
 
       syncthing = {
