@@ -17,6 +17,7 @@ in
     ./fzf.nix
     ./gemini.nix
     ./claude.nix
+    ./codex.nix
     ./bat.nix
     ./neovim
     ./git/git.nix
@@ -118,6 +119,7 @@ in
       programs.pay-respects.enable = true;
       programs.gemini-cli.enable = true;
       programs.claude-code.enable = true;
+      programs.codex.enable = true;
       custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
     })
@@ -129,4 +131,3 @@ in
 
   ];
 }
-
