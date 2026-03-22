@@ -41,8 +41,11 @@ in
 
       vim.api.nvim_set_keymap('n', '<F5>', ":setlocal spell! spellsuggest=best,5 spelllang=en_us,nixen<CR>", { noremap = true, silent = true })
 
+      -- Automatically enable spell checking for a broad set of filetypes.
+      -- For code files, treesitter's @spell captures scope it to comments and strings only.
+      -- For text-based formats (markdown, gitcommit) it applies to the whole buffer.
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = "gitcommit,markdown",
+        pattern = "gitcommit,markdown,lua,python,c,cpp,nix,java,sh,bash,javascript,typescript",
         command = "setlocal spell spellsuggest=best,5 spelllang=en_us,nixen",
       })
 
