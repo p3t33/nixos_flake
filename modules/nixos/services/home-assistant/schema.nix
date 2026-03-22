@@ -1,4 +1,7 @@
 { config, lib, ... }:
+let
+  devices = config.custom.zigbee2mqtt.devices;
+in
 {
   options.custom.services.homeAssistant.rooms = lib.mkOption {
     default = {};
@@ -15,15 +18,16 @@
 
         plugs = lib.mkOption {
           default = {};
-          type    = lib.types.attrsOf (lib.types.submodule {
+          type    = lib.types.attrsOf (lib.types.submodule ({ config, ... }: {
             options = {
               name           = lib.mkOption { type = lib.types.str; };
-              switch         = lib.mkOption { type = lib.types.str; };
-              power          = lib.mkOption { type = lib.types.str; };
-              energy         = lib.mkOption { type = lib.types.str; };
+              device         = lib.mkOption { type = lib.types.str; description = "Friendly name of the zigbee device (from custom.zigbee2mqtt.devices.*.name)."; };
+              switch         = lib.mkOption { type = lib.types.str; default = "switch.${config.device}"; };
+              power          = lib.mkOption { type = lib.types.str; default = "sensor.${config.device}_power"; };
+              energy         = lib.mkOption { type = lib.types.str; default = "sensor.${config.device}_energy"; };
               notifyWhenDone = lib.mkEnableOption "notify when appliance cycle finishes";
             };
-          });
+          }));
         };
       };
     }));
@@ -36,9 +40,7 @@
         icon  = "mdi:desk";
         plugs.desk = {
           name   = "Desk Plug";
-          switch = "switch.office_plug";
-          power  = "sensor.office_plug_power";
-          energy = "sensor.office_plug_energy";
+          device = devices.office_plug.name;
         };
       };
       master_bedroom = {
@@ -50,15 +52,21 @@
         icon  = "mdi:shower";
         plugs.washing_machine = {
           name           = "Washing Machine";
-          switch         = "switch.master_bedroom_washing_machine_plug";
-          power          = "sensor.master_bedroom_washing_machine_plug_power";
-          energy         = "sensor.master_bedroom_washing_machine_plug_energy";
+          device         = devices.washing_machine.name;
           notifyWhenDone = true;
         };
       };
       bathroom = {
         name = "Bathroom";
         icon = "mdi:shower";
+      };
+      living_room = {
+        name = "Living Room";
+        icon = "mdi:sofa";
+        plugs.main = {
+          name   = "Living Room Plug";
+          device = devices.living_room.name;
+        };
       };
     };
   };
