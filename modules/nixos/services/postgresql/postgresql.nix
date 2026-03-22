@@ -6,6 +6,7 @@ let
   sonarr = "sonarr";
   radarr = "radarr";
   n8n = "n8n";
+  hass = "hass";
 in
 {
   config = lib.mkIf config.services.postgresql.enable {
@@ -90,7 +91,14 @@ in
         ++ lib.optionals config.services.${n8n}.enable [
           {
             name = "${config.services.n8n.environment.DB_POSTGRESDB_USER}";
-            ensureDBOwnership = true; # <-- add this
+            ensureDBOwnership = true;
+          }
+        ]
+        # hass connects via Unix socket (peer auth) — no password needed
+        ++ lib.optionals config.services.home-assistant.enable [
+          {
+            name = "${hass}";
+            ensureDBOwnership = true;
           }
         ];
 
@@ -115,6 +123,9 @@ in
         ]
         ++ lib.optionals config.services.n8n.enable [
           "${config.services.n8n.environment.DB_POSTGRESDB_DATABASE}"
+        ]
+        ++ lib.optionals config.services.home-assistant.enable [
+          "${hass}"
         ];
 
       authentication = ''
