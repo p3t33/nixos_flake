@@ -1,8 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, pkgs-unstable, ... }:
 
 {
   config = lib.mkIf config.programs.gemini-cli.enable {
     programs.gemini-cli = {
+      package = pkgs-unstable.gemini-cli;
       context = {
         GEMINI = ''
           # Global Context

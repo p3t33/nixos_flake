@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -39,13 +40,17 @@
         inherit system;
         config.allowUnfree = true;
       };
+      pkgs-unstable = import inputs.nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      };
 
       lib = nixpkgs.lib;
 
       mkHost = { hostName, primeUsername ? "kmedrish" }: lib.nixosSystem {
         inherit system;
         specialArgs = {
-          inherit inputs;
+          inherit inputs pkgs-unstable;
           hostSpecific = { inherit hostName primeUsername; };
         };
         modules = [
@@ -75,7 +80,7 @@
         kmedrish = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = {
-            inherit inputs;
+            inherit inputs pkgs-unstable;
             hostSpecific = {
               hostName = "generic_linux_distro";
               primeUsername = "kmedrish";

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 let
   cfg = config.custom.apps.cliUtilities;
@@ -126,7 +126,7 @@ in
       imv
       tealdeer
       immich-go # used for mass importing into immich.
-      cursor-cli
+      pkgs-unstable.cursor-cli
       ddcutil
     ];
   };

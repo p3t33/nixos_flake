@@ -1,8 +1,9 @@
-{ config, lib, ... }:
+{ config, lib, pkgs-unstable, ... }:
 
 {
   config = lib.mkIf config.programs.claude-code.enable {
     programs.claude-code = {
+      package = pkgs-unstable.claude-code;
       settings = {
         model = "claude-sonnet-4-6";
         theme = "dark";

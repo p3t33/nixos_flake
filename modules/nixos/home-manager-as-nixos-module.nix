@@ -3,6 +3,7 @@
 {
   inputs,
   hostSpecific,
+  pkgs-unstable,
   config,
   ...
 }:
@@ -16,8 +17,7 @@
 
     useUserPackages = true;
     extraSpecialArgs = {
-      inherit inputs;
-      inherit hostSpecific;
+      inherit inputs hostSpecific pkgs-unstable;
     };
 
     users.${hostSpecific.primeUsername} = import (inputs.self + "/machines/${hostSpecific.hostName}/home.nix");
