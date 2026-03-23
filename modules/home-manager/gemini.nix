@@ -4,6 +4,21 @@
   config = lib.mkIf config.programs.gemini-cli.enable {
     programs.gemini-cli = {
       package = pkgs-unstable.gemini-cli;
+      # defaultModel sets the GEMINI_MODEL environment variable.
+      # Session variables only take effect after logout/login.
+      #
+      # Model selection precedence (highest to lowest):
+      #   1. --model CLI flag
+      #   2. GEMINI_MODEL env var
+      #   3. model.name in settings.json
+      #   4. Local Gemma model router (experimental, requires HTTP endpoint in settings.json)
+      #   5. Default model ("auto")
+      #
+      # home-manager has a default value for this variable, and if it is not set at all it will
+      # be set to that value and it will implicitly override anything that is set in the settings.model.name.
+      # So this configuration must be set. I am setting it to an empty string and not just using it because any
+      # change to it will require me to log out and in, which is more pain then just updating settings.model.name.
+      defaultModel = "";
       context = {
         GEMINI = ''
           # Global Context
@@ -51,8 +66,10 @@
         };
       };
 
-      defaultModel = "gemini-1.5-pro-latest";
       settings = {
+        model = {
+          name = "gemini-3.1-pro";
+        };
         security = {
           auth = {
             selectedType = "oauth-personal";
