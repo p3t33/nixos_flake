@@ -223,7 +223,20 @@
           plugin = nvim-tree-lua;
           type = "lua";
           config = ''
-            require'nvim-tree'.setup {}
+            require'nvim-tree'.setup {
+              actions = {
+                -- Prevent nvim-tree from changing cwd when navigating directories.
+                -- With auto-session, a cwd change gets persisted and restored on
+                -- next launch, causing fzf-lua searches to start from the wrong root.
+                --
+                -- Enabled by default for workflows where nvim-tree acts as a
+                -- traditional file manager: opening a folder means "work here now",
+                -- scoping :!, :e, and search commands to that subdirectory.
+                change_dir = {
+                  enable = false,
+                },
+              },
+            }
           '';
         }
         {
@@ -372,10 +385,10 @@
           '';
         }
         {
-          # While Neovim 0.10+ has built-in native commenting (using gcc/gc), 
-          # comment-nvim is intentionally kept here. The native API only toggles 
-          # existing lines, whereas this plugin provides advanced features like 
-          # adding comments at the end of a line (eol), or inserting new commented 
+          # While Neovim 0.10+ has built-in native commenting (using gcc/gc),
+          # comment-nvim is intentionally kept here. The native API only toggles
+          # existing lines, whereas this plugin provides advanced features like
+          # adding comments at the end of a line (eol), or inserting new commented
           # lines above/below the cursor, which are mapped in the 'extra' table below.
           plugin = comment-nvim;
           type = "lua";
@@ -414,13 +427,14 @@
           '';
         }
         {
+          # sessions created at ~/.local/share/nvim/sessions
           plugin = auto-session;
           type = "lua";
           config = ''
             require("auto-session").setup({
               suppressed_dirs = { "~/", "~/Downloads", "~/projects", "/" },
               bypass_save_filetypes = { "dashboard" },
-              
+
               -- Garbage Collection
               auto_delete_empty_sessions = true,
               purge_after_minutes = 129600, -- 90 days
