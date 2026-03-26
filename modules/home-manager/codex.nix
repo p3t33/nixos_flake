@@ -1,10 +1,11 @@
-{ config, lib, ... }:
+{ config, lib, pkgs-unstable, ... }:
 
 {
   config = lib.mkIf config.programs.codex.enable {
     programs.codex = {
+      package = pkgs-unstable.codex;
       settings = {
-        model = "gpt-5.3-codex";
+        model = "gpt-5.4-codex";
         preferred_auth_method = "chatgpt";
         model_reasoning_effort = "high";
         history = {
@@ -39,6 +40,7 @@
         - Never force-push or reset --hard without asking
         - Never touch .env files or secrets
         - Always show diffs before committing
+        - Never add co-authored-by or any AI attribution trailers to git commits
       '';
     };
   };
