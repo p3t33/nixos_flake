@@ -30,6 +30,7 @@
         - Discuss approach before writing code. Surface trade-offs and get alignment first.
         - If you discover an issue mid-implementation, stop and discuss.
         - State assumptions explicitly rather than guessing silently.
+        - When a question involves a specific tool, library, or technology with public documentation, fetch and read the relevant docs before answering. Do not rely solely on training data for implementation details, CLI flags, or API behavior.
 
         ## Coding Standards
         - Git: conventional commits — <type>(<scope>): <subject>, imperative mood, 50 char subject max
