@@ -45,6 +45,7 @@ in
     ./system/moolticuted.nix
 
     ./user/tmux.nix
+    ./user/mutagen.nix
     ./user/watchman.nix
     ./user/sxhkd.nix
 
@@ -82,6 +83,7 @@ in
   config = lib.mkMerge [
     (lib.mkIf g.core.enable {
       custom.services.tmuxd.enable = true;
+      custom.services.mutagen.enable = true;
       custom.services.watchman.enable = true;
     })
 
