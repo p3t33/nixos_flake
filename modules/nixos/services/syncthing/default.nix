@@ -97,6 +97,10 @@ in
       user = "${cfg.user}";
       key = config.sops.secrets."syncthing/key.pem".path;
       cert = config.sops.secrets."syncthing/cert.pem".path;
+      # Opens default ports in the firewall:
+      # - 22000/TCP (Sync Protocol): Required for direct, high-speed file transfers.
+      # - 21027/UDP (Local Discovery): Allows local devices to find each other without using global relays.
+      openDefaultPorts = true;
       #overrideDevices = true; # Deletes devices that are not configured declaratively
       #overrideFolders = true; # Deletes folders that are not configured declaratively
 
