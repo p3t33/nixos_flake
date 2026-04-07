@@ -251,9 +251,12 @@ in
       ;; =====================
       ;; org-roam and its ui
       ;; =====================
+      ;; No :after org — load eagerly so org-roam-db-autosync-mode runs at
+      ;; startup and the database is ready before the first keybinding call.
+      ;; Without this, the first org-roam command (e.g. SPC f n) stalls while
+      ;; the database is loaded.
       (use-package org-roam
        :ensure nil
-       :after org
        :custom
        (org-roam-directory (file-truename "${orgRoamDirectoryPath}"))
        :bind (("C-c n l" . org-roam-buffer-toggle)
