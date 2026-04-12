@@ -66,6 +66,7 @@ in
       custom.apps.development.enable  = true;
       custom.apps.cliUtilities.enable = true;
       custom.apps.encryption.enable   = true;
+      programs.nix-ld.enable = true;
     })
 
     (lib.mkIf g.desktop.enable {

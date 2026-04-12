@@ -12,6 +12,7 @@ in
     ./bluetooth.nix
     ./calibre-web.nix
     ./envfs.nix # always enabled
+    ./nix-ld.nix
     ./fail2ban.nix
     ./gatus.nix
     ./grafana.nix
