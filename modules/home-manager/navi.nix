@@ -96,6 +96,9 @@
        # copy key to remote
        ssh-copy-id -i ~/.ssh/<privare_key_name> <user>@<remote_ip>
 
+       # copy hardware public key to remote
+       ssh-copy-id -f -i ~/.ssh/<privare_key_name>.pub <user>@<remote_ip>
+
        # remove old host key
        ssh-keygen -R <ip-of-host>
 
