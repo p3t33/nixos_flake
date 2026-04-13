@@ -5,6 +5,8 @@
   ];
 
   custom = {
+    programs.openclaw.enable = true;
+
     profiles.homeManager = {
       core.enable = true;
     };

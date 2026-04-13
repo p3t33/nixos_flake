@@ -37,6 +37,7 @@
       # and was set as root which caused partial installation of the configuration, with
       # home-manger failing to switch.
       inputs.sops-nix.homeManagerModules.sops
+      inputs.nix-openclaw.homeManagerModules.openclaw
     ];
   };
 }

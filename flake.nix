@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-openclaw = {
+      url = "github:openclaw/nix-openclaw";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -28,6 +33,11 @@
 
     tmux-nerd-font-window-name = {
       url = "github:joshmedeski/tmux-nerd-font-window-name";
+      flake = false;
+    };
+
+    whisper-model-base = {
+      url = "file+https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin";
       flake = false;
     };
   };
@@ -39,10 +49,12 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ inputs.nix-openclaw.overlays.default ];
       };
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
+        overlays = [ inputs.nix-openclaw.overlays.default ];
       };
 
       lib = nixpkgs.lib;
@@ -55,6 +67,9 @@
         };
         modules = [
           ./machines/${hostName}/configuration.nix
+          {
+            nixpkgs.overlays = [ inputs.nix-openclaw.overlays.default ];
+          }
           inputs.home-manager.nixosModules.home-manager
           inputs.nix-index-database.nixosModules.nix-index
           inputs.sops-nix.nixosModules.sops
