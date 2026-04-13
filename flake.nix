@@ -70,6 +70,7 @@
         sisyphus-miner   = mkHost { hostName = "sisyphus-miner"; };
         work-pc          = mkHost { hostName = "work-pc"; };
         home-desktop     = mkHost { hostName = "home-desktop"; };
+        helper           = mkHost { hostName = "helper"; };
       };
 
       # Created for the case I would like to apply home manger settings on non NixOS

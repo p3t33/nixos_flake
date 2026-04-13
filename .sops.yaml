@@ -7,6 +7,8 @@ keys:
   - &nas age1mh9qhavlwhlhahvgg86aj9tzhlfuu2ek29j3t4cxeyg540vj7qasmf7ryr
   - &home-assistant age1u4yqa76tcnvsdyshcssarl6fdr049mjdq398a48epa2f4zu8haqqujj0m3
   - &sisyphus-miner age1857y4m4fa3wwrut8uqfeculpq6m4lw05n3k6ky6s79nnh84raf8qvlm4aw
+  - &helper age1dyj5ws2auc20faq7432aql25h2eqmec2g0flf94gc3g3fz0r2ymq9upk45
+
 creation_rules:
   - path_regex: machines/work-pc/secrets/nixos/secrets.yaml$
     key_groups:
@@ -80,3 +82,11 @@ creation_rules:
     key_groups:
       - age:
         - *home-assistant
+  - path_regex: machines/helper/secrets/nixos/secrets.yaml$
+    key_groups:
+      - age:
+        - *helper
+  - path_regex: machines/helper/secrets/home-manager/secrets.yaml$
+    key_groups:
+      - age:
+        - *helper
