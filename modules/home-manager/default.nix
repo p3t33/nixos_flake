@@ -18,6 +18,7 @@ in
     ./gemini.nix
     ./claude.nix
     ./codex.nix
+    ./openclaw.nix
     ./bat.nix
     ./neovim
     ./git/git.nix
