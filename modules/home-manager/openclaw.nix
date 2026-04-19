@@ -232,6 +232,42 @@
               # what the sub-agent saw and decided on disk.
             };
           };
+
+          # memory-wiki compiles memory into a structured knowledge vault: pages organized
+          # into entities, concepts, syntheses, and sources, with claims that carry
+          # confidence levels, evidence chains, and timestamps.
+          #
+          # vaultMode "isolated": standalone vault, no automatic import from memory-core.
+          # Content enters via manual ingest (`openclaw wiki ingest <file>`) or agent
+          # writes via wiki_apply during conversations.
+          #
+          # Bridge mode was attempted but memory-core does not currently export public
+          # artifacts through its SDK seams (confirmed via `openclaw wiki doctor`).
+          # Bridge is the intended mode with QMD backend. Revisit if memory-core gains
+          # export support or if QMD gets packaged for NixOS.
+          #
+          # search.corpus "all": makes memory_search span both memory-core and wiki in
+          # one pass. Without this, the wiki exists but is never searched during replies.
+          # active-memory benefits from this automatically since it uses memory_search.
+          #
+          # render.renderMode "native": not using Obsidian, so native markdown rendering.
+          entries."memory-wiki" = {
+            enabled = true;
+            config = {
+              vaultMode = "isolated";
+              vault.renderMode = "native";
+              search = {
+                backend = "shared";
+                corpus = "all";
+              };
+              ingest.autoCompile = true;
+              render = {
+                preserveHumanBlocks = true;
+                createBacklinks = true;
+                createDashboards = true;
+              };
+            };
+          };
         };
 
         hooks = {
