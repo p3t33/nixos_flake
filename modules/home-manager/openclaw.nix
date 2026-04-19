@@ -139,6 +139,49 @@
         plugins = {
           slots.memory = "memory-core";
           entries.openai.enabled = true;
+
+          # active-memory runs a blocking sub-agent before each reply to surface
+          # relevant memories proactively. Without it, memory-core stores and indexes
+          # memories but never injects them into responses unless explicitly asked.
+          #
+          # Activation requires all of:
+          #   - plugin enabled
+          #   - current agent listed in `agents`
+          #   - session type listed in `allowedChatTypes`
+          #   - interactive persistent chat (not headless/one-shot API calls)
+          #
+          # queryMode options:
+          #   "message"  - last user message only; fastest, good for preference recall
+          #   "recent"   - last message + short tail; balanced, good for follow-ups
+          #   "full"     - full conversation history; best recall, slowest
+          #
+          # promptStyle options (controls eagerness when deciding to surface memories):
+          #   "strict"          - least eager, minimizes unwanted context bleed
+          #   "balanced"        - general-purpose default
+          #   "contextual"      - prioritizes conversation continuity
+          #   "recall-heavy"    - surfaces softer/weaker matches
+          #   "precision-heavy" - returns nothing unless match is obvious
+          #   "preference-only" - tuned for habits, favorites, recurring personal facts
+          #
+          # timeoutMs: hard deadline for the sub-agent. Docs recommend 15000ms for
+          # "recent" mode. Max is 120000ms. Agent reply is blocked until this resolves
+          # or times out, so keep this conservative.
+          entries."active-memory" = {
+            enabled = true;
+            config = {
+              agents = [ "main" ];
+              # Start with direct only. Add "group" later if useful in Telegram groups.
+              allowedChatTypes = [ "direct" ];
+              queryMode = "recent";
+              promptStyle = "balanced";
+              timeoutMs = 15000;
+              # Keep logging on initially to observe behavior via openclaw logs.
+              # Disable once active-memory feels stable.
+              logging = true;
+              # persistTranscripts: off by default. Enable only if you want to inspect
+              # what the sub-agent saw and decided on disk.
+            };
+          };
         };
 
         hooks = {
