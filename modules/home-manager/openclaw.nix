@@ -140,6 +140,15 @@
           slots.memory = "memory-core";
           entries.openai.enabled = true;
 
+          # Dreaming runs a scheduled background sweep that scores short-term signals
+          # and promotes qualified items into MEMORY.md. Runs daily at 3am by default.
+          # Internal scoring phases (light/deep/REM) and thresholds are not configurable.
+          entries.memory-core.config.dreaming = {
+            enabled = true;
+            # Default cron is "0 3 * * *" — keeping it explicit.
+            frequency = "0 3 * * *";
+          };
+
           # active-memory runs a blocking sub-agent before each reply to surface
           # relevant memories proactively. Without it, memory-core stores and indexes
           # memories but never injects them into responses unless explicitly asked.
