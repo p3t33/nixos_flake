@@ -57,14 +57,13 @@ in
       # - Maintains state across steps via the controlling tool.
       # - Does not load the entire repository, instead decides what to inspect.
       loadModels = [
-        config.custom.shared.AIDefaultModels.prompt  # level 1.
-        config.custom.shared.AIDefaultModels.fileScoped   # level 1.
-        config.custom.shared.AIDefaultModels.agent # level 1.
-        # "devstral-small-2"   # level 3 - needs newer version of ollama.
+        # OpenClaw memory search uses Ollama embeddings on this host fleet.
+        # We preload nomic-embed-text because it is OpenClaw's default Ollama
+        # embedding model and keeps semantic memory indexing working locally.
+        "nomic-embed-text"
       ];
 
       syncModels = true;
     };
   };
 }
-

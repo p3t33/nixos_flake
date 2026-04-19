@@ -112,11 +112,25 @@
           ];
         };
 
+        # memory-core selects the memory backend, but semantic indexing/search only
+        # becomes operational once an embedding provider is configured. We use
+        # Ollama for that on this host fleet.
+        #
+        # Useful checks:
+        # - `openclaw memory status --deep` shows whether the embedding provider,
+        #   vector index, and indexed chunk counts are actually healthy.
+        # - `openclaw memory index --force` forces a full reindex after changing
+        #   providers/models or when the memory index looks stale/dirty.
+        agents.defaults.memorySearch = {
+          provider = "ollama";
+        };
+
         tools.profile = "coding";
         session.dmScope = "per-channel-peer";
 
         # Keep the default memory backend explicit so bootstrap behavior does not
-        # depend on upstream defaults.
+        # depend on upstream defaults. This alone does not enable semantic memory
+        # search; that also needs an embedding provider via agents.defaults.memorySearch.
         #
         # OpenClaw startup auto-enables the bundled openai plugin for openai-codex models.
         # Keep this explicit so it does not rewrite ~/.openclaw/openclaw.json on restart.
