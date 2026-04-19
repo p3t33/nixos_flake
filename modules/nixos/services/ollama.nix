@@ -54,15 +54,9 @@ in
       # Characteristics:
       # - Operates inside an execution loop(plan -> act -> observe -> repeat).
       # - uses tools(search, open files, apply pathces).
-      # - Maintains state across steps via the controlling tool.
-      # - Does not load the entire repository, instead decides what to inspect.
-      loadModels = [
-        # OpenClaw memory search uses Ollama embeddings on this host fleet.
-        # We preload nomic-embed-text because it is OpenClaw's default Ollama
-        # embedding model and keeps semantic memory indexing working locally.
-        "nomic-embed-text"
-      ];
-
+      # Hosts own services.ollama.loadModels. Keep syncModels enabled here so the
+      # declared host model set stays authoritative, but do not define a shared
+      # default model list in this module.
       syncModels = true;
     };
   };
