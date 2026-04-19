@@ -54,17 +54,10 @@ in
       # Characteristics:
       # - Operates inside an execution loop(plan -> act -> observe -> repeat).
       # - uses tools(search, open files, apply pathces).
-      # - Maintains state across steps via the controlling tool.
-      # - Does not load the entire repository, instead decides what to inspect.
-      loadModels = [
-        config.custom.shared.AIDefaultModels.prompt  # level 1.
-        config.custom.shared.AIDefaultModels.fileScoped   # level 1.
-        config.custom.shared.AIDefaultModels.agent # level 1.
-        # "devstral-small-2"   # level 3 - needs newer version of ollama.
-      ];
-
+      # Hosts own services.ollama.loadModels. Keep syncModels enabled here so the
+      # declared host model set stays authoritative, but do not define a shared
+      # default model list in this module.
       syncModels = true;
     };
   };
 }
-

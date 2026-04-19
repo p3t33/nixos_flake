@@ -7,6 +7,11 @@
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
+      loadModels = [
+        config.custom.shared.AIDefaultModels.prompt
+        config.custom.shared.AIDefaultModels.fileScoped
+        config.custom.shared.AIDefaultModels.agent
+      ];
     };
   };
 
