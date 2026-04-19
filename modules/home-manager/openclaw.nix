@@ -115,11 +115,33 @@
         tools.profile = "coding";
         session.dmScope = "per-channel-peer";
 
+        # Keep the default memory backend explicit so bootstrap behavior does not
+        # depend on upstream defaults.
+        #
         # OpenClaw startup auto-enables the bundled openai plugin for openai-codex models.
         # Keep this explicit so it does not rewrite ~/.openclaw/openclaw.json on restart.
         # Clue source: /tmp/openclaw/openclaw-gateway.log contains
         # "openai-codex/gpt-5.4 model configured, enabled automatically."
-        plugins.entries.openai.enabled = true;
+        plugins = {
+          slots.memory = "memory-core";
+          entries.openai.enabled = true;
+        };
+
+        hooks = {
+          internal = {
+            enabled = true;
+            entries = {
+              "session-memory".enabled = true;
+              "command-logger".enabled = true;
+            };
+          };
+        };
+
+        # Leave these off until there is a concrete need:
+        # - bootstrap-extra-files: only useful for layered bootstrap files such as
+        #   per-project AGENTS.md / TOOLS.md under the workspace.
+        # - boot-md: only useful when we intentionally maintain a recurring
+        #   BOOT.md startup routine.
       };
     };
 
