@@ -121,8 +121,46 @@
         #   vector index, and indexed chunk counts are actually healthy.
         # - `openclaw memory index --force` forces a full reindex after changing
         #   providers/models or when the memory index looks stale/dirty.
+        #
+        # memorySearch controls how the vector index is queried. It does NOT affect:
+        #   - what gets stored (that is the session-memory hook's job)
+        #   - dreaming (which reads short-term-recall.json directly, before the index)
+        #   - what gets promoted to MEMORY.md
+        #
+        # It affects retrieval only — specifically what active-memory gets back when
+        # it runs a semantic search before each reply.
+        #
+        # Hybrid search combines two signals:
+        #   - vector similarity (semantic meaning via nomic-embed-text) weighted at 0.7
+        #   - BM25 keyword matching weighted at 0.3
+        # BM25 catches what embeddings miss: exact names, version numbers, config keys.
+        #
+        # MMR (Maximal Marginal Relevance):
+        #   Without it: if 5 daily notes mention the same topic, you get 5 near-identical
+        #   results back. With it: results are re-ranked for diversity so active-memory
+        #   gets broader coverage. lambda controls the trade-off (0=max diversity,
+        #   1=max relevance). Does not affect dreaming or storage.
+        #
+        # Temporal decay:
+        #   Without it: a note from 6 months ago scores the same as yesterday's if the
+        #   semantic match is equal. With it: older entries are penalised — score halves
+        #   every halfLifeDays days. Evergreen files like MEMORY.md are not affected,
+        #   only timestamped daily notes. Does not affect dreaming or storage.
         agents.defaults.memorySearch = {
           provider = "ollama";
+          query.hybrid = {
+            mmr = {
+              enabled = true;
+              # lambda: 0 = max diversity, 1 = max relevance. Default mid-point is fine
+              # to start — revisit if active-memory results feel too samey or too scattered.
+            };
+            temporalDecay = {
+              enabled = true;
+              # halfLifeDays: score halves every N days. 30 is the default.
+              # Reduce if you want recent notes weighted much more heavily.
+              halfLifeDays = 30;
+            };
+          };
         };
 
         tools.profile = "coding";
