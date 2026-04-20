@@ -46,10 +46,18 @@
     { nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
+      nomachineHashFix = final: prev: {
+        nomachine-client = prev.nomachine-client.overrideAttrs (old: {
+          src = prev.fetchurl {
+            url = "https://download.nomachine.com/download/9.4/Linux/nomachine_9.4.14_1_x86_64.tar.gz";
+            hash = "sha256-tLL8l/UgTiVzGs+mwJeRUlVA8lH72JVogBOEpaSr2AY=";
+          };
+        });
+      };
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ inputs.nix-openclaw.overlays.default ];
+        overlays = [ inputs.nix-openclaw.overlays.default nomachineHashFix ];
       };
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
@@ -68,7 +76,7 @@
         modules = [
           ./machines/${hostName}/configuration.nix
           {
-            nixpkgs.overlays = [ inputs.nix-openclaw.overlays.default ];
+            nixpkgs.overlays = [ inputs.nix-openclaw.overlays.default nomachineHashFix ];
           }
           inputs.home-manager.nixosModules.home-manager
           inputs.nix-index-database.nixosModules.nix-index
