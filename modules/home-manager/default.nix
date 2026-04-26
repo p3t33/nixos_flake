@@ -70,6 +70,7 @@ in
     ./emacs
     ./aichat.nix
     ./aider.nix
+    ./pi.nix
   ];
 
   options.custom.profiles.homeManager = {
@@ -123,6 +124,7 @@ in
       programs.codex.enable = true;
       custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
+      custom.programs.pi.enable = true;
     })
 
     (lib.mkIf g.ai.enable {
