@@ -68,7 +68,20 @@
        # read tag message
        git show <tag>
 
-       #
+       # create patch for top commit
+       git format-patch -1 HEAD
+
+       # create commit from range of commits(including the first in range)
+       # git format-patch <first>^..<last>
+
+       # apply commit with message
+       git am <name>.patch
+
+       # apply series of commits
+       git am patches/*.patch
+
+       # apply without commit message
+       git apply <name>.patch
       '';
 
       ".local/share/navi/cheats/custom/buku.cheat".text = ''
