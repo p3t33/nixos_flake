@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, pkgs-unstable, config, ... }:
 {
   virtualisation.virtualbox.host.enable = true;
   services = {
@@ -6,7 +6,7 @@
     syncthing.enable = true;
     ollama = {
       enable = true;
-      package = pkgs.ollama-cuda;
+      package = pkgs-unstable.ollama-cuda;
       loadModels = [
         config.custom.shared.AIDefaultModels.prompt
         config.custom.shared.AIDefaultModels.fileScoped
@@ -18,6 +18,10 @@
   programs.adb.enable = true;
 
   custom = {
+    shared.AIDefaultModels.prompt = "qwen3.5:9b";
+    shared.AIDefaultModels.fileScoped = "devstral-small-2:24b";
+    shared.AIDefaultModels.agent = "devstral-small-2:24b";
+
     profiles.systemServices = {
       core.enable = true;
       desktop.enable = true;
