@@ -19,6 +19,8 @@
         ".project"
         ".settings/"
         "*.launch"
+        # large binary archives
+        "*.tar.gz"
       ];
 
       settings = {
