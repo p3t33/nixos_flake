@@ -128,6 +128,7 @@ in
       immich-go # used for mass importing into immich.
       pkgs-unstable.cursor-cli
       ddcutil
+      pkgs-unstable.github-copilot-cli
     ];
   };
 }
