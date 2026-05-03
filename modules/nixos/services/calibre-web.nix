@@ -72,7 +72,9 @@ in
     };
 
     services.calibre-web = {
-      package = pkgs.calibre-web;
+      package = pkgs.calibre-web.overridePythonAttrs (old: {
+        pythonRelaxDeps = (old.pythonRelaxDeps or []) ++ [ "requests" ];
+      });
       user = "calibre-web";
       group = config.custom.shared.mediaGroup;
       dataDir = "/var/lib/calibre-web";
