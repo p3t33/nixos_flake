@@ -70,7 +70,7 @@ in
     ./emacs
     ./aichat.nix
     ./aider.nix
-    ./pi.nix
+    ./pi
   ];
 
   options.custom.profiles.homeManager = {
