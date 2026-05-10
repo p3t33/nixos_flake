@@ -32,8 +32,10 @@ in
   config = lib.mkIf config.services.zigbee2mqtt.enable {
     # pre defining zigbee devices to give them friendly names based on their ieee.
     custom.zigbee2mqtt.devices = {
-      office_plug     = { name = "office_plug";                        ieee = "0xa4c1385bfbc8a447"; };
-      washing_machine = { name = "master_bedroom_washing_machine_plug"; ieee = "0xa4c138f6a0b26040"; };
+      office_plug         = { name = "office_plug";                        ieee = "0xa4c1385bfbc8a447"; };
+      office_door         = { name = "office_door";                        ieee = "0xb40e060fffe6e6cf"; };
+      master_bathroom_door = { name = "master_bathroom_door";             ieee = "0xb40e060fffe6e6f4"; };
+      washing_machine     = { name = "master_bedroom_washing_machine_plug"; ieee = "0xa4c138f6a0b26040"; };
       sink            = { name = "master_bedroom_sink_plug";            ieee = "0xa4c138f734afecb7"; };
       living_room     = { name = "living_room_plug";                    ieee = "0xa4c138b761af3b27"; };
     };
@@ -82,8 +84,10 @@ in
         # 2. Once device is paried get its ieee value and add a new line into custom.zigbee2mqtt.devices with ieee and the friendly name.
         # 3. reuibld the configurations, if all gues well you should see you device in the gui with the firendly name you defined.
         devices = {
-          "${devices.office_plug.ieee}".friendly_name     = devices.office_plug.name;
-          "${devices.washing_machine.ieee}".friendly_name = devices.washing_machine.name;
+          "${devices.office_plug.ieee}".friendly_name         = devices.office_plug.name;
+          "${devices.office_door.ieee}".friendly_name         = devices.office_door.name;
+          "${devices.master_bathroom_door.ieee}".friendly_name = devices.master_bathroom_door.name;
+          "${devices.washing_machine.ieee}".friendly_name     = devices.washing_machine.name;
           "${devices.sink.ieee}".friendly_name            = devices.sink.name;
           "${devices.living_room.ieee}".friendly_name     = devices.living_room.name;
         };
