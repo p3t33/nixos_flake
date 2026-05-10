@@ -18,7 +18,7 @@
       enable = true;
 
       config = {
-        agents.defaults.model.primary = "openai-codex/gpt-5.4";
+        agents.defaults.model.primary = "openai-codex/gpt-5.5";
         # Keep workspace default explicit so OpenClaw does not rewrite openclaw.json
         # on startup when it auto-detects and sets this value.
         agents.defaults.workspace = "${config.custom.shared.primeUserHomeDirectory}/.openclaw/workspace";
