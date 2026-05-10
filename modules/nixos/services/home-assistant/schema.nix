@@ -50,6 +50,21 @@ in
             };
           }));
         };
+
+        environmentSensors = lib.mkOption {
+          default = {};
+          type    = lib.types.attrsOf (lib.types.submodule ({ config, ... }: {
+            options = {
+              name        = lib.mkOption { type = lib.types.str; };
+              device      = lib.mkOption { type = lib.types.str; description = "Friendly name of the zigbee device (from custom.zigbee2mqtt.devices.*.name)."; };
+              ieee        = lib.mkOption { type = lib.types.str; description = "IEEE address of the zigbee device."; };
+              # SONOFF SNZB-02WD exposes temperature/humidity/battery entity IDs from IEEE.
+              temperature = lib.mkOption { type = lib.types.str; default = "sensor.${config.ieee}_temperature"; };
+              humidity    = lib.mkOption { type = lib.types.str; default = "sensor.${config.ieee}_humidity"; };
+              battery     = lib.mkOption { type = lib.types.str; default = "sensor.${config.ieee}_battery"; };
+            };
+          }));
+        };
       };
     }));
   };
@@ -101,6 +116,11 @@ in
           switch = "switch.${devices.living_room.ieee}";
           power  = "sensor.${devices.living_room.ieee}_power";
           energy = "sensor.${devices.living_room.ieee}_energy";
+        };
+        environmentSensors.climate = {
+          name   = "Living Room Climate";
+          device = devices.living_room_climate.name;
+          ieee   = devices.living_room_climate.ieee;
         };
       };
     };
