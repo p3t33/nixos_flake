@@ -2,7 +2,7 @@
   imports = [
     ./core.nix
     ./skills
-    ./extensions.nix
+    ./extensions
     ./prompt-templates.nix
   ];
 }
