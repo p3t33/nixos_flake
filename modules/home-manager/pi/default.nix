@@ -1,7 +1,7 @@
 {
   imports = [
     ./core.nix
-    ./skills.nix
+    ./skills
     ./extensions.nix
     ./prompt-templates.nix
   ];
