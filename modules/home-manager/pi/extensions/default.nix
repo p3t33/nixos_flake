@@ -10,6 +10,10 @@ let
   cfg = config.custom.programs.pi;
 in
 {
+  imports = [
+    ./web-search.nix
+  ];
+
   options.custom.programs.pi = {
     extensions = lib.mkOption {
       type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
