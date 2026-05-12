@@ -54,6 +54,7 @@ in
     ./yazi.nix
     ./ghostty.nix
     ./services/dunst.nix
+    ./services/mcp-gateway.nix
     ./navi.nix
     ./tealdeer.nix
     ./pay-respects.nix
