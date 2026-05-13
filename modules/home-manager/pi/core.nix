@@ -9,6 +9,7 @@
 let
   cfg = config.custom.programs.pi;
   jsonFormat = pkgs.formats.json { };
+
   colors = config.custom.shared.colors;
   nord = {
     bg = "#2e3440";
@@ -229,6 +230,11 @@ in
         - Never touch .env files or secrets
         - Always show diffs before committing
         - Never add co-authored-by or any AI attribution trailers to git commits
+
+        ## Subagents
+        - Always use the `subagent` tool to delegate code review — never review your own work
+        - Use spawn mode for isolated tasks, fork mode when context from this session matters
+        - After implementing changes, delegate review before reporting completion
       '';
 
     };
