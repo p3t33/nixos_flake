@@ -10,6 +10,21 @@ let
   cfg = config.custom.programs.pi;
   jsonFormat = pkgs.formats.json { };
 
+  # Patch pi's jiti alias map to also resolve @earendil-works/* imports.
+  # The upstream project renamed its npm scope from @mariozechner to
+  # @earendil-works starting in 0.74.0. Packages published after the rename
+  # (like pi-subagent >=1.4) import from the new scope, but nixpkgs-unstable
+  # still ships 0.73.0 which only registers the old aliases in its module
+  # loader. This patch adds the new scope aliases so both old and new imports
+  # resolve to the same bundled modules. Remove once nixpkgs ships >=0.74.0.
+  pi-coding-agent = pkgs-unstable.pi-coding-agent.overrideAttrs (old: {
+    postInstall = (old.postInstall or "") + ''
+      loader="$out/lib/node_modules/pi-monorepo/dist/core/extensions/loader.js"
+      sed -i 's|"@mariozechner/pi-ai/oauth": resolveWorkspaceOrImport("ai/dist/oauth.js", "@mariozechner/pi-ai/oauth"),|"@mariozechner/pi-ai/oauth": resolveWorkspaceOrImport("ai/dist/oauth.js", "@mariozechner/pi-ai/oauth"),\n        "@earendil-works/pi-coding-agent": packageIndex,\n        "@earendil-works/pi-agent-core": resolveWorkspaceOrImport("agent/dist/index.js", "@mariozechner/pi-agent-core"),\n        "@earendil-works/pi-tui": resolveWorkspaceOrImport("tui/dist/index.js", "@mariozechner/pi-tui"),\n        "@earendil-works/pi-ai": resolveWorkspaceOrImport("ai/dist/index.js", "@mariozechner/pi-ai"),\n        "@earendil-works/pi-ai/oauth": resolveWorkspaceOrImport("ai/dist/oauth.js", "@mariozechner/pi-ai/oauth"),|' "$loader"
+      grep -q '@earendil-works/pi-coding-agent' "$loader" || exit 1
+    '';
+  });
+
   colors = config.custom.shared.colors;
   nord = {
     bg = "#2e3440";
@@ -112,7 +127,7 @@ in
     ];
 
     home = {
-      packages = [ pkgs-unstable.pi-coding-agent ];
+      packages = [ pi-coding-agent ];
 
       file = {
         ".pi/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
