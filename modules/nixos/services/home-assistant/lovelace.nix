@@ -2,6 +2,24 @@
 let
   cfg = config.custom.services.homeAssistant;
 
+  contactSensorCard = sensor: [
+    {
+      type     = "entities";
+      title    = sensor.name;
+      entities = [{
+        entity = sensor.contact;
+        name   = "State";
+      }];
+    }
+    {
+      type          = "sensor";
+      name          = "Battery";
+      entity        = sensor.battery;
+      graph         = "line";
+      hours_to_show = 168;
+    }
+  ];
+
   plugCard = plug: [
     {
       type     = "entities";
@@ -29,6 +47,30 @@ let
     }
   ];
 
+  environmentSensorCard = sensor: [
+    {
+      type     = "entities";
+      title    = sensor.name;
+      entities = [
+        {
+          entity = sensor.temperature;
+          name   = "Temperature";
+        }
+        {
+          entity = sensor.humidity;
+          name   = "Humidity";
+        }
+      ];
+    }
+    {
+      type          = "sensor";
+      name          = "Battery";
+      entity        = sensor.battery;
+      graph         = "line";
+      hours_to_show = 168;
+    }
+  ];
+
   navButton = room: {
     type      = "button";
     name      = room.name;
@@ -46,7 +88,9 @@ let
     path    = room.path;
     icon    = room.icon;
     subview = true;
-    cards   = lib.concatMap plugCard (lib.attrValues room.plugs);
+    cards   = lib.concatMap plugCard (lib.attrValues room.plugs)
+            ++ lib.concatMap contactSensorCard (lib.attrValues room.contactSensors)
+            ++ lib.concatMap environmentSensorCard (lib.attrValues room.environmentSensors);
   };
 
   infrastructureNavButton = {

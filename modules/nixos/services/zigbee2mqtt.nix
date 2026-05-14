@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  devices = config.custom.zigbee2mqtt.devices;
+  zigbeeDevices = config.custom.zigbee2mqtt.devices;
 in
 {
   options.custom = {
@@ -33,9 +33,12 @@ in
     # pre defining zigbee devices to give them friendly names based on their ieee.
     custom.zigbee2mqtt.devices = {
       office_plug     = { name = "office_plug";                        ieee = "0xa4c1385bfbc8a447"; };
-      washing_machine = { name = "master_bedroom_washing_machine_plug"; ieee = "0xa4c138f6a0b26040"; };
+      office_door         = { name = "office_door";                        ieee = "0xb40e060fffe6e6cf"; };
+      master_bathroom_door = { name = "master_bathroom_door";             ieee = "0xb40e060fffe6e6f4"; };
+      washing_machine     = { name = "master_bedroom_washing_machine_plug"; ieee = "0xa4c138f6a0b26040"; };
       sink            = { name = "master_bedroom_sink_plug";            ieee = "0xa4c138f734afecb7"; };
       living_room     = { name = "living_room_plug";                    ieee = "0xa4c138b761af3b27"; };
+      living_room_climate = { name = "living_room_climate";                 ieee = "0xa4c1380a1db9ffff"; };
     };
 
     # /var/lib/zigbee2mqtt/configuration.yaml
@@ -81,12 +84,11 @@ in
         # 1. Use gui to pair the new device like you always did.
         # 2. Once device is paried get its ieee value and add a new line into custom.zigbee2mqtt.devices with ieee and the friendly name.
         # 3. reuibld the configurations, if all gues well you should see you device in the gui with the firendly name you defined.
-        devices = {
-          "${devices.office_plug.ieee}".friendly_name     = devices.office_plug.name;
-          "${devices.washing_machine.ieee}".friendly_name = devices.washing_machine.name;
-          "${devices.sink.ieee}".friendly_name            = devices.sink.name;
-          "${devices.living_room.ieee}".friendly_name     = devices.living_room.name;
-        };
+        devices = lib.mapAttrs' (_: device:
+          lib.nameValuePair device.ieee {
+            friendly_name = device.name;
+          }
+        ) zigbeeDevices;
       };
     };
 
