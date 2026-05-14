@@ -5,5 +5,6 @@
     ../../modules/home-manager/secrets/sops-extra-ssh-hosts.nix
     ../../modules/home-manager/secrets/sops-ssh-development-keys-for-vm.nix
     ../../modules/home-manager/secrets/sops-calibre.nix
+    ../../modules/home-manager/secrets/sops-pi-brave-api-key.nix
   ];
 }

@@ -54,6 +54,7 @@ in
     ./yazi.nix
     ./ghostty.nix
     ./services/dunst.nix
+    ./services/mcp-gateway.nix
     ./navi.nix
     ./tealdeer.nix
     ./pay-respects.nix
@@ -70,6 +71,7 @@ in
     ./emacs
     ./aichat.nix
     ./aider.nix
+    ./pi
   ];
 
   options.custom.profiles.homeManager = {
@@ -123,6 +125,7 @@ in
       programs.codex.enable = true;
       custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
+      custom.programs.pi.enable = true;
     })
 
     (lib.mkIf g.ai.enable {

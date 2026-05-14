@@ -8,7 +8,14 @@
   programs.gpg.enable = true;
 
   custom = {
-    programs.gitCommitSignaturesWithGpg.enable = true;
+    programs = {
+      pi = {
+        defaultProvider = "github-copilot";
+        defaultModel = "claude-opus-4.6";
+        defaultThinkingLevel = "medium";
+      };
+      gitCommitSignaturesWithGpg.enable = true;
+    };
 
     profiles.homeManager = {
       core.enable = true;
