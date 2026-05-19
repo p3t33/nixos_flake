@@ -39,6 +39,10 @@
       ${config.hardware.i2c.group} = {
         members = [ hostSpecific.primeUsername ];
       };
+
+      sops-keys = {
+        members = [ hostSpecific.primeUsername ];
+      };
     };
   };
 }

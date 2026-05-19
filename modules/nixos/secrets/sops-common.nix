@@ -5,4 +5,8 @@
     defaultSopsFormat = "yaml";
     age.keyFile = config.custom.shared.sopsKeyPath;
   };
+
+  systemd.tmpfiles.rules = [
+    "z ${config.custom.shared.sopsKeyPath} 0640 root sops-keys - -"
+  ];
 }
