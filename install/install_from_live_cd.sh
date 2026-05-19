@@ -4,22 +4,9 @@ set -euo pipefail
 # Run this script from a NixOS live CD with the flake cloned/available.
 # It partitions disks, places the sops age key, and installs NixOS.
 #
-# Usage: ./bootstrap.sh <machine-name> <key-path>
+# Usage: ./install_from_live_cd.sh <machine-name> <key-path>
 
-MACHINES_DIR="./machines"
-SOPS_KEY_DEST="/etc/sops/age/keys.txt"
-EXCLUSIONS=("generic_linux_distro")
-
-list_machines() {
-  for dir in "$MACHINES_DIR"/*/; do
-    name=$(basename "$dir")
-    excluded=false
-    for exc in "${EXCLUSIONS[@]}"; do
-      [[ "$name" == "$exc" ]] && excluded=true && break
-    done
-    $excluded || echo "  - $name"
-  done
-}
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 
 usage() {
   echo "Usage: $0 <machine-name> <key-path>"
@@ -29,32 +16,37 @@ usage() {
   exit 1
 }
 
-[[ $# -lt 2 ]] && usage
+parse_args() {
+  [[ $# -lt 2 ]] && usage
 
-MACHINE="$1"
-KEY_PATH="$2"
+  MACHINE="$1"
+  KEY_PATH="$2"
+}
 
-if [[ ! -d "$MACHINES_DIR/$MACHINE" ]]; then
-  echo "Error: machine '$MACHINE' not found."
-  echo ""
-  echo "Available machines:"
-  list_machines
-  exit 1
-fi
+partition_disks() {
+  echo "Partitioning disks for '$MACHINE'..."
+  sudo nix --experimental-features "nix-command flakes" \
+    run github:nix-community/disko -- --mode disko "$MACHINES_DIR/$MACHINE/disko-configuration.nix"
+}
 
-if [[ ! -f "$KEY_PATH" ]]; then
-  echo "Error: key file '$KEY_PATH' not found."
-  exit 1
-fi
+place_sops_key() {
+  echo "Placing sops age key..."
+  sudo install -D -m644 "$KEY_PATH" "/mnt$SOPS_KEY_DEST"
+}
 
-echo "Partitioning disks for '$MACHINE'..."
-sudo nix --experimental-features "nix-command flakes" \
-  run github:nix-community/disko -- --mode disko "$MACHINES_DIR/$MACHINE/disko-configuration.nix"
+install_nixos() {
+  echo "Installing NixOS..."
+  sudo nixos-install --no-root-passwd --flake "$REPO_ROOT#$MACHINE"
+}
 
-echo "Placing sops age key..."
-sudo install -D -m644 "$KEY_PATH" "/mnt$SOPS_KEY_DEST"
+main() {
+  parse_args "$@"
+  validate_machine
+  validate_key
+  partition_disks
+  place_sops_key
+  install_nixos
+  echo "Done. Reboot when ready."
+}
 
-echo "Installing NixOS..."
-sudo nixos-install --flake ".#$MACHINE"
-
-echo "Done. Reboot when ready."
+main "$@"
