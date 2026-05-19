@@ -59,9 +59,9 @@
       };
 
       sopsKeyPath = lib.mkOption {
-        default = "/keys.txt";
+        default = "/etc/sops/age/keys.txt";
         type = lib.types.str;
-        description = "The relative path to the SOPS key file";
+        description = "Path to the SOPS age key file";
       };
 
       # To get the list of all avaliable fonts
