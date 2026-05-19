@@ -125,6 +125,9 @@ and include code that can be shared with other machines.
 to mange user configuration and into nixos modules which are mostly configurations
 I found in /etc/nixos/configuration.nix and refactored into responsibilities that can
 then be including by the various machines to achieve code reuse.
+- **install**: Scripts for deploying NixOS to new machines. Includes
+  `deploy_with_nixos_anywhere.sh` (remote install over SSH) and
+  `install_from_live_cd.sh` (local install from a live CD).
 - **wallpaper**: self explanatory :)
 
 # ToDo
