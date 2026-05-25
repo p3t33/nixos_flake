@@ -8,7 +8,8 @@
 { config, lib, ... }:
 let
   loki_path_prefix = "/var/lib/loki";
-  log_perioud = "24h";
+  log_period = "7d";
+  index_period = "24h";
 in
 {
   config = lib.mkIf config.services.loki.enable {
@@ -33,7 +34,7 @@ in
             # maps labels to specific chunk. and set to be created every 24h.
             index = {
               prefix = "index_";
-              period = "${log_perioud}";
+              period = "${index_period}";
             };
           }];
         };
@@ -54,7 +55,7 @@ in
         #
         limits_config = {
           # Maximum retention period for logs. Any logs older than this will be deleted.
-          retention_period = "${log_perioud}";
+          retention_period = "${log_period}";
 
           # Maximum allowed size for a single log line. This prevents accidentally sending
           # very large or malformed logs that could break ingestion.
@@ -69,7 +70,7 @@ in
           max_label_value_length = 2048;
 
           # Maximum range a query can cover in time. This limits very expensive queries.
-          max_query_length = "${log_perioud}";
+          max_query_length = "8d";
 
           # Maximum number of log chunks a single query can retrieve. This prevents runaway queries.
           max_chunks_per_query = 2000000;
@@ -113,6 +114,12 @@ in
         # the server grafana will be communicatoing with.
         server = {
           http_listen_port = 3100;
+        };
+
+        compactor = {
+          working_directory = "${loki_path_prefix}/compactor";
+          retention_enabled = true;
+          delete_request_store = "filesystem";
         };
 
         auth_enabled = false;
