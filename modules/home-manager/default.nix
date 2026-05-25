@@ -71,6 +71,7 @@ in
     ./emacs
     ./aichat.nix
     ./aider.nix
+    ./mcp.nix
     ./pi
   ];
 
@@ -123,6 +124,7 @@ in
       programs.gemini-cli.enable = true;
       programs.claude-code.enable = true;
       programs.codex.enable = true;
+      programs.mcp.enable = true;
       custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
       custom.programs.pi.enable = true;

@@ -28,6 +28,7 @@ in
 
   config = lib.mkIf cfg.enable {
     custom.services.mcp-gateway.enable = true;
+    custom.services.mcp-gateway.enableMcpIntegration = true;
 
     home.file = lib.mapAttrs' (
       name: content:
