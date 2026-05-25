@@ -13,7 +13,7 @@ in
     ./nix-ld.nix
     ./fail2ban.nix
     ./gatus.nix
-    ./grafana.nix
+    ./grafana
     ./home-assistant
     ./homepage_dashboard.nix
     ./download-clients
