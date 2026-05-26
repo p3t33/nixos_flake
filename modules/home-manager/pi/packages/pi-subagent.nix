@@ -1,15 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, inputs, ... }:
 
 let
   cfg = config.custom.programs.pi;
 
-  piSubagent = pkgs.fetchFromGitHub {
-    owner = "mjakl";
-    repo = "pi-subagent";
-    name = "pi-subagent";
-    rev = "f386f10838eb9175253d212a201a6dae2cfe5366";
-    hash = "sha256-25Pdq0ic7m3WzAAZ0x/R074erJmqvZF435iZPGtzIiM=";
-  };
+  # Package source fetched via flake inputs
+  piSubagent = inputs.pi-subagent;
 in
 {
   config = lib.mkIf cfg.enable {
