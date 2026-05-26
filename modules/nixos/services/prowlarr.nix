@@ -8,6 +8,9 @@
 let
   serviceName = "prowlarr";
   prowlarrBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}${config.services.prowlarr.settings.server.urlbase}";
+  prowlarrEnvCredential = "prowlarr-env";
+  sonarrEnvCredential = "sonarr-env";
+  radarrEnvCredential = "radarr-env";
 
   mkProwlarrApplication = appName: implementationName: baseUrl: apiKeyFileVar: ''
     upsert_application ${lib.escapeShellArg appName} ${lib.escapeShellArg implementationName} ${lib.escapeShellArg baseUrl} "${"$"}${apiKeyFileVar}"
@@ -112,15 +115,19 @@ in
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
-            EnvironmentFile = [
-              config.sops.secrets."${serviceName}/env".path
+            LoadCredential = [
+              "${prowlarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
             ]
-            ++ lib.optional config.services.sonarr.enable config.sops.secrets."sonarr/env".path
-            ++ lib.optional config.services.radarr.enable config.sops.secrets."radarr/env".path;
+            ++ lib.optional config.services.sonarr.enable "${sonarrEnvCredential}:${config.sops.secrets."sonarr/env".path}"
+            ++ lib.optional config.services.radarr.enable "${radarrEnvCredential}:${config.sops.secrets."radarr/env".path}";
           };
 
           script = ''
             set -euo pipefail
+
+            . "$CREDENTIALS_DIRECTORY/${prowlarrEnvCredential}"
+            ${lib.optionalString config.services.sonarr.enable ''. "$CREDENTIALS_DIRECTORY/${sonarrEnvCredential}"''}
+            ${lib.optionalString config.services.radarr.enable ''. "$CREDENTIALS_DIRECTORY/${radarrEnvCredential}"''}
 
             : "''${PROWLARR__AUTH__APIKEY:?PROWLARR__AUTH__APIKEY is required}"
             ${lib.optionalString config.services.sonarr.enable '': "''${SONARR__AUTH__APIKEY:?SONARR__AUTH__APIKEY is required}"''}

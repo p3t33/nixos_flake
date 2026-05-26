@@ -10,6 +10,11 @@ let
   radarrBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.services.radarr.settings.server.port}${config.services.radarr.settings.server.urlbase}";
   moviesRootFolder = "${config.custom.shared.pathToMediaDirectory}/movies";
   sabnzbdBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}/sabnzbd";
+  radarrEnvCredential = "radarr-env";
+  sabnzbdApiKeyCredential = "sabnzbd-api-key";
+  delugePasswordCredential = "deluge-password";
+  qbittorrentUsernameCredential = "qbittorrent-username";
+  qbittorrentPasswordCredential = "qbittorrent-password";
 in
 {
   options.custom.services.${serviceName} = {
@@ -46,14 +51,14 @@ in
         config.systemd.services.radarr-rootfolders.name
         config.systemd.services.radarr-delayprofiles.name
       ]
-      ++ lib.optional config.services.sabnzbd.enable config.systemd.services.radarr-downloadclients.name
+      ++ lib.optional config.services.sabnzbd.enable config.systemd.services.radarr-sabnzbd-downloadclient.name
       ++ lib.optional config.services.deluge.enable config.systemd.services.radarr-deluge-downloadclient.name
       ++ lib.optional config.services.qbittorrent.enable config.systemd.services.radarr-qbittorrent-downloadclient.name;
     };
 
     sops.secrets."sabnzbd/api_key".restartUnits = lib.mkIf config.services.sabnzbd.enable (
       lib.mkAfter [
-        config.systemd.services.radarr-downloadclients.name
+        config.systemd.services.radarr-sabnzbd-downloadclient.name
       ]
     );
 
@@ -104,8 +109,8 @@ in
       ];
     };
 
-    systemd.services.radarr-downloadclients = lib.mkIf config.services.sabnzbd.enable {
-      description = "Configure Radarr download clients";
+    systemd.services.radarr-sabnzbd-downloadclient = lib.mkIf config.services.sabnzbd.enable {
+      description = "Configure Radarr SABnzbd download client";
       after = [
         config.systemd.services.${serviceName}.name
         config.systemd.services.sabnzbd.name
@@ -125,18 +130,22 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        EnvironmentFile = config.sops.secrets."${serviceName}/env".path;
+        LoadCredential = [
+          "${radarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+          "${sabnzbdApiKeyCredential}:${config.sops.secrets."sabnzbd/api_key".path}"
+        ];
       };
 
       script = ''
         set -euo pipefail
 
+        . "$CREDENTIALS_DIRECTORY/${radarrEnvCredential}"
         : "''${RADARR__AUTH__APIKEY:?RADARR__AUTH__APIKEY is required}"
 
         BASE_URL=${lib.escapeShellArg "${radarrBaseUrl}/api/v3"}
         SABNZBD_URL=${lib.escapeShellArg sabnzbdBaseUrl}
         SABNZBD_PORT=${lib.escapeShellArg (toString config.custom.services.sabnzbd.httpPort)}
-        SABNZBD_API_KEY_SECRET=${lib.escapeShellArg config.sops.secrets."sabnzbd/api_key".path}
+        SABNZBD_API_KEY_CREDENTIAL="$CREDENTIALS_DIRECTORY/${sabnzbdApiKeyCredential}"
         DOWNLOAD_CLIENT_NAME="SABnzbd"
         MOVIE_CATEGORY="movies"
 
@@ -168,7 +177,7 @@ in
 
         new_curl_config RADARR_CURL_CONFIG "$RADARR__AUTH__APIKEY"
         new_temp_file SABNZBD_API_KEY_FILE
-        tr -d '\n' < "$SABNZBD_API_KEY_SECRET" > "$SABNZBD_API_KEY_FILE"
+        tr -d '\n' < "$SABNZBD_API_KEY_CREDENTIAL" > "$SABNZBD_API_KEY_FILE"
         SABNZBD_API_KEY=$(cat "$SABNZBD_API_KEY_FILE")
         new_temp_file SABNZBD_VERSION_CURL_CONFIG
         printf 'url = "%s/api?mode=version&apikey=%s&output=json"\n' "$SABNZBD_URL" "$SABNZBD_API_KEY" > "$SABNZBD_VERSION_CURL_CONFIG"
@@ -295,18 +304,22 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        EnvironmentFile = config.sops.secrets."${serviceName}/env".path;
+        LoadCredential = [
+          "${radarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+          "${delugePasswordCredential}:${config.sops.secrets."deluge/web_password".path}"
+        ];
       };
 
       script = ''
         set -euo pipefail
 
+        . "$CREDENTIALS_DIRECTORY/${radarrEnvCredential}"
         : "''${RADARR__AUTH__APIKEY:?RADARR__AUTH__APIKEY is required}"
 
         BASE_URL=${lib.escapeShellArg "${radarrBaseUrl}/api/v3"}
         DELUGE_URL=${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.deluge.web.port}"}
         DELUGE_PORT=${lib.escapeShellArg (toString config.services.deluge.web.port)}
-        DELUGE_PASSWORD_SECRET=${lib.escapeShellArg config.sops.secrets."deluge/web_password".path}
+        DELUGE_PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${delugePasswordCredential}"
         DOWNLOAD_CLIENT_NAME="Deluge"
         MOVIE_CATEGORY="movies"
 
@@ -338,7 +351,7 @@ in
 
         new_curl_config RADARR_CURL_CONFIG "$RADARR__AUTH__APIKEY"
         new_temp_file DELUGE_PASSWORD_FILE
-        tr -d '\n' < "$DELUGE_PASSWORD_SECRET" > "$DELUGE_PASSWORD_FILE"
+        tr -d '\n' < "$DELUGE_PASSWORD_CREDENTIAL" > "$DELUGE_PASSWORD_FILE"
 
         curl_radarr() {
           local url="$1"
@@ -461,19 +474,24 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        EnvironmentFile = config.sops.secrets."${serviceName}/env".path;
+        LoadCredential = [
+          "${radarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+          "${qbittorrentUsernameCredential}:${config.sops.secrets."qbittorrent/webui_username".path}"
+          "${qbittorrentPasswordCredential}:${config.sops.secrets."qbittorrent/webui_password".path}"
+        ];
       };
 
       script = ''
         set -euo pipefail
 
+        . "$CREDENTIALS_DIRECTORY/${radarrEnvCredential}"
         : "''${RADARR__AUTH__APIKEY:?RADARR__AUTH__APIKEY is required}"
 
         BASE_URL=${lib.escapeShellArg "${radarrBaseUrl}/api/v3"}
         QBITTORRENT_URL=${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.qbittorrent.webuiPort}"}
         QBITTORRENT_PORT=${lib.escapeShellArg (toString config.services.qbittorrent.webuiPort)}
-        QBITTORRENT_USERNAME_SECRET=${lib.escapeShellArg config.sops.secrets."qbittorrent/webui_username".path}
-        QBITTORRENT_PASSWORD_SECRET=${lib.escapeShellArg config.sops.secrets."qbittorrent/webui_password".path}
+        QBITTORRENT_USERNAME_CREDENTIAL="$CREDENTIALS_DIRECTORY/${qbittorrentUsernameCredential}"
+        QBITTORRENT_PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${qbittorrentPasswordCredential}"
         DOWNLOAD_CLIENT_NAME="qBittorrent"
         MOVIE_CATEGORY="movies"
 
@@ -506,8 +524,8 @@ in
         new_curl_config RADARR_CURL_CONFIG "$RADARR__AUTH__APIKEY"
         new_temp_file QBITTORRENT_USERNAME_FILE
         new_temp_file QBITTORRENT_PASSWORD_FILE
-        tr -d '\n' < "$QBITTORRENT_USERNAME_SECRET" > "$QBITTORRENT_USERNAME_FILE"
-        tr -d '\n' < "$QBITTORRENT_PASSWORD_SECRET" > "$QBITTORRENT_PASSWORD_FILE"
+        tr -d '\n' < "$QBITTORRENT_USERNAME_CREDENTIAL" > "$QBITTORRENT_USERNAME_FILE"
+        tr -d '\n' < "$QBITTORRENT_PASSWORD_CREDENTIAL" > "$QBITTORRENT_PASSWORD_FILE"
 
         curl_radarr() {
           local url="$1"
@@ -626,12 +644,15 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        EnvironmentFile = config.sops.secrets."${serviceName}/env".path;
+        LoadCredential = [
+          "${radarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+        ];
       };
 
       script = ''
         set -euo pipefail
 
+        . "$CREDENTIALS_DIRECTORY/${radarrEnvCredential}"
         : "''${RADARR__AUTH__APIKEY:?RADARR__AUTH__APIKEY is required}"
 
         BASE_URL=${lib.escapeShellArg "${radarrBaseUrl}/api/v3"}
@@ -738,12 +759,15 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
-        EnvironmentFile = config.sops.secrets."${serviceName}/env".path;
+        LoadCredential = [
+          "${radarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+        ];
       };
 
       script = ''
         set -euo pipefail
 
+        . "$CREDENTIALS_DIRECTORY/${radarrEnvCredential}"
         : "''${RADARR__AUTH__APIKEY:?RADARR__AUTH__APIKEY is required}"
 
         BASE_URL=${lib.escapeShellArg "${radarrBaseUrl}/api/v3"}

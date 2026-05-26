@@ -13,6 +13,8 @@ let
   mediaDirectory = config.custom.shared.pathToMediaDirectory;
   moviesRootFolder = "${mediaDirectory}/movies";
   tvRootFolder = "${mediaDirectory}/tv";
+  usernameCredential = "jellyfin-username";
+  passwordCredential = "jellyfin-password";
 in
 {
   options.custom = {
@@ -65,6 +67,10 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        LoadCredential = [
+          "${usernameCredential}:${config.sops.secrets."${serviceName}/username".path}"
+          "${passwordCredential}:${config.sops.secrets."${serviceName}/password".path}"
+        ];
       };
 
       script = ''
@@ -72,8 +78,8 @@ in
 
         ROOT_URL=${lib.escapeShellArg jellyfinRootUrl}
         BASE_URL=${lib.escapeShellArg jellyfinBaseUrl}
-        USERNAME_SECRET=${lib.escapeShellArg config.sops.secrets."${serviceName}/username".path}
-        PASSWORD_SECRET=${lib.escapeShellArg config.sops.secrets."${serviceName}/password".path}
+        USERNAME_CREDENTIAL="$CREDENTIALS_DIRECTORY/${usernameCredential}"
+        PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${passwordCredential}"
         SERVER_NAME=${lib.escapeShellArg config.networking.hostName}
 
         TMP_FILES=()
@@ -157,8 +163,8 @@ in
 
         new_temp_file USER_PAYLOAD
         jq -n \
-          --rawfile username "$USERNAME_SECRET" \
-          --rawfile password "$PASSWORD_SECRET" \
+          --rawfile username "$USERNAME_CREDENTIAL" \
+          --rawfile password "$PASSWORD_CREDENTIAL" \
           '{
             Name: ($username | rtrimstr("\n")),
             Password: ($password | rtrimstr("\n"))
@@ -205,6 +211,10 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        LoadCredential = [
+          "${usernameCredential}:${config.sops.secrets."${serviceName}/username".path}"
+          "${passwordCredential}:${config.sops.secrets."${serviceName}/password".path}"
+        ];
       };
 
       script = ''
@@ -212,8 +222,8 @@ in
 
         ROOT_URL=${lib.escapeShellArg jellyfinRootUrl}
         BASE_URL=${lib.escapeShellArg jellyfinBaseUrl}
-        USERNAME_SECRET=${lib.escapeShellArg config.sops.secrets."${serviceName}/username".path}
-        PASSWORD_SECRET=${lib.escapeShellArg config.sops.secrets."${serviceName}/password".path}
+        USERNAME_CREDENTIAL="$CREDENTIALS_DIRECTORY/${usernameCredential}"
+        PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${passwordCredential}"
         MOVIES_ROOT_FOLDER=${lib.escapeShellArg moviesRootFolder}
         TV_ROOT_FOLDER=${lib.escapeShellArg tvRootFolder}
         MEDIA_GROUP=${lib.escapeShellArg config.custom.shared.mediaGroup}
@@ -238,8 +248,8 @@ in
 
         new_temp_file AUTH_PAYLOAD
         jq -n \
-          --rawfile username "$USERNAME_SECRET" \
-          --rawfile password "$PASSWORD_SECRET" \
+          --rawfile username "$USERNAME_CREDENTIAL" \
+          --rawfile password "$PASSWORD_CREDENTIAL" \
           '{
             Username: ($username | rtrimstr("\n")),
             Pw: ($password | rtrimstr("\n"))
