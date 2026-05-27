@@ -26,6 +26,7 @@ in
     ./n8n.nix
     ./printer.nix
     ./prometheus.nix
+    ./alloy.nix
     ./restic.nix
     ./samba.nix
     ./sound.nix
