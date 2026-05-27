@@ -4,6 +4,8 @@
   config = lib.mkIf config.programs.neovim.enable {
     programs.neovim = {
       vimAlias = true;
+      withRuby = false; # no plugins require Ruby provider
+      withPython3 = false; # no plugins require Python3 provider
 
       # Dependency management
       extraPackages = with pkgs; [
@@ -12,7 +14,7 @@
         xclip
       ];
 
-      extraLuaConfig = lib.mkOrder 100 ''
+      initLua = lib.mkOrder 100 ''
            -- ============
            -- Editor setup
            -- ============
@@ -242,6 +244,7 @@
         {
           # a vim bookmarks manager
           plugin = vim-bookmarks;
+          type = "viml";
           config = ''
             let g:bookmark_save_per_working_dir = 1
             let g:bookmark_no_default_key_mappings = 1
@@ -281,79 +284,55 @@
           plugin = nvim-treesitter.withAllGrammars;
           type = "lua";
           config = ''
-            require('nvim-treesitter.configs').setup {
-            -- depending on nvim-treesitter-textobjects plugin
-            textobjects = {
-                lsp_interop = {
-                    enable = true,
-                    border = 'none',
-                    floating_preview_opts = {},
-                    peek_definition_code = {
-                        ["<leader>df"] = "@function.outer",
-                        ["<leader>dF"] = "@class.outer",
-                    },
-                },
-
-                select = {
-                    enable = true,
-
-                    -- Automatically jump forward to textobj, similar to targets.vim
-                        lookahead = true,
-
-                    keymaps = {
-                        ['aa'] = '@parameter.outer',
-                        ['ia'] = '@parameter.inner',
-                        ['af'] = '@function.outer',
-                        ['if'] = '@function.inner',
-                        ['ac'] = '@class.outer',
-                        ['ic'] = '@class.inner',
-                        ['ii'] = '@conditional.inner',
-                        ['ai'] = '@conditional.outer',
-                        ['il'] = '@loop.inner',
-                        ['al'] = '@loop.outer',
-                        ['at'] = '@comment.outer',
-                    },
-                    -- You can choose the select mode (default is charwise 'v')
-                        --
-                        -- Can also be a function which gets passed a table with the keys
-                        -- * query_string: eg '@function.inner'
-                        -- * method: eg 'v' or 'o'
-                        -- and should return the mode ('v', 'V', or '<c-v>') or a table
-                        -- mapping query_strings to modes.
-                        selection_modes = {
-                            ['@parameter.outer'] = 'v', -- charwise
-                                ['@function.outer'] = 'V', -- linewise
-                                    ['@class.outer'] = '<c-v>', -- blockwise
-                        },
-                    -- If you set this to `true` (default is `false`) then any textobject is
-                        -- extended to include preceding or succeeding whitespace. Succeeding
-                        -- whitespace has priority in order to act similarly to eg the built-in
-                        -- `ap`.
-                        --
-                        -- Can also be a function which gets passed a table with the keys
-                        -- * query_string: eg '@function.inner'
-                        -- * selection_mode: eg 'v'
-                        -- and should return true of false
-                        include_surrounding_whitespace = true,
-                },
-            },
-
-             highlight = {
-               enable = true,
-               additional_vim_regex_highlighting = {'org'},
-             },
-            }
+            -- Treesitter highlighting is now built into neovim 0.12+
+            -- Just start it on every filetype
+            vim.api.nvim_create_autocmd('FileType', {
+              callback = function()
+                pcall(vim.treesitter.start)
+              end,
+            })
           '';
         }
-        # Depended on nvim-treesitter
-        # and provides syntax aware text-objects, select, move, swap, and peek support.
-        nvim-treesitter-textobjects
+        {
+          # Provides syntax aware text-objects, select, move, swap, and peek support.
+          plugin = nvim-treesitter-textobjects;
+          type = "lua";
+          config = ''
+            require('nvim-treesitter-textobjects').setup {
+              select = {
+                lookahead = true,
+                selection_modes = {
+                  ['@parameter.outer'] = 'v',
+                  ['@function.outer'] = 'V',
+                  ['@class.outer'] = '<c-v>',
+                },
+                include_surrounding_whitespace = true,
+              },
+            }
+
+            -- Textobject keymaps
+            local select_textobject = require("nvim-treesitter-textobjects.select").select_textobject
+            vim.keymap.set({ "x", "o" }, "af", function() select_textobject("@function.outer", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "if", function() select_textobject("@function.inner", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "ac", function() select_textobject("@class.outer", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "ic", function() select_textobject("@class.inner", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "aa", function() select_textobject("@parameter.outer", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "ia", function() select_textobject("@parameter.inner", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "ai", function() select_textobject("@conditional.outer", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "ii", function() select_textobject("@conditional.inner", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "al", function() select_textobject("@loop.outer", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "il", function() select_textobject("@loop.inner", "textobjects") end)
+            vim.keymap.set({ "x", "o" }, "at", function() select_textobject("@comment.outer", "textobjects") end)
+
+          '';
+        }
         # --------------------------------
 
         {
           # Undotree visualizes the undo history and makes it easy to
           # browse and switch between different undo branches.
           plugin = undotree;
+          type = "viml";
           config = ''
             "I need to define leader key here because the order in which "
             "nix generates the config"
@@ -446,6 +425,7 @@
         }
         {
           plugin = vim-suda;
+          type = "viml";
           config = ''
             cnoremap w!! :SudaWrite<CR>
           '';
