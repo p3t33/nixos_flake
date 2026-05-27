@@ -71,6 +71,7 @@ in
     server.enable = lib.mkEnableOption "server service profile (sshd, fail2ban)";
     xmr-miner.enable = lib.mkEnableOption "XMR miner service profile (monerod, p2pool, xmrig)";
     wireguardServer.enable = lib.mkEnableOption "WireGuard server service profile (wireguard, inadyn)";
+    monitoring.enable = lib.mkEnableOption "monitoring service profile (prometheus, loki, alloy, grafana)";
   };
 
   config = lib.mkMerge [
@@ -102,6 +103,13 @@ in
       services.monero.enable = true;
       custom.services.p2pool.enable = true;
       services.xmrig.enable = true;
+    })
+
+    (lib.mkIf g.monitoring.enable {
+      services.prometheus.enable = true;
+      services.loki.enable = true;
+      services.alloy.enable = true;
+      services.grafana.enable = true;
     })
 
     (lib.mkIf g.wireguardServer.enable {

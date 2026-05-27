@@ -38,6 +38,7 @@
     profiles.systemServices = {
       core.enable = true;
       server.enable = true;
+      monitoring.enable = true;
       wireguardServer.enable = true;
     };
 
