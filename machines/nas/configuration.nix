@@ -43,6 +43,7 @@
 
 
   services.xserver.enable = lib.mkForce false;
+  boot.zfs.forceImportRoot = false;
   networking.hostId = "b8835c95";
 
   # Configure keymap in X11
