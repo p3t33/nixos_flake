@@ -26,6 +26,8 @@
         package = pkgs.nordic;
       };
 
+      # TODO: find a theme that supports both GTK3 and GTK4
+      gtk4.theme = null;
       cursorTheme = {
         name = "Adwaita";
         package = pkgs.adwaita-icon-theme;
