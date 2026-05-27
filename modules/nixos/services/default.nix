@@ -5,7 +5,6 @@ let
 in
 {
   imports = [
-    ./adb.nix
     ./adguard_home.nix
     ./avahi.nix
     ./bluetooth.nix

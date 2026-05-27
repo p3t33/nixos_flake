@@ -15,7 +15,6 @@
     };
   };
 
-  programs.adb.enable = true;
 
   custom = {
     shared.AIDefaultModels.prompt = "qwen3.5:9b";
