@@ -8,7 +8,76 @@
   ...
 }:
 {
-  options.custom.shared = {
+  config.assertions =
+    let
+      categoryValues = builtins.attrValues config.custom.media.downloadCategories;
+    in
+    [
+      {
+        assertion = (builtins.length (lib.unique categoryValues)) == (builtins.length categoryValues);
+        message = "custom.media.downloadCategories values must be unique.";
+      }
+    ];
+
+  options.custom = {
+    media.downloadCategories = lib.mkOption {
+      type = lib.types.submodule {
+        freeformType = lib.types.attrsOf lib.types.str;
+        options = {
+          default = lib.mkOption {
+            default = "default";
+            type = lib.types.str;
+            description = "Default download category name.";
+          };
+
+          movies = lib.mkOption {
+            default = "movies";
+            type = lib.types.str;
+            description = "Movie download category name.";
+          };
+
+          tv = lib.mkOption {
+            default = "tv";
+            type = lib.types.str;
+            description = "TV download category name.";
+          };
+
+          ebooks = lib.mkOption {
+            default = "ebooks";
+            type = lib.types.str;
+            description = "Ebook download category name.";
+          };
+
+          audiobooks = lib.mkOption {
+            default = "audiobooks";
+            type = lib.types.str;
+            description = "Audiobook download category name.";
+          };
+
+          audio = lib.mkOption {
+            default = "audio";
+            type = lib.types.str;
+            description = "Usenet audio download category name.";
+          };
+
+          software = lib.mkOption {
+            default = "software";
+            type = lib.types.str;
+            description = "Usenet software download category name.";
+          };
+
+          books = lib.mkOption {
+            default = "books";
+            type = lib.types.str;
+            description = "Usenet books download category name.";
+          };
+        };
+      };
+      default = { };
+      description = "Shared media download category names.";
+    };
+
+    shared = {
       fontPackages = lib.mkOption {
         default = [
           pkgs.powerline-fonts
@@ -135,4 +204,5 @@
         description = "Syncthing related configuration";
         };
     };
+  };
 }

@@ -8,7 +8,6 @@ in
     ./adb.nix
     ./adguard_home.nix
     ./avahi.nix
-    ./bazarr.nix
     ./bluetooth.nix
     ./calibre-web.nix
     ./envfs.nix # always enabled
@@ -18,9 +17,9 @@ in
     ./grafana.nix
     ./home-assistant
     ./homepage_dashboard.nix
+    ./download-clients
+    ./media
     ./inadyn.nix
-    ./jackett.nix
-    ./jellyfin.nix
     ./loki.nix
     ./mosquitto.nix
     ./nginx.nix
@@ -29,12 +28,8 @@ in
     ./printer.nix
     ./prometheus.nix
     ./promtail.nix
-    ./prowlarr.nix
-    ./radarr.nix
     ./restic.nix
-    ./sabnzbd.nix
     ./samba.nix
-    ./sonarr.nix
     ./sound.nix
     ./sshd.nix
     ./trezor.nix
@@ -50,8 +45,6 @@ in
     ./user/watchman.nix
     ./user/sxhkd.nix
 
-    ./user/torrent/deluge.nix
-    ./user/torrent/qbittorrent-nox.nix
 
     ./wireguard/wg-quick-client.nix
     ./wireguard/wireguard-server.nix

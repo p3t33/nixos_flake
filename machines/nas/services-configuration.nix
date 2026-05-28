@@ -12,6 +12,7 @@
     # jackett.enable = true; # No real need for now
     sonarr.enable = true;
     radarr.enable = true;
+    recyclarr.enable = true;
   # bazarr.enable = true; # needs to be added at a later point
     deluge.enable = true;
     sabnzbd.enable = true;
@@ -44,6 +45,7 @@
       avahi.publisher.enable  = true;
       printing.server.enable  = true;
       restic.enable = true;
+      qbittorrent.enable = true;
 
       syncthing = {
         syncDir = "${config.custom.shared.pathToDataDirectory}/syncthing";

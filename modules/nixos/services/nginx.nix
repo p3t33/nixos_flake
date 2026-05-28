@@ -177,6 +177,27 @@ in
               };
             };
 
+        "qbittorrent.${hostSpecific.hostName}" =
+          lib.optionalAttrs config.services.qbittorrent.enable
+            {
+              listen = [
+                {
+                  addr = "${allInterfaces}";
+                  port = httpPort;
+                }
+              ];
+              locations."/" = {
+                proxyPass = "${localHost}:${builtins.toString config.services.qbittorrent.webuiPort}/";
+                extraConfig = ''
+                  proxy_http_version 1.1;
+                  proxy_set_header Host $proxy_host;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Host $http_host;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                '';
+              };
+            };
+
         "adguard.${hostSpecific.hostName}" =
           lib.optionalAttrs config.services.adguardhome.enable
             {
