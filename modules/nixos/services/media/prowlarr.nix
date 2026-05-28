@@ -6,11 +6,31 @@
 }:
 
 let
+  arrHelpers = import ./lib/arr-api-helpers.nix { inherit lib; };
   serviceName = "prowlarr";
   prowlarrBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}${config.services.prowlarr.settings.server.urlbase}";
   prowlarrEnvCredential = "prowlarr-env";
   sonarrEnvCredential = "sonarr-env";
   radarrEnvCredential = "radarr-env";
+
+  waitForProwlarrApi = pkgs.writeShellScript "wait-for-prowlarr-api" ''
+    CURL_CONFIG=$(mktemp)
+    chmod 600 "$CURL_CONFIG"
+    trap 'rm -f "$CURL_CONFIG"' EXIT
+    printf 'header = "X-Api-Key: %s"\n' "$PROWLARR__AUTH__APIKEY" > "$CURL_CONFIG"
+
+    for attempt in $(seq 1 90); do
+      if curl -fsS -K "$CURL_CONFIG" \
+        "${prowlarrBaseUrl}/api/v1/system/status" >/dev/null 2>&1; then
+        exit 0
+      fi
+      sleep 1
+    done
+    echo "Prowlarr API did not become ready" >&2
+    exit 1
+  '';
+
+  waitForProwlarrApiPre = "${pkgs.curl}/bin/curl --retry 30 --retry-delay 2 --retry-connrefused -so /dev/null ${prowlarrBaseUrl}/api/v1/system/status";
 
   mkProwlarrApplication = appName: implementationName: baseUrl: apiKeyFileVar: ''
     upsert_application ${lib.escapeShellArg appName} ${lib.escapeShellArg implementationName} ${lib.escapeShellArg baseUrl} "${"$"}${apiKeyFileVar}"
@@ -83,11 +103,15 @@ in
         };
       };
 
-      # Variables inside the file will take presedends over the settings = {...}
       environmentFiles = [
         config.sops.secrets."${serviceName}/env".path
       ];
 
+    };
+
+    systemd.services.${serviceName} = {
+      path = [ pkgs.curl ];
+      serviceConfig.ExecStartPost = "${waitForProwlarrApi}";
     };
 
     systemd.services.prowlarr-applications =
@@ -99,12 +123,7 @@ in
           ]
           ++ lib.optional config.services.sonarr.enable config.systemd.services.sonarr.name
           ++ lib.optional config.services.radarr.enable config.systemd.services.radarr.name;
-          requires = [
-            config.systemd.services.prowlarr.name
-          ]
-          ++ lib.optional config.services.sonarr.enable config.systemd.services.sonarr.name
-          ++ lib.optional config.services.radarr.enable config.systemd.services.radarr.name;
-          wantedBy = [ config.systemd.services.${serviceName}.name ];
+          wantedBy = [ "multi-user.target" ];
 
           path = with pkgs; [
             coreutils
@@ -115,6 +134,7 @@ in
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
+            ExecStartPre = waitForProwlarrApiPre;
             LoadCredential = [
               "${prowlarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
             ]
@@ -136,35 +156,7 @@ in
             BASE_URL=${lib.escapeShellArg "${prowlarrBaseUrl}/api/v1"}
             PROWLARR_URL=${lib.escapeShellArg prowlarrBaseUrl}
 
-            TMP_FILES=()
-            cleanup() {
-              rm -f "''${TMP_FILES[@]}"
-            }
-            trap cleanup EXIT
-
-            new_secret_file() {
-              local result_var="$1"
-              local value="$2"
-              local file
-
-              file=$(mktemp)
-              chmod 600 "$file"
-              printf '%s' "$value" > "$file"
-              TMP_FILES+=("$file")
-              printf -v "$result_var" '%s' "$file"
-            }
-
-            new_curl_config() {
-              local result_var="$1"
-              local api_key="$2"
-              local file
-
-              file=$(mktemp)
-              chmod 600 "$file"
-              printf 'header = "X-Api-Key: %s"\n' "$api_key" > "$file"
-              TMP_FILES+=("$file")
-              printf -v "$result_var" '%s' "$file"
-            }
+            ${arrHelpers.common}
 
             new_curl_config PROWLARR_CURL_CONFIG "$PROWLARR__AUTH__APIKEY"
             ${lib.optionalString config.services.sonarr.enable ''
@@ -176,36 +168,7 @@ in
               new_secret_file RADARR_API_KEY_FILE "$RADARR__AUTH__APIKEY"
             ''}
 
-            curl_prowlarr() {
-              local url="$1"
-              shift
-
-              curl -fsS -K "$PROWLARR_CURL_CONFIG" "$@" "$url"
-            }
-
-            wait_for_api() {
-              local name="$1"
-              local status_url="$2"
-              local curl_config="$3"
-
-              echo "Waiting for $name API..."
-              for attempt in $(seq 1 60); do
-                if curl -fsS -K "$curl_config" "$status_url" >/dev/null 2>&1; then
-                  return 0
-                fi
-
-                if [ "$attempt" -eq 60 ]; then
-                  echo "Timed out waiting for $name API" >&2
-                  exit 1
-                fi
-
-                sleep 2
-              done
-            }
-
-            wait_for_api "Prowlarr" "$BASE_URL/system/status" "$PROWLARR_CURL_CONFIG"
-            ${lib.optionalString config.services.sonarr.enable ''wait_for_api "Sonarr" ${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}/api/v3/system/status"} "$SONARR_CURL_CONFIG"''}
-            ${lib.optionalString config.services.radarr.enable ''wait_for_api "Radarr" ${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.radarr.settings.server.port}${config.services.radarr.settings.server.urlbase}/api/v3/system/status"} "$RADARR_CURL_CONFIG"''}
+            ${arrHelpers.mkCurlWrapper "prowlarr" "PROWLARR_CURL_CONFIG"}
 
             SCHEMAS=$(curl_prowlarr "$BASE_URL/applications/schema")
             APPLICATIONS=$(curl_prowlarr "$BASE_URL/applications")

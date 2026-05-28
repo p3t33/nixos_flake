@@ -6,6 +6,7 @@
 }:
 
 let
+  arrHelpers = import ./lib/arr-api-helpers.nix { inherit lib; };
   serviceName = "sonarr";
   sonarrBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}";
   tvRootFolder = "${config.custom.shared.pathToMediaDirectory}/tv";
@@ -16,6 +17,25 @@ let
   delugePasswordCredential = "deluge-password";
   qbittorrentUsernameCredential = "qbittorrent-username";
   qbittorrentPasswordCredential = "qbittorrent-password";
+
+  waitForSonarrApi = pkgs.writeShellScript "wait-for-sonarr-api" ''
+    CURL_CONFIG=$(mktemp)
+    chmod 600 "$CURL_CONFIG"
+    trap 'rm -f "$CURL_CONFIG"' EXIT
+    printf 'header = "X-Api-Key: %s"\n' "$SONARR__AUTH__APIKEY" > "$CURL_CONFIG"
+
+    for attempt in $(seq 1 90); do
+      if curl -fsS -K "$CURL_CONFIG" \
+        "${sonarrBaseUrl}/api/v3/system/status" >/dev/null 2>&1; then
+        exit 0
+      fi
+      sleep 1
+    done
+    echo "Sonarr API did not become ready" >&2
+    exit 1
+  '';
+
+  waitForSonarrApiPre = "${pkgs.curl}/bin/curl --retry 30 --retry-delay 2 --retry-connrefused -so /dev/null ${sonarrBaseUrl}/api/v3/system/status";
 in
 {
   options.custom.services.${serviceName} = {
@@ -52,32 +72,31 @@ in
         config.systemd.services.sonarr-rootfolders.name
         config.systemd.services.sonarr-delayprofiles.name
       ]
-      ++ lib.optional config.services.sabnzbd.enable config.systemd.services.sonarr-sabnzbd-downloadclient.name
-      ++ lib.optional config.services.deluge.enable config.systemd.services.sonarr-deluge-downloadclient.name
-      ++ lib.optional config.services.qbittorrent.enable config.systemd.services.sonarr-qbittorrent-downloadclient.name;
+      ++ lib.optional (config.services.sabnzbd.enable || config.services.deluge.enable || config.services.qbittorrent.enable)
+        config.systemd.services.sonarr-downloadclients.name;
     };
 
     sops.secrets."sabnzbd/api_key".restartUnits = lib.mkIf config.services.sabnzbd.enable (
       lib.mkAfter [
-        config.systemd.services.sonarr-sabnzbd-downloadclient.name
+        config.systemd.services.sonarr-downloadclients.name
       ]
     );
 
     sops.secrets."deluge/web_password".restartUnits = lib.mkIf config.services.deluge.enable (
       lib.mkAfter [
-        config.systemd.services.sonarr-deluge-downloadclient.name
+        config.systemd.services.sonarr-downloadclients.name
       ]
     );
 
     sops.secrets."qbittorrent/webui_username".restartUnits = lib.mkIf config.services.qbittorrent.enable (
       lib.mkAfter [
-        config.systemd.services.sonarr-qbittorrent-downloadclient.name
+        config.systemd.services.sonarr-downloadclients.name
       ]
     );
 
     sops.secrets."qbittorrent/webui_password".restartUnits = lib.mkIf config.services.qbittorrent.enable (
       lib.mkAfter [
-        config.systemd.services.sonarr-qbittorrent-downloadclient.name
+        config.systemd.services.sonarr-downloadclients.name
       ]
     );
 
@@ -87,7 +106,7 @@ in
 
     # Enable the Sonarr service(as of now there is no config for default sonarr port)
     services.${serviceName} = {
-      openFirewall = true; # Opens Sonarr's port on the firewall (default 8989)
+      openFirewall = true;
       user = "${serviceName}";
       group = "${config.custom.shared.mediaGroup}";
       settings = {
@@ -103,7 +122,6 @@ in
           maindb = "${config.custom.services.${serviceName}.mainDataBase}";
           logdb = "${config.custom.services.${serviceName}.logDataBase}";
         };
-
       };
 
       environmentFiles = [
@@ -111,17 +129,20 @@ in
       ];
     };
 
-    systemd.services.sonarr-sabnzbd-downloadclient = lib.mkIf config.services.sabnzbd.enable {
-      description = "Configure Sonarr SABnzbd download client";
-      after = [
-        config.systemd.services.${serviceName}.name
-        config.systemd.services.sabnzbd.name
-      ];
-      requires = [
-        config.systemd.services.${serviceName}.name
-        config.systemd.services.sabnzbd.name
-      ];
-      wantedBy = [ config.systemd.services.${serviceName}.name ];
+    systemd.services.${serviceName} = {
+      path = [ pkgs.curl ];
+      serviceConfig.ExecStartPost = "${waitForSonarrApi}";
+    };
+
+    systemd.services.sonarr-downloadclients = lib.mkIf
+      (config.services.sabnzbd.enable || config.services.deluge.enable || config.services.qbittorrent.enable)
+    {
+      description = "Configure Sonarr download clients";
+      after = [ config.systemd.services.${serviceName}.name ]
+        ++ lib.optional config.services.sabnzbd.enable config.systemd.services.sabnzbd.name
+        ++ lib.optional config.services.deluge.enable config.systemd.services.delugeweb.name
+        ++ lib.optional config.services.qbittorrent.enable config.systemd.services.qbittorrent.name;
+      wantedBy = [ "multi-user.target" ];
 
       path = with pkgs; [
         coreutils
@@ -132,352 +153,15 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecStartPre = waitForSonarrApiPre;
         LoadCredential = [
           "${sonarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+        ]
+        ++ lib.optional config.services.sabnzbd.enable
           "${sabnzbdApiKeyCredential}:${config.sops.secrets."sabnzbd/api_key".path}"
-        ];
-      };
-
-      script = ''
-        set -euo pipefail
-
-        . "$CREDENTIALS_DIRECTORY/${sonarrEnvCredential}"
-        : "''${SONARR__AUTH__APIKEY:?SONARR__AUTH__APIKEY is required}"
-
-        BASE_URL=${lib.escapeShellArg "${sonarrBaseUrl}/api/v3"}
-        SABNZBD_URL=${lib.escapeShellArg sabnzbdBaseUrl}
-        SABNZBD_PORT=${lib.escapeShellArg (toString config.custom.services.sabnzbd.httpPort)}
-        SABNZBD_API_KEY_CREDENTIAL="$CREDENTIALS_DIRECTORY/${sabnzbdApiKeyCredential}"
-        DOWNLOAD_CLIENT_NAME="SABnzbd"
-        TV_CATEGORY=${lib.escapeShellArg categories.tv}
-
-        TMP_FILES=()
-        cleanup() {
-          rm -f "''${TMP_FILES[@]}"
-        }
-        trap cleanup EXIT
-
-        new_temp_file() {
-          local result_var="$1"
-          local tmp_file
-
-          tmp_file=$(mktemp)
-          chmod 600 "$tmp_file"
-          TMP_FILES+=("$tmp_file")
-          printf -v "$result_var" '%s' "$tmp_file"
-        }
-
-        new_curl_config() {
-          local result_var="$1"
-          local api_key="$2"
-          local file
-
-          new_temp_file file
-          printf 'header = "X-Api-Key: %s"\n' "$api_key" > "$file"
-          printf -v "$result_var" '%s' "$file"
-        }
-
-        new_curl_config SONARR_CURL_CONFIG "$SONARR__AUTH__APIKEY"
-        new_temp_file SABNZBD_API_KEY_FILE
-        tr -d '\n' < "$SABNZBD_API_KEY_CREDENTIAL" > "$SABNZBD_API_KEY_FILE"
-        SABNZBD_API_KEY=$(cat "$SABNZBD_API_KEY_FILE")
-        new_temp_file SABNZBD_VERSION_CURL_CONFIG
-        printf 'url = "%s/api?mode=version&apikey=%s&output=json"\n' "$SABNZBD_URL" "$SABNZBD_API_KEY" > "$SABNZBD_VERSION_CURL_CONFIG"
-
-        curl_sonarr() {
-          local url="$1"
-          shift
-
-          curl -fsS -K "$SONARR_CURL_CONFIG" "$@" "$url"
-        }
-
-        echo "Waiting for Sonarr API..."
-        for attempt in $(seq 1 60); do
-          if curl_sonarr "$BASE_URL/system/status" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for Sonarr API" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
-
-        echo "Waiting for SABnzbd API..."
-        for attempt in $(seq 1 60); do
-          if curl -fsS -K "$SABNZBD_VERSION_CURL_CONFIG" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for SABnzbd API" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
-
-        SCHEMAS=$(curl_sonarr "$BASE_URL/downloadclient/schema")
-        DOWNLOAD_CLIENTS=$(curl_sonarr "$BASE_URL/downloadclient")
-
-        build_payload() {
-          jq \
-            --arg name "$DOWNLOAD_CLIENT_NAME" \
-            --arg host ${lib.escapeShellArg config.custom.shared.localHostIPv4} \
-            --argjson port "$SABNZBD_PORT" \
-            --arg urlBase "/sabnzbd" \
-            --rawfile apiKey "$SABNZBD_API_KEY_FILE" \
-            --arg tvCategory "$TV_CATEGORY" \
-            '
-              .name = $name
-              | .enable = true
-              | .priority = 1
-              | .fields |= map(
-                  if .name == "host" then .value = $host
-                  elif .name == "port" then .value = $port
-                  elif .name == "urlBase" then .value = $urlBase
-                  elif .name == "apiKey" then .value = $apiKey
-                  elif .name == "tvCategory" then .value = $tvCategory
-                  else .
-                  end
-                )
-            '
-        }
-
-        existing_client=$(echo "$DOWNLOAD_CLIENTS" | jq -c --arg name "$DOWNLOAD_CLIENT_NAME" '.[] | select(.name == $name)' | head -n1)
-
-        if [ -n "$existing_client" ] && [ "$(echo "$existing_client" | jq -r '.implementationName')" != "SABnzbd" ]; then
-          echo "Download client named $DOWNLOAD_CLIENT_NAME exists but is not SABnzbd" >&2
-          exit 1
-        fi
-
-        if [ -n "$existing_client" ]; then
-          client_id=$(echo "$existing_client" | jq -r '.id')
-          payload=$(echo "$existing_client" | build_payload)
-
-          printf '%s' "$payload" | curl_sonarr "$BASE_URL/downloadclient/$client_id" \
-            -X PUT \
-            -H "Content-Type: application/json" \
-            --data-binary @- \
-            >/dev/null
-
-          echo "Updated Sonarr download client: $DOWNLOAD_CLIENT_NAME"
-        else
-          schema=$(echo "$SCHEMAS" | jq -c '.[] | select(.implementationName == "SABnzbd")' | head -n1)
-
-          if [ -z "$schema" ]; then
-            echo "No Sonarr download client schema found for SABnzbd" >&2
-            exit 1
-          fi
-
-          payload=$(echo "$schema" | build_payload)
-
-          printf '%s' "$payload" | curl_sonarr "$BASE_URL/downloadclient" \
-            -X POST \
-            -H "Content-Type: application/json" \
-            --data-binary @- \
-            >/dev/null
-
-          echo "Created Sonarr download client: $DOWNLOAD_CLIENT_NAME"
-        fi
-      '';
-    };
-
-    systemd.services.sonarr-deluge-downloadclient = lib.mkIf config.services.deluge.enable {
-      description = "Configure Sonarr Deluge download client";
-      after = [
-        config.systemd.services.${serviceName}.name
-        config.systemd.services.delugeweb.name
-      ];
-      requires = [
-        config.systemd.services.${serviceName}.name
-        config.systemd.services.delugeweb.name
-      ];
-      wantedBy = [ config.systemd.services.${serviceName}.name ];
-
-      path = with pkgs; [
-        coreutils
-        curl
-        jq
-      ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        LoadCredential = [
-          "${sonarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+        ++ lib.optional config.services.deluge.enable
           "${delugePasswordCredential}:${config.sops.secrets."deluge/web_password".path}"
-        ];
-      };
-
-      script = ''
-        set -euo pipefail
-
-        . "$CREDENTIALS_DIRECTORY/${sonarrEnvCredential}"
-        : "''${SONARR__AUTH__APIKEY:?SONARR__AUTH__APIKEY is required}"
-
-        BASE_URL=${lib.escapeShellArg "${sonarrBaseUrl}/api/v3"}
-        DELUGE_URL=${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.deluge.web.port}"}
-        DELUGE_PORT=${lib.escapeShellArg (toString config.services.deluge.web.port)}
-        DELUGE_PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${delugePasswordCredential}"
-        DOWNLOAD_CLIENT_NAME="Deluge"
-        TV_CATEGORY=${lib.escapeShellArg categories.tv}
-
-        TMP_FILES=()
-        cleanup() {
-          rm -f "''${TMP_FILES[@]}"
-        }
-        trap cleanup EXIT
-
-        new_temp_file() {
-          local result_var="$1"
-          local tmp_file
-
-          tmp_file=$(mktemp)
-          chmod 600 "$tmp_file"
-          TMP_FILES+=("$tmp_file")
-          printf -v "$result_var" '%s' "$tmp_file"
-        }
-
-        new_curl_config() {
-          local result_var="$1"
-          local api_key="$2"
-          local file
-
-          new_temp_file file
-          printf 'header = "X-Api-Key: %s"\n' "$api_key" > "$file"
-          printf -v "$result_var" '%s' "$file"
-        }
-
-        new_curl_config SONARR_CURL_CONFIG "$SONARR__AUTH__APIKEY"
-        new_temp_file DELUGE_PASSWORD_FILE
-        tr -d '\n' < "$DELUGE_PASSWORD_CREDENTIAL" > "$DELUGE_PASSWORD_FILE"
-
-        curl_sonarr() {
-          local url="$1"
-          shift
-
-          curl -fsS -K "$SONARR_CURL_CONFIG" "$@" "$url"
-        }
-
-        echo "Waiting for Sonarr API..."
-        for attempt in $(seq 1 60); do
-          if curl_sonarr "$BASE_URL/system/status" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for Sonarr API" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
-
-        echo "Waiting for Deluge Web UI..."
-        for attempt in $(seq 1 60); do
-          if curl -fsS "$DELUGE_URL/" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for Deluge Web UI" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
-
-        SCHEMAS=$(curl_sonarr "$BASE_URL/downloadclient/schema")
-        DOWNLOAD_CLIENTS=$(curl_sonarr "$BASE_URL/downloadclient")
-
-        build_payload() {
-          jq \
-            --arg name "$DOWNLOAD_CLIENT_NAME" \
-            --arg host ${lib.escapeShellArg config.custom.shared.localHostIPv4} \
-            --argjson port "$DELUGE_PORT" \
-            --rawfile password "$DELUGE_PASSWORD_FILE" \
-            --arg category "$TV_CATEGORY" \
-            '
-              .name = $name
-              | .enable = true
-              | .priority = 3
-              | .fields |= map(
-                  if .name == "host" then .value = $host
-                  elif .name == "port" then .value = $port
-                  elif .name == "password" then .value = $password
-                  elif .name == "category" then .value = $category
-                  elif .name == "tvCategory" then .value = $category
-                  else .
-                  end
-                )
-            '
-        }
-
-        existing_client=$(echo "$DOWNLOAD_CLIENTS" | jq -c --arg name "$DOWNLOAD_CLIENT_NAME" '.[] | select(.name == $name)' | head -n1)
-
-        if [ -n "$existing_client" ] && [ "$(echo "$existing_client" | jq -r '.implementationName')" != "Deluge" ]; then
-          echo "Download client named $DOWNLOAD_CLIENT_NAME exists but is not Deluge" >&2
-          exit 1
-        fi
-
-        if [ -n "$existing_client" ]; then
-          client_id=$(echo "$existing_client" | jq -r '.id')
-          payload=$(echo "$existing_client" | build_payload)
-
-          printf '%s' "$payload" | curl_sonarr "$BASE_URL/downloadclient/$client_id" \
-            -X PUT \
-            -H "Content-Type: application/json" \
-            --data-binary @- \
-            >/dev/null
-
-          echo "Updated Sonarr download client: $DOWNLOAD_CLIENT_NAME"
-        else
-          schema=$(echo "$SCHEMAS" | jq -c '.[] | select(.implementationName == "Deluge")' | head -n1)
-
-          if [ -z "$schema" ]; then
-            echo "No Sonarr download client schema found for Deluge" >&2
-            exit 1
-          fi
-
-          payload=$(echo "$schema" | build_payload)
-
-          printf '%s' "$payload" | curl_sonarr "$BASE_URL/downloadclient" \
-            -X POST \
-            -H "Content-Type: application/json" \
-            --data-binary @- \
-            >/dev/null
-
-          echo "Created Sonarr download client: $DOWNLOAD_CLIENT_NAME"
-        fi
-      '';
-    };
-
-    systemd.services.sonarr-qbittorrent-downloadclient = lib.mkIf config.services.qbittorrent.enable {
-      description = "Configure Sonarr qBittorrent download client";
-      after = [
-        config.systemd.services.${serviceName}.name
-        config.systemd.services.qbittorrent.name
-      ];
-      requires = [
-        config.systemd.services.${serviceName}.name
-        config.systemd.services.qbittorrent.name
-      ];
-      wantedBy = [ config.systemd.services.${serviceName}.name ];
-
-      path = with pkgs; [
-        coreutils
-        curl
-        jq
-      ];
-
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        LoadCredential = [
-          "${sonarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
+        ++ lib.optionals config.services.qbittorrent.enable [
           "${qbittorrentUsernameCredential}:${config.sops.secrets."qbittorrent/webui_username".path}"
           "${qbittorrentPasswordCredential}:${config.sops.secrets."qbittorrent/webui_password".path}"
         ];
@@ -490,152 +174,149 @@ in
         : "''${SONARR__AUTH__APIKEY:?SONARR__AUTH__APIKEY is required}"
 
         BASE_URL=${lib.escapeShellArg "${sonarrBaseUrl}/api/v3"}
-        QBITTORRENT_URL=${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.qbittorrent.webuiPort}"}
-        QBITTORRENT_PORT=${lib.escapeShellArg (toString config.services.qbittorrent.webuiPort)}
-        QBITTORRENT_USERNAME_CREDENTIAL="$CREDENTIALS_DIRECTORY/${qbittorrentUsernameCredential}"
-        QBITTORRENT_PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${qbittorrentPasswordCredential}"
-        DOWNLOAD_CLIENT_NAME="qBittorrent"
-        TV_CATEGORY=${lib.escapeShellArg categories.tv}
+        HOST=${lib.escapeShellArg config.custom.shared.localHostIPv4}
+        CATEGORY=${lib.escapeShellArg categories.tv}
 
-        TMP_FILES=()
-        cleanup() {
-          rm -f "''${TMP_FILES[@]}"
-        }
-        trap cleanup EXIT
-
-        new_temp_file() {
-          local result_var="$1"
-          local tmp_file
-
-          tmp_file=$(mktemp)
-          chmod 600 "$tmp_file"
-          TMP_FILES+=("$tmp_file")
-          printf -v "$result_var" '%s' "$tmp_file"
-        }
-
-        new_curl_config() {
-          local result_var="$1"
-          local api_key="$2"
-          local file
-
-          new_temp_file file
-          printf 'header = "X-Api-Key: %s"\n' "$api_key" > "$file"
-          printf -v "$result_var" '%s' "$file"
-        }
-
+        ${arrHelpers.common}
         new_curl_config SONARR_CURL_CONFIG "$SONARR__AUTH__APIKEY"
-        new_temp_file QBITTORRENT_USERNAME_FILE
-        new_temp_file QBITTORRENT_PASSWORD_FILE
-        tr -d '\n' < "$QBITTORRENT_USERNAME_CREDENTIAL" > "$QBITTORRENT_USERNAME_FILE"
-        tr -d '\n' < "$QBITTORRENT_PASSWORD_CREDENTIAL" > "$QBITTORRENT_PASSWORD_FILE"
-
-        curl_sonarr() {
-          local url="$1"
-          shift
-
-          curl -fsS -K "$SONARR_CURL_CONFIG" "$@" "$url"
-        }
-
-        echo "Waiting for Sonarr API..."
-        for attempt in $(seq 1 60); do
-          if curl_sonarr "$BASE_URL/system/status" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for Sonarr API" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
-
-        echo "Waiting for qBittorrent Web UI..."
-        for attempt in $(seq 1 60); do
-          if curl -fsS "$QBITTORRENT_URL/" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for qBittorrent Web UI" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
+        ${arrHelpers.mkCurlWrapper "sonarr" "SONARR_CURL_CONFIG"}
 
         SCHEMAS=$(curl_sonarr "$BASE_URL/downloadclient/schema")
         DOWNLOAD_CLIENTS=$(curl_sonarr "$BASE_URL/downloadclient")
 
-        build_payload() {
-          jq \
-            --arg name "$DOWNLOAD_CLIENT_NAME" \
-            --arg host ${lib.escapeShellArg config.custom.shared.localHostIPv4} \
-            --argjson port "$QBITTORRENT_PORT" \
-            --rawfile username "$QBITTORRENT_USERNAME_FILE" \
-            --rawfile password "$QBITTORRENT_PASSWORD_FILE" \
-            --arg category "$TV_CATEGORY" \
-            '
-              .name = $name
-              | .enable = true
-              | .priority = 2
-              | .fields |= map(
-                  if .name == "host" then .value = $host
-                  elif .name == "port" then .value = $port
-                  elif .name == "username" then .value = $username
-                  elif .name == "password" then .value = $password
-                  elif .name == "category" then .value = $category
-                  elif .name == "tvCategory" then .value = $category
-                  else .
-                  end
-                )
-            '
-        }
+        ${arrHelpers.upsertClient}
 
-        existing_client=$(echo "$DOWNLOAD_CLIENTS" | jq -c --arg name "$DOWNLOAD_CLIENT_NAME" '.[] | select(.name == $name)' | head -n1)
+        ${lib.optionalString config.services.sabnzbd.enable ''
+          SABNZBD_URL=${lib.escapeShellArg sabnzbdBaseUrl}
+          SABNZBD_PORT=${lib.escapeShellArg (toString config.custom.services.sabnzbd.httpPort)}
+          SABNZBD_API_KEY_CREDENTIAL="$CREDENTIALS_DIRECTORY/${sabnzbdApiKeyCredential}"
+          new_temp_file SABNZBD_API_KEY_FILE
+          tr -d '\n' < "$SABNZBD_API_KEY_CREDENTIAL" > "$SABNZBD_API_KEY_FILE"
+          SABNZBD_API_KEY=$(cat "$SABNZBD_API_KEY_FILE")
+          new_temp_file SABNZBD_VERSION_CURL_CONFIG
+          printf 'url = "%s/api?mode=version&apikey=%s&output=json"\n' "$SABNZBD_URL" "$SABNZBD_API_KEY" > "$SABNZBD_VERSION_CURL_CONFIG"
 
-        if [ -n "$existing_client" ] && [ "$(echo "$existing_client" | jq -r '.implementationName')" != "qBittorrent" ]; then
-          echo "Download client named $DOWNLOAD_CLIENT_NAME exists but is not qBittorrent" >&2
-          exit 1
-        fi
+          build_sabnzbd_payload() {
+            jq \
+              --arg name "SABnzbd" \
+              --arg host "$HOST" \
+              --argjson port "$SABNZBD_PORT" \
+              --arg urlBase "/sabnzbd" \
+              --rawfile apiKey "$SABNZBD_API_KEY_FILE" \
+              --arg tvCategory "$CATEGORY" \
+              '
+                .name = $name
+                | .enable = true
+                | .priority = 1
+                | .fields |= map(
+                    if .name == "host" then .value = $host
+                    elif .name == "port" then .value = $port
+                    elif .name == "urlBase" then .value = $urlBase
+                    elif .name == "apiKey" then .value = $apiKey
+                    elif .name == "tvCategory" then .value = $tvCategory
+                    else .
+                    end
+                  )
+              '
+          }
 
-        if [ -n "$existing_client" ]; then
-          client_id=$(echo "$existing_client" | jq -r '.id')
-          payload=$(echo "$existing_client" | build_payload)
-
-          printf '%s' "$payload" | curl_sonarr "$BASE_URL/downloadclient/$client_id" \
-            -X PUT \
-            -H "Content-Type: application/json" \
-            --data-binary @- \
-            >/dev/null
-
-          echo "Updated Sonarr download client: $DOWNLOAD_CLIENT_NAME"
-        else
-          schema=$(echo "$SCHEMAS" | jq -c '.[] | select(.implementationName == "qBittorrent")' | head -n1)
-
-          if [ -z "$schema" ]; then
-            echo "No Sonarr download client schema found for qBittorrent" >&2
-            exit 1
+          echo "Waiting for SABnzbd API..."
+          if curl -fsS -K "$SABNZBD_VERSION_CURL_CONFIG" --retry 10 --retry-delay 2 --retry-connrefused >/dev/null 2>&1; then
+            upsert_client "SABnzbd" "SABnzbd" build_sabnzbd_payload curl_sonarr || echo "WARNING: Failed to configure SABnzbd client, skipping"
+          else
+            echo "WARNING: SABnzbd not available, skipping"
           fi
+        ''}
 
-          payload=$(echo "$schema" | build_payload)
+        ${lib.optionalString config.services.qbittorrent.enable ''
+          QBITTORRENT_URL=${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.qbittorrent.webuiPort}"}
+          QBITTORRENT_PORT=${lib.escapeShellArg (toString config.services.qbittorrent.webuiPort)}
+          QBITTORRENT_USERNAME_CREDENTIAL="$CREDENTIALS_DIRECTORY/${qbittorrentUsernameCredential}"
+          QBITTORRENT_PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${qbittorrentPasswordCredential}"
+          new_temp_file QBITTORRENT_USERNAME_FILE
+          new_temp_file QBITTORRENT_PASSWORD_FILE
+          tr -d '\n' < "$QBITTORRENT_USERNAME_CREDENTIAL" > "$QBITTORRENT_USERNAME_FILE"
+          tr -d '\n' < "$QBITTORRENT_PASSWORD_CREDENTIAL" > "$QBITTORRENT_PASSWORD_FILE"
 
-          printf '%s' "$payload" | curl_sonarr "$BASE_URL/downloadclient" \
-            -X POST \
-            -H "Content-Type: application/json" \
-            --data-binary @- \
-            >/dev/null
+          build_qbittorrent_payload() {
+            jq \
+              --arg name "qBittorrent" \
+              --arg host "$HOST" \
+              --argjson port "$QBITTORRENT_PORT" \
+              --rawfile username "$QBITTORRENT_USERNAME_FILE" \
+              --rawfile password "$QBITTORRENT_PASSWORD_FILE" \
+              --arg category "$CATEGORY" \
+              '
+                .name = $name
+                | .enable = true
+                | .priority = 2
+                | .fields |= map(
+                    if .name == "host" then .value = $host
+                    elif .name == "port" then .value = $port
+                    elif .name == "username" then .value = $username
+                    elif .name == "password" then .value = $password
+                    elif .name == "category" then .value = $category
+                    elif .name == "tvCategory" then .value = $category
+                    else .
+                    end
+                  )
+              '
+          }
 
-          echo "Created Sonarr download client: $DOWNLOAD_CLIENT_NAME"
-        fi
+          echo "Waiting for qBittorrent Web UI..."
+          if curl -fsS "$QBITTORRENT_URL/" --retry 10 --retry-delay 2 --retry-connrefused >/dev/null 2>&1; then
+            upsert_client "qBittorrent" "qBittorrent" build_qbittorrent_payload curl_sonarr || echo "WARNING: Failed to configure qBittorrent client, skipping"
+          else
+            echo "WARNING: qBittorrent not available, skipping"
+          fi
+        ''}
+
+        ${lib.optionalString config.services.deluge.enable ''
+          DELUGE_URL=${lib.escapeShellArg "http://${config.custom.shared.localHostIPv4}:${toString config.services.deluge.web.port}"}
+          DELUGE_PORT=${lib.escapeShellArg (toString config.services.deluge.web.port)}
+          DELUGE_PASSWORD_CREDENTIAL="$CREDENTIALS_DIRECTORY/${delugePasswordCredential}"
+          new_temp_file DELUGE_PASSWORD_FILE
+          tr -d '\n' < "$DELUGE_PASSWORD_CREDENTIAL" > "$DELUGE_PASSWORD_FILE"
+
+          build_deluge_payload() {
+            jq \
+              --arg name "Deluge" \
+              --arg host "$HOST" \
+              --argjson port "$DELUGE_PORT" \
+              --rawfile password "$DELUGE_PASSWORD_FILE" \
+              --arg category "$CATEGORY" \
+              '
+                .name = $name
+                | .enable = true
+                | .priority = 3
+                | .fields |= map(
+                    if .name == "host" then .value = $host
+                    elif .name == "port" then .value = $port
+                    elif .name == "password" then .value = $password
+                    elif .name == "category" then .value = $category
+                    elif .name == "tvCategory" then .value = $category
+                    else .
+                    end
+                  )
+              '
+          }
+
+          echo "Waiting for Deluge Web UI..."
+          if curl -fsS "$DELUGE_URL/" --retry 10 --retry-delay 2 --retry-connrefused >/dev/null 2>&1; then
+            upsert_client "Deluge" "Deluge" build_deluge_payload curl_sonarr || echo "WARNING: Failed to configure Deluge client, skipping"
+          else
+            echo "WARNING: Deluge not available, skipping"
+          fi
+        ''}
+
+        echo "Sonarr download clients configured"
       '';
     };
 
     systemd.services.sonarr-delayprofiles = {
       description = "Configure Sonarr delay profiles";
       after = [ config.systemd.services.${serviceName}.name ];
-      requires = [ config.systemd.services.${serviceName}.name ];
-      wantedBy = [ config.systemd.services.${serviceName}.name ];
+      wantedBy = [ "multi-user.target" ];
 
       path = with pkgs; [
         coreutils
@@ -646,6 +327,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecStartPre = waitForSonarrApiPre;
         LoadCredential = [
           "${sonarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
         ];
@@ -662,36 +344,9 @@ in
         USENET_DELAY=0
         TORRENT_DELAY=1440
 
-        CURL_CONFIG=$(mktemp)
-        cleanup() {
-          rm -f "$CURL_CONFIG"
-        }
-        trap cleanup EXIT
-
-        chmod 600 "$CURL_CONFIG"
-        # Keep the API key out of child process argv by passing it through curl config.
-        printf 'header = "X-Api-Key: %s"\n' "$SONARR__AUTH__APIKEY" > "$CURL_CONFIG"
-
-        curl_sonarr() {
-          local url="$1"
-          shift
-
-          curl -fsS -K "$CURL_CONFIG" "$@" "$url"
-        }
-
-        echo "Waiting for Sonarr API..."
-        for attempt in $(seq 1 60); do
-          if curl_sonarr "$BASE_URL/system/status" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for Sonarr API" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
+        ${arrHelpers.common}
+        new_curl_config SONARR_CURL_CONFIG "$SONARR__AUTH__APIKEY"
+        ${arrHelpers.mkCurlWrapper "sonarr" "SONARR_CURL_CONFIG"}
 
         DELAY_PROFILES=$(curl_sonarr "$BASE_URL/delayprofile")
         existing_profile=$(echo "$DELAY_PROFILES" | jq -c 'map(select(((.tags // []) | length) == 0)) | sort_by(.order // 2147483647) | .[0] // empty')
@@ -746,11 +401,7 @@ in
         config.systemd.services.${serviceName}.name
         "systemd-tmpfiles-setup.service"
       ];
-      requires = [
-        config.systemd.services.${serviceName}.name
-        "systemd-tmpfiles-setup.service"
-      ];
-      wantedBy = [ config.systemd.services.${serviceName}.name ];
+      wantedBy = [ "multi-user.target" ];
 
       path = with pkgs; [
         coreutils
@@ -761,6 +412,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecStartPre = waitForSonarrApiPre;
         LoadCredential = [
           "${sonarrEnvCredential}:${config.sops.secrets."${serviceName}/env".path}"
         ];
@@ -775,35 +427,9 @@ in
         BASE_URL=${lib.escapeShellArg "${sonarrBaseUrl}/api/v3"}
         ROOT_FOLDER=${lib.escapeShellArg tvRootFolder}
 
-        CURL_CONFIG=$(mktemp)
-        cleanup() {
-          rm -f "$CURL_CONFIG"
-        }
-        trap cleanup EXIT
-
-        chmod 600 "$CURL_CONFIG"
-        printf 'header = "X-Api-Key: %s"\n' "$SONARR__AUTH__APIKEY" > "$CURL_CONFIG"
-
-        curl_sonarr() {
-          local url="$1"
-          shift
-
-          curl -fsS -K "$CURL_CONFIG" "$@" "$url"
-        }
-
-        echo "Waiting for Sonarr API..."
-        for attempt in $(seq 1 60); do
-          if curl_sonarr "$BASE_URL/system/status" >/dev/null 2>&1; then
-            break
-          fi
-
-          if [ "$attempt" -eq 60 ]; then
-            echo "Timed out waiting for Sonarr API" >&2
-            exit 1
-          fi
-
-          sleep 2
-        done
+        ${arrHelpers.common}
+        new_curl_config SONARR_CURL_CONFIG "$SONARR__AUTH__APIKEY"
+        ${arrHelpers.mkCurlWrapper "sonarr" "SONARR_CURL_CONFIG"}
 
         ROOT_FOLDERS=$(curl_sonarr "$BASE_URL/rootfolder")
 

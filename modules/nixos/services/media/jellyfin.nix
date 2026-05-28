@@ -15,6 +15,19 @@ let
   tvRootFolder = "${mediaDirectory}/tv";
   usernameCredential = "jellyfin-username";
   passwordCredential = "jellyfin-password";
+
+  waitForJellyfinApi = pkgs.writeShellScript "wait-for-jellyfin-api" ''
+    for attempt in $(seq 1 90); do
+      if curl -Lso /dev/null "${jellyfinBaseUrl}/System/Info/Public" 2>/dev/null; then
+        exit 0
+      fi
+      sleep 1
+    done
+    echo "Jellyfin did not become ready" >&2
+    exit 1
+  '';
+
+  waitForJellyfinApiPre = "${pkgs.curl}/bin/curl -L --retry 30 --retry-delay 2 --retry-connrefused -so /dev/null ${jellyfinBaseUrl}/System/Info/Public";
 in
 {
   options.custom = {
@@ -51,11 +64,15 @@ in
       group = config.custom.shared.mediaGroup;
     };
 
+    systemd.services.${serviceName} = {
+      path = [ pkgs.curl ];
+      serviceConfig.ExecStartPost = "${waitForJellyfinApi}";
+    };
+
     systemd.services.jellyfin-setup-wizard = {
       description = "Complete Jellyfin setup wizard";
       after = [ config.systemd.services.jellyfin.name ];
-      requires = [ config.systemd.services.jellyfin.name ];
-      wantedBy = [ config.systemd.services.jellyfin.name ];
+      wantedBy = [ "multi-user.target" ];
 
       path = with pkgs; [
         coreutils
@@ -67,6 +84,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecStartPre = waitForJellyfinApiPre;
         LoadCredential = [
           "${usernameCredential}:${config.sops.secrets."${serviceName}/username".path}"
           "${passwordCredential}:${config.sops.secrets."${serviceName}/password".path}"
@@ -194,12 +212,7 @@ in
         config.systemd.services.jellyfin-setup-wizard.name
         "systemd-tmpfiles-setup.service"
       ];
-      requires = [
-        config.systemd.services.jellyfin.name
-        config.systemd.services.jellyfin-setup-wizard.name
-        "systemd-tmpfiles-setup.service"
-      ];
-      wantedBy = [ config.systemd.services.jellyfin.name ];
+      wantedBy = [ "multi-user.target" ];
 
       path = with pkgs; [
         coreutils
@@ -211,6 +224,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
+        ExecStartPre = waitForJellyfinApiPre;
         LoadCredential = [
           "${usernameCredential}:${config.sops.secrets."${serviceName}/username".path}"
           "${passwordCredential}:${config.sops.secrets."${serviceName}/password".path}"
