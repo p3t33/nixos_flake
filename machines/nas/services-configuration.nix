@@ -45,6 +45,7 @@
       avahi.publisher.enable  = true;
       printing.server.enable  = true;
       restic.enable = true;
+      qbittorrent.enable = true;
 
       syncthing = {
         syncDir = "${config.custom.shared.pathToDataDirectory}/syncthing";

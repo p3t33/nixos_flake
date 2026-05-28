@@ -1,9 +1,14 @@
 { config, lib, pkgs, ... }:
+let
+  torrentsDir = "${config.custom.shared.pathToMediaDirectory}/torrents";
+  delugeDownloadDir = "${torrentsDir}/deluge";
+in
 {
   config = lib.mkIf config.services.deluge.enable {
 
     systemd.tmpfiles.rules = [
-      "d ${config.custom.shared.pathToMediaDirectory}/torrents 0770 ${config.services.deluge.user} ${config.custom.shared.mediaGroup} -"
+      "d ${torrentsDir} 2770 root ${config.custom.shared.mediaGroup} -"
+      "d ${delugeDownloadDir} 2770 ${config.services.deluge.user} ${config.custom.shared.mediaGroup} -"
     ];
 
     services.deluge = {
@@ -28,7 +33,7 @@
       config = {
         # /mnt/media is a mount point with defined owner, and permissions
         # so I was getting warning when NixOS was switching.
-        download_location = "${config.custom.shared.pathToMediaDirectory}/torrents";
+        download_location = delugeDownloadDir;
         max_active_seeding = 200;
         max_active_downloading = 200;
         max_active_limit = 200;
@@ -59,12 +64,14 @@
       # has to be defined for "declarative = true"
       # defines the clients that can access the deluged, this is requried for
       # the webgui and anybody else who needs access(such as prometheus exporter).
-      authFile = config.sops.secrets.deluge_auth_file.path;
+      authFile = config.sops.secrets."deluge/auth_file".path;
     };
 
-    sops.secrets.deluge_auth_file = {
-      mode = "0660";
+    sops.secrets."deluge/auth_file" = {
+      mode = "0640";
       group = "${config.custom.shared.mediaGroup}";
     };
+
+    sops.secrets."deluge/web_password" = { };
   };
 }
