@@ -31,6 +31,7 @@ in
     ./promtail.nix
     ./prowlarr.nix
     ./radarr.nix
+    ./recyclarr.nix
     ./restic.nix
     ./sabnzbd.nix
     ./samba.nix
