@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.custom.services.qbittorrent;
+  categoryNames = config.custom.media.downloadCategories;
   mediaDir = config.custom.shared.pathToMediaDirectory;
   torrentsDir = "${mediaDir}/torrents";
   configPath = "${cfg.profileDir}/qBittorrent/config";
@@ -13,7 +14,7 @@ let
   categoriesPath = "${configPath}/categories.json";
   qBittorrentServerConfig = {
     BitTorrent = {
-      "Session\\DefaultSavePath" = cfg.categories.default or cfg.downloadDir;
+      "Session\\DefaultSavePath" = cfg.categories.${categoryNames.default} or cfg.downloadDir;
       "Session\\DHTEnabled" = false;
       "Session\\DisableAutoTMMByDefault" = false;
       "Session\\LSDEnabled" = false;
@@ -115,11 +116,11 @@ in
     categories = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = {
-        default = "${cfg.downloadDir}/default";
-        movies = "${cfg.downloadDir}/movies";
-        tv = "${cfg.downloadDir}/tv";
-        ebooks = "${cfg.downloadDir}/ebooks";
-        audiobooks = "${cfg.downloadDir}/audiobooks";
+        ${categoryNames.default} = "${cfg.downloadDir}/${categoryNames.default}";
+        ${categoryNames.movies} = "${cfg.downloadDir}/${categoryNames.movies}";
+        ${categoryNames.tv} = "${cfg.downloadDir}/${categoryNames.tv}";
+        ${categoryNames.ebooks} = "${cfg.downloadDir}/${categoryNames.ebooks}";
+        ${categoryNames.audiobooks} = "${cfg.downloadDir}/${categoryNames.audiobooks}";
       };
       description = "Map of qBittorrent category names to save paths.";
     };

@@ -1,6 +1,7 @@
 {config, lib, hostSpecific, ...}:
 let
   pathToUsenetDirectory = "${config.custom.shared.pathToMediaDirectory}/usenet";
+  categories = config.custom.media.downloadCategories;
 in
 {
   options.custom.services.sabnzbd = {
@@ -84,24 +85,24 @@ in
         pp = 3
         script = None
         priority = 0
-        [[movies]]
-        name = movies
+        [[${categories.movies}]]
+        name = ${categories.movies}
         order = 1
         priority = -100
-        [[tv]]
-        name = tv
+        [[${categories.tv}]]
+        name = ${categories.tv}
         order = 2
         priority = -100
-        [[audio]]
-        name = audio
+        [[${categories.audio}]]
+        name = ${categories.audio}
         order = 3
         priority = -100
-        [[software]]
-        name = software
+        [[${categories.software}]]
+        name = ${categories.software}
         order = 4
         priority = -100
-        [[books]]
-        name = books
+        [[${categories.books}]]
+        name = ${categories.books}
         order = 5
         priority = -100
       '';
