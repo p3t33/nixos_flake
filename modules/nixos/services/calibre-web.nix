@@ -13,7 +13,7 @@ in
 
     # create directory for calibre database if it does not exist yet.
     systemd.tmpfiles.rules = [
-      "d ${calibreLibraryPath} 0770 ${config.services.calibre-web.user} ${config.custom.shared.mediaGroup} -"
+      "d ${calibreLibraryPath} 2770 ${config.services.calibre-web.user} ${config.custom.shared.mediaGroup} -"
     ];
 
     # Calibre-web is just a web based gui front end that requires an actual database to work
