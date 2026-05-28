@@ -7,6 +7,7 @@ let
   # The domain defaults to "${name}.${hostName}" but can be overridden.
   rewriteEntries = [
     { name = "deluge";    cond = config.services.deluge.enable; }
+    { name = "qbittorrent"; cond = config.services.qbittorrent.enable; }
     { name = "syncthing"; cond = config.services.syncthing.enable; }
     { name = "adguard";   cond = config.services.adguardhome.enable; }
     { name = "sonarr";    cond = config.services.sonarr.enable; }

@@ -73,6 +73,24 @@ in
                 };
               }
             ]
+            ++ lib.optionals config.services.qbittorrent.enable [
+              {
+                "qbittorrent" = {
+                  description = "BitTorrent client";
+                  href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.qbittorrent.webuiPort}";
+                  icon = "qbittorrent.png";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.qbittorrent.webuiPort}";
+                  statusStyle = "dot";
+                  widget = {
+                    type = "qbittorrent";
+                    url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.qbittorrent.webuiPort}";
+                    username = "{{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}";
+                    password = "{{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}";
+                    enableLeechProgress = true;
+                  };
+                };
+              }
+            ]
             ++ lib.optionals config.services.sabnzbd.enable [
               {
                 "sabnzbd" = {

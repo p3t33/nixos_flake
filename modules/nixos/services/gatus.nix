@@ -185,6 +185,22 @@ in
             }];
           }
         ]
+        ++ lib.optionals config.services.qbittorrent.enable [
+          {
+            name = "qbittorrent";
+            group = media;
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.qbittorrent.webuiPort}";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [{
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "qBittorrent is down!";
+            }];
+          }
+        ]
         ++ lib.optionals config.services.sabnzbd.enable [
           {
             name = "sabnzbd";
