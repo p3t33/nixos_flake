@@ -3,7 +3,7 @@
 {
   home.packages = with pkgs; [
     arandr
-    xorg.xrandr
+    xrandr
   ];
 
   imports = [

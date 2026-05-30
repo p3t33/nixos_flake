@@ -57,7 +57,7 @@ let
   # IMPORTANT: Do NOT use xrandr --output --off on MST (dock) outputs, as this
   # tears down the MST topology and the outputs become "disconnected."
   i3-monitor = pkgs.writeShellScriptBin "i3-monitor" ''
-    export PATH="${lib.makeBinPath [ pkgs.ddcutil pkgs.xorg.xrandr pkgs.coreutils pkgs.gnugrep ]}:$PATH"
+    export PATH="${lib.makeBinPath [ pkgs.ddcutil pkgs.xrandr pkgs.coreutils pkgs.gnugrep ]}:$PATH"
 
     builtin_display="eDP-1"
 

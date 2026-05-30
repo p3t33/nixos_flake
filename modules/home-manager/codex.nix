@@ -16,7 +16,7 @@
         };
       };
 
-      custom-instructions = ''
+      context = ''
         # Global Context
 
         ## Communication

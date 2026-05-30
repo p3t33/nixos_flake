@@ -32,10 +32,10 @@
 
           # Monitor control
           arandr
-          xorg.xrandr
+          xrandr
 
           # debugging and information
-          xorg.xdpyinfo
+          xdpyinfo
           mesa-demos # query the properties of an OpenGL implementation
         ];
       };

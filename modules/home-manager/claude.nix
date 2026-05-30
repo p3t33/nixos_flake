@@ -13,7 +13,7 @@
         };
       };
 
-      memory.text = ''
+      context = ''
         # Global Context
 
         ## Communication
