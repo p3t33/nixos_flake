@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
   cfg = config.custom.services.homeAssistant;
+  dashboardPath = "/nixos-lovelace";
 
   contactSensorCard = sensor: [
     {
@@ -79,8 +80,19 @@ let
     show_icon = true;
     tap_action = {
       action          = "navigate";
-      navigation_path = "/lovelace/${room.path}";
+      navigation_path = "${dashboardPath}/${room.path}";
     };
+  };
+
+  roomCards = room:
+    lib.concatMap plugCard (lib.attrValues room.plugs)
+    ++ lib.concatMap contactSensorCard (lib.attrValues room.contactSensors)
+    ++ lib.concatMap environmentSensorCard (lib.attrValues room.environmentSensors);
+
+  emptyRoomCard = room: {
+    type    = "markdown";
+    title   = room.name;
+    content = "No devices configured for this room.";
   };
 
   roomView = room: {
@@ -88,9 +100,8 @@ let
     path    = room.path;
     icon    = room.icon;
     subview = true;
-    cards   = lib.concatMap plugCard (lib.attrValues room.plugs)
-            ++ lib.concatMap contactSensorCard (lib.attrValues room.contactSensors)
-            ++ lib.concatMap environmentSensorCard (lib.attrValues room.environmentSensors);
+    cards   = let cards = roomCards room; in
+      if cards == [] then [ (emptyRoomCard room) ] else cards;
   };
 
   infrastructureNavButton = {
@@ -101,7 +112,7 @@ let
     show_icon = true;
     tap_action = {
       action          = "navigate";
-      navigation_path = "/lovelace/infrastructure";
+      navigation_path = "${dashboardPath}/infrastructure";
     };
   };
 
