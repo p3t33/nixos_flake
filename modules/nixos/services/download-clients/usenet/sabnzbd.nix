@@ -16,7 +16,60 @@ in
     services.sabnzbd = {
       group = config.custom.shared.mediaGroup;
       openFirewall = true;
-      configFile = "/var/lib/sabnzbd/sabnzbd.ini";
+      configFile = null;
+      allowConfigWrite = false;
+      secretFiles = [ config.sops.templates."sabnzbd-secrets.ini".path ];
+      settings = {
+        misc = {
+          host = config.custom.shared.anyIPv4;
+          port = config.custom.services.sabnzbd.httpPort;
+          url_base = "/sabnzbd";
+          host_whitelist = "nas, sabnzbd.nas";
+          fixed_ports = true;
+          download_dir = "${pathToUsenetDirectory}/incomplete";
+          complete_dir = "${pathToUsenetDirectory}/complete";
+          # admin_dir and log_dir must be absolute paths or SABnzbd resolves them
+          # relative to the config file location and fails to write.
+          admin_dir = "/var/lib/sabnzbd/admin";
+          log_dir = "/var/lib/sabnzbd/logs";
+          permissions = 775;
+          cache_limit = "1G";
+        };
+        categories = {
+          "*" = {
+            name = "*";
+            order = 0;
+            pp = 3;
+            script = "None";
+            priority = 0;
+          };
+          "${categories.movies}" = {
+            name = categories.movies;
+            order = 1;
+            priority = -100;
+          };
+          "${categories.tv}" = {
+            name = categories.tv;
+            order = 2;
+            priority = -100;
+          };
+          "${categories.audio}" = {
+            name = categories.audio;
+            order = 3;
+            priority = -100;
+          };
+          "${categories.software}" = {
+            name = categories.software;
+            order = 4;
+            priority = -100;
+          };
+          "${categories.books}" = {
+            name = categories.books;
+            order = 5;
+            priority = -100;
+          };
+        };
+      };
     };
 
     systemd.tmpfiles.rules = [
@@ -37,35 +90,15 @@ in
 
 
 
-    sops.templates."sabnzbd.ini" = {
-      path = "/var/lib/sabnzbd/sabnzbd.ini";
+    sops.templates."sabnzbd-secrets.ini" = {
       owner = config.services.sabnzbd.user;
       group = config.services.sabnzbd.group;
-      mode = "0640";
+      mode = "0400";
       restartUnits = [ config.systemd.services.sabnzbd.name ];
-
-      # This is a minimal subset of SABnzbd's full config. Only settings we
-      # explicitly own are declared here. SABnzbd fills in all other settings
-      # from its own hardcoded defaults when it reads this file on startup.
       content = ''
-        __version__ = 19
-        __encoding__ = utf-8
         [misc]
-        host = "${config.custom.shared.anyIPv4}"
-        port = "${toString config.custom.services.sabnzbd.httpPort}"
-        url_base = /sabnzbd
-        host_whitelist = nas, sabnzbd.nas
-        fixed_ports = 1
         api_key = "${config.sops.placeholder."sabnzbd/api_key"}"
         nzb_key = "${config.sops.placeholder."sabnzbd/nzb_key"}"
-        download_dir = "${pathToUsenetDirectory}/incomplete"
-        complete_dir = "${pathToUsenetDirectory}/complete"
-        # admin_dir and log_dir must be absolute paths or SABnzbd resolves them
-        # relative to the config file location and fails to write.
-        admin_dir = /var/lib/sabnzbd/admin
-        log_dir = /var/lib/sabnzbd/logs
-        permissions = 775
-        cache_limit = 1G
         [servers]
         [["${config.sops.placeholder."sabnzbd/servers/zero/name"}"]]
         name = "${config.sops.placeholder."sabnzbd/servers/zero/name"}"
@@ -78,34 +111,7 @@ in
         ssl = 1
         ssl_verify = 3
         enable = 1
-        [categories]
-        [[*]]
-        name = *
-        order = 0
-        pp = 3
-        script = None
-        priority = 0
-        [[${categories.movies}]]
-        name = ${categories.movies}
-        order = 1
-        priority = -100
-        [[${categories.tv}]]
-        name = ${categories.tv}
-        order = 2
-        priority = -100
-        [[${categories.audio}]]
-        name = ${categories.audio}
-        order = 3
-        priority = -100
-        [[${categories.software}]]
-        name = ${categories.software}
-        order = 4
-        priority = -100
-        [[${categories.books}]]
-        name = ${categories.books}
-        order = 5
-        priority = -100
       '';
-      };
+    };
   };
 }
