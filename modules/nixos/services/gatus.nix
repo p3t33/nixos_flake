@@ -64,7 +64,21 @@ in
               success-threshold = 1;
               description = "blog is down!";
             }];
-      }
+          }
+          {
+            name = "gatus";
+            group = monitoring;
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.gatus.settings.web.port}/health";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [{
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "Gatus is down!";
+            }];
+          }
 
         ]
         ++ lib.optionals config.services.openssh.enable [
@@ -317,7 +331,7 @@ in
           {
             name = "prometheus";
             group = monitoring;
-            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prometheus.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prometheus.port}/-/ready";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -329,11 +343,27 @@ in
             }];
           }
         ]
+        ++ lib.optionals config.services.loki.enable [
+          {
+            name = "loki";
+            group = monitoring;
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.loki.configuration.server.http_listen_port}/ready";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [{
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "Loki is down!";
+            }];
+          }
+        ]
         ++ lib.optionals config.services.grafana.enable [
           {
             name = "grafana";
             group = monitoring;
-            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.grafana.settings.server.http_port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.grafana.settings.server.http_port}/api/health";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
