@@ -16,6 +16,8 @@
 
     programs.openclaw = {
       enable = true;
+      package = inputs.nix-openclaw.packages.${pkgs.stdenv.hostPlatform.system}.openclaw;
+      instances.default.package = inputs.nix-openclaw.packages.${pkgs.stdenv.hostPlatform.system}.openclaw;
 
       config = {
         agents.defaults.model.primary = "openai-codex/gpt-5.5";
