@@ -25,7 +25,7 @@ in
       listenPort = 8082;
       openFirewall = true;
       allowedHosts = "${config.custom.shared.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},homepage.nas,${config.custom.shared.${hostSpecific.hostName}.ip},${config.custom.shared.${hostSpecific.hostName}.ip}:${toString config.services.homepage-dashboard.listenPort}";
-      environmentFile = config.sops.secrets.homepage-dashboard.path;
+      environmentFiles = [ config.sops.secrets.homepage-dashboard.path ];
 
 
       widgets = [

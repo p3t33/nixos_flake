@@ -30,7 +30,7 @@ in
         get_flake_repository_if_does_not_exit = "if [[ ! -d ${pathToFlakeDirectory} ]]; then ${lib.getExe pkgs.git} clone ${flakeRepositoryUrl} ${pathToFlakeDirectory}; fi;";
         update = "get_flake_repository_if_does_not_exit; sudo nixos-rebuild switch --flake ${pathToFlakeDirectory}#${hostSpecific.hostName}";
         upgrade = "get_flake_repository_if_does_not_exit; sudo nix flake update --flake ${pathToFlakeDirectory} && update";
-        format-nix = "find ${pathToFlakeDirectory} -type f -name \"*.nix\" -print0 | xargs -0 -n1 ${pkgs.nixfmt-rfc-style}";
+        format-nix = "find ${pathToFlakeDirectory} -type f -name \"*.nix\" -print0 | xargs -0 -n1 ${pkgs.nixfmt}";
         list-generations = "sudo nix-env -p /nix/var/nix/profiles/system --list-generations";
         cleanup = "sudo nix-collect-garbage --delete-older-than 2d";
         rollback = "sudo nixos-rebuild switch --rollback";

@@ -12,7 +12,7 @@ in
       lua-language-server # lua
       clang-tools # c/c++
       nixd # nix
-      nixfmt-rfc-style # nix formator used by nixd
+      nixfmt # nix formator used by nixd
       jdt-language-server # java
 
       pyright # python

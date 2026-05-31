@@ -87,7 +87,7 @@ in
       hugo
 
       # nix formator
-      nixfmt-rfc-style
+      nixfmt
     ];
   };
 }

@@ -5,6 +5,9 @@
     xdg.userDirs = {
       enable = true;
       createDirectories = true;
+      # Apps read XDG user dirs from ~/.config/user-dirs.dirs directly,
+      # exporting them as session env vars is non-standard and redundant.
+      setSessionVariables = false;
       
       download = "${config.home.homeDirectory}/Downloads";
       pictures = "${config.home.homeDirectory}/Pictures";

@@ -42,6 +42,7 @@
     ];
   };
 
+  boot.zfs.forceImportRoot = false;
   networking.hostId = "48ca4565";
 
   services.getty.autologinUser = hostSpecific.primeUsername;

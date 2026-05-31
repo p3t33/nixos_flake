@@ -14,6 +14,7 @@
     programs.yazi = {
       enableBashIntegration = true;
       enableZshIntegration = true;
+      shellWrapperName = "y";
 
        keymap = {
         # Manager mode (“mgr” in the docs is “manager” in HM)

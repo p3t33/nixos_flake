@@ -394,7 +394,7 @@
 
     // 2. Try readability-cli
     const result = await pi.exec(
-      "${lib.getExe pkgs.nodePackages.readability-cli}",
+      "${lib.getExe pkgs.readability-cli}",
       ["--quiet", "-p", "text-content", url],
       { signal, timeout: 30000 }
     );

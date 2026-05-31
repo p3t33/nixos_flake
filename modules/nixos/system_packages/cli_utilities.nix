@@ -79,6 +79,9 @@ in
       expect
 
       pciutils
+      # adb for Android device access. Replaces programs.adb removed in 26.05,
+      # systemd 258 handles udev/uaccess rules automatically.
+      android-tools
 
       # command-line YAML processor, Used by the tmux
       # tmux-nerd-font-window-name.tmux plugin.
@@ -103,7 +106,7 @@ in
       libnotify
 
       # evalute key and mouse presses for xorg
-      xorg.xev
+      xev
 
       # Searching nix packages
       nix-search-cli # uses as "nix-search <name of package>"
