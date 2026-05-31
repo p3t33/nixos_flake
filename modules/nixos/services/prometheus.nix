@@ -1,10 +1,6 @@
 { config, pkgs, lib, ... }:
 {
   config = lib.mkIf config.services.prometheus.enable {
-    sops.secrets."sonarr/apiKey" = {
-      mode = "0644";
-    };
-
     networking.firewall.allowedTCPPorts = [ config.services.prometheus.port ];
 
     services.prometheus = {
@@ -55,7 +51,7 @@
         #   enable = true;
         #   url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
         #   port = 9707;
-        #   apiKeyFile = config.sops.secrets."sonarr/apiKey".path;
+        #   apiKeyFile = config.sops.secrets."sonarr/api_key".path;
         #   openFirewall = true;
         # };
         #
