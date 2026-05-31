@@ -150,7 +150,7 @@ in
                   description = "Serivce health monitoring and alerting";
                   href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
                   icon = "gatus.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.gatus.settings.web.port}/health";
                   statusStyle = "dot";
                   widget = {
                     type = "gatus";
@@ -165,8 +165,12 @@ in
                   description = "Metrics collections and alerting";
                   href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.prometheus.port}";
                   icon = "prometheus.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.prometheus.port}";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.prometheus.port}/-/ready";
                   statusStyle = "dot";
+                  widget = {
+                    type = "prometheus";
+                    url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.prometheus.port}";
+                  };
                 };
               }
             ]
@@ -176,7 +180,7 @@ in
                   description = "visualization and analytics platform";
                   href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.grafana.settings.server.http_port}";
                   icon = "grafana.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.grafana.settings.server.http_port}";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.grafana.settings.server.http_port}/api/health";
                   statusStyle = "dot";
                 };
               }
