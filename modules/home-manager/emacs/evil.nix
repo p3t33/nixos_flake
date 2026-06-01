@@ -23,6 +23,7 @@ in
        ;; in mind when determining when to set the variables.
        (setq evil-want-integration t) ;; This is optional since it's already set to t by default
        (setq evil-want-keybinding nil)
+       (setq evil-want-C-i-jump t)
 
        (setq evil-vsplit-window-right t)
        (setq evil-split-window-below t)
@@ -69,13 +70,18 @@ in
          (setq evil-collection-mode-list '(dashboard dired ibuffer))
          (evil-collection-init))
 
-        ;; Using RETURN to follow links in Org/Evil
-        ;; Unmap keys in 'evil-maps if not done, (setq org-return-follows-link t) will not work
+        ;; Unmap SPC/RET/TAB from evil motion state so org-mode can handle them
+        ;; (e.g. org-return-follows-link, visibility cycling, leader key).
+        ;; Use <tab> (physical key) instead of TAB (ASCII 9) to preserve C-i
+        ;; for evil-jump-forward (enabled via evil-want-C-i-jump).
+        ;; TODO: <tab> vs C-i distinction only works in GUI Emacs. In terminal
+        ;; they are the same keycode (ASCII 9), so C-i jump-forward won't work.
+        ;; Emacs 31 adds kitty keyboard protocol support which solves this.
+        ;; Revisit when upgrading to Emacs 31+.
         (with-eval-after-load 'evil-maps
          (define-key evil-motion-state-map (kbd "SPC") nil)
          (define-key evil-motion-state-map (kbd "RET") nil)
-         (define-key evil-motion-state-map (kbd "TAB") nil))
-        ;; Setting RETURN key in org-mode to follow links
+         (define-key evil-motion-state-map (kbd "<tab>") nil))
 
         (with-eval-after-load 'evil-maps
          (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))

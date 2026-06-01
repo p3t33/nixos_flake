@@ -362,7 +362,14 @@ in
        (setq org-roam-node-display-template (concat "''${title:*} " (propertize "''${tags:10}" 'face 'org-tag)))
        (org-roam-db-autosync-mode)
        ;; If using org-roam-protocol
-       (require 'org-roam-protocol))
+       (require 'org-roam-protocol)
+
+       ;; Register org-roam jumps in evil's jump list so C-o / C-i work
+       (with-eval-after-load 'evil
+         (advice-add 'org-roam-node-find  :before (lambda (&rest _) (evil-set-jump)))
+         (advice-add 'org-roam-node-visit :before (lambda (&rest _) (evil-set-jump)))
+         (advice-add 'org-mark-ring-goto  :before (lambda (&rest _) (evil-set-jump)))
+         (advice-add 'org-open-at-point   :before (lambda (&rest _) (evil-set-jump)))))
 
 
        ;; for now only used by org-roam-ui so I did not put it into core.nix
