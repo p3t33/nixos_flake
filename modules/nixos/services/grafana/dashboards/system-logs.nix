@@ -2,6 +2,11 @@
 { lib, defaultTimeRange }:
 let
   ds = { type = "loki"; uid = "loki"; };
+
+  # Known-noisy log lines to exclude from all severity queries.
+  # dbus-broker duplicate service file warnings (NixOS upstream wart).
+  noiseFilter = ''!~ "Ignoring duplicate name"'';
+
   stat = title: expr: gridPos: extra: {
     inherit title gridPos;
     type = "stat";
@@ -55,7 +60,7 @@ in
     # Row 0: severity stats
     (stat
       "Critical"
-      "sum(count_over_time({level=~\"emerg|alert|crit\"} [$__range])) or vector(0)"
+      "sum(count_over_time({level=~\"emerg|alert|crit\"} ${noiseFilter} [$__range])) or vector(0)"
       { h = 4; w = 6; x = 0; y = 0; }
       { fieldConfig.defaults.thresholds = {
           mode = "absolute";
@@ -67,7 +72,7 @@ in
       })
     (stat
       "Errors"
-      "sum(count_over_time({level=\"error\"} [$__range])) or vector(0)"
+      "sum(count_over_time({level=\"error\"} ${noiseFilter} [$__range])) or vector(0)"
       { h = 4; w = 6; x = 6; y = 0; }
       { fieldConfig.defaults.thresholds = {
           mode = "absolute";
@@ -79,7 +84,7 @@ in
       })
     (stat
       "Warnings"
-      "sum(count_over_time({level=\"warning\"} [$__range])) or vector(0)"
+      "sum(count_over_time({level=\"warning\"} ${noiseFilter} [$__range])) or vector(0)"
       { h = 4; w = 6; x = 12; y = 0; }
       { fieldConfig.defaults.thresholds = {
           mode = "absolute";
@@ -135,7 +140,7 @@ in
       datasource = ds;
       gridPos = { h = 8; w = 12; x = 12; y = 4; };
       targets = [{
-        expr = "topk(10, sum by(unit) (count_over_time({job=\"systemd-journal\", level=~\"emerg|alert|crit|error|warning\", unit!=\"\"} [$__range])))";
+        expr = "topk(10, sum by(unit) (count_over_time({job=\"systemd-journal\", level=~\"emerg|alert|crit|error|warning\", unit!=\"\"} ${noiseFilter} [$__range])))";
         refId = "A";
         instant = true;
       }];
@@ -165,17 +170,17 @@ in
       gridPos = { h = 6; w = 24; x = 0; y = 12; };
       targets = [
         {
-          expr = "sum(count_over_time({level=~\"emerg|alert|crit\"} [5m]))";
+          expr = "sum(count_over_time({level=~\"emerg|alert|crit\"} ${noiseFilter} [5m]))";
           legendFormat = "critical";
           refId = "A";
         }
         {
-          expr = "sum(count_over_time({level=\"error\"} [5m]))";
+          expr = "sum(count_over_time({level=\"error\"} ${noiseFilter} [5m]))";
           legendFormat = "error";
           refId = "B";
         }
         {
-          expr = "sum(count_over_time({level=\"warning\"} [5m]))";
+          expr = "sum(count_over_time({level=\"warning\"} ${noiseFilter} [5m]))";
           legendFormat = "warning";
           refId = "C";
         }
@@ -208,7 +213,7 @@ in
       datasource = ds;
       gridPos = { h = 16; w = 24; x = 0; y = 18; };
       targets = [{
-        expr = "{job=\"systemd-journal\", level=~\"$level\", unit=~\"$unit\"}";
+        expr = "{job=\"systemd-journal\", level=~\"$level\", unit=~\"$unit\"} ${noiseFilter}";
         refId = "A";
       }];
       options = {
