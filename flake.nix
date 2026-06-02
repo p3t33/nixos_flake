@@ -37,12 +37,6 @@
       url = "github:joshmedeski/tmux-nerd-font-window-name";
       flake = false;
     };
-
-    whisper-model-base = {
-      url = "file+https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.bin";
-      flake = false;
-    };
-
     pi-subagent = {
       url = "github:mjakl/pi-subagent";
       flake = false;

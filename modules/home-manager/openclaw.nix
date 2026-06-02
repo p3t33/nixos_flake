@@ -12,7 +12,18 @@
     sops.secrets."openclaw/telegram_bot_token" = { };
     sops.secrets."openclaw/env_vars" = { };
 
-    home.packages = [ pkgs.whisper-cpp ];
+    # whisper-ctranslate2 writes transcriptions to files, not stdout.
+    # OpenClaw's CLI audio provider reads stdout. This wrapper bridges
+    # the two by writing to a tmpdir and catting the result.
+    home.packages = [
+      (pkgs.writeShellScriptBin "whisper-transcribe" ''
+        dir=$(mktemp -d)
+        trap 'rm -rf "$dir"' EXIT
+        ${pkgs.whisper-ctranslate2}/bin/whisper-ctranslate2 \
+          --model base --output_dir "$dir" --output_format txt "$1" >&2
+        cat "$dir"/*.txt
+      '')
+    ];
 
     programs.openclaw = {
       enable = true;
@@ -100,19 +111,11 @@
           enabled = true;
           maxBytes = 20971520;
           models = [
-            # The manual way to manually download the model(like base) with:
-            # whisper-cpp-download-ggml-model base
-            # and then provide pull path to it.
             {
               type = "cli";
-              command = "${pkgs.whisper-cpp}/bin/whisper-cli";
-              args = [
-                "-m"
-                "${inputs.whisper-model-base.outPath}"
-                "-f"
-                "{{MediaPath}}"
-              ];
-              timeoutSeconds = 45;
+              command = "whisper-transcribe";
+              args = [ "{{MediaPath}}" ];
+              timeoutSeconds = 60;
             }
           ];
         };
