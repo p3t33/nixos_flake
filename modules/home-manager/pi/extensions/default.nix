@@ -46,6 +46,7 @@ in
           port = config.custom.services.mcp-gateway.port;
           host = osConfig.custom.shared.localHostIPv4;
         };
+        status-bar = import ./status-bar.nix;
       };
     };
   };
