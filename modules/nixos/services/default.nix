@@ -63,6 +63,7 @@ in
     ./immich.nix
     ./ollama.nix
     ./minecraft.nix
+    ./hermes-agent.nix
   ];
 
   options.custom.profiles.systemServices = {

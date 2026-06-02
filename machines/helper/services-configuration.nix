@@ -16,5 +16,7 @@
       core.enable = true;
       server.enable = true;
     };
+
+    services.hermes-agent.enable = true;
   };
 }

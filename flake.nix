@@ -28,6 +28,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hermes-agent = {
+      url = "github:nousresearch/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     tmux-nerd-font-window-name = {
       url = "github:joshmedeski/tmux-nerd-font-window-name";
       flake = false;
@@ -85,6 +90,7 @@
           inputs.nix-index-database.nixosModules.nix-index
           inputs.sops-nix.nixosModules.sops
           inputs.disko.nixosModules.disko
+          inputs.hermes-agent.nixosModules.default
         ];
       };
     in
