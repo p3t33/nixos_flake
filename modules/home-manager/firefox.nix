@@ -106,6 +106,9 @@
           "experiments.supported" = false;
           "network.allow-experiments" = false;
 
+          # Disable automatic translation popup, translate manually via address bar
+          "browser.translations.automaticallyPopup" = false;
+
         };
 
         search.engines = {
