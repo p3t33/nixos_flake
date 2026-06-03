@@ -1,8 +1,45 @@
 { config, lib, ... }:
+
+let
+  cfg = config.custom.programs.navi;
+  cheatsDir = ".local/share/navi/cheats/custom";
+in
 {
+  options.custom.programs.navi = {
+    cheats = lib.mkOption {
+      type = lib.types.attrsOf lib.types.lines;
+      default = { };
+      description = ''
+        Custom cheats as an attrset of `name = content`.
+        Cheats are stored in .local/share/navi/cheats/custom/<name>.cheat.
+      '';
+    };
+
+    secretCheats = lib.mkOption {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
+          options = {
+            key = lib.mkOption {
+              type = lib.types.str;
+              description = ''
+                Sops secret key path for the cheat content, for example
+                "navi/secret-cheats".
+              '';
+            };
+          };
+        }
+      );
+      default = { };
+      description = ''
+        Secret cheats as an attrset of `name = { key = "sops/secret/path"; }`.
+        Decrypted cheats are written to .local/share/navi/cheats/custom/<name>.cheat.
+      '';
+    };
+  };
+
   config = lib.mkIf config.programs.navi.enable {
     programs.navi = {
-      # Disable Home Manager’s built-in Zsh integration (it injects an early `eval "$(navi widget zsh)"`)
+      # Disable Home Manager's built-in Zsh integration (it injects an early `eval "$(navi widget zsh)"`)
       # so we can initialize the Navi widget manually and at the correct time in our own zsh.nix initContent.
       enableZshIntegration = false;
       settings = {
@@ -26,167 +63,174 @@
       };
     };
 
-    home.file = {
-      ".local/share/navi/cheats/custom/git.cheat".text = ''
-       % git
-       # Set git user name
-       git config --global user.name <name>
+    sops.secrets = lib.mkIf (cfg.secretCheats != { }) (
+      lib.mapAttrs' (
+        name: cheat:
+        lib.nameValuePair "navi-cheat-${name}" {
+          inherit (cheat) key;
+          path = "${config.home.homeDirectory}/${cheatsDir}/${name}.cheat";
+        }
+      ) cfg.secretCheats
+    );
 
-       # Set git user email
-       git config user.email <email>
+    home.file = lib.mapAttrs' (
+      name: content:
+      lib.nameValuePair "${cheatsDir}/${name}.cheat" { text = content; }
+    ) cfg.cheats;
 
-       # create worktree tacking remote
-       git worktree add -b <name> <path> <remote>/<branch>
+    custom.programs.navi.cheats = {
+      git = ''
+        % git
+        # Set git user name
+        git config --global user.name <name>
 
-       # Search git log comment message for a string
-       git log --grep="<string>"
+        # Set git user email
+        git config user.email <email>
 
-       # Search code changes for string
-       git log -S "<sting>"
+        # create worktree tacking remote
+        git worktree add -b <name> <path> <remote>/<branch>
 
-       # create anointed tag to HEAD
-       git tag -a <tag> -m "<message>"
+        # Search git log comment message for a string
+        git log --grep="<string>"
 
-       # create anoinated and signed tag to HEAD
-       git tag -s <tag> -m "<message>"
+        # Search code changes for string
+        git log -S "<string>"
 
-       # create anoinated and signed tag to commit
-       git tag -s <tag> <commit-hash> -m "<message>"
+        # create anointed tag to HEAD
+        git tag -a <tag> -m "<message>"
 
-       # remove tag from local
-       git tag -d <tag>
+        # create anoinated and signed tag to HEAD
+        git tag -s <tag> -m "<message>"
 
-       # remove tag from remote
-       git push origin --delete <tag>
+        # create anoinated and signed tag to commit
+        git tag -s <tag> <commit-hash> -m "<message>"
 
-       # push all local tags to remote
-       git push --tags
+        # remove tag from local
+        git tag -d <tag>
 
-       # fetch tags from remote
-       git fetch --tags
+        # remove tag from remote
+        git push origin --delete <tag>
 
-       # read tag message
-       git show <tag>
+        # push all local tags to remote
+        git push --tags
 
-       # create patch for top commit
-       git format-patch -1 HEAD
+        # fetch tags from remote
+        git fetch --tags
 
-       # create commit from range of commits(including the first in range)
-       # git format-patch <first>^..<last>
+        # read tag message
+        git show <tag>
 
-       # apply commit with message
-       git am <name>.patch
+        # create patch for top commit
+        git format-patch -1 HEAD
 
-       # apply series of commits
-       git am patches/*.patch
+        # create commit from range of commits(including the first in range)
+        # git format-patch <first>^..<last>
 
-       # apply without commit message
-       git apply <name>.patch
+        # apply commit with message
+        git am <name>.patch
+
+        # apply series of commits
+        git am patches/*.patch
+
+        # apply without commit message
+        git apply <name>.patch
+
+        # set remote refs for bare repo after clone
+        git config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
       '';
 
-      ".local/share/navi/cheats/custom/buku.cheat".text = ''
-       % buku, cheat
-       # Print all bookmarks
-       buku -p
+      buku = ''
+        % buku, cheat
+        # Print all bookmarks
+        buku -p
       '';
 
-      ".local/share/navi/cheats/custom/taskwarrior.cheat".text = ''
-       % task, taskwarrior
-       # Print all bookmarks
-       buku -p
+      taskwarrior = ''
+        % task, taskwarrior
+        # Print all bookmarks
+        buku -p
       '';
-    };
 
-    home.file = {
-      ".local/share/navi/cheats/custom/ssh.cheat".text = ''
-       % ssh
-       # generate ed25519 key
-       ssh-keygen -f ~/.ssh/<key_name> -t ed25519 -C "<comment>"
+      ssh = ''
+        % ssh
+        # generate ed25519 key
+        ssh-keygen -f ~/.ssh/<key_name> -t ed25519 -C "<comment>"
 
-       # local port forwarding
-       ssh -N -L 127.0.0.1:<local_port>:127.0.0.1:<remote_port> <user>@<remote_ip>
+        # local port forwarding
+        ssh -N -L 127.0.0.1:<local_port>:127.0.0.1:<remote_port> <user>@<remote_ip>
 
-       # copy key to remote
-       ssh-copy-id -i ~/.ssh/<privare_key_name> <user>@<remote_ip>
+        # copy key to remote
+        ssh-copy-id -i ~/.ssh/<privare_key_name> <user>@<remote_ip>
 
-       # copy hardware public key to remote
-       ssh-copy-id -f -i ~/.ssh/<privare_key_name>.pub <user>@<remote_ip>
+        # copy hardware public key to remote
+        ssh-copy-id -f -i ~/.ssh/<privare_key_name>.pub <user>@<remote_ip>
 
-       # remove old host key
-       ssh-keygen -R <ip-of-host>
+        # remove old host key
+        ssh-keygen -R <ip-of-host>
 
-       # send command over ssh
-       ssh <user>@<remote_ip> -t <command to send>
+        # send command over ssh
+        ssh <user>@<remote_ip> -t <command to send>
       '';
-    };
 
-    home.file = {
-      ".local/share/navi/cheats/custom/compression.cheat".text = ''
-       % compression, tar
-       # create tar archive
-       tar -cvf <archive_name> <path_to_compress>
+      compression = ''
+        % compression, tar
+        # create tar archive
+        tar -cvf <archive_name> <path_to_compress>
 
-       # Extract tar archive
-       tar -xvf <path_to_archive>
+        # Extract tar archive
+        tar -xvf <path_to_archive>
 
-       # create compressed tar archive with gzip
-       tar -czvf <archive_name> <path_to_compress>
+        # create compressed tar archive with gzip
+        tar -czvf <archive_name> <path_to_compress>
 
-       # Extract compressed tar archive
-       tar -xzvf <path_to_archive>
+        # Extract compressed tar archive
+        tar -xzvf <path_to_archive>
       '';
-    };
 
-    home.file = {
-      ".local/share/navi/cheats/custom/network_manager.cheat".text = ''
-       % networkmanager, nmcli
+      network_manager = ''
+        % networkmanager, nmcli
 
-       # list available wifi networks
-       nmcli d wifi list | more
+        # list available wifi networks
+        nmcli d wifi list | more
 
-       # connect to wireless netwrok
-       nmcli d wifi connect <SSID> password <password>
+        # connect to wireless netwrok
+        nmcli d wifi connect <SSID> password <password>
 
       '';
-    };
 
-    home.file = {
-      ".local/share/navi/cheats/custom/systemctl.cheat".text = ''
-       % systemctl
-       # List running services
-       systemctl list-units --type=service --state=running
+      systemctl = ''
+        % systemctl
+        # List running services
+        systemctl list-units --type=service --state=running
 
-       # List user running services
-       systemctl list-units --user --type=service --state=running
+        # List user running services
+        systemctl list-units --user --type=service --state=running
 
-       # cat unit file
-       systemctl cat <unit_name>
+        # cat unit file
+        systemctl cat <unit_name>
 
-       # show unit details
-       systemctl show <unit_name>
+        # show unit details
+        systemctl show <unit_name>
 
       '';
-    };
 
-    home.file = {
-      ".local/share/navi/cheats/custom/journalctl.cheat".text = ''
-       % journalctl
-       # List running services
+      journalctl = ''
+        % journalctl
+        # List running services
 
-       # show unit log
-       journalctl -u <unit_name>
+        # show unit log
+        journalctl -u <unit_name>
 
-       # follow unit log
-       journalctl -uf <unit_name>
+        # follow unit log
+        journalctl -uf <unit_name>
 
-       # list log generations
-       journalctl --list-boots
+        # list log generations
+        journalctl --list-boots
 
-       # show log for specific boot
-       journalctl -b <boot_number>
+        # show log for specific boot
+        journalctl -b <boot_number>
 
       '';
     };
   };
 }
-
