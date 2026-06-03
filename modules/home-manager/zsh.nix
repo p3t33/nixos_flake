@@ -48,7 +48,6 @@ in
         vlg = "${lib.getExe' pkgs.valgrind "valgrind"} --leak-check=yes --track-origins=yes";
         grind = "rm callgrind.out.* && ${lib.getExe' pkgs.valgrind "valgrind"} --tool=callgrind ./a.out &&  callgrind.out.*";
         vi = "nvim";
-        f = "fuck";
         t = "tmux-sessionizer";
       };
 
