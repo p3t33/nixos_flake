@@ -52,30 +52,24 @@ in
       };
 
       initContent = ''
-        function tmux-sesssion {
-        BUFFER='tmux-sessionizer'
+        # Disable Ctrl+S terminal freeze (vestigial serial flow control)
+        stty -ixon
+
+        function tmux-sessionizer-widget {
+            BUFFER='tmux-sessionizer'
             zle accept-line
         }
-        zle -N tmux-sesssion
-        bindkey '^f' tmux-sesssion
+        zle -N tmux-sessionizer-widget
 
-        # The default behavior of postponing the initialization of the zsh-vi-mode
-        # plugin until the first command line prompt appears is designed to minimize conflicts
-        # with other plugins(can be disabled using ZVM_INIT_MODE=sourcing). that might
-        # alter keybindings or other settings that zsh-vi-mode relies on. This approach
-        # helps ensure that zsh-vi-mode can apply its configurations without being overridden
-        # by the subsequent loading of other plugins or scripts. this is also refered as
-        # lazy binding.
-        #
-        # THis means that this plugis initialization is done on first use after all of .zshrc
-        # had done loading.
-        #
-        # This was confilction with my use of atuin for history on C-r.
-        # The function bellow makes sure to rebind this key(that vim uses to redo chagge)
-        # back to the use of atuin.
+        # zsh-vi-mode uses lazy initialization (runs after .zshrc finishes loading)
+        # which causes it to overwrite any keybindings set before it. The function
+        # below re-applies our custom bindings after zsh-vi-mode initializes:
+        #  - ^R: atuin history search (vi-mode rebinds this to redo)
+        #  - ^S: tmux-sessionizer (keyboard tmux layer misfire sends Ctrl+S)
         source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
         function zvm_custom_bindings() {
             bindkey '^R' _atuin_search_widget
+            bindkey '^S' tmux-sessionizer-widget
             # Atuin's init prepends itself to ZSH_AUTOSUGGEST_STRATEGY. Reset it here
             # so autosuggestions use zsh's native history (local machine only) instead
             # of Atuin's cross-machine synced database.
