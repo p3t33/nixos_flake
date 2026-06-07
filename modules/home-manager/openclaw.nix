@@ -28,10 +28,16 @@
     programs.openclaw = {
       enable = true;
       package = inputs.nix-openclaw.packages.${pkgs.stdenv.hostPlatform.system}.openclaw;
-      instances.default.package = inputs.nix-openclaw.packages.${pkgs.stdenv.hostPlatform.system}.openclaw;
+      instances.default.package =
+        inputs.nix-openclaw.packages.${pkgs.stdenv.hostPlatform.system}.openclaw;
+      runtimePlugins = [ "codex" ];
 
       config = {
-        agents.defaults.model.primary = "openai-codex/gpt-5.5";
+        # OpenClaw 2026.6.1 uses canonical OpenAI model ids for Codex
+        # subscription auth. Keep the native Codex runtime explicit so
+        # openai/gpt-5.5 does not fall back to the ChatGPT responses transport.
+        agents.defaults.model.primary = "openai/gpt-5.5";
+        models.providers.openai.agentRuntime.id = "codex";
         # Keep workspace default explicit so OpenClaw does not rewrite openclaw.json
         # on startup when it auto-detects and sets this value.
         agents.defaults.workspace = "${config.custom.shared.primeUserHomeDirectory}/.openclaw/workspace";
@@ -178,12 +184,13 @@
         # depend on upstream defaults. This alone does not enable semantic memory
         # search; that also needs an embedding provider via agents.defaults.memorySearch.
         #
-        # OpenClaw startup auto-enables the bundled openai plugin for openai-codex models.
+        # OpenClaw startup auto-enables the bundled OpenAI plugin for openai/* models.
         # Keep this explicit so it does not rewrite ~/.openclaw/openclaw.json on restart.
-        # Clue source: /tmp/openclaw/openclaw-gateway.log contains
-        # "openai-codex/gpt-5.4 model configured, enabled automatically."
+        # Clue source: /tmp/openclaw/openclaw-YYYY-MM-DD.log contains the active
+        # provider/plugin startup messages and model fallback failures.
         plugins = {
           slots.memory = "memory-core";
+          entries.codex.enabled = true;
           entries.openai.enabled = true;
 
           # Dreaming runs a scheduled background sweep that scores short-term signals
