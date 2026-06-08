@@ -17,7 +17,7 @@ in
       group = config.custom.shared.mediaGroup;
       openFirewall = true;
       configFile = null;
-      allowConfigWrite = false;
+      allowConfigWrite = true;
       secretFiles = [ config.sops.templates."sabnzbd-secrets.ini".path ];
       settings = {
         misc = {
