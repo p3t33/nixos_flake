@@ -63,6 +63,19 @@ in
       '';
     };
 
+    models = {
+      reasoning = lib.mkOption {
+        type = lib.types.str;
+        default = "gpt-5.5";
+        description = "Model for reasoning-heavy tasks (main agent, explorer, code review).";
+      };
+      workhorse = lib.mkOption {
+        type = lib.types.str;
+        default = "gpt-5.3-codex";
+        description = "Model for bulk execution work (worker agent).";
+      };
+    };
+
     settings = lib.mkOption {
       type = jsonFormat.type;
       default = { };

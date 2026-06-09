@@ -11,7 +11,11 @@
     programs = {
       pi = {
         defaultProvider = "github-copilot";
-        defaultModel = "claude-opus-4.6";
+        defaultModel = "claude-opus-4.8";
+        models = {
+          reasoning = "claude-opus-4.8";
+          workhorse = "claude-sonnet-4.6";
+        };
         defaultThinkingLevel = "medium";
       };
       gitCommitSignaturesWithGpg.enable = true;

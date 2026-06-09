@@ -22,6 +22,7 @@ in
       ".pi/agent/agents/explorer.md".text = ''
         ---
         name: explorer
+        model: ${cfg.models.reasoning}
         description: >-
           Use explorer for specific codebase questions. Explorers are fast and
           read-only. They must be used to ask specific, well-scoped questions
@@ -36,6 +37,7 @@ in
       ".pi/agent/agents/code-reviewer.md".text = ''
         ---
         name: code-reviewer
+        model: ${cfg.models.reasoning}
         description: >-
           Use code-reviewer after code changes to catch issues before they land.
           Reviewers are read-only and focus on correctness, edge cases, test
@@ -50,6 +52,7 @@ in
       ".pi/agent/agents/worker.md".text = ''
         ---
         name: worker
+        model: ${cfg.models.workhorse}
         description: >-
           Use worker for execution and production work: implementing features,
           fixing bugs, refactoring code, and multi-file edits. When delegating,
