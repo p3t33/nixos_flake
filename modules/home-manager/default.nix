@@ -15,7 +15,7 @@ in
     ./core.nix
     ./starship.nix
     ./fzf.nix
-    ./gemini.nix
+    ./antigravity.nix
     ./claude.nix
     ./codex.nix
     ./openclaw.nix
@@ -121,7 +121,6 @@ in
       programs.navi.enable = true;
       programs.tealdeer.enable = true;
       programs.pay-respects.enable = true;
-      programs.gemini-cli.enable = true;
       programs.claude-code.enable = true;
       programs.codex.enable = true;
       programs.mcp.enable = true;

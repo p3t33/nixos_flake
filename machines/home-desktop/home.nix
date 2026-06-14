@@ -5,6 +5,7 @@
     ../../modules/home-manager # imported via default.nix
   ];
 
+  programs.antigravity-cli.enable = true;
   programs.gpg.enable = true;
 
   custom = {

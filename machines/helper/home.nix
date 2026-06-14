@@ -4,6 +4,8 @@
     ../../modules/home-manager # imported via default.nix
   ];
 
+  programs.antigravity-cli.enable = true;
+
   custom = {
     programs.openclaw.enable = true;
 

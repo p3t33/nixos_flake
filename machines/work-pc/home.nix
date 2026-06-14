@@ -5,6 +5,7 @@
   ];
 
 
+  programs.antigravity-cli.enable = true;
   programs.gpg.enable = true;
 
   custom = {
