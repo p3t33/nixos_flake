@@ -42,6 +42,7 @@ in
         fetch-url = import ./fetch-url.nix { inherit lib pkgs; };
         learning-planner = import ./learning-planner.nix;
         parse-document = import ./parse-document.nix { inherit lib pkgs; };
+        ocr = import ./ocr.nix { inherit lib pkgs; };
         mcp-adapter = import ./mcp-adapter.nix {
           port = config.custom.services.mcp-gateway.port;
           host = osConfig.custom.shared.localHostIPv4;
