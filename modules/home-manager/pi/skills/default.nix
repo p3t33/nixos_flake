@@ -145,6 +145,7 @@ in
         youtube-transcript = youtube-transcript.skill;
         dicom-review = dicom-review.skill;
         grill-me = import ./grill-me.nix;
+        symptom-integrator = import ./symptom-integrator.nix;
       };
     };
   };
