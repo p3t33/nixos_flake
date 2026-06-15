@@ -26,6 +26,10 @@ in
           :ensure nil
           :defer t
           :diminish
+          ;; TOTO: remove once flycheck/org fix upstream bug #2161 where org-lint
+          ;; returns marker-propertized line numbers (breaks the checker).
+          :custom
+          (flycheck-disabled-checkers '(org-lint))
           :init (global-flycheck-mode))
 
       ;; syntax highlighting

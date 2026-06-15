@@ -16,7 +16,6 @@ in
     org-superstar
     rainbow-delimiters
     rainbow-mode
-    which-key
   ];
 
   programs.emacs.extraConfig = lib.mkOrder 300 ''
