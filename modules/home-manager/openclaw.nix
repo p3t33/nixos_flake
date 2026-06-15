@@ -75,12 +75,12 @@
         };
 
         auth = {
-          profiles."openai-codex:default" = {
-            provider = "openai-codex";
+          profiles."openai:default" = {
+            provider = "openai";
             mode = "oauth";
           };
 
-          order."openai-codex" = [ "openai-codex:default" ];
+          order.openai = [ "openai:default" ];
         };
 
         channels.telegram = {
