@@ -4,7 +4,6 @@
     ../../modules/home-manager # imported via default.nix
   ];
 
-
   programs.antigravity-cli.enable = true;
   programs.gpg.enable = true;
 
@@ -14,8 +13,8 @@
         defaultProvider = "github-copilot";
         defaultModel = "claude-opus-4.8";
         models = {
-          reasoning = "claude-opus-4.8";
-          workhorse = "claude-sonnet-4.6";
+          reasoning = "${config.custom.programs.pi.defaultProvider}/claude-opus-4.8";
+          workhorse = "${config.custom.programs.pi.defaultProvider}/claude-sonnet-4.6";
         };
         defaultThinkingLevel = "medium";
       };

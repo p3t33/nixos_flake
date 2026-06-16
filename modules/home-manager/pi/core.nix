@@ -66,13 +66,13 @@ in
     models = {
       reasoning = lib.mkOption {
         type = lib.types.str;
-        default = "gpt-5.5";
-        description = "Model for reasoning-heavy tasks (main agent, explorer, code review).";
+        default = "${config.custom.programs.pi.defaultProvider}/${config.custom.programs.pi.defaultModel}";
+        description = "Provider-qualified model for reasoning-heavy tasks (main agent, explorer, code review).";
       };
       workhorse = lib.mkOption {
         type = lib.types.str;
-        default = "gpt-5.3-codex";
-        description = "Model for bulk execution work (worker agent).";
+        default = "${config.custom.programs.pi.defaultProvider}/gpt-5.3-codex";
+        description = "Provider-qualified model for bulk execution work (worker agent).";
       };
     };
 
