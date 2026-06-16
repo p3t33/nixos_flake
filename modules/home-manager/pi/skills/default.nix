@@ -1,9 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.custom.programs.pi;
 
   youtube-transcript = import ./youtube-transcript.nix { inherit lib pkgs; };
+  dicom-review = import ./dicom-review.nix { inherit pkgs; };
 in
 {
   options.custom.programs.pi = {
@@ -50,17 +56,34 @@ in
       ) cfg.secretSkills
     );
 
-    home.file = lib.mapAttrs' (
-      name: content:
-      lib.nameValuePair ".pi/agent/skills/${name}/SKILL.md" (
-        if lib.isPath content then { source = content; } else { text = content; }
-      )
-    ) cfg.skills // {
-      ".pi/agent/skills/youtube-transcript/transcript" = {
-        source = youtube-transcript.script;
-        executable = true;
+    home.file =
+      lib.mapAttrs' (
+        name: content:
+        lib.nameValuePair ".pi/agent/skills/${name}/SKILL.md" (
+          if lib.isPath content then { source = content; } else { text = content; }
+        )
+      ) cfg.skills
+      // {
+        ".pi/agent/skills/youtube-transcript/transcript" = {
+          source = youtube-transcript.script;
+          executable = true;
+        };
+
+        ".pi/agent/skills/dicom-review/dicom-inventory" = {
+          source = dicom-review.inventoryScript;
+          executable = true;
+        };
+
+        ".pi/agent/skills/dicom-review/dicom-privacy-check" = {
+          source = dicom-review.privacyScript;
+          executable = true;
+        };
+
+        ".pi/agent/skills/dicom-review/dicom-contact-sheets" = {
+          source = dicom-review.contactSheetsScript;
+          executable = true;
+        };
       };
-    };
 
     custom.programs.pi = {
       # === Skill Design Guide ===
@@ -120,6 +143,7 @@ in
         log-analyzer = import ./log-analyzer.nix;
         learning-planner = import ./learning-planner.nix;
         youtube-transcript = youtube-transcript.skill;
+        dicom-review = dicom-review.skill;
         grill-me = import ./grill-me.nix;
       };
     };
