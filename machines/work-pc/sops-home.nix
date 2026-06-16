@@ -9,5 +9,6 @@
   ];
 
   custom.programs.pi.secretSkills.factory-log-analysis.key = "pi-skills/factory-log-analysis";
+  custom.programs.pi.secretSkills.log-svx-app.key = "pi-skills/log-svx-app";
   custom.programs.navi.secretCheats.private.key = "navi/private-cheats";
 }
