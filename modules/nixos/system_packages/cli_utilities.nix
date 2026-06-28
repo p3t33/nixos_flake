@@ -132,6 +132,7 @@ in
       pkgs-unstable.cursor-cli
       ddcutil
       pkgs-unstable.github-copilot-cli
+      sshuttle
     ];
   };
 }
