@@ -26,6 +26,7 @@ in
     ./git/git_commit_signatures_with_gpg.nix
     ./git/lazygit.nix
     ./zoxide.nix
+    ./direnv.nix
     ./zsh.nix
     ./bash.nix
     ./tmux.nix
@@ -112,6 +113,7 @@ in
       programs.git.enable = true;
       programs.delta.enable = true;
       programs.zoxide.enable = true;
+      programs.direnv.enable = true;
       programs.zsh.enable = true;
       programs.bash.enable = true;
       programs.bat.enable = true;
