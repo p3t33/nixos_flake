@@ -127,6 +127,10 @@ in
     home = {
       packages = [ pkgs-unstable.pi-coding-agent ];
 
+      sessionVariables = {
+        PI_SKIP_VERSION_CHECK = "1";
+      };
+
       file = {
         ".pi/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
           source = jsonFormat.generate "pi-settings.json" cfg.settings;
