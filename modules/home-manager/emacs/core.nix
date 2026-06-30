@@ -35,6 +35,13 @@ in
   # enables emacs daemon
   services.emacs.enable = true;
 
+  # Only affects the generated emacsclient desktop file used by launchers like rofi.
+  # It does not change how emacsclient behaves when called directly, e.g. by git.
+  services.emacs.client = {
+    enable = true;
+    arguments = [ "--alternate-editor=" "--create-frame" "--no-wait" ];
+  };
+
   programs.emacs = {
     package = pkgs.emacs30;
 
