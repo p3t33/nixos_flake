@@ -19,9 +19,13 @@
     apps.wireshark.enable = true;
 
     networking = {
-      bridgedInterface.enable = true;
+      bridgedInterface = {
+        enable = true;
+        memberInterfaces = "br0-uplink";
+      };
       interfaces = {
         usbeth0.enable = true;
+        br0-uplink.enable = true;
         alpha-sniffer.enable = true;
         svx = {
           enable = true;

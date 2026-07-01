@@ -8,6 +8,7 @@ let
   #   - optionally usbSerial: to distinguish between multiple identical USB devices
   networkInterfaces = [
     { nameToSetWithUdev = "usbeth0"; macAddress = "00:e0:4c:5e:59:c8"; }
+    { nameToSetWithUdev = "br0-uplink"; macAddress = "a0:ce:c8:6a:7f:30"; }
     { nameToSetWithUdev = "alpha-sniffer"; macAddress = "00:c0:ca:b4:af:f4"; }
     { nameToSetWithUdev = "svx"; usbVendorId = "0cad"; usbProductId = "150d"; }
   ];
