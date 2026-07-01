@@ -123,6 +123,9 @@ in
 
       # used for generatig ascii art in terminal(use showfigfonts to see all fonts)
       figlet
+      # used for generatig ascii art same as figlet but with more fonts
+      # pyfiglet -f ansi_shadow pi
+      python313Packages.pyfiglet
       monero-cli
       jq
       dragon-drop
