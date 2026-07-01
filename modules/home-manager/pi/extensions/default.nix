@@ -48,6 +48,7 @@ in
           host = osConfig.custom.shared.localHostIPv4;
         };
         status-bar = import ./status-bar.nix;
+        cool-header = ./cool-header.ts;
       };
     };
   };
