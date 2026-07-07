@@ -19,6 +19,7 @@ let
       "Session\\DisableAutoTMMByDefault" = false;
       "Session\\LSDEnabled" = false;
       "Session\\PeXEnabled" = false;
+      "Session\\QueueingSystemEnabled" = false;
       "Session\\TempPath" = cfg.incompleteDir;
       "Session\\TempPathEnabled" = true;
     };
