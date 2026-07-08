@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 let
   cfg = config.custom.vpn.wireguardServer;
 in
@@ -56,6 +56,21 @@ in
       allowedUDPPorts = [ cfg.listenPort ];
     };
 
+    # NAT/masquerade so the server routes client traffic to the internet (VPN
+    # behaviour). Declared via networking.nat instead of raw iptables postSetup
+    # hooks: networking.nat is firewall-backend-agnostic and renders to nft when
+    # networking.nftables.enable = true, so this survives a switch to nftables
+    # (e.g. when Incus is added to this host). For the clients to resolve names,
+    # set their DNS to the router (or a DNS server of choice).
+    #
+    # This is a cleaner implementation than what I had regardless of which
+    # firewall the system is using.
+    networking.nat = {
+      enable = true;
+      externalInterface = cfg.externalInterface;
+      internalInterfaces = [ cfg.networkName ];
+    };
+
     sops.secrets.wireguard_key = {};
     networking.wireguard.interfaces = {
 
@@ -64,16 +79,6 @@ in
         ips = [ "${cfg.gateway}/24" ];
 
         listenPort = cfg.listenPort;
-        # This allows the wireguard server to route your traffic to the internet and hence be like a VPN
-        # For this to work you have to set the dnsserver IP of your router (or dnsserver of choice) in your clients
-        postSetup = ''
-          ${lib.getExe pkgs.iptables} -t nat -A POSTROUTING -s ${cfg.network} -o ${cfg.externalInterface} -j MASQUERADE
-        '';
-
-        # This undoes the above command
-        postShutdown = ''
-          ${lib.getExe pkgs.iptables} -t nat -D POSTROUTING -s ${cfg.network} -o ${cfg.externalInterface} -j MASQUERADE
-        '';
 
         privateKeyFile = config.sops.secrets.wireguard_key.path;
 
