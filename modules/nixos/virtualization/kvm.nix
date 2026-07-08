@@ -1,6 +1,17 @@
 { config, lib, pkgs, hostSpecific, ... }:
 {
   config = lib.mkIf config.virtualisation.libvirtd.enable {
+    # Accept all host-bound traffic on virbr0 (guest DHCP/DNS to the host's
+    # dnsmasq). Required under nftables: firewall and libvirt sit in separate
+    # base chains, where an accept in one isn't final, so nixos-fw's drop would
+    # otherwise eat it. Harmless under iptables. Lists merge across modules.
+    networking.firewall.trustedInterfaces = [ "virbr0" ];
+
+    # libvirt works under either firewall backend: NixOS defaults
+    # virtualisation.libvirtd.firewallBackend to "nftables" when
+    # networking.nftables.enable is set (e.g. once Incus is on this host) and to
+    # "iptables" otherwise, so libvirt renders its network rules for whichever
+    # backend is active. No change is needed here when nftables is enabled.
     virtualisation = {
       libvirtd = {
 
