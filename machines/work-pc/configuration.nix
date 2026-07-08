@@ -42,6 +42,13 @@
 
   hardware.i2c.enable = true;
 
+  # zfs support for the file-backed Incus pool. work-pc's root is still ext4, so
+  # unlike the zfs machines (where disko implies this) we must enable zfs here.
+  # These become partly redundant once work-pc migrates to a zfs root.
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "c3887173";
+
   # HP ZBook Firefly 14 G11: the mei_me driver blocks the ACPI S5 (power-off)
   # transition. During shutdown the driver tries to gracefully disconnect from
   # the Intel Management Engine firmware, but the handshake hangs — the kernel
