@@ -28,6 +28,8 @@
     '';
   };
 
+  virtualisation.incus.enable = true;
+
   services.xserver = {
     xkb = {
       layout = "us,il";
