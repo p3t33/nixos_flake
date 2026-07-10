@@ -25,7 +25,17 @@
      |    <|  |  |        |______|     |  |_   _|  _  |__ --|______|__ --|  -__|   _|  |  |  -__|   _|
      |__|__|\___/|__|__|__|      |__|__|__|__.__|_____|_____|      |_____|_____|__|  \___/|_____|__|
     '';
+
+    virtualization.incus.storagePoolSize = "10GiB";
   };
+
+  virtualisation.incus.enable = true;
+
+  # zfs support for the file-backed Incus pool. kvm-nixos-server's root is ext4,
+  # so unlike the zfs machines (where disko implies this) we must enable zfs here.
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "77d3c406";
 
   # Configure keymap in X11
   services.xserver = {
