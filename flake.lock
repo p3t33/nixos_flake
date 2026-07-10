@@ -274,11 +274,11 @@
     "pi-subagent": {
       "flake": false,
       "locked": {
-        "lastModified": 1781809321,
-        "narHash": "sha256-SHNk4cYaKDUU/bfnZqwltzpQquXPf42XkXmEOaB0lNY=",
+        "lastModified": 1781435956,
+        "narHash": "sha256-r6WaGQE9iBXxl/vCeJW/h6o5ZVjLraDTVssDsS+A/Ms=",
         "owner": "mjakl",
         "repo": "pi-subagent",
-        "rev": "40e8460c97c0c97d36e6e58a4e2160afcaa6930c",
+        "rev": "352db7be60af6b0c19a2a1ebc6d1aad6a09325cc",
         "type": "github"
       },
       "original": {
