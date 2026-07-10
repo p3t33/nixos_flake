@@ -41,8 +41,10 @@
   # networking.defaultGateway = "${config.custom.shared.${hostSpecific.hostName}.gateway}";
   # networking.nameservers = [ "8.8.8.8" ];
 
-
   services.xserver.enable = lib.mkForce false;
+
+  virtualisation.incus.enable = true;
+
   boot.zfs.forceImportRoot = false;
   networking.hostId = "b8835c95";
 
