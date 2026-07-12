@@ -24,6 +24,12 @@
     systemStateVersion = "24.05";
   };
 
+  # zfs support for the file-backed Incus pool. home-desktop's root is ext4, so
+  # unlike the zfs machines (where disko implies this) we must enable zfs here.
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "2cf040ba";
+
   environment.systemPackages = with pkgs; [
 
     signal-desktop

@@ -34,6 +34,7 @@ in
 
     ./virtualization/docker.nix
     ./virtualization/kvm.nix
+    ./virtualization/incus.nix
     ./virtualization/virtualbox.nix
 
     ./networking/networkmanager.nix
@@ -56,7 +57,7 @@ in
     core.enable = lib.mkEnableOption "core system profile (dev tools, CLI utilities, encryption)";
     desktop.enable = lib.mkEnableOption "desktop system profile (DE, GUI apps, dconf)";
     server.enable = lib.mkEnableOption "server system profile (docker, MOTD)";
-    virtualization.enable = lib.mkEnableOption "virtualization system profile (docker, KVM)";
+    virtualization.enable = lib.mkEnableOption "virtualization system profile (docker, KVM, Incus)";
     securityKeys.enable = lib.mkEnableOption "security keys system profile (Nitrokey, SoloKey2)";
     gaming.enable = lib.mkEnableOption "gaming system profile (Steam)";
   };
@@ -84,6 +85,7 @@ in
     (lib.mkIf g.virtualization.enable {
      virtualisation.docker.enable = true;
       virtualisation.libvirtd.enable = true;
+      virtualisation.incus.enable = true; # sets nftables to true.
     })
 
     (lib.mkIf g.securityKeys.enable {

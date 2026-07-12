@@ -26,7 +26,17 @@
     |_____|__|_____|___  |   __|__|__|_____|_____|      |__|__|__|__|__|__|_____|__|
                    |_____|__| powered by NixOS
     '';
+
+    virtualization.incus.storagePoolSize = "10GiB";
   };
+
+  virtualisation.incus.enable = true;
+
+  # zfs support for the file-backed Incus pool. sisyphus-miner's root is ext4,
+  # so unlike the zfs machines (where disko implies this) we must enable zfs here.
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "f21ff191";
 
   # Configure keymap in X11
   services.xserver = {
