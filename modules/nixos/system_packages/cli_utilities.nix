@@ -9,7 +9,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       # presentation
-      present
+      presenterm
       slides
       haskellPackages.patat
       w3m
