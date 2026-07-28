@@ -178,6 +178,7 @@ in
       ];
 
       packages = [
+        "npm:pi-mcp-adapter"
         "npm:@mjakl/pi-subagent"
         "npm:pi-ask-user"
       ];

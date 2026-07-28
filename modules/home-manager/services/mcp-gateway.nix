@@ -43,48 +43,6 @@ let
       { inherit (backend) description command; }
       // lib.optionalAttrs (backend.env != { }) { inherit (backend) env; };
 
-  transformMcpServer = name: server:
-    let
-      isDisabled = server.disabled or false;
-      hasUrl = server ? url;
-      hasCommand = server ? command;
-      hasBoth = hasUrl && hasCommand;
-      hasNeither = !hasUrl && !hasCommand;
-    in
-    if isDisabled then null
-    else if hasBoth then
-      builtins.trace "mcp-gateway: skipping '${name}' — has both url and command" null
-    else if hasNeither then
-      builtins.trace "mcp-gateway: skipping '${name}' — has neither url nor command" null
-    else
-      lib.optionalAttrs hasUrl {
-        http_url = server.url;
-      }
-      // lib.optionalAttrs hasCommand {
-        command = lib.concatStringsSep " " (
-          [ server.command ] ++ map lib.escapeShellArg (server.args or [])
-        );
-      }
-      // lib.optionalAttrs (server ? headers) {
-        inherit (server) headers;
-      }
-      // lib.optionalAttrs (server ? env) {
-        inherit (server) env;
-      }
-      // {
-        description = server.description or name;
-      };
-
-  transformedMcpServers =
-    if cfg.enableMcpIntegration && config.programs.mcp.enable then
-      lib.filterAttrs (_: v: v != null) (
-        lib.mapAttrs transformMcpServer (
-          lib.filterAttrs (k: _: !(lib.elem k cfg.excludeMCPs)) config.programs.mcp.servers
-        )
-      )
-    else
-      { };
-
   gatewayConfig = {
     server = {
       host = osConfig.custom.shared.localHostIPv4;
@@ -95,7 +53,7 @@ let
       cache_tools = true;
       cache_ttl = "300s";
     };
-    backends = transformedMcpServers // lib.mapAttrs backendToYaml cfg.backends;
+    backends = lib.mapAttrs backendToYaml cfg.backends;
   };
 in
 {
@@ -112,25 +70,6 @@ in
       type = lib.types.port;
       default = 39400;
       description = "Port the gateway listens on.";
-    };
-
-    enableMcpIntegration = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = ''
-        Merge servers from {option}`programs.mcp.servers` into gateway
-        backends. Servers with `disabled = true` are excluded.
-      '';
-    };
-
-    excludeMCPs = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ "mcp-gateway" ];
-      description = ''
-        Server names to exclude when importing from
-        {option}`programs.mcp.servers`. Prevents self-referential config
-        when mcp-gateway itself appears in the server list.
-      '';
     };
 
     backends = lib.mkOption {
