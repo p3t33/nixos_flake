@@ -37,10 +37,6 @@
       url = "github:joshmedeski/tmux-nerd-font-window-name";
       flake = false;
     };
-    pi-subagent = {
-      url = "github:mjakl/pi-subagent";
-      flake = false;
-    };
   };
 
   outputs =

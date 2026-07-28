@@ -10,6 +10,23 @@ let
   cfg = config.custom.programs.pi;
   jsonFormat = pkgs.formats.json { };
 
+  piPackage = pkgs-unstable.pi-coding-agent;
+  packageWithExtraPackages =
+    if cfg.extraPackages != [ ] then
+      pkgs.symlinkJoin {
+        inherit (piPackage) meta;
+        name = "${lib.getName piPackage}-wrapped-${lib.getVersion piPackage}";
+        paths = [ piPackage ];
+        preferLocalBuild = true;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/pi \
+            --suffix PATH : ${lib.makeBinPath cfg.extraPackages}
+        '';
+      }
+    else
+      piPackage;
+
   colors = config.custom.shared.colors;
   nord = {
     bg = "#2e3440";
@@ -85,6 +102,14 @@ in
       '';
     };
 
+    extraPackages = lib.mkOption {
+      type = with lib.types; listOf package;
+      default = [ ];
+      description = ''
+        Extra packages available on PATH for the wrapped pi binary.
+      '';
+    };
+
     theme = lib.mkOption {
       type = jsonFormat.type;
       default = { };
@@ -125,7 +150,7 @@ in
     ];
 
     home = {
-      packages = [ pkgs-unstable.pi-coding-agent ];
+      packages = [ packageWithExtraPackages ];
 
       sessionVariables = {
         PI_SKIP_VERSION_CHECK = "1";
@@ -147,6 +172,16 @@ in
     };
 
     custom.programs.pi = {
+      extraPackages = [
+        pkgs.nodejs
+        pkgs.bun
+      ];
+
+      packages = [
+        "npm:@mjakl/pi-subagent"
+        "npm:pi-ask-user"
+      ];
+
       settings = {
         inherit (cfg) defaultProvider defaultModel defaultThinkingLevel;
         theme = cfg.theme.name;

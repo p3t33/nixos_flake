@@ -1,17 +1,10 @@
-{ config, lib, inputs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.custom.programs.pi;
-
-  # Package source fetched via flake inputs
-  piSubagent = inputs.pi-subagent;
 in
 {
   config = lib.mkIf cfg.enable {
-    custom.programs.pi.packages = [
-      "${piSubagent}"
-    ];
-
     # Subagent definitions — three roles that Claude Code, Codex, and Gemini CLI
     # all converge on as built-in agents. Descriptions are instructions to the
     # parent agent (injected into its prompt) telling it when and how to delegate.
@@ -32,6 +25,10 @@ in
         thinking: low
         tools: read,bash,grep,find,ls
         ---
+
+        You are a read-only codebase explorer. Answer specific, well-scoped
+        questions by inspecting the repository. Identify relevant files, entry
+        points, data flow, and risks. Do not modify files.
       '';
 
       ".pi/agent/agents/code-reviewer.md".text = ''
@@ -47,6 +44,11 @@ in
         thinking: high
         tools: read,bash,grep,find,ls
         ---
+
+        You are a read-only code reviewer. Review the current change for
+        correctness, edge cases, test coverage, and unintended side effects.
+        Cite file paths and line numbers as evidence. Do not invent issues.
+        If everything looks good, say so plainly.
       '';
 
       ".pi/agent/agents/worker.md".text = ''
@@ -63,6 +65,11 @@ in
         thinking: high
         tools: read,bash,edit,write,grep,find,ls
         ---
+
+        You are an implementation worker. Make targeted changes that follow
+        the approved plan and existing project patterns. Validate your work
+        where practical. Do not revert unrelated edits, and stop to report any
+        unapproved product or design decision instead of guessing.
       '';
     };
   };
