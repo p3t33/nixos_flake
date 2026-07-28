@@ -176,6 +176,7 @@ in
       extraPackages = [
         pkgs.nodejs
         pkgs.bun
+        pkgs-unstable.codegraph
       ];
 
       packages = [
@@ -287,6 +288,7 @@ in
 
         ## Subagents
         - Always use the `subagent` tool to delegate code review — never review your own work
+        - For source repository architecture, symbol discovery, call-flow, or impact-analysis questions, delegate to codegraph-explorer before manual read/grep/bash exploration; if CodeGraph is not applicable, say so explicitly before falling back
         - Use spawn mode for isolated tasks, fork mode when context from this session matters
         - After implementing changes, delegate review before reporting completion
       '';
