@@ -57,9 +57,9 @@ in
 
     defaultModel = lib.mkOption {
       type = lib.types.str;
-      default = "gpt-5.5";
+      default = "gpt-5.6-sol";
       description = ''
-        Default model ID for the selected provider, for example "gpt-5.4",
+        Default model ID for the selected provider, for example "gpt-5.6-sol",
         "claude-opus-4-6", or "gemini-2.5-pro".
       '';
     };
@@ -72,11 +72,12 @@ in
         "medium"
         "high"
         "xhigh"
+        "max"
       ];
       default = "high";
       description = ''
         Default thinking level. Available values: "off", "minimal", "low",
-        "medium", "high", "xhigh".
+        "medium", "high", "xhigh", "max".
       '';
     };
 
@@ -88,7 +89,7 @@ in
       };
       workhorse = lib.mkOption {
         type = lib.types.str;
-        default = "${config.custom.programs.pi.defaultProvider}/gpt-5.3-codex";
+        default = "${config.custom.programs.pi.defaultProvider}/gpt-5.6-terra";
         description = "Provider-qualified model for bulk execution work (worker agent).";
       };
     };
