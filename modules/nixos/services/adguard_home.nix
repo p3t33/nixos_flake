@@ -41,6 +41,11 @@ in
     networking.firewall.allowedTCPPorts = [ dnsPort ];
     networking.firewall.allowedUDPPorts = [ dnsPort ];
 
+    systemd.services.adguardhome = {
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+    };
+
     # file generated at /var/lib/private/AdGuardHome/AdGuardHome.yaml
     services.adguardhome = {
       mutableSettings = false;
@@ -50,6 +55,10 @@ in
       # Basic settings
       settings = {
         dns = {
+          bind_hosts = [
+            "127.0.0.1"
+            hostIP
+          ];
           port = dnsPort; # DNS port for AdGuard
           upstream_dns = [
             "8.8.8.8"
