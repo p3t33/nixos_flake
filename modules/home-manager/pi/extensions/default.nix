@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  osConfig,
   ...
 }:
 
@@ -27,9 +26,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    custom.services.mcp-gateway.enable = true;
-    custom.services.mcp-gateway.enableMcpIntegration = true;
-
     home.file = lib.mapAttrs' (
       name: content:
       lib.nameValuePair ".pi/agent/extensions/${name}.ts" (
@@ -43,10 +39,6 @@ in
         learning-planner = import ./learning-planner.nix;
         parse-document = import ./parse-document.nix { inherit lib pkgs; };
         ocr = import ./ocr.nix { inherit lib pkgs; };
-        mcp-adapter = import ./mcp-adapter.nix {
-          port = config.custom.services.mcp-gateway.port;
-          host = osConfig.custom.shared.localHostIPv4;
-        };
         status-bar = import ./status-bar.nix;
         cool-header = ./cool-header.ts;
       };

@@ -1,17 +1,10 @@
-{ config, lib, inputs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.custom.programs.pi;
-
-  # Package source fetched via flake inputs
-  piSubagent = inputs.pi-subagent;
 in
 {
   config = lib.mkIf cfg.enable {
-    custom.programs.pi.packages = [
-      "${piSubagent}"
-    ];
-
     # Subagent definitions — three roles that Claude Code, Codex, and Gemini CLI
     # all converge on as built-in agents. Descriptions are instructions to the
     # parent agent (injected into its prompt) telling it when and how to delegate.
@@ -32,6 +25,46 @@ in
         thinking: low
         tools: read,bash,grep,find,ls
         ---
+
+        You are a read-only codebase explorer. Answer specific, well-scoped
+        questions by inspecting the repository. Identify relevant files, entry
+        points, data flow, and risks. Do not modify files.
+      '';
+
+      ".pi/agent/agents/codegraph-explorer.md".text = ''
+        ---
+        name: codegraph-explorer
+        model: ${cfg.models.reasoning}
+        description: >-
+          Use codegraph-explorer for repository architecture and flow questions
+          when CodeGraph is indexed or likely useful. It is read-only and should
+          prefer the codegraph MCP server over grep/read crawling. Use it for
+          symbol discovery, call flows, impact analysis, and fast semantic maps
+          before planning or implementation.
+        thinking: medium
+        tools: read,bash,mcp
+        ---
+
+        You are a read-mostly semantic code explorer. Start by checking
+        CodeGraph status for the current project path. If the project is not
+        indexed, run codegraph init automatically, then connect or refresh the
+        CodeGraph MCP server.
+
+        Prefer the `mcp` proxy's CodeGraph server for repository structure,
+        symbol lookup, call graphs, callees/callers, and impact analysis.
+        Discover the CodeGraph exploration tool and invoke the exact prefixed
+        name returned by MCP before falling back to read/bash or CodeGraph CLI
+        commands. Use the current working directory
+        as the projectPath when CodeGraph needs one.
+
+        Do not mutate files except for creating or updating CodeGraph's own
+        .codegraph index. Use read/bash only to inspect state, verify paths, run
+        codegraph init, or run read-only CodeGraph/status commands when MCP
+        output is insufficient.
+
+        In your final answer, explicitly state whether CodeGraph MCP was used,
+        whether codegraph init was run or skipped, and which projectPath was
+        used.
       '';
 
       ".pi/agent/agents/code-reviewer.md".text = ''
@@ -47,6 +80,11 @@ in
         thinking: high
         tools: read,bash,grep,find,ls
         ---
+
+        You are a read-only code reviewer. Review the current change for
+        correctness, edge cases, test coverage, and unintended side effects.
+        Cite file paths and line numbers as evidence. Do not invent issues.
+        If everything looks good, say so plainly.
       '';
 
       ".pi/agent/agents/worker.md".text = ''
@@ -63,6 +101,11 @@ in
         thinking: high
         tools: read,bash,edit,write,grep,find,ls
         ---
+
+        You are an implementation worker. Make targeted changes that follow
+        the approved plan and existing project patterns. Validate your work
+        where practical. Do not revert unrelated edits, and stop to report any
+        unapproved product or design decision instead of guessing.
       '';
     };
   };

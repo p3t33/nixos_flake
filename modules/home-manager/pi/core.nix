@@ -10,6 +10,23 @@ let
   cfg = config.custom.programs.pi;
   jsonFormat = pkgs.formats.json { };
 
+  piPackage = pkgs-unstable.pi-coding-agent;
+  packageWithExtraPackages =
+    if cfg.extraPackages != [ ] then
+      pkgs.symlinkJoin {
+        inherit (piPackage) meta;
+        name = "${lib.getName piPackage}-wrapped-${lib.getVersion piPackage}";
+        paths = [ piPackage ];
+        preferLocalBuild = true;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/pi \
+            --suffix PATH : ${lib.makeBinPath cfg.extraPackages}
+        '';
+      }
+    else
+      piPackage;
+
   colors = config.custom.shared.colors;
   nord = {
     bg = "#2e3440";
@@ -40,9 +57,9 @@ in
 
     defaultModel = lib.mkOption {
       type = lib.types.str;
-      default = "gpt-5.5";
+      default = "gpt-5.6-sol";
       description = ''
-        Default model ID for the selected provider, for example "gpt-5.4",
+        Default model ID for the selected provider, for example "gpt-5.6-sol",
         "claude-opus-4-6", or "gemini-2.5-pro".
       '';
     };
@@ -55,11 +72,12 @@ in
         "medium"
         "high"
         "xhigh"
+        "max"
       ];
       default = "high";
       description = ''
         Default thinking level. Available values: "off", "minimal", "low",
-        "medium", "high", "xhigh".
+        "medium", "high", "xhigh", "max".
       '';
     };
 
@@ -71,7 +89,7 @@ in
       };
       workhorse = lib.mkOption {
         type = lib.types.str;
-        default = "${config.custom.programs.pi.defaultProvider}/gpt-5.3-codex";
+        default = "${config.custom.programs.pi.defaultProvider}/gpt-5.6-terra";
         description = "Provider-qualified model for bulk execution work (worker agent).";
       };
     };
@@ -82,6 +100,14 @@ in
       description = ''
         Pi settings written to ~/.pi/agent/settings.json as a JSON object.
         See https://github.com/badlogic/pi-mono for all supported settings.
+      '';
+    };
+
+    extraPackages = lib.mkOption {
+      type = with lib.types; listOf package;
+      default = [ ];
+      description = ''
+        Extra packages available on PATH for the wrapped pi binary.
       '';
     };
 
@@ -125,7 +151,7 @@ in
     ];
 
     home = {
-      packages = [ pkgs-unstable.pi-coding-agent ];
+      packages = [ packageWithExtraPackages ];
 
       sessionVariables = {
         PI_SKIP_VERSION_CHECK = "1";
@@ -147,6 +173,18 @@ in
     };
 
     custom.programs.pi = {
+      extraPackages = [
+        pkgs.nodejs
+        pkgs.bun
+        pkgs-unstable.codegraph
+      ];
+
+      packages = [
+        "npm:pi-mcp-adapter@2.15.0"
+        "npm:@mjakl/pi-subagent@2.1.0"
+        "npm:pi-ask-user@0.13.0"
+      ];
+
       settings = {
         inherit (cfg) defaultProvider defaultModel defaultThinkingLevel;
         theme = cfg.theme.name;
@@ -250,6 +288,7 @@ in
 
         ## Subagents
         - Always use the `subagent` tool to delegate code review — never review your own work
+        - For source repository architecture, symbol discovery, call-flow, or impact-analysis questions, delegate to codegraph-explorer before manual read/grep/bash exploration; if CodeGraph is not applicable, say so explicitly before falling back
         - Use spawn mode for isolated tasks, fork mode when context from this session matters
         - After implementing changes, delegate review before reporting completion
       '';
