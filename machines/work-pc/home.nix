@@ -1,4 +1,9 @@
-{ config, ... }: {
+{ config, ... }:
+let
+  claude-opus = "claude-opus-5";
+  claude-sonnet = "claude-sonnet-5";
+in
+{
   imports = [
     ./sops-home.nix
     ../../modules/home-manager # imported via default.nix
@@ -11,10 +16,10 @@
     programs = {
       pi = {
         defaultProvider = "github-copilot";
-        defaultModel = "claude-opus-4.8";
+        defaultModel = claude-opus;
         models = {
-          reasoning = "${config.custom.programs.pi.defaultProvider}/claude-opus-4.8";
-          workhorse = "${config.custom.programs.pi.defaultProvider}/claude-sonnet-4.6";
+          reasoning = "${config.custom.programs.pi.defaultProvider}/${claude-opus}";
+          workhorse = "${config.custom.programs.pi.defaultProvider}/${claude-sonnet}";
         };
         defaultThinkingLevel = "medium";
       };

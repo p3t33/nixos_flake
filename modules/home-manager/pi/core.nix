@@ -180,9 +180,9 @@ in
       ];
 
       packages = [
-        "npm:pi-mcp-adapter@2.15.0"
+        "npm:pi-mcp-adapter@2.17.0"
         "npm:@mjakl/pi-subagent@2.1.0"
-        "npm:pi-ask-user@0.13.0"
+        "npm:pi-ask-user@0.13.1"
       ];
 
       settings = {
