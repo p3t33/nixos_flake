@@ -33,7 +33,6 @@
   environment.systemPackages = with pkgs; [
 
     signal-desktop
-    moolticute
 
     syncthing
     git-review
