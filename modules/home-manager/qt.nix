@@ -9,10 +9,7 @@
     qt = {
       platformTheme.name = "gtk";
 
-      style = {
-        name = "kvantum";
-        package = pkgs.libsForQt5.qtstyleplugin-kvantum;
-      };
+      style.name = "kvantum";
       # Doens not require to setup xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
       # style = {
       #   name = "adwaita-dark";
