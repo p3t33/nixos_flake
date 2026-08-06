@@ -66,7 +66,6 @@
   boot.kernelParams = [ "reboot=pci" ];
 
   environment.systemPackages = with pkgs; [
-    moolticute
     syncthing
     git-review # cli tool to interact with gerrit.
     vim

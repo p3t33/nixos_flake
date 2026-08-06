@@ -11,6 +11,8 @@
     ];
 
     gtk = {
+      colorScheme = "dark";
+
       font = {
         name = config.custom.shared.font.sansSerif;
         size = 12;
@@ -26,8 +28,7 @@
         package = pkgs.nordic;
       };
 
-      # TODO: find a theme that supports both GTK3 and GTK4
-      gtk4.theme = null;
+      gtk4.theme = config.gtk.theme;
       cursorTheme = {
         name = "Adwaita";
         package = pkgs.adwaita-icon-theme;

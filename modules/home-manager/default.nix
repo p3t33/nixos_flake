@@ -50,6 +50,7 @@ in
     ./xdg/user_dirs.nix
     ./gtk.nix
     ./qt.nix
+    ./moolticute.nix
     ./firefox.nix
     ./zellij.nix
     ./yazi.nix
@@ -98,6 +99,7 @@ in
       programs.emacs.enable = true;
       gtk.enable = true;
       qt.enable = true;
+      custom.programs.moolticute.enable = true;
       services.dunst.enable = true;
       programs.firefox.enable = true;
       programs.ghostty.enable = true;
