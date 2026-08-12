@@ -40,6 +40,7 @@ in
     ./networking/networkmanager.nix
     ./networking/hostname.nix
     ./networking/br0_interface.nix
+    ./networking/bridge_netfilter.nix
     ./networking/interfaces
 
     ./services
@@ -67,6 +68,7 @@ in
       custom.apps.development.enable  = true;
       custom.apps.cliUtilities.enable = true;
       custom.apps.encryption.enable   = true;
+      custom.networking.disableLegacyBridgeNetfilter.enable = true;
       programs.nix-ld.enable = true;
     })
 
