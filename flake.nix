@@ -47,10 +47,10 @@
         builtins.removeAttrs (inputs.nix-openclaw.overlays.default final prev) [ "pnpm_11" ];
       nomachineVersionFix = final: prev: {
         nomachine-client = prev.nomachine-client.overrideAttrs (old: {
-          version = "9.5.7";
+          version = "10.0.57";
           src = prev.fetchurl {
-            url = "https://download.nomachine.com/download/9.5/Linux/nomachine_9.5.7_2_x86_64.tar.gz";
-            hash = "sha256-8f4ZL3Ko5VunojXLvTS9P3oB+ZVCSYIA0GIjM8VpUO4=";
+            url = "https://web9001.nomachine.com/download/10.0/Linux/nomachine-enterprise-client_10.0.57_2_x86_64.tar.gz";
+            hash = "sha256-F4cwX9F1cIy+FZ9KtEe6oeAIrC34jzkmydcrUbtJVdQ=";
           };
         });
       };
