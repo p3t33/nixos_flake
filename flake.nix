@@ -21,8 +21,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-openclaw.url = "github:openclaw/nix-openclaw";
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,8 +41,6 @@
     { nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
-      nixOpenclawOverlay = final: prev:
-        builtins.removeAttrs (inputs.nix-openclaw.overlays.default final prev) [ "pnpm_11" ];
       nomachineVersionFix = final: prev: {
         nomachine-client = prev.nomachine-client.overrideAttrs (old: {
           version = "10.0.57";
@@ -57,12 +53,11 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nixOpenclawOverlay nomachineVersionFix ];
+        overlays = [ nomachineVersionFix ];
       };
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nixOpenclawOverlay ];
       };
 
       lib = nixpkgs.lib;
@@ -76,7 +71,7 @@
         modules = [
           ./machines/${hostName}/configuration.nix
           {
-            nixpkgs.overlays = [ nixOpenclawOverlay nomachineVersionFix ];
+            nixpkgs.overlays = [ nomachineVersionFix ];
           }
           inputs.home-manager.nixosModules.home-manager
           inputs.nix-index-database.nixosModules.nix-index
