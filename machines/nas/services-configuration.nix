@@ -17,10 +17,6 @@
     deluge.enable = true;
     sabnzbd.enable = true;
     gatus.enable = true;
-    # prometheus.enable = true; # Not sure I want or need this.
-    # promtail.enable = true;  # Not sure I want or need this.
-    # loki.enable = true; # Not sure I want or need this.
-    # grafana.enable = true;  # Not sure I want or need this.
     samba.enable = true;
     paperless.enable = true;
     postgresql.enable = true;
@@ -39,7 +35,6 @@
       core.enable = true;
       server.enable = true;
       monitoring.enable = true;
-      wireguardServer.enable = true;
     };
 
     services = {

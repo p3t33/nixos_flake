@@ -4,11 +4,13 @@
     sops.secrets."inadyn/dynu" = {
       owner = config.services.inadyn.user;
       mode = "0600";
+      restartUnits = [ config.systemd.services.inadyn.name ];
     };
 
     sops.secrets."inadyn/cloudflare" = {
       owner = config.services.inadyn.user;
       mode = "0600";
+      restartUnits = [ config.systemd.services.inadyn.name ];
     };
 
     services.inadyn = {
