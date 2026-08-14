@@ -18,7 +18,6 @@ in
     ./homepage_dashboard.nix
     ./download-clients
     ./media
-    ./inadyn.nix
     ./loki.nix
     ./mosquitto.nix
     ./nginx.nix
@@ -71,7 +70,7 @@ in
     desktop.enable = lib.mkEnableOption "desktop service profile (sound, printing, display manager, etc.)";
     server.enable = lib.mkEnableOption "server service profile (sshd, fail2ban)";
     xmr-miner.enable = lib.mkEnableOption "XMR miner service profile (monerod, p2pool, xmrig)";
-    wireguardServer.enable = lib.mkEnableOption "WireGuard server service profile (wireguard, inadyn)";
+    wireguardServer.enable = lib.mkEnableOption "WireGuard server service profile (wireguard, dynamic dns)";
     monitoring.enable = lib.mkEnableOption "monitoring service profile (prometheus, loki, alloy, grafana)";
   };
 
@@ -115,7 +114,9 @@ in
 
     (lib.mkIf g.wireguardServer.enable {
       custom.vpn.wireguardServer.enable = true;
-      services.inadyn.enable = true;
+      # as inadyn is no longer maintained(and so has been deleted) if
+      # this profile to be enabled a new dynamic dns service is required to
+      # be configured.
     })
   ];
 }
