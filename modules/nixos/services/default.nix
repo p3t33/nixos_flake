@@ -33,6 +33,7 @@ in
     ./trezor.nix
     ./zigbee2mqtt.nix
 
+    ./gui/gnome-keyring.nix
     ./gui/xserver.nix
     ./gui/display_manager/display_manager_base.nix
 
@@ -88,6 +89,7 @@ in
       services.pipewire.enable = true; # sound
       services.xserver.enable = true;
       custom.services.displayManager.enable = true; #todo
+      services.gnome.gnome-keyring.enable = true;
       services.upower.enable = true; # used by polybar battery module.
       services.greenclip.enable = true; # clipboard manager
       custom.services.sxhkd.enable = true;

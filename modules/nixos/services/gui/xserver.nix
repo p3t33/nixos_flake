@@ -3,6 +3,7 @@
 
   config = lib.mkIf config.services.xserver.enable {
     services.xserver = {
+      updateDbusEnvironment = true;
       logFile = "/var/log/Xorg.0.log"; # Enables logging to this file
       xkb = {
         layout = "us,il";
@@ -20,6 +21,7 @@
 
       windowManager.i3 = {
         enable = true;
+        updateSessionEnvironment = true;
         #configFile = "/etc/i3.conf";
         extraPackages = with pkgs; [
           rofi
