@@ -16,15 +16,10 @@ in
         ExecReload = "${lib.getExe' pkgs.util-linux "kill"} -SIGUSR1 $MAINPID";
         Restart = "always";
         RestartSec = "2s";
-        Environment = [
-          "DISPLAY=:0"
-          "XAUTHORITY=%h/.Xauthority"
-          # Address rofi "xkbcommon: ERROR: ... string literal is not a valid UTF-8 string"
-          "LC_CTYPE=en_US.UTF-8"
-        ];
 
       };
-      wantedBy = [ "default.target" ];
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
     };
   };
 }
