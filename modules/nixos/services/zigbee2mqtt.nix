@@ -39,6 +39,7 @@ in
       sink            = { name = "master_bedroom_sink_plug";            ieee = "0xa4c138f734afecb7"; };
       living_room     = { name = "living_room_plug";                    ieee = "0xa4c138b761af3b27"; };
       living_room_climate = { name = "living_room_climate";                 ieee = "0xa4c1380a1db9ffff"; };
+      balcony_climate = { name = "balcony_climate";                         ieee = "0xa4c1380d24f8ffff"; };
     };
 
     # /var/lib/zigbee2mqtt/configuration.yaml

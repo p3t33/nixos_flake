@@ -106,6 +106,15 @@ in
         name = "Bathroom";
         icon = "mdi:shower";
       };
+      balcony = {
+        name = "Balcony";
+        icon = "mdi:balcony";
+        environmentSensors.climate = {
+          name   = "Balcony Climate";
+          device = devices.balcony_climate.name;
+          ieee   = devices.balcony_climate.ieee;
+        };
+      };
       living_room = {
         name = "Living Room";
         icon = "mdi:sofa";
