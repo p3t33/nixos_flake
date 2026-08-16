@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs-unstable, ... }:
 
 let
   catppuccinTheme = "catppuccin-mocha-blue";
@@ -7,6 +7,7 @@ in
 
   config = lib.mkIf config.programs.atuin.enable {
     programs.atuin = {
+      package = pkgs-unstable.atuin;
       enableZshIntegration = true;
       daemon.enable = true;
 
@@ -18,6 +19,8 @@ in
         # for some reason this directive has no effect.
         show_help = false;
         enter_accept = true;
+        search_mode = "daemon-fuzzy";
+        ctrl_n_shortcuts = true; # instead of the alt default.
 
         theme = {
           name = catppuccinTheme;
