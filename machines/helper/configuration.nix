@@ -12,6 +12,8 @@
     ../../modules/nixos # imported via default.nix
   ];
 
+  custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}22";
+
   custom = {
     profiles.system = {
       core.enable = true;

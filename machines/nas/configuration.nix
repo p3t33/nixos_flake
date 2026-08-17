@@ -13,7 +13,7 @@
     ../../modules/nixos # imported via default.nix
   ];
 
-  custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}122";
+  custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}20";
 
   custom = {
     profiles.system = {
