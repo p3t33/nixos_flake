@@ -40,10 +40,9 @@
     return minutes + "m" + (remaining > 0 ? remaining + "s" : "");
   }
 
-  function buildProgressBar(percent: number, barWidth: number): string {
+  function getFilledWidth(percent: number, barWidth: number): number {
     const filled = Math.round((percent / 100) * barWidth);
-    const empty = barWidth - filled;
-    return "█".repeat(filled) + "░".repeat(empty);
+    return Math.max(0, Math.min(barWidth, filled));
   }
 
   export default function (pi: ExtensionAPI) {
@@ -150,9 +149,9 @@
 
             // Progress bar
             const percent = usage?.percent ?? null;
-            if (percent !== null) {
+            if (percent !== null && Number.isFinite(percent)) {
               const barWidth = 8;
-              const filled = Math.round((percent / 100) * barWidth);
+              const filled = getFilledWidth(percent, barWidth);
               const filledPart = "█".repeat(filled);
               const emptyPart = "░".repeat(barWidth - filled);
               const progressStr = "[" + thm.fg("accent", filledPart) + thm.fg("dim", emptyPart) + "] " + Math.round(percent) + "%";
