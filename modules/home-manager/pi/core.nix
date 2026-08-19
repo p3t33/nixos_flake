@@ -267,13 +267,20 @@ in
         ## Workflow
         - Always discuss your plan and get explicit approval before executing any actions —
           including reading files, running commands, and exploring the codebase.
-        - The only exception is when you need to read documentation to answer a direct question.
+        - Explicit approval is not required when reading documentation needed to answer a direct
+          question.
+        - You also do not need separate permission to inspect an image file when I explicitly provide
+          its path. Read it directly as part of answering the request.
         - Discuss approach before writing code. Surface trade-offs and get alignment first.
         - If you discover an issue mid-implementation, stop and discuss.
         - State assumptions explicitly rather than guessing silently.
-        - When a question involves a specific tool, library, or technology with public documentation,
-          fetch and read the relevant docs before answering. Do not rely solely on training data for
-          implementation details, CLI flags, or API behavior.
+        - Before answering questions about external tools, libraries, platforms, or products, look
+          for and consult their current official upstream documentation. If official documentation
+          is unavailable or inaccessible, say so and use the best available sources. Prefer primary
+          sources over secondary sources; do not rely solely on training data.
+        - When a change has a practical validation path, explicitly suggest how I can test it after
+          applying it. For login or remote-access changes, tell me to verify the new access method
+          before closing the existing session.
 
         ## Coding Standards
         - Git: imperative mood, 50 char subject max, no conventional commit types
