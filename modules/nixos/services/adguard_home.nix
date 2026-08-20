@@ -1,3 +1,10 @@
+# This module is not actively used or maintained, as I have moved to
+# use unbound for my dnns needs(including filtering and rewriting),
+#
+# I did decided to leave the configuration in case I decide I want a second dns
+# backup service or some other networking design change.
+#
+# I have set the service to use DNS over TLS.
 { config, lib, hostSpecific, ... }:
 let
   dnsPort = 53;
@@ -61,13 +68,15 @@ in
           ];
           port = dnsPort; # DNS port for AdGuard
           upstream_dns = [
-            "8.8.8.8"
-            "8.8.4.4"
-          ]; # Upstream DNS servers (Google DNS in this case)
+            "tls://one.one.one.one"
+          ];
+          fallback_dns = [
+            "tls://8.8.8.8"
+          ];
           bootstrap_dns = [
+            "1.1.1.1"
             "8.8.8.8"
-            "8.8.4.4"
-          ]; # Upstream DNS servers (Google DNS in this case)
+          ];
 
         };
 
