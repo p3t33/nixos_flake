@@ -33,7 +33,7 @@
 
     tmux-nerd-font-window-name = {
       url = "github:joshmedeski/tmux-nerd-font-window-name";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
