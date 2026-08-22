@@ -43,10 +43,10 @@
       system = "x86_64-linux";
       nomachineVersionFix = final: prev: {
         nomachine-client = prev.nomachine-client.overrideAttrs (old: {
-          version = "10.0.57";
+          version = "10.0.59";
           src = prev.fetchurl {
-            url = "https://web9001.nomachine.com/download/10.0/Linux/nomachine-enterprise-client_10.0.57_2_x86_64.tar.gz";
-            hash = "sha256-F4cwX9F1cIy+FZ9KtEe6oeAIrC34jzkmydcrUbtJVdQ=";
+            url = "https://web9001.nomachine.com/download/10.0/Linux/nomachine-enterprise-client_10.0.59_1_x86_64.tar.gz";
+            hash = "sha256-3cq9itsCms/Sa7ucap6Qcjlgj+4mYZu7EHqeUrTZZKk=";
           };
         });
       };
