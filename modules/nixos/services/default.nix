@@ -6,6 +6,7 @@ in
 {
   imports = [
     ./adguard_home.nix
+    ./acme.nix
     ./avahi.nix
     ./bluetooth.nix
     ./calibre-web.nix

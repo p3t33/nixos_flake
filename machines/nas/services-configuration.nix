@@ -30,6 +30,8 @@
   ];
 
   custom = {
+    security.acme.enable = true;
+
     profiles.systemServices = {
       core.enable = true;
       server.enable = true;
