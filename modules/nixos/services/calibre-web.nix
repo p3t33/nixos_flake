@@ -71,6 +71,9 @@ in
       };
     };
 
+    systemd.services.calibre-web.serviceConfig.SystemCallFilter =
+      lib.mkAfter [ "setpriority" ];
+
     services.calibre-web = {
       package = pkgs.calibre-web.overridePythonAttrs (old: {
         pythonRelaxDeps = (old.pythonRelaxDeps or []) ++ [ "requests" ];
