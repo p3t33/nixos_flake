@@ -67,6 +67,7 @@ in
         mqtt.server = "mqtt://${config.custom.shared.localHostIPv4}:${builtins.toString config.custom.servicePort.mosquitto}";  # Mosquitto MQTT broker
         frontend = {
           port = config.custom.servicePort.zigbee2mqttFrontend;
+          url = "https://zigbee2mqtt.${config.custom.shared.appsDomain}";
         };
         advanced.log_level = "info";
 

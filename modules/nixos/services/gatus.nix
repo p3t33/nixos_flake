@@ -46,7 +46,6 @@ in
         web = {
           address = "${config.custom.shared.anyIPv4}"; # Listen on all interfaces
           port = 8081;
-          root = "/gatus";
         };
 
         endpoints =
@@ -136,7 +135,7 @@ in
               enabled = true;
               failure-threshold = 3;
               success-threshold = 1;
-              description = "SSH service is unreachable";
+              description = "Immich service is unreachable";
             }
             ];
           }
@@ -166,7 +165,7 @@ in
           {
             name = "n8n";
             group = automation;
-            url = "tcp://${config.custom.shared.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
+            url = "tcp://${config.custom.shared.localHostIPv4}:${toString config.custom.services.n8n.port}";
             interval = "30s";
             conditions = [
               "[CONNECTED] == true"
@@ -283,7 +282,7 @@ in
           {
             name = "prowlarr";
             group = media;
-            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}${config.services.prowlarr.settings.server.urlbase}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{

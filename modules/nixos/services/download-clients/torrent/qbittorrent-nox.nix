@@ -6,6 +6,8 @@
 }:
 let
   cfg = config.custom.services.qbittorrent;
+  appsDomain = config.custom.shared.appsDomain;
+  qbittorrentHost = "qbittorrent.${appsDomain}";
   categoryNames = config.custom.media.downloadCategories;
   mediaDir = config.custom.shared.pathToMediaDirectory;
   torrentsDir = "${mediaDir}/torrents";
@@ -27,6 +29,15 @@ let
     LegalNotice.Accepted = true;
 
     Network.PortForwardingEnabled = false;
+
+    Preferences = {
+      "WebUI\\CSRFProtection" = true;
+      "WebUI\\HostHeaderValidation" = true;
+      "WebUI\\ServerDomains" = qbittorrentHost;
+      "WebUI\\SecureCookie" = true;
+      "WebUI\\ReverseProxySupportEnabled" = true;
+      "WebUI\\TrustedReverseProxiesList" = config.custom.shared.localHostIPv4;
+    };
   };
   qBittorrentConfigFile = pkgs.writeText "qBittorrent.conf" (
     lib.generators.toINI { } qBittorrentServerConfig

@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostSpecific, ... }:
 let
   paperlessPath = "${config.custom.shared.pathToMediaDirectory}/paperless";
+  appsDomain = config.custom.shared.appsDomain;
+  paperlessHost = "paperless.${appsDomain}";
+  externalScheme = if config.custom.security.acme.enable then "https" else "http";
 in
 {
   config = lib.mkIf config.services.paperless.enable {
@@ -27,6 +30,11 @@ in
         PAPERLESS_OCR_MODE = "skip"; # Don't re-OCR if text exists
         PAPERLESS_OCR_IMAGE_DPI = "300";
         PAPERLESS_FILENAME_FORMAT = "{{ correspondent }}/{{ created_year }}/{{ title }}";
+        PAPERLESS_URL = "${externalScheme}://${paperlessHost}";
+        PAPERLESS_ALLOWED_HOSTS = "${paperlessHost},${config.custom.shared.${hostSpecific.hostName}.ip},${config.custom.shared.localHostIPv4}";
+        PAPERLESS_USE_X_FORWARD_HOST = true;
+        PAPERLESS_USE_X_FORWARD_PORT = true;
+        PAPERLESS_PROXY_SSL_HEADER = [ "HTTP_X_FORWARDED_PROTO" "https" ];
       };
 
       # The "Portable" Daily Backup
