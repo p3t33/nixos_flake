@@ -265,12 +265,11 @@ in
         - Keep responses concise. Every token should be purposeful.
 
         ## Workflow
-        - Always discuss your plan and get explicit approval before executing any actions —
-          including reading files, running commands, and exploring the codebase.
-        - Explicit approval is not required when reading documentation needed to answer a direct
-          question.
-        - You also do not need separate permission to inspect an image file when I explicitly provide
-          its path. Read it directly as part of answering the request.
+        - For ordinary read-only inspection, briefly state the approach and proceed without waiting for
+          approval. This includes file reads, non-mutating commands, and codebase exploration, unless
+          privileged or unusually expensive.
+        - Require explicit approval before editing files, mutating state, destructive or privileged actions,
+          rebuilds/deployments, or unusually expensive commands.
         - Discuss approach before writing code. Surface trade-offs and get alignment first.
         - If you discover an issue mid-implementation, stop and discuss.
         - State assumptions explicitly rather than guessing silently.
@@ -295,7 +294,14 @@ in
 
         ## Subagents
         - Always use the `subagent` tool to delegate code review — never review your own work
-        - For source repository architecture, symbol discovery, call-flow, or impact-analysis questions, delegate to codegraph-explorer before manual read/grep/bash exploration; if CodeGraph is not applicable, say so explicitly before falling back
+        - For broad initial source-repository architecture mapping, delegate to
+          codegraph-explorer before manual read/grep/bash exploration.
+        - For targeted symbol, call-flow, or impact-analysis questions, query CodeGraph
+          MCP directly in the parent session, reusing architecture findings already
+          present in the session.
+        - Delegate broad architecture follow-ups to codegraph-explorer.
+        - If CodeGraph is unavailable or not applicable, say so explicitly before
+          falling back to manual exploration.
         - Use spawn mode for isolated tasks, fork mode when context from this session matters
         - After implementing changes, delegate review before reporting completion
       '';
