@@ -50,6 +50,7 @@ in
     ./gtk.nix
     ./qt.nix
     ./moolticute.nix
+    ./glabels.nix
     ./firefox.nix
     ./zellij.nix
     ./yazi.nix

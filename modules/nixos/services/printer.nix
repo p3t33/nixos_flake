@@ -7,7 +7,7 @@ let
 in
 {
   options.custom.services.printing = {
-    client.enable = lib.mkEnableOption "CUPS client — enables printing and desktop extras (label software, lp group)";
+    client.enable = lib.mkEnableOption "CUPS client — enables printing and lp group membership";
     server.enable = lib.mkEnableOption "CUPS print server — shares locally-attached USB printers on the LAN";
   };
 
@@ -37,10 +37,6 @@ in
       # AirPrint) which lets CUPS render and send jobs without a PPD. A driver package
       # exists (pkgs.cups-brother-hll2350dw) but is not needed.
       # that is why there is no driver configuration for the client section at the moment.
-
-      environment.systemPackages = with pkgs; [
-        glabels-qt  # label printing software
-      ];
 
       # CUPS runs as its own user (lp/cups). This group membership allows the
       # primary user to query printer status and manage jobs directly via CUPS.

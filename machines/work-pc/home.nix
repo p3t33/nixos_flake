@@ -24,6 +24,7 @@ in
         defaultThinkingLevel = "medium";
       };
       gitCommitSignaturesWithGpg.enable = true;
+      glabels.enable = true;
     };
 
     profiles.homeManager = {

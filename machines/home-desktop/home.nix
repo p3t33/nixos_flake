@@ -9,7 +9,10 @@
   programs.gpg.enable = true;
 
   custom = {
-    programs.gitCommitSignaturesWithGpg.enable = true;
+    programs = {
+      gitCommitSignaturesWithGpg.enable = true;
+      glabels.enable = true;
+    };
 
     profiles.homeManager = {
       core.enable = true;
