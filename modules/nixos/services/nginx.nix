@@ -12,8 +12,9 @@ let
   allInterfaces = "0.0.0.0";
   localHost = "http://${builtins.toString config.custom.shared.localHostIPv4}";
   appsDomain = config.custom.shared.appsDomain;
+  hostIPv4Address = config.custom.shared.lan.hosts.${hostSpecific.hostName}.ipv4Address;
   automationConfig = inputs.self.nixosConfigurations."home-assistant".config;
-  automationHostIPv4 = automationConfig.custom.shared."home-assistant".ip;
+  automationHostIPv4 = config.custom.shared.lan.hosts."home-assistant".ipv4Address;
 in
 {
   config = lib.mkIf config.services.nginx.enable {
@@ -24,7 +25,7 @@ in
       recommendedTlsSettings = true;
 
       virtualHosts = {
-        "${config.custom.shared.${hostSpecific.hostName}.ip}" = {
+        "${hostIPv4Address}" = {
           listen = [
             {
               addr = "${allInterfaces}"; # Listen on all available network interfaces

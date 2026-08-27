@@ -8,7 +8,7 @@
 { config, lib, hostSpecific, ... }:
 let
   dnsPort = 53;
-  hostIP = config.custom.shared.${hostSpecific.hostName}.ip;
+  hostIP = config.custom.shared.lan.hosts.${hostSpecific.hostName}.ipv4Address;
 
   # To add a DNS rewrite for a new service, append an entry here.
   # The domain defaults to "${name}.${hostName}" but can be overridden.

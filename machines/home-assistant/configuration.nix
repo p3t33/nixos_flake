@@ -16,8 +16,6 @@
     boot.zfs.forceImportRoot = false;
     networking.hostId = "cf97b6ff";
 
-    custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}21";
-
     custom = {
       profiles.system = {
         core.enable = true;

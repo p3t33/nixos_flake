@@ -7,7 +7,7 @@ in
   imports = [
     ../shared.nix # used both for nixos and home-manager
     ./shared/networking.nix
-    ./shared/static-ip.nix
+    ./shared/lan-hosts.nix
     ./auto_upgrade.nix
     ./dconf.nix
     ./defaults_for_system_build.nix

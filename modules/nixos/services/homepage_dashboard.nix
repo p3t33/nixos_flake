@@ -6,6 +6,8 @@ let
   devices = "devices";
   automation = "automation";
   appsDomain = config.custom.shared.appsDomain;
+  hostIPv4Address = config.custom.shared.lan.hosts.${hostSpecific.hostName}.ipv4Address;
+  automationHostIPv4Address = config.custom.shared.lan.hosts."home-assistant".ipv4Address;
 
 in
 {
@@ -24,7 +26,7 @@ in
     services.homepage-dashboard = {
       listenPort = 8082;
       openFirewall = true;
-      allowedHosts = "${config.custom.shared.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},${config.custom.shared.${hostSpecific.hostName}.ip},${config.custom.shared.${hostSpecific.hostName}.ip}:${toString config.services.homepage-dashboard.listenPort},homepage.${appsDomain}";
+      allowedHosts = "${config.custom.shared.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},${hostIPv4Address},${hostIPv4Address}:${toString config.services.homepage-dashboard.listenPort},homepage.${appsDomain}";
       environmentFiles = [ config.sops.secrets.homepage-dashboard.path ];
 
 
@@ -117,7 +119,7 @@ in
                   statusStyle = "dot";
                   # widget = {
                   #     type = "sabnzbd";
-                  #     url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.custom.services.paperless.}/sabnzbd";
+                  #     url = "http://${hostIPv4Address}:${builtins.toString config.custom.services.paperless.}/sabnzbd";
                   #     key = "{{HOMEPAGE_VAR_SABNZBD}}";
                   # };
                 };
@@ -131,13 +133,13 @@ in
               {
                 "adguard" = {
                   description = "DNS based ad blocker";
-                  href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}/adguard";
+                  href = "http://${hostIPv4Address}/adguard";
                   icon = "adguard-home.png";
                   siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.adguardhome.port}";
                   statusStyle = "dot";
                   widget = {
                     type = "adguard";
-                    url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.adguardhome.port}";
+                    url = "http://${hostIPv4Address}:${builtins.toString config.services.adguardhome.port}";
                     # password = "{{HOMEPAGE_VAR_DELUGE}}"; # not a hash, but human redable password used with the webgui.
                     # enableLeechProgress = true;
                   };
@@ -227,7 +229,7 @@ in
               {
                 "bazarr" = {
                   description = "Subtitles for media library";
-                  href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}/bazarr";
+                  href = "http://${hostIPv4Address}/bazarr";
                   icon = "bazarr.png";
                   siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.bazarr.listenPort}";
                   statusStyle = "dot";
@@ -255,7 +257,7 @@ in
               {
                 "jackett" = {
                   description = "Indexer manager";
-                  href = "http://${config.custom.shared.${hostSpecific.hostName}.ip}/jackett";
+                  href = "http://${hostIPv4Address}/jackett";
                   icon = "jackett.png";
                   siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.jackett.port}";
                   statusStyle = "dot";
@@ -283,7 +285,7 @@ in
                   statusStyle = "dot";
                   widget = {
                     type = "immich";
-                    url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.immich.port}";
+                    url = "http://${hostIPv4Address}:${builtins.toString config.services.immich.port}";
                     key = "{{HOMEPAGE_VAR_IMMICH}}";
                     version = 2;
                   };
@@ -332,7 +334,7 @@ in
                   statusStyle = "dot";
                   # widget = {
                   #   type = "gatus";
-                  #   url = "http://${config.custom.shared.${hostSpecific.hostName}.ip}:${builtins.toString config.services.gatus.settings.web.port}";
+                  #   url = "http://${hostIPv4Address}:${builtins.toString config.services.gatus.settings.web.port}";
                   # };
                 };
               }
@@ -343,7 +345,7 @@ in
                   description = "Home automation platform";
                   href = "${if config.custom.security.acme.enable then "https" else "http"}://home-assistant.${appsDomain}";
                   icon = "home-assistant.png";
-                  siteMonitor = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
+                  siteMonitor = "http://${automationHostIPv4Address}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
                   statusStyle = "dot";
                 };
               }
@@ -354,7 +356,7 @@ in
                   description = "Zigbee to MQTT bridge";
                   href = "${if config.custom.security.acme.enable then "https" else "http"}://zigbee2mqtt.${appsDomain}";
                   icon = "zigbee2mqtt.png";
-                  siteMonitor = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
+                  siteMonitor = "http://${automationHostIPv4Address}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
                   statusStyle = "dot";
                 };
               }

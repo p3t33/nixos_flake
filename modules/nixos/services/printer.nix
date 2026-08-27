@@ -1,6 +1,6 @@
 { config, lib, pkgs, hostSpecific, ... }:
 let
-  subnet    = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}0/24";
+  lanIPv4Cidr = config.custom.shared.lan.ipv4Cidr;
   localHost = config.custom.shared.localHostIPv4;
   anyIPv4   = config.custom.shared.anyIPv4;
   cupsPort  = 631;
@@ -83,7 +83,7 @@ in
         listenAddresses = [ "${anyIPv4}:${toString cupsPort}" ];
         # CUPS rejects IPP requests from IPs outside this list, regardless of firewall, and of
         # the interface it exposes its port on.
-        allowFrom       = [ localHost subnet ];
+        allowFrom       = [ localHost lanIPv4Cidr ];
         # Opens CUPS port in the host firewall, so other hosts on the private network can reach it.
         openFirewall    = true;
         #

@@ -7,6 +7,7 @@ let
   remoteAccess =" remote access";
   external = "external";
   automation = "automation";
+  automationHostIPv4Address = config.custom.shared.lan.hosts."home-assistant".ipv4Address;
 in
 {
   config = lib.mkIf config.services.gatus.enable {
@@ -410,7 +411,7 @@ in
           {
             name = "home-assistant";
             group = automation;
-            url = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
+            url = "http://${automationHostIPv4Address}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -426,7 +427,7 @@ in
           {
             name = "zigbee2mqtt";
             group = automation;
-            url = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
+            url = "http://${automationHostIPv4Address}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{

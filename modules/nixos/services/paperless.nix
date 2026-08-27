@@ -31,7 +31,7 @@ in
         PAPERLESS_OCR_IMAGE_DPI = "300";
         PAPERLESS_FILENAME_FORMAT = "{{ correspondent }}/{{ created_year }}/{{ title }}";
         PAPERLESS_URL = "${externalScheme}://${paperlessHost}";
-        PAPERLESS_ALLOWED_HOSTS = "${paperlessHost},${config.custom.shared.${hostSpecific.hostName}.ip},${config.custom.shared.localHostIPv4}";
+        PAPERLESS_ALLOWED_HOSTS = "${paperlessHost},${config.custom.shared.lan.hosts.${hostSpecific.hostName}.ipv4Address},${config.custom.shared.localHostIPv4}";
         PAPERLESS_USE_X_FORWARD_HOST = true;
         PAPERLESS_USE_X_FORWARD_PORT = true;
         PAPERLESS_PROXY_SSL_HEADER = [ "HTTP_X_FORWARDED_PROTO" "https" ];
