@@ -26,141 +26,19 @@ in
 
       virtualHosts = {
         "${hostIPv4Address}" = {
+          default = true;
           listen = [
             {
-              addr = "${allInterfaces}"; # Listen on all available network interfaces
-              port = httpPort; # HTTP port
+              addr = allInterfaces;
+              port = httpPort;
             }
           ];
-
-          # Conditional locations based on enabled services
-          locations = lib.recursiveUpdate { } (
-            lib.optionalAttrs config.services.syncthing.enable {
-              "/syncthing/" = {
-                proxyPass = "${localHost}:${builtins.toString config.custom.services.syncthing.httpPort}/";
-                extraConfig = ''
-                  proxy_read_timeout 600s;
-                  proxy_send_timeout 600s;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.adguardhome.enable {
-              "/adguard/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.adguardhome.port}/";
-              };
-            }
-            // lib.optionalAttrs config.services.deluge.enable {
-              "/deluge/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.deluge.web.port}/";
-                extraConfig = ''
-                  proxy_set_header X-Deluge-Base "/deluge/";
-                  add_header X-Frame-Options SAMEORIGIN;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.sonarr.enable {
-              "/sonarr" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.sonarr.settings.server.port}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-
-            // lib.optionalAttrs config.services.calibre-web.enable {
-              "/calibre-web/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.calibre-web.listen.port}";
-                proxyWebsockets = true;
-                extraConfig = ''
-                  proxy_set_header X-Script-Name /calibre-web;
-                  client_max_body_size 1024M;
-               '';
-              };
-            }
-            // lib.optionalAttrs config.services.bazarr.enable {
-              "/bazarr" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.bazarr.listenPort}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.radarr.enable {
-              "/radarr" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.radarr.settings.server.port}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.prowlarr.enable {
-              "/prowlarr" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.prowlarr.settings.server.port}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.jackett.enable {
-              "/jackett" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.jackett.port}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.sabnzbd.enable {
-              "/sabnzbd/" = {
-                proxyPass = "${localHost}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd/";
-                extraConfig = ''
-                  proxy_set_header X-Forwarded-Host $host;
-                  proxy_set_header X-Forwarded-Server $host;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                '';
-              };
-            }
-
-            // lib.optionalAttrs config.services.jellyfin.enable {
-              "/jellyfin" = {
-                proxyPass = "${localHost}:${builtins.toString config.custom.servicePort.jellyfin}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-            // lib.optionalAttrs config.services.homepage-dashboard.enable {
-              "/homepage/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.homepage-dashboard.listenPort}/";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            }
-          );
+          locations."/" = {
+            return = 410;
+            extraConfig = ''
+              add_header Cache-Control "no-store" always;
+            '';
+          };
         };
 
         # Conditionally add virtual hosts based on enabled services

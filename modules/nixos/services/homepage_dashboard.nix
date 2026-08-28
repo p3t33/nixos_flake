@@ -129,23 +129,6 @@ in
         {
           "${monitoring}" =
             [ ]
-            ++ lib.optionals config.services.adguardhome.enable [
-              {
-                "adguard" = {
-                  description = "DNS based ad blocker";
-                  href = "http://${hostIPv4Address}/adguard";
-                  icon = "adguard-home.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.adguardhome.port}";
-                  statusStyle = "dot";
-                  widget = {
-                    type = "adguard";
-                    url = "http://${hostIPv4Address}:${builtins.toString config.services.adguardhome.port}";
-                    # password = "{{HOMEPAGE_VAR_DELUGE}}"; # not a hash, but human redable password used with the webgui.
-                    # enableLeechProgress = true;
-                  };
-                };
-              }
-            ]
             ++ lib.optionals config.services.gatus.enable [
               {
                 "gatus" = {
@@ -225,17 +208,6 @@ in
                 };
               }
             ]
-            ++ lib.optionals config.services.bazarr.enable [
-              {
-                "bazarr" = {
-                  description = "Subtitles for media library";
-                  href = "http://${hostIPv4Address}/bazarr";
-                  icon = "bazarr.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.bazarr.listenPort}";
-                  statusStyle = "dot";
-                };
-              }
-            ]
             ++ lib.optionals config.services.prowlarr.enable [
               {
                 "prowlarr" = {
@@ -250,17 +222,6 @@ in
                     key = "{{HOMEPAGE_VAR_PROWLARR}}";
                     enableQueue = true;
                   };
-                };
-              }
-            ]
-            ++ lib.optionals config.services.jackett.enable [
-              {
-                "jackett" = {
-                  description = "Indexer manager";
-                  href = "http://${hostIPv4Address}/jackett";
-                  icon = "jackett.png";
-                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.jackett.port}";
-                  statusStyle = "dot";
                 };
               }
             ]
