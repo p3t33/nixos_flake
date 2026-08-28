@@ -41,101 +41,8 @@ in
           };
         };
 
-        # Conditionally add virtual hosts based on enabled services
-        "qbittorrent.${hostSpecific.hostName}" =
-          lib.optionalAttrs config.services.qbittorrent.enable
-            {
-              listen = [
-                {
-                  addr = "${allInterfaces}";
-                  port = httpPort;
-                }
-              ];
-              locations."/" = {
-                recommendedProxySettings = false;
-                proxyPass = "${localHost}:${builtins.toString config.services.qbittorrent.webuiPort}/";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Host $proxy_host;
-                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                  proxy_set_header X-Forwarded-Host $http_host;
-                  proxy_set_header X-Forwarded-Proto $scheme;
-                '';
-              };
-            };
-
-        "adguard.${hostSpecific.hostName}" =
-          lib.optionalAttrs config.services.adguardhome.enable
-            {
-              listen = [
-                {
-                  addr = "${allInterfaces}";
-                  port = httpPort;
-                }
-              ];
-              locations."/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.adguardhome.port}/";
-              };
-            };
-
-        "syncthing.${hostSpecific.hostName}" =
-          lib.optionalAttrs config.services.syncthing.enable
-            {
-              listen = [
-                {
-                  addr = "${allInterfaces}";
-                  port = httpPort;
-                }
-              ];
-              locations."/" = {
-                proxyPass = "${localHost}:${builtins.toString config.custom.services.syncthing.httpPort}/";
-                extraConfig = ''
-                  proxy_read_timeout 600s;
-                  proxy_send_timeout 600s;
-                '';
-              };
-            };
-
-        "bazarr.${hostSpecific.hostName}" =
-          lib.optionalAttrs config.services.bazarr.enable
-            {
-              listen = [
-                {
-                  addr = "${allInterfaces}";
-                  port = httpPort;
-                }
-              ];
-              locations."/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.bazarr.listenPort}";
-                extraConfig = ''
-                  proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            };
-
-        "jackett.${hostSpecific.hostName}" =
-          lib.optionalAttrs config.services.jackett.enable
-            {
-              listen = [
-                {
-                  addr = "${allInterfaces}";
-                  port = httpPort;
-                }
-              ];
-              locations."/" = {
-                proxyPass = "${localHost}:${builtins.toString config.services.jackett.port}";
-                extraConfig = ''
-                      proxy_http_version 1.1;
-                  proxy_set_header Upgrade $http_upgrade;
-                  proxy_set_header Connection "upgrade";
-                  proxy_redirect off;
-                '';
-              };
-            };
-
+      }
+      // lib.optionalAttrs config.services.homepage-dashboard.enable {
         "homepage.${appsDomain}" =
           {
             locations."/" = {
@@ -147,7 +54,19 @@ in
             useACMEHost = appsDomain;
             forceSSL = true;
           };
-
+      }
+      // lib.optionalAttrs config.services.adguardhome.enable {
+        "adguard.${appsDomain}" =
+          {
+            locations."/" = {
+              proxyPass = "${localHost}:${builtins.toString config.services.adguardhome.port}/";
+              proxyWebsockets = true;
+            };
+          }
+          // lib.optionalAttrs config.custom.security.acme.enable {
+            useACMEHost = appsDomain;
+            forceSSL = true;
+          };
       }
       // lib.optionalAttrs config.services.syncthing.enable {
          "syncthing.${appsDomain}" =

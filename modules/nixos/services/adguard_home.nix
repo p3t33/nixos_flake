@@ -1,45 +1,46 @@
-# This module is not actively used or maintained, as I have moved to
-# use unbound for my dnns needs(including filtering and rewriting),
-#
-# I did decided to leave the configuration in case I decide I want a second dns
-# backup service or some other networking design change.
-#
-# I have set the service to use DNS over TLS.
+# AdGuard Home is disabled in favor of Unbound, but retained as a fallback DNS
+# service for networks where the router cannot provide local DNS overrides.
+# Upstream resolution uses DNS over TLS.
 { config, lib, hostSpecific, ... }:
 let
   dnsPort = 53;
-  hostIP = config.custom.shared.lan.hosts.${hostSpecific.hostName}.ipv4Address;
+  dnsHostIP = config.custom.shared.lan.hosts.${hostSpecific.hostName}.ipv4Address;
+  appsProxyIP = config.custom.shared.lan.hosts.nas.ipv4Address;
+  appsDomain = config.custom.shared.appsDomain;
 
-  # To add a DNS rewrite for a new service, append an entry here.
-  # The domain defaults to "${name}.${hostName}" but can be overridden.
-  rewriteEntries = [
-    { name = "deluge";    cond = config.services.deluge.enable; }
-    { name = "qbittorrent"; cond = config.services.qbittorrent.enable; }
-    { name = "syncthing"; cond = config.services.syncthing.enable; }
-    { name = "adguard";   cond = config.services.adguardhome.enable; }
-    { name = "sonarr";    cond = config.services.sonarr.enable; }
-    { name = "bazarr";    cond = config.services.bazarr.enable; }
-    { name = "radarr";    cond = config.services.radarr.enable; }
-    { name = "prowlarr";  cond = config.services.prowlarr.enable; }
-    { name = "jackett";   cond = config.services.jackett.enable; }
-    { name = "jellyfin";  cond = config.services.jellyfin.enable; }
-    { name = "calibre-web"; cond = config.services.calibre-web.enable; }
-    { name = "homepage";  cond = config.services.homepage-dashboard.enable; }
-    { name = "prometheus"; cond = config.services.prometheus.enable; }
-    { name = "sabnzbd";   cond = config.services.sabnzbd.enable; }
-    { name = "grafana";   cond = config.services.grafana.enable; }
+  # IMPORTANT: This fallback DNS routing has not been runtime-tested. Before
+  # directing clients to AdGuard, verify every rewrite, canonical HTTPS route,
+  # upstream DNS-over-TLS path, and client DNS configuration.
+  applicationNames = [
+    "calibre-web"
+    "deluge"
+    "gatus"
+    "grafana"
+    "home-assistant"
+    "homepage"
+    "immich"
+    "jellyfin"
+    "n8n"
+    "paperless"
+    "prometheus"
+    "prowlarr"
+    "qbittorrent"
+    "radarr"
+    "sabnzbd"
+    "sonarr"
+    "syncthing"
+    "zigbee2mqtt"
   ];
 
-  # lib.concatMap iterates over rewriteEntries, passing each element as `entry`
-  # to the lambda. lib.optional returns [ attrset ] when entry.cond is true,
-  # or [] when false. concatMap then flattens all the results into one list.
-  mkRewrites = lib.concatMap (entry:
-    lib.optional entry.cond {
-      domain = "${entry.name}.${hostSpecific.hostName}";
-      answer = hostIP;
-      enabled = true;
-    }
-  ) rewriteEntries;
+  rewriteEntries = map (name: {
+    domain = "${name}.${appsDomain}";
+    answer = appsProxyIP;
+    enabled = true;
+  }) applicationNames ++ [{
+    domain = "adguard.${appsDomain}";
+    answer = dnsHostIP;
+    enabled = true;
+  }];
 in
 {
 
@@ -64,7 +65,7 @@ in
         dns = {
           bind_hosts = [
             "127.0.0.1"
-            hostIP
+            dnsHostIP
           ];
           port = dnsPort; # DNS port for AdGuard
           upstream_dns = [
@@ -83,7 +84,7 @@ in
         filtering = {
           protection_enabled = true;
           filtering_enabled = true;
-          rewrites = mkRewrites;
+          rewrites = rewriteEntries;
         };
       };
     };
