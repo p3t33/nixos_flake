@@ -15,13 +15,13 @@ in
   config = lib.mkIf config.services.sabnzbd.enable {
     services.sabnzbd = {
       group = config.custom.shared.mediaGroup;
-      openFirewall = true;
+      openFirewall = false;
       configFile = null;
       allowConfigWrite = true;
       secretFiles = [ config.sops.templates."sabnzbd-secrets.ini".path ];
       settings = {
         misc = {
-          host = config.custom.shared.anyIPv4;
+          host = config.custom.shared.localHostIPv4;
           port = config.custom.services.sabnzbd.httpPort;
           url_base = "";
           host_whitelist = "nas, sabnzbd.${config.custom.shared.appsDomain}";

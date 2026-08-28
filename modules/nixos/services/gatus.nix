@@ -16,7 +16,7 @@ in
     };
 
     services.gatus = {
-      openFirewall = true; # Allows access to the Gatus UI from your network
+      openFirewall = false;
       environmentFile = config.sops.secrets.gatus.path;
       settings = {
         ui = {
@@ -45,7 +45,7 @@ in
         };
 
         web = {
-          address = "${config.custom.shared.anyIPv4}"; # Listen on all interfaces
+          address = config.custom.shared.localHostIPv4;
           port = 8081;
         };
 

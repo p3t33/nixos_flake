@@ -106,11 +106,12 @@ in
 
     # Enable the Sonarr service(as of now there is no config for default sonarr port)
     services.${serviceName} = {
-      openFirewall = true;
+      openFirewall = false;
       user = "${serviceName}";
       group = "${config.custom.shared.mediaGroup}";
       settings = {
         server = {
+          bindaddress = config.custom.shared.localHostIPv4;
           port = 8989;
           urlbase = "";
         };

@@ -105,11 +105,12 @@ in
     ];
 
     services.${serviceName} = {
-      openFirewall = true; # Opens Radarr's port on the firewall (default 7878)
+      openFirewall = false;
       user = "${serviceName}";
       group = "${config.custom.shared.mediaGroup}";
       settings = {
         server = {
+          bindaddress = config.custom.shared.localHostIPv4;
           port = 7878;
           urlbase = "";
         };

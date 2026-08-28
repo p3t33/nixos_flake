@@ -17,7 +17,7 @@ in
       openFirewall = true;
       web = {
         enable = true;
-        openFirewall = true;
+        openFirewall = false;
         port = 8112;
       };
       extraPackages = with pkgs; [
@@ -66,6 +66,15 @@ in
       # the webgui and anybody else who needs access(such as prometheus exporter).
       authFile = config.sops.secrets."deluge/auth_file".path;
     };
+
+    # The NixOS module exposes the Web UI port but not its bind address.
+    systemd.services.delugeweb.serviceConfig.ExecStart = lib.mkForce ''
+      ${config.services.deluge.package}/bin/deluge-web \
+        --do-not-daemonize \
+        --config ${config.services.deluge.dataDir}/.config/deluge \
+        --interface ${config.custom.shared.localHostIPv4} \
+        --port ${toString config.services.deluge.web.port}
+    '';
 
     sops.secrets."deluge/auth_file" = {
       mode = "0640";

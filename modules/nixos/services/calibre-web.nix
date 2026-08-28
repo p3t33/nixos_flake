@@ -82,10 +82,10 @@ in
       group = config.custom.shared.mediaGroup;
       dataDir = "/var/lib/calibre-web";
       listen = {
-        ip = "${config.custom.shared.anyIPv4}";
+        ip = config.custom.shared.localHostIPv4;
         port = 8083;
       };
-      openFirewall = true;
+      openFirewall = false;
       options = {
         calibreLibrary = calibreLibraryPath;
         enableBookUploading = true;

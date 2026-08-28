@@ -23,9 +23,12 @@ in
         restartUnits = [ config.systemd.services.homepage-dashboard.name ];
     };
 
+    # Homepage's standalone server uses HOSTNAME as its bind address.
+    systemd.services.homepage-dashboard.environment.HOSTNAME = config.custom.shared.localHostIPv4;
+
     services.homepage-dashboard = {
       listenPort = 8082;
-      openFirewall = true;
+      openFirewall = false;
       allowedHosts = "${config.custom.shared.localHostIPv4}:${toString config.services.homepage-dashboard.listenPort},${hostIPv4Address},${hostIPv4Address}:${toString config.services.homepage-dashboard.listenPort},homepage.${appsDomain}";
       environmentFiles = [ config.sops.secrets.homepage-dashboard.path ];
 
@@ -246,7 +249,7 @@ in
                   statusStyle = "dot";
                   widget = {
                     type = "immich";
-                    url = "http://${hostIPv4Address}:${builtins.toString config.services.immich.port}";
+                    url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.immich.port}";
                     key = "{{HOMEPAGE_VAR_IMMICH}}";
                     version = 2;
                   };

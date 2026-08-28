@@ -14,7 +14,7 @@ in
     services.paperless = {
       # This is the default package, I state this for readability.
       package = pkgs.paperless-ngx;
-      address = config.custom.shared.anyIPv4;
+      address = config.custom.shared.localHostIPv4;
       port = 28981;
       database.createLocally = true;
       environmentFile = config.sops.secrets.paperless-ngx-env.path;
@@ -57,7 +57,5 @@ in
       "d ${config.services.paperless.consumptionDir} 0770 ${config.services.paperless.user} ${config.custom.shared.mediaGroup} -"
       "d ${config.services.paperless.exporter.directory} 0770 ${config.services.paperless.user} ${config.custom.shared.mediaGroup} -"
     ];
-
-    networking.firewall.allowedTCPPorts = [ config.services.paperless.port ];
   };
 }

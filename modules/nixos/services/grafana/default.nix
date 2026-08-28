@@ -22,13 +22,11 @@ in
       owner = "grafana";
     };
 
-    networking.firewall.allowedTCPPorts = [ config.services.grafana.settings.server.http_port ];
-
     services.grafana = {
       settings = {
         users.home_page = "/d/system-health";
         server = {
-          http_addr = "${config.custom.shared.anyIPv4}";
+          http_addr = config.custom.shared.localHostIPv4;
           http_port = 3001;
           domain = grafanaHost;
           root_url = "${externalScheme}://${grafanaHost}/";

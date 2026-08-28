@@ -87,9 +87,10 @@ in
     );
 
     services.${serviceName} = {
-      openFirewall = true;
+      openFirewall = false;
       settings = {
         server = {
+          bindaddress = config.custom.shared.localHostIPv4;
           port = 9696;
           urlbase = "";
         };
