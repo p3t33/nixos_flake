@@ -23,6 +23,10 @@ in
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedTlsSettings = true;
+      appendHttpConfig = ''
+        # The default 512 is too small for the generated proxy header set.
+        proxy_headers_hash_max_size 1024;
+      '';
 
       virtualHosts = {
         "${hostIPv4Address}" = {
