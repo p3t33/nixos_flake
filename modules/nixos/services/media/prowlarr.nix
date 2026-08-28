@@ -91,7 +91,7 @@ in
       settings = {
         server = {
           port = 9696;
-          urlbase = "/${serviceName}";
+          urlbase = "";
         };
 
         postgres = {

@@ -103,7 +103,7 @@ in
                   statusStyle = "dot";
                   widget = {
                       type = "sabnzbd";
-                      url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd";
+                      url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.custom.services.sabnzbd.httpPort}";
                       key = "{{HOMEPAGE_VAR_SABNZBD}}";
                   };
                 };
@@ -229,7 +229,7 @@ in
               {
                 "jellyfin" = {
                   description = "Media server";
-                  href = "${if config.custom.security.acme.enable then "https" else "http"}://jellyfin.${appsDomain}/jellyfin/";
+                  href = "${if config.custom.security.acme.enable then "https" else "http"}://jellyfin.${appsDomain}/";
                   icon = "jellyfin.png";
                   siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.custom.servicePort.jellyfin}";
                   statusStyle = "dot";

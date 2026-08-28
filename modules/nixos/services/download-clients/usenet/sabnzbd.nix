@@ -23,7 +23,7 @@ in
         misc = {
           host = config.custom.shared.anyIPv4;
           port = config.custom.services.sabnzbd.httpPort;
-          url_base = "/sabnzbd";
+          url_base = "";
           host_whitelist = "nas, sabnzbd.${config.custom.shared.appsDomain}";
           fixed_ports = true;
           download_dir = "${pathToUsenetDirectory}/incomplete";

@@ -10,7 +10,7 @@ let
   serviceName = "sonarr";
   sonarrBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}";
   tvRootFolder = "${config.custom.shared.pathToMediaDirectory}/tv";
-  sabnzbdBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}/sabnzbd";
+  sabnzbdBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}";
   categories = config.custom.media.downloadCategories;
   sonarrEnvCredential = "sonarr-env";
   sabnzbdApiKeyCredential = "sabnzbd-api-key";
@@ -112,7 +112,7 @@ in
       settings = {
         server = {
           port = 8989;
-          urlbase = "/${serviceName}";
+          urlbase = "";
         };
 
         postgres = {
@@ -201,7 +201,7 @@ in
               --arg name "SABnzbd" \
               --arg host "$HOST" \
               --argjson port "$SABNZBD_PORT" \
-              --arg urlBase "/sabnzbd" \
+              --arg urlBase "" \
               --rawfile apiKey "$SABNZBD_API_KEY_FILE" \
               --arg tvCategory "$CATEGORY" \
               '

@@ -209,27 +209,17 @@ in
       // lib.optionalAttrs config.services.sabnzbd.enable {
         "sabnzbd.${appsDomain}" =
           {
-            locations =
-              let
-                sabnzbdProxy = {
-                  proxyPass = "${localHost}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd/";
-                  extraConfig = ''
-                    proxy_http_version 1.1;
-                    proxy_set_header Connection "";
-                    proxy_redirect /sabnzbd/ /;
-                    proxy_redirect http:// $scheme://;
-                    client_max_body_size 100M;
-                    proxy_read_timeout 600s;
-                    proxy_send_timeout 600s;
-                  '';
-                };
-              in
-              {
-                "/" = sabnzbdProxy;
-                "/sabnzbd" = sabnzbdProxy // {
-                  proxyPass = "${localHost}:${builtins.toString config.custom.services.sabnzbd.httpPort}/sabnzbd";
-                };
-              };
+            locations."/" = {
+              proxyPass = "${localHost}:${builtins.toString config.custom.services.sabnzbd.httpPort}/";
+              extraConfig = ''
+                proxy_http_version 1.1;
+                proxy_set_header Connection "";
+                proxy_redirect http:// $scheme://;
+                client_max_body_size 100M;
+                proxy_read_timeout 600s;
+                proxy_send_timeout 600s;
+              '';
+            };
           }
           // lib.optionalAttrs config.custom.security.acme.enable {
             useACMEHost = appsDomain;

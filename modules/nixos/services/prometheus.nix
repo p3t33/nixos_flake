@@ -49,7 +49,7 @@
         # sonarr metrics
         # exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
         #   enable = true;
-        #   url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
+        #   url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}";
         #   port = 9707;
         #   apiKeyFile = config.sops.secrets."sonarr/api_key".path;
         #   openFirewall = true;
@@ -66,7 +66,7 @@
             metrics_path = "/probe";
             params.module = [ "http_2xx" ];
             static_configs = [{
-                targets = [ "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr" ];
+                targets = [ "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}" ];
             }];
             relabel_configs = [
             { source_labels = [ "__address__" ]; target_label = "__param_target"; }

@@ -7,7 +7,7 @@
 
 let
   serviceName = "jellyfin";
-  jellyfinUrlBase = "/jellyfin";
+  jellyfinUrlBase = "";
   jellyfinRootUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.servicePort.jellyfin}";
   jellyfinBaseUrl = "${jellyfinRootUrl}${jellyfinUrlBase}";
   mediaDirectory = config.custom.shared.pathToMediaDirectory;
