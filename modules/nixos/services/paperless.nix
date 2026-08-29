@@ -7,7 +7,15 @@ let
 in
 {
   config = lib.mkIf config.services.paperless.enable {
-    sops.secrets.paperless-ngx-env = {};
+    sops.secrets.paperless-ngx-env = {
+      owner = config.services.paperless.user;
+      restartUnits = [
+        config.systemd.services.paperless-web.name
+        config.systemd.services.paperless-consumer.name
+        config.systemd.services.paperless-scheduler.name
+        config.systemd.services.paperless-task-queue.name
+      ];
+    };
 
     # There is also services.paperless-ngx but the module to
     # use is this one with the default pacakge being paperless-ngx
