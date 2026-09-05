@@ -57,9 +57,9 @@ in
 
     defaultModel = lib.mkOption {
       type = lib.types.str;
-      default = "gpt-5.6-sol";
+      default = "gpt-6-astra";
       description = ''
-        Default model ID for the selected provider, for example "gpt-5.6-sol",
+        Default model ID for the selected provider, for example "gpt-6-astra",
         "claude-opus-4-6", or "gemini-2.5-pro".
       '';
     };
@@ -180,9 +180,9 @@ in
       ];
 
       packages = [
-        "npm:pi-mcp-adapter@2.26.0"
+        "npm:pi-mcp-adapter@2.32.1"
         "npm:@mjakl/pi-subagent@2.1.0"
-        "npm:pi-ask-user@0.14.0"
+        "npm:pi-ask-user@0.15.0"
       ];
 
       settings = {

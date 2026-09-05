@@ -5,7 +5,7 @@
     programs.codex = {
       package = pkgs-unstable.codex;
       settings = {
-        model = "gpt-5.6-sol";
+        model = "gpt-6-astra";
         preferred_auth_method = "chatgpt";
         model_reasoning_effort = "high";
         history = {
