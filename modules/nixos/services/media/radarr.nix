@@ -10,7 +10,7 @@ let
   serviceName = "radarr";
   radarrBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.services.radarr.settings.server.port}${config.services.radarr.settings.server.urlbase}";
   moviesRootFolder = "${config.custom.shared.pathToMediaDirectory}/movies";
-  sabnzbdBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}/sabnzbd";
+  sabnzbdBaseUrl = "http://${config.custom.shared.localHostIPv4}:${toString config.custom.services.sabnzbd.httpPort}";
   categories = config.custom.media.downloadCategories;
   radarrEnvCredential = "radarr-env";
   sabnzbdApiKeyCredential = "sabnzbd-api-key";
@@ -105,13 +105,14 @@ in
     ];
 
     services.${serviceName} = {
-      openFirewall = true; # Opens Radarr's port on the firewall (default 7878)
+      openFirewall = false;
       user = "${serviceName}";
       group = "${config.custom.shared.mediaGroup}";
       settings = {
         server = {
+          bindaddress = config.custom.shared.localHostIPv4;
           port = 7878;
-          urlbase = "/${serviceName}";
+          urlbase = "";
         };
 
         postgres = {
@@ -201,7 +202,7 @@ in
               --arg name "SABnzbd" \
               --arg host "$HOST" \
               --argjson port "$SABNZBD_PORT" \
-              --arg urlBase "/sabnzbd" \
+              --arg urlBase "" \
               --rawfile apiKey "$SABNZBD_API_KEY_FILE" \
               --arg movieCategory "$CATEGORY" \
               '

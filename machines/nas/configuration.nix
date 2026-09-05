@@ -13,8 +13,6 @@
     ../../modules/nixos # imported via default.nix
   ];
 
-  custom.shared.${hostSpecific.hostName}.ip = "${config.custom.shared.${hostSpecific.hostName}.subnetPrefix}20";
-
   custom = {
     profiles.system = {
       core.enable = true;
@@ -31,15 +29,8 @@
     '';
   };
 
-  # networking.interfaces.enp7s0.ipv4.addresses = [
-  #   {
-  #     address = "${config.custom.shared.${hostSpecific.hostName}.ip}";
-  #     prefixLength = 24;
-  #   }
-  # ];
-  #
-  # networking.defaultGateway = "${config.custom.shared.${hostSpecific.hostName}.gateway}";
-  # networking.nameservers = [ "8.8.8.8" ];
+  # The LAN address is assigned through an OPNsense DHCP reservation recorded in
+  # modules/nixos/shared/lan-hosts.nix rather than configured on this interface.
 
   services.xserver.enable = lib.mkForce false;
 

@@ -2,6 +2,9 @@
 let
   lokiRetention = config.services.loki.configuration.limits_config.retention_period;
   prometheusRetention = config.services.prometheus.retentionTime;
+  appsDomain = config.custom.shared.appsDomain;
+  grafanaHost = "grafana.${appsDomain}";
+  externalScheme = if config.custom.security.acme.enable then "https" else "http";
 
   dashboards = {
     system-health = import ./dashboards/system-health.nix { inherit lib; defaultTimeRange = prometheusRetention; };
@@ -19,14 +22,15 @@ in
       owner = "grafana";
     };
 
-    networking.firewall.allowedTCPPorts = [ config.services.grafana.settings.server.http_port ];
-
     services.grafana = {
       settings = {
         users.home_page = "/d/system-health";
         server = {
-          http_addr = "${config.custom.shared.anyIPv4}";
+          http_addr = config.custom.shared.localHostIPv4;
           http_port = 3001;
+          domain = grafanaHost;
+          root_url = "${externalScheme}://${grafanaHost}/";
+          protocol = "http";
         };
         security = {
           admin_user = "admin";
@@ -34,6 +38,7 @@ in
           # generated with
           # openssl rand -base64 32
           secret_key = "$__file{${config.sops.secrets."grafana/secret_key".path}}";
+          cookie_secure = config.custom.security.acme.enable;
         };
       };
 

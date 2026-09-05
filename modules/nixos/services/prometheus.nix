@@ -1,9 +1,8 @@
 { config, pkgs, lib, ... }:
 {
   config = lib.mkIf config.services.prometheus.enable {
-    networking.firewall.allowedTCPPorts = [ config.services.prometheus.port ];
-
     services.prometheus = {
+      listenAddress = config.custom.shared.localHostIPv4;
       port = 9090;
       retentionTime = "7d";
       extraFlags = [
@@ -17,6 +16,7 @@
       # collects systemd metrics (CPU, RAM, etc.).
         node = {
           enable = true;
+          listenAddress = config.custom.shared.localHostIPv4;
           extraFlags = [ "--collector.cpu" ];
           port = 9100;
         };
@@ -24,6 +24,7 @@
         # http, TCP, DNS, ICMP, gRPC (experimental), useful for service health status.
         blackbox = {
           enable = true;
+          listenAddress = config.custom.shared.localHostIPv4;
           port = 9115;
           configFile = pkgs.writeText "blackbox.yaml" ''
             modules:
@@ -49,7 +50,7 @@
         # sonarr metrics
         # exportarr-sonarr = lib.mkIf config.services.sonarr.enable {
         #   enable = true;
-        #   url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr";
+        #   url = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}";
         #   port = 9707;
         #   apiKeyFile = config.sops.secrets."sonarr/api_key".path;
         #   openFirewall = true;
@@ -66,7 +67,7 @@
             metrics_path = "/probe";
             params.module = [ "http_2xx" ];
             static_configs = [{
-                targets = [ "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}/sonarr" ];
+                targets = [ "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.sonarr.settings.server.port}${config.services.sonarr.settings.server.urlbase}" ];
             }];
             relabel_configs = [
             { source_labels = [ "__address__" ]; target_label = "__param_target"; }

@@ -7,6 +7,12 @@
       description = "Defines the local host ip";
     };
 
+    appsDomain = lib.mkOption {
+      type = lib.types.str;
+      default = "apps.home.medrish.com";
+      description = "Base domain for internally hosted applications.";
+    };
+
     # global
     anyIPv4 = lib.mkOption {
         default = "0.0.0.0";

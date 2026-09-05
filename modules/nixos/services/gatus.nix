@@ -7,6 +7,7 @@ let
   remoteAccess =" remote access";
   external = "external";
   automation = "automation";
+  automationHostIPv4Address = config.custom.shared.lan.hosts."home-assistant".ipv4Address;
 in
 {
   config = lib.mkIf config.services.gatus.enable {
@@ -15,7 +16,7 @@ in
     };
 
     services.gatus = {
-      openFirewall = true; # Allows access to the Gatus UI from your network
+      openFirewall = false;
       environmentFile = config.sops.secrets.gatus.path;
       settings = {
         ui = {
@@ -44,9 +45,8 @@ in
         };
 
         web = {
-          address = "${config.custom.shared.anyIPv4}"; # Listen on all interfaces
+          address = config.custom.shared.localHostIPv4;
           port = 8081;
-          root = "/gatus";
         };
 
         endpoints =
@@ -136,7 +136,7 @@ in
               enabled = true;
               failure-threshold = 3;
               success-threshold = 1;
-              description = "SSH service is unreachable";
+              description = "Immich service is unreachable";
             }
             ];
           }
@@ -166,7 +166,7 @@ in
           {
             name = "n8n";
             group = automation;
-            url = "tcp://${config.custom.shared.localHostIPv4}:${config.services.n8n.environment.N8N_PORT}";
+            url = "tcp://${config.custom.shared.localHostIPv4}:${toString config.custom.services.n8n.port}";
             interval = "30s";
             conditions = [
               "[CONNECTED] == true"
@@ -283,7 +283,7 @@ in
           {
             name = "prowlarr";
             group = media;
-            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.prowlarr.settings.server.port}${config.services.prowlarr.settings.server.urlbase}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -411,7 +411,7 @@ in
           {
             name = "home-assistant";
             group = automation;
-            url = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
+            url = "http://${automationHostIPv4Address}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.services.home-assistant.config.http.server_port}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{
@@ -427,7 +427,7 @@ in
           {
             name = "zigbee2mqtt";
             group = automation;
-            url = "http://${inputs.self.nixosConfigurations."home-assistant".config.custom.shared."home-assistant".ip}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
+            url = "http://${automationHostIPv4Address}:${builtins.toString inputs.self.nixosConfigurations."home-assistant".config.custom.servicePort.zigbee2mqttFrontend}";
             interval = "30s";
             conditions = [ "[STATUS] == 200" ];
             alerts = [{

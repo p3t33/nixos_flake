@@ -18,7 +18,9 @@ in
 
       configuration = {
         common = {
+          instance_addr = config.custom.shared.localHostIPv4;
           path_prefix = loki_path_prefix;
+          ring.kvstore.store = "inmemory";
         };
 
         # defines:
@@ -90,7 +92,7 @@ in
         # - After processing, the chunk is written to permanent storage (your dataDir in filesystem mode, or S3 in object store mode).
         ingester = {
           lifecycler = {
-            address = "0.0.0.0";
+            address = config.custom.shared.localHostIPv4;
             # keeps track of instances of loki, mostly irrelevant for a single node, but still needs to be defined.
             ring = {
               kvstore = {
@@ -113,7 +115,9 @@ in
 
         # the server grafana will be communicatoing with.
         server = {
+          http_listen_address = config.custom.shared.localHostIPv4;
           http_listen_port = 3100;
+          grpc_listen_address = config.custom.shared.localHostIPv4;
         };
 
         compactor = {

@@ -26,7 +26,7 @@
         hassil
       ];
 
-      openFirewall = true;
+      openFirewall = false;
       extraComponents = [
         "sun"          # sunrise/sunset, used by automations
         "met"          # free weather forecast, no API key needed
@@ -46,7 +46,7 @@
           temperature_unit = "C";
         };
         http = {
-          server_host = "${config.custom.shared.anyIPv4}";
+          server_host = config.custom.shared.lan.hosts.home-assistant.ipv4Address;
           server_port = 8123;
         };
         # Use PostgreSQL instead of the default SQLite for better performance
@@ -62,5 +62,9 @@
         zeroconf   = {}; # mDNS — required even though HA uses python-zeroconf, not Avahi
       };
     };
+
+    networking.firewall.extraInputRules = ''
+      ip saddr ${config.custom.shared.lan.hosts.nas.ipv4Address} tcp dport ${builtins.toString config.services.home-assistant.config.http.server_port} accept
+    '';
   };
 }

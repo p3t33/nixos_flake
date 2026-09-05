@@ -6,6 +6,8 @@
 }:
 let
   cfg = config.custom.services.qbittorrent;
+  appsDomain = config.custom.shared.appsDomain;
+  qbittorrentHost = "qbittorrent.${appsDomain}";
   categoryNames = config.custom.media.downloadCategories;
   mediaDir = config.custom.shared.pathToMediaDirectory;
   torrentsDir = "${mediaDir}/torrents";
@@ -27,6 +29,16 @@ let
     LegalNotice.Accepted = true;
 
     Network.PortForwardingEnabled = false;
+
+    Preferences = {
+      "WebUI\\Address" = config.custom.shared.localHostIPv4;
+      "WebUI\\CSRFProtection" = true;
+      "WebUI\\HostHeaderValidation" = true;
+      "WebUI\\ServerDomains" = qbittorrentHost;
+      "WebUI\\SecureCookie" = true;
+      "WebUI\\ReverseProxySupportEnabled" = true;
+      "WebUI\\TrustedReverseProxiesList" = config.custom.shared.localHostIPv4;
+    };
   };
   qBittorrentConfigFile = pkgs.writeText "qBittorrent.conf" (
     lib.generators.toINI { } qBittorrentServerConfig
@@ -132,15 +144,17 @@ in
       enable = true;
       inherit (cfg) user profileDir webuiPort torrentingPort;
       group = config.custom.shared.mediaGroup;
-      openFirewall = true;
+      openFirewall = false;
       extraArgs = [ "--confirm-legal-notice" ];
       serverConfig = qBittorrentServerConfig;
     };
 
-    # The upstream qBittorrent openFirewall option exposes the Web UI and
-    # torrenting TCP ports. Torrent peer traffic also uses UDP, which the
-    # upstream option does not open.
-    networking.firewall.allowedUDPPorts = [ cfg.torrentingPort ];
+    # Keep inbound peer traffic reachable while leaving the loopback-only
+    # Web UI out of the firewall.
+    networking.firewall = {
+      allowedTCPPorts = [ cfg.torrentingPort ];
+      allowedUDPPorts = [ cfg.torrentingPort ];
+    };
 
     sops.secrets."qbittorrent/webui_username" = {
       owner = config.services.qbittorrent.user;

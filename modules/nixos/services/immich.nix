@@ -5,9 +5,9 @@
     services.immich = {
 
       # Where immich web gui listens
-      host = config.custom.shared.anyIPv4;
+      host = config.custom.shared.localHostIPv4;
       port = 2283;
-      openFirewall = true;
+      openFirewall = false;
 
       # Where photos/videos are stored
       mediaLocation = "${config.custom.shared.pathToMediaDirectory}/immich";

@@ -30,6 +30,19 @@ in
   };
 
   config = lib.mkIf config.services.zigbee2mqtt.enable {
+    sops.secrets."zigbee2mqtt/frontend_auth_token" = { };
+
+    sops.templates."zigbee2mqtt-secret.yaml" = {
+      path = "${config.services.zigbee2mqtt.dataDir}/secret.yaml";
+      owner = config.systemd.services.zigbee2mqtt.serviceConfig.User;
+      group = config.systemd.services.zigbee2mqtt.serviceConfig.Group;
+      mode = "0400";
+      restartUnits = [ config.systemd.services.zigbee2mqtt.name ];
+      content = ''
+        auth_token: "${config.sops.placeholder."zigbee2mqtt/frontend_auth_token"}"
+      '';
+    };
+
     # pre defining zigbee devices to give them friendly names based on their ieee.
     custom.zigbee2mqtt.devices = {
       office_plug     = { name = "office_plug";                        ieee = "0xa4c1385bfbc8a447"; };
@@ -66,7 +79,10 @@ in
         #specifies the MQTT broker (Mosquitto) that Zigbee2MQTT will connect to for publishing and subscribing to MQTT topics.
         mqtt.server = "mqtt://${config.custom.shared.localHostIPv4}:${builtins.toString config.custom.servicePort.mosquitto}";  # Mosquitto MQTT broker
         frontend = {
+          host = config.custom.shared.lan.hosts.home-assistant.ipv4Address;
           port = config.custom.servicePort.zigbee2mqttFrontend;
+          url = "https://zigbee2mqtt.${config.custom.shared.appsDomain}";
+          auth_token = "!secret.yaml auth_token";
         };
         advanced.log_level = "info";
 
@@ -93,6 +109,8 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ config.custom.servicePort.zigbee2mqttFrontend ];
+    networking.firewall.extraInputRules = ''
+      ip saddr ${config.custom.shared.lan.hosts.nas.ipv4Address} tcp dport ${builtins.toString config.custom.servicePort.zigbee2mqttFrontend} accept
+    '';
   };
 }

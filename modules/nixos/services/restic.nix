@@ -228,7 +228,7 @@ in
       server = {
         enable = true;
         extraFlags = [ "--no-auth" ];
-        listenAddress = "${config.custom.shared.anyIPv4}:9005"; # Expose Restic API & metrics
+        listenAddress = "${config.custom.shared.localHostIPv4}:9005"; # Expose Restic API & metrics
         prometheus = true; # Enable Prometheus metrics
         appendOnly = true; # Ensure backups are append-only for safty from being hacked.
       };
