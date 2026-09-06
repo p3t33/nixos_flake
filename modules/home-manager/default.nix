@@ -44,7 +44,6 @@ in
     ./taskwarrior.nix
     ./atuin.nix
     ./wallpaper.nix
-    ./clipmenu.nix
     ./xdg/mime_apps.nix
     ./xdg/user_dirs.nix
     ./gtk.nix
