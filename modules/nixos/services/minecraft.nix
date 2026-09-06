@@ -8,6 +8,7 @@ in
     services.minecraft-server = {
       eula = true;
       # nix eval --raw nixpkgs#minecraftServers --apply 's: builtins.concatStringsSep "\n" (builtins.attrNames s)'
+      # Review this explicit version choice on every NixOS stable upgrade.
       package = pkgs.pkgs.minecraftServers.vanilla-1-21;
 
       dataDir = "/var/lib/minecraft";

@@ -1,6 +1,7 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.programs.neovim;
+  # Review this pinned plugin revision on every NixOS stable upgrade.
   spelunk-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "spelunk.nvim";
     version = "unstable-2025-01-15";

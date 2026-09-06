@@ -16,6 +16,7 @@ in
 
       # media
       mpv
+      # Review this explicit version choice on every NixOS stable upgrade.
       ffmpeg_7-full # video editing.
 
       # web
@@ -125,6 +126,7 @@ in
       figlet
       # used for generatig ascii art same as figlet but with more fonts
       # pyfiglet -f ansi_shadow pi
+      # Review this explicit Python version choice on every NixOS stable upgrade.
       python313Packages.pyfiglet
       monero-cli
       jq

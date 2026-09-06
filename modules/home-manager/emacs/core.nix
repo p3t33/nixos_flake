@@ -43,6 +43,7 @@ in
   };
 
   programs.emacs = {
+    # Review this explicit version choice on every NixOS stable upgrade.
     package = pkgs.emacs30;
 
     # programs.emacs.extraConfig is responsible to create a configuration file for

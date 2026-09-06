@@ -174,11 +174,13 @@ in
 
     custom.programs.pi = {
       extraPackages = [
+        # Review the Node.js version provided by nixpkgs on every NixOS stable upgrade.
         pkgs.nodejs
         pkgs.bun
         pkgs-unstable.codegraph
       ];
 
+      # Review these pinned npm package versions on every NixOS stable upgrade.
       packages = [
         "npm:pi-mcp-adapter@2.32.1"
         "npm:@mjakl/pi-subagent@3.0.1"

@@ -12,6 +12,7 @@ in
     # -------
     plantuml
     graphviz
+    # Review this explicit version choice on every NixOS stable upgrade.
     jdk11
     # -------
 

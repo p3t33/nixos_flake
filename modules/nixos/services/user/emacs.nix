@@ -22,6 +22,7 @@
     # When emacs executed as server from cli and not inside systemd unit
     # it is able to find the packages without the need to explicitly set
     # them here as well.
+    # Review this explicit Emacs version choice on every NixOS stable upgrade.
     package =
       with pkgs;
       ((emacsPackagesFor emacs30).emacsWithPackages (epkgs: [

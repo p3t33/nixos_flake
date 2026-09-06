@@ -41,6 +41,7 @@
     { nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
+      # Review whether this version override is still needed on every NixOS stable upgrade.
       nomachineVersionFix = final: prev: {
         nomachine-client = prev.nomachine-client.overrideAttrs (old: {
           version = "10.0.59";

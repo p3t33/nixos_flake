@@ -3,6 +3,7 @@
   config = lib.mkIf config.programs.taskwarrior.enable {
     home.packages = with pkgs; [ taskwarrior-tui ];
     programs.taskwarrior = {
+      # Review this explicit version choice on every NixOS stable upgrade.
       package = pkgs.taskwarrior3;
 
       # Will be used to sync data across devices
