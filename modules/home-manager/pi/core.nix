@@ -181,7 +181,7 @@ in
 
       packages = [
         "npm:pi-mcp-adapter@2.32.1"
-        "npm:@mjakl/pi-subagent@2.1.0"
+        "npm:@mjakl/pi-subagent@3.0.1"
         "npm:pi-ask-user@0.15.0"
       ];
 
@@ -302,7 +302,9 @@ in
         - Delegate broad architecture follow-ups to codegraph-explorer.
         - If CodeGraph is unavailable or not applicable, say so explicitly before
           falling back to manual exploration.
-        - Use spawn mode for isolated tasks, fork mode when context from this session matters
+        - Call `subagent` with a `calls` array containing `agent` and `prompt` for each task
+        - Use `initialContext: "empty"` for isolated tasks; use `initialContext: "parent"`
+          only when the full parent conversation is needed
         - After implementing changes, delegate review before reporting completion
       '';
 
