@@ -13,6 +13,10 @@ let
   localOllamaEnabled = osConfig != null && osConfig.services.ollama.enable;
   localOllamaModels =
     if localOllamaEnabled then lib.unique osConfig.services.ollama.loadModels else [ ];
+  quickAnswerModels = with config.custom.shared.AIDefaultModels; [
+    quickAnswer
+    quickAnswerCandidate
+  ];
 
   piPackage = pkgs-unstable.pi-coding-agent;
   packageWithExtraPackages =
@@ -181,7 +185,7 @@ in
                 {
                   id = modelId;
                 }
-                // lib.optionalAttrs (modelId == config.custom.shared.AIDefaultModels.quickAnswer) {
+                // lib.optionalAttrs (lib.elem modelId quickAnswerModels) {
                   name = "Quick answer (${modelId}, local, no thinking)";
                   reasoning = false;
                   input = [

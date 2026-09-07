@@ -19,11 +19,6 @@
   };
 
   custom = {
-    shared.AIDefaultModels.quickAnswer = "gemma4:e2b";
-    shared.AIDefaultModels.prompt = "qwen3.5:9b";
-    shared.AIDefaultModels.fileScoped = "devstral-small-2:24b";
-    shared.AIDefaultModels.agent = "devstral-small-2:24b";
-
     profiles.systemServices = {
       core.enable = true;
       desktop.enable = true;

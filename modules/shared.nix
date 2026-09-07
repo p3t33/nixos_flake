@@ -146,12 +146,13 @@
         description = "Fonts to be used on the system";
       };
 
+      # Artifact/cache estimates (FP16 KV, one sequence; 128K = 131,072 tokens):
+      # - gemma4:e2b: 7.2 GB artifact; ~11.86 MiB cache at 1K; ~774 MiB at 128K.
+      # - qwen3.5:4b: 3.4 GB artifact; ~85.41 MiB cache at 1K; ~4.55 GiB at 128K with MTP.
       AIDefaultModels = lib.mkOption {
         default = {
           quickAnswer = "gemma4:e2b";
-          prompt = "llama3:8b";
-          fileScoped = "qwen2.5-coder:14b";
-          agent = "devstral";
+          quickAnswerCandidate = "qwen3.5:4b";
         };
         type = lib.types.attrsOf lib.types.str;
         description = "Default AI models for different use cases";

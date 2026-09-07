@@ -8,6 +8,7 @@
       package = pkgs.ollama-cpu;
       loadModels = [
         config.custom.shared.AIDefaultModels.quickAnswer
+        config.custom.shared.AIDefaultModels.quickAnswerCandidate
       ];
     };
   };
