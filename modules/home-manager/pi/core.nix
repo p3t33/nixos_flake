@@ -61,9 +61,9 @@ in
 
     defaultModel = lib.mkOption {
       type = lib.types.str;
-      default = "gpt-6-astra";
+      default = "gpt-5.6-sol";
       description = ''
-        Default model ID for the selected provider, for example "gpt-6-astra",
+        Default model ID for the selected provider, for example "gpt-5.6-sol",
         "claude-opus-4-6", or "gemini-2.5-pro".
       '';
     };
