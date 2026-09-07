@@ -148,6 +148,7 @@
 
       AIDefaultModels = lib.mkOption {
         default = {
+          quickAnswer = "gemma4:e2b";
           prompt = "llama3:8b";
           fileScoped = "qwen2.5-coder:14b";
           agent = "devstral";

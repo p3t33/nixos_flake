@@ -1,4 +1,9 @@
-{ pkgs, pkgs-unstable, config, ... }:
+{
+  pkgs,
+  pkgs-unstable,
+  config,
+  ...
+}:
 {
   virtualisation.virtualbox.host.enable = true;
   services = {
@@ -8,15 +13,13 @@
       enable = true;
       package = pkgs-unstable.ollama-cuda;
       loadModels = [
-        config.custom.shared.AIDefaultModels.prompt
-        config.custom.shared.AIDefaultModels.fileScoped
-        config.custom.shared.AIDefaultModels.agent
+        config.custom.shared.AIDefaultModels.quickAnswer
       ];
     };
   };
 
-
   custom = {
+    shared.AIDefaultModels.quickAnswer = "gemma4:e2b";
     shared.AIDefaultModels.prompt = "qwen3.5:9b";
     shared.AIDefaultModels.fileScoped = "devstral-small-2:24b";
     shared.AIDefaultModels.agent = "devstral-small-2:24b";

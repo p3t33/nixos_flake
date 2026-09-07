@@ -1,4 +1,4 @@
-{
+args@{
   config,
   lib,
   pkgs,
@@ -7,8 +7,12 @@
 }:
 
 let
+  osConfig = args.osConfig or null;
   cfg = config.custom.programs.pi;
   jsonFormat = pkgs.formats.json { };
+  localOllamaEnabled = osConfig != null && osConfig.services.ollama.enable;
+  localOllamaModels =
+    if localOllamaEnabled then lib.unique osConfig.services.ollama.loadModels else [ ];
 
   piPackage = pkgs-unstable.pi-coding-agent;
   packageWithExtraPackages =
@@ -160,6 +164,35 @@ in
       file = {
         ".pi/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
           source = jsonFormat.generate "pi-settings.json" cfg.settings;
+        };
+
+        ".pi/agent/models.json" = lib.mkIf localOllamaEnabled {
+          source = jsonFormat.generate "pi-models.json" {
+            providers.ollama = {
+              baseUrl = "http://${osConfig.services.ollama.host}:${toString osConfig.services.ollama.port}/v1";
+              api = "openai-completions";
+              apiKey = "ollama";
+              compat = {
+                supportsDeveloperRole = false;
+                maxTokensField = "max_tokens";
+              };
+              models = map (
+                modelId:
+                {
+                  id = modelId;
+                }
+                // lib.optionalAttrs (modelId == config.custom.shared.AIDefaultModels.quickAnswer) {
+                  name = "Quick answer (${modelId}, local, no thinking)";
+                  reasoning = false;
+                  input = [
+                    "text"
+                    "image"
+                  ];
+                  samplingParams.reasoning_effort = "none";
+                }
+              ) localOllamaModels;
+            };
+          };
         };
 
         ".pi/agent/themes/${cfg.theme.name}.json" = lib.mkIf (cfg.theme != { }) {
