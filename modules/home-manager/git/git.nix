@@ -12,6 +12,10 @@
         "tags"
         ".clang-format"
         ".ccls-cache"
+        # local AI tooling state
+        ".claude/settings.local.json"
+        ".codegraph/"
+        ".pi-subagents/"
         # java build files
         "*.class"
         # Eclipse-specific files
