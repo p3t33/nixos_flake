@@ -17,7 +17,6 @@
     profiles.homeManager = {
       core.enable = true;
       desktop.enable = true;
-      ai.enable = true;
     };
 
     file.smartcardPublicKey = {

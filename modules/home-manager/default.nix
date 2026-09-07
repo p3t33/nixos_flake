@@ -70,8 +70,6 @@ in
     ./scripts/cheat-sh.nix
 
     ./emacs
-    ./aichat.nix
-    ./aider.nix
     ./mcp.nix
     ./pi
   ];
@@ -79,7 +77,6 @@ in
   options.custom.profiles.homeManager = {
     core.enable = lib.mkEnableOption "core home-manager profile (shell, terminal, editor, git, CLI tools)";
     desktop.enable = lib.mkEnableOption "desktop home-manager profile (WM, GUI apps, desktop environment)";
-    ai.enable = lib.mkEnableOption "AI home-manager profile (aichat, aider)";
   };
 
   config = lib.mkMerge [
@@ -130,11 +127,6 @@ in
       custom.lnav.enable = true;
       custom.scripts.cheatSh.enable = true;
       custom.programs.pi.enable = true;
-    })
-
-    (lib.mkIf g.ai.enable {
-      custom.programs.aichat.enable = true;
-      programs.aider-chat.enable = true;
     })
 
   ];
