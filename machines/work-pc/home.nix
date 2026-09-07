@@ -1,7 +1,7 @@
 { config, ... }:
 let
-  claude-opus = "claude-opus-5";
-  claude-sonnet = "claude-sonnet-5";
+  gpt-reasoning = "gpt-5.6-sol";
+  gpt-workhorse = "gpt-5.6-terra";
 in
 {
   imports = [
@@ -16,10 +16,10 @@ in
     programs = {
       pi = {
         defaultProvider = "github-copilot";
-        defaultModel = claude-opus;
+        defaultModel = gpt-reasoning;
         models = {
-          reasoning = "${config.custom.programs.pi.defaultProvider}/${claude-opus}";
-          workhorse = "${config.custom.programs.pi.defaultProvider}/${claude-sonnet}";
+          reasoning = "${config.custom.programs.pi.defaultProvider}/${gpt-reasoning}";
+          workhorse = "${config.custom.programs.pi.defaultProvider}/${gpt-workhorse}";
         };
         defaultThinkingLevel = "medium";
       };
