@@ -91,6 +91,14 @@ let
     [
       (sqliteSnapshotPaths database "${database}.backup" true)
     ]
+  )
+  ++ lib.optionals config.services.kavita.enable (
+    let
+      database = "${config.services.kavita.dataDir}/config/kavita.db";
+    in
+    [
+      (sqliteSnapshotPaths database "${database}.backup" true)
+    ]
   );
 
   # ============================================================
@@ -260,6 +268,10 @@ let
     ++ lib.optionals config.services.audiobookshelf.enable [
       "/var/lib/${config.services.audiobookshelf.dataDir}"
       "${config.custom.shared.pathToMediaDirectory}/audiobookshelf"
+    ]
+    ++ lib.optionals config.services.kavita.enable [
+      config.services.kavita.dataDir
+      "${config.custom.shared.pathToMediaDirectory}/kavita"
     ];
 
   backupExclude =
