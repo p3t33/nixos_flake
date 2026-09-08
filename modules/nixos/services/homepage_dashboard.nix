@@ -250,6 +250,17 @@ in
                 };
               }
             ]
+            ++ lib.optionals config.services.kavita.enable [
+              {
+                "kavita" = {
+                  description = "Manga and comics server";
+                  href = "${if config.custom.security.acme.enable then "https" else "http"}://kavita.${appsDomain}";
+                  icon = "kavita.png";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.kavita.settings.Port}/";
+                  statusStyle = "dot";
+                };
+              }
+            ]
             ++ lib.optionals config.services.immich.enable [
               {
                 "immich" = {
