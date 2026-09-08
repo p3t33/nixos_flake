@@ -6,6 +6,7 @@
     syncthing.enable = true;
     homepage-dashboard.enable = true;
     calibre-web.enable = true;
+    audiobookshelf.enable = true;
     jellyfin.enable = true;
     prowlarr.enable = true;
     # jackett.enable = true; # No real need for now
