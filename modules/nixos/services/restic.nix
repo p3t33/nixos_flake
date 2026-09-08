@@ -55,9 +55,10 @@ let
   # It does not perform any I/O. It simply declares:
   #   - src: the live SQLite database file
   #   - dst: the path where a snapshot will be written
+  #   - required: whether a missing source should fail the backup
   #
   # These records act as the single source of truth for all derived logic.
-  sqliteSnapshotPaths = src: dst: { inherit src dst; };
+  sqliteSnapshotPaths = src: dst: required: { inherit src dst required; };
 
   # sqliteSnapshotEntries is a list of SQLite snapshot specifications.
   #
@@ -77,11 +78,20 @@ let
       calibreLibrary = config.services.calibre-web.options.calibreLibrary;
     in
     [
-      (sqliteSnapshotPaths "${calibreDataDir}/app.db"      "${calibreDataDir}/app.db.backup")
-      (sqliteSnapshotPaths "${calibreDataDir}/gdrive.db"   "${calibreDataDir}/gdrive.db.backup")
-      (sqliteSnapshotPaths "${calibreLibrary}/metadata.db" "${calibreLibrary}/metadata.db.backup")
+      (sqliteSnapshotPaths "${calibreDataDir}/app.db"      "${calibreDataDir}/app.db.backup" false)
+      (sqliteSnapshotPaths "${calibreDataDir}/gdrive.db"   "${calibreDataDir}/gdrive.db.backup" false)
+      (sqliteSnapshotPaths "${calibreLibrary}/metadata.db" "${calibreLibrary}/metadata.db.backup" false)
     ]
-    );
+    )
+  ++ lib.optionals config.services.audiobookshelf.enable (
+    let
+      dataDir = "/var/lib/${config.services.audiobookshelf.dataDir}";
+      database = "${dataDir}/config/absdatabase.sqlite";
+    in
+    [
+      (sqliteSnapshotPaths database "${database}.backup" true)
+    ]
+  );
 
   # ============================================================
   # 2) Excluding live SQLite runtime files
@@ -132,13 +142,34 @@ let
   #   - verify the source database exists
   #   - create a consistent snapshot using `sqlite3 .backup`
   #   - echo is added for journalctl.
-  sqliteBackupScript =
+  sqliteBackupJobs = [ "local" "gdrive" "amazon" ];
+
+  sqliteSnapshotEntriesForJob = job:
+    map (e: e // {
+      legacyDst = e.dst;
+      dst = "${e.dst}.${job}";
+    }) sqliteSnapshotEntries;
+
+  sqliteSnapshotExcludesForJob = job:
+    map (e: e.dst) sqliteSnapshotEntries
+    ++ lib.concatMap
+      (otherJob: map (e: "${e.dst}.${otherJob}") sqliteSnapshotEntries)
+      (lib.filter (otherJob: otherJob != job) sqliteBackupJobs);
+
+  sqliteBackupScript = entries:
     lib.concatStringsSep "\n" (map (e: ''
+      rm -f "${e.legacyDst}"
+      rm -f "${e.dst}"
       if [ -f "${e.src}" ]; then
         echo "SQLite snapshot: ${e.src} -> ${e.dst}"
         ${lib.getExe' pkgs.sqlite "sqlite3"} "${e.src}" ".backup '${e.dst}'"
+      ${lib.optionalString e.required ''
+      else
+        echo "Required SQLite database is missing: ${e.src}" >&2
+        exit 1
+      ''}
       fi
-    '') sqliteSnapshotEntries);
+    '') entries);
 
   # ------------------------------------------------------------
   # Snapshot cleanup script
@@ -149,13 +180,13 @@ let
   # Cleanup is not strictly required for correctness (snapshots are
   # overwritten on the next run), but it avoids leaving extra copies
   # of databases on disk.
-  sqliteCleanupScript =
-  lib.concatStringsSep "\n" (map (e: ''
-    if [ -e "${e.dst}" ]; then
-      echo "Deleting SQLite snapshot: ${e.dst}"
-    fi
-    rm -f "${e.dst}"
-  '') sqliteSnapshotEntries);
+  sqliteCleanupScript = entries:
+    lib.concatStringsSep "\n" (map (e: ''
+      if [ -e "${e.dst}" ]; then
+        echo "Deleting SQLite snapshot: ${e.dst}"
+      fi
+      rm -f "${e.dst}"
+    '') entries);
 
 
   # ============================================================
@@ -167,17 +198,46 @@ let
   # This ensures that:
   # - no shell code is generated when SQLite is not in use
   # - restic runs without unnecessary hooks
-  sqlitePrepareHook =
+  sqlitePrepareHook = job:
     lib.optionalString (sqliteSnapshotEntries != []) ''
       set -euo pipefail
-      ${sqliteBackupScript}
+      ${sqliteBackupScript (sqliteSnapshotEntriesForJob job)}
     '';
 
-  sqliteCleanupHook =
+  sqliteCleanupHook = job:
     lib.optionalString (sqliteSnapshotEntries != []) ''
       set -euo pipefail
-      ${sqliteCleanupScript}
+      ${sqliteCleanupScript (sqliteSnapshotEntriesForJob job)}
     '';
+
+  sqliteSnapshotIsolationAssertions = lib.concatMap (job: [
+    {
+      assertion = lib.all (e: builtins.elem e.dst (sqliteSnapshotExcludesForJob job)) sqliteSnapshotEntries;
+      message = "Restic ${job} must exclude legacy SQLite snapshots";
+    }
+    {
+      assertion = lib.all (e: !builtins.elem "${e.dst}.${job}" (sqliteSnapshotExcludesForJob job)) sqliteSnapshotEntries;
+      message = "Restic ${job} must include its own SQLite snapshots";
+    }
+    {
+      assertion = lib.all (otherJob: otherJob == job || lib.all
+        (e: builtins.elem "${e.dst}.${otherJob}" (sqliteSnapshotExcludesForJob job))
+        sqliteSnapshotEntries) sqliteBackupJobs;
+      message = "Restic ${job} must exclude other jobs' SQLite snapshots";
+    }
+    {
+      assertion = lib.all (e: lib.hasInfix "rm -f \"${e.legacyDst}\"" (sqlitePrepareHook job))
+        (sqliteSnapshotEntriesForJob job);
+      message = "Restic ${job} must remove legacy SQLite snapshots during prepare";
+    }
+    {
+      assertion = lib.all (otherJob: otherJob == job || lib.all
+        (e: !lib.hasInfix "${e.dst}.${otherJob}" (sqlitePrepareHook job)
+          && !lib.hasInfix "${e.dst}.${otherJob}" (sqliteCleanupHook job))
+        sqliteSnapshotEntries) sqliteBackupJobs;
+      message = "Restic ${job} hooks must not use another job's SQLite snapshots";
+    }
+  ]) sqliteBackupJobs;
 
   # --------------------------------------------------------
   backupPaths =
@@ -196,6 +256,10 @@ let
       config.services.calibre-web.options.calibreLibrary
       # Calibre-Web app state (app.db, gdrive.db)
       config.services.calibre-web.dataDir
+    ]
+    ++ lib.optionals config.services.audiobookshelf.enable [
+      "/var/lib/${config.services.audiobookshelf.dataDir}"
+      "${config.custom.shared.pathToMediaDirectory}/audiobookshelf"
     ];
 
   backupExclude =
@@ -214,6 +278,8 @@ in
   options.custom.services.restic.enable = lib.mkEnableOption "Enable Restic backups and Restic REST server";
 
   config = lib.mkIf cfg.enable {
+    assertions = sqliteSnapshotIsolationAssertions;
+
     sops.secrets."restic/local/repositoryPathFile" = { };
     sops.secrets."restic/local/passwordFile" = { };
     sops.secrets."restic/gdrive/repositoryPathFile" = { };
@@ -243,7 +309,8 @@ in
 
           exclude =
             []
-            ++ backupExclude;
+            ++ backupExclude
+            ++ sqliteSnapshotExcludesForJob "local";
 
           # A file with restic repository path.
           repositoryFile = config.sops.secrets."restic/local/repositoryPathFile".path;
@@ -259,8 +326,8 @@ in
             ++ pruneOptions;
 
           extraBackupArgs = [ compressionMax ];
-          backupPrepareCommand = sqlitePrepareHook;
-          backupCleanupCommand = sqliteCleanupHook;
+          backupPrepareCommand = sqlitePrepareHook "local";
+          backupCleanupCommand = sqliteCleanupHook "local";
 
           timerConfig = {
             # backup will happen each day  between 00:05 and 02:05.
@@ -276,7 +343,8 @@ in
           # for syncthing versioning
           exclude =
             []
-            ++ backupExclude;
+            ++ backupExclude
+            ++ sqliteSnapshotExcludesForJob "gdrive";
 
           repositoryFile = config.sops.secrets."restic/gdrive/repositoryPathFile".path;
           rcloneConfigFile = config.sops.secrets."restic/gdrive/rcloneConfigFile".path;
@@ -293,8 +361,8 @@ in
             ++ pruneOptions;
 
           extraBackupArgs = [ compressionMax ];
-          backupPrepareCommand = sqlitePrepareHook;
-          backupCleanupCommand = sqliteCleanupHook;
+          backupPrepareCommand = sqlitePrepareHook "gdrive";
+          backupCleanupCommand = sqliteCleanupHook "gdrive";
 
           timerConfig = {
             OnCalendar = "02:05";
@@ -307,7 +375,8 @@ in
           initialize = true;
           exclude =
             []
-            ++ backupExclude;
+            ++ backupExclude
+            ++ sqliteSnapshotExcludesForJob "amazon";
 
           repositoryFile = config.sops.secrets."restic/amazon/repositoryPathFile".path;
           rcloneConfigFile = config.sops.secrets."restic/amazon/rcloneConfigFile".path;
@@ -324,8 +393,8 @@ in
             ++ pruneOptions;
 
           extraBackupArgs = [ compressionMax ];
-          backupPrepareCommand = sqlitePrepareHook;
-          backupCleanupCommand = sqliteCleanupHook;
+          backupPrepareCommand = sqlitePrepareHook "amazon";
+          backupCleanupCommand = sqliteCleanupHook "amazon";
 
           timerConfig = {
             OnCalendar = "04:05";
