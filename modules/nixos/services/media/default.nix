@@ -4,6 +4,7 @@
     ./bazarr.nix
     ./jackett.nix
     ./jellyfin.nix
+    ./kavita.nix
     ./prowlarr.nix
     ./radarr.nix
     ./recyclarr.nix

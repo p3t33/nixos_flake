@@ -8,6 +8,7 @@
     calibre-web.enable = true;
     audiobookshelf.enable = true;
     jellyfin.enable = true;
+    kavita.enable = true;
     prowlarr.enable = true;
     # jackett.enable = true; # No real need for now
     sonarr.enable = true;

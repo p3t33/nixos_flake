@@ -326,6 +326,25 @@ in
             forceSSL = true;
           };
       }
+      // lib.optionalAttrs config.services.kavita.enable {
+        "kavita.${appsDomain}" =
+          {
+            locations."/" = {
+              proxyPass = "${localHost}:${builtins.toString config.services.kavita.settings.Port}/";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_redirect off;
+                client_max_body_size 1024M;
+                proxy_read_timeout 600s;
+                proxy_send_timeout 600s;
+              '';
+            };
+          }
+          // lib.optionalAttrs config.custom.security.acme.enable {
+            useACMEHost = appsDomain;
+            forceSSL = true;
+          };
+      }
       // lib.optionalAttrs config.services.immich.enable {
         "immich.${appsDomain}" =
           {
