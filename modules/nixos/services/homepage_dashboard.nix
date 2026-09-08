@@ -239,6 +239,17 @@ in
                 };
               }
             ]
+            ++ lib.optionals config.services.audiobookshelf.enable [
+              {
+                "audiobookshelf" = {
+                  description = "Audiobook and podcast server";
+                  href = "${if config.custom.security.acme.enable then "https" else "http"}://audiobookshelf.${appsDomain}";
+                  icon = "audiobookshelf.png";
+                  siteMonitor = "http://${config.custom.shared.localHostIPv4}:${builtins.toString config.services.audiobookshelf.port}/healthcheck";
+                  statusStyle = "dot";
+                };
+              }
+            ]
             ++ lib.optionals config.services.immich.enable [
               {
                 "immich" = {

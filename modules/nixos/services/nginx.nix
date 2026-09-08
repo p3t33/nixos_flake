@@ -307,6 +307,25 @@ in
             forceSSL = true;
           };
       }
+      // lib.optionalAttrs config.services.audiobookshelf.enable {
+        "audiobookshelf.${appsDomain}" =
+          {
+            locations."/" = {
+              proxyPass = "${localHost}:${builtins.toString config.services.audiobookshelf.port}/";
+              proxyWebsockets = true;
+              extraConfig = ''
+                proxy_redirect http:// https://;
+                client_max_body_size 10240M;
+                proxy_read_timeout 600s;
+                proxy_send_timeout 600s;
+              '';
+            };
+          }
+          // lib.optionalAttrs config.custom.security.acme.enable {
+            useACMEHost = appsDomain;
+            forceSSL = true;
+          };
+      }
       // lib.optionalAttrs config.services.immich.enable {
         "immich.${appsDomain}" =
           {

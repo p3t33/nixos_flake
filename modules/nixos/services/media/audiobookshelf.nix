@@ -39,8 +39,8 @@ in
     ];
 
     services.audiobookshelf = {
-      host = config.custom.shared.anyIPv4;
-      openFirewall = true;
+      host = config.custom.shared.localHostIPv4;
+      openFirewall = false;
       group = config.custom.shared.mediaGroup;
     };
 
