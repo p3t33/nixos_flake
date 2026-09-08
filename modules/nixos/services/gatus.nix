@@ -138,6 +138,24 @@ in
             ];
           }
         ]
+        ++ lib.optionals config.services.kavita.enable [
+          {
+            name = "kavita";
+            group = "${media}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.kavita.settings.Port}/";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [
+            {
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "Kavita is down!";
+            }
+            ];
+          }
+        ]
         ++ lib.optionals config.services.immich.enable [
           {
             name = "immich";
