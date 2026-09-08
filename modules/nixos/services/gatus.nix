@@ -120,6 +120,24 @@ in
             ];
           }
         ]
+        ++ lib.optionals config.services.audiobookshelf.enable [
+          {
+            name = "audiobookshelf";
+            group = "${media}";
+            url = "http://${config.custom.shared.localHostIPv4}:${toString config.services.audiobookshelf.port}/healthcheck";
+            interval = "30s";
+            conditions = [ "[STATUS] == 200" ];
+            alerts = [
+            {
+              type = "telegram";
+              enabled = true;
+              failure-threshold = 2;
+              success-threshold = 1;
+              description = "Audiobookshelf is down!";
+            }
+            ];
+          }
+        ]
         ++ lib.optionals config.services.immich.enable [
           {
             name = "immich";
