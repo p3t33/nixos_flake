@@ -9,6 +9,13 @@
 let
   audioEnabled = osConfig.services.pipewire.enable && osConfig.services.pipewire.wireplumber.enable;
   cfg = config.wayland.windowManager.sway;
+  flameshot = lib.getExe config.services.flameshot.package;
+  flameshotWindowCommands = lib.optionals config.services.flameshot.enable [
+    {
+      criteria.app_id = "^flameshot$";
+      command = "border pixel 0, floating enable, fullscreen disable, move absolute position 0 0";
+    }
+  ];
   mod = "Mod4";
   rofi = lib.getExe config.programs.rofi.finalPackage;
   rofiPowerMenu = lib.getExe pkgs.rofi-power-menu;
@@ -132,6 +139,7 @@ in
             if audioEnabled then "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle" else null;
           "--no-repeat XF86AudioMicMute" =
             if audioEnabled then "exec ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle" else null;
+          "Print" = if config.services.flameshot.enable then "exec ${flameshot} gui" else null;
           "${mod}+Shift+Return" =
             "exec ${lib.getExe config.programs.alacritty.package} -e zsh -i -c 'tmux a || tmux new'";
 
@@ -198,6 +206,8 @@ in
           "${ws3}" = [ { app_id = "^cherrytree$"; } ];
           "${ws4}" = [ { app_id = "^google-chrome$"; } ];
         };
+
+        window.commands = flameshotWindowCommands;
 
         startup =
           lib.optionals config.custom.sway.autostart.googleChrome [
