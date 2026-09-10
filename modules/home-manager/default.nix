@@ -33,6 +33,7 @@ in
     ./alacritty.nix
     ./picom.nix
     ./i3.nix
+    ./flameshot.nix
     ./sway.nix
     ./waybar.nix
     ./i3status.nix
