@@ -34,6 +34,7 @@ in
     ./picom.nix
     ./i3.nix
     ./sway.nix
+    ./waybar.nix
     ./i3status.nix
     ./i3/bars.nix
     ./polybar.nix
