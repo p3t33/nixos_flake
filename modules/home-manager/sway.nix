@@ -127,6 +127,11 @@ in
               "exec ${rofi} -modes power-menu:${rofiPowerMenu} -show power-menu"
             else
               null;
+          "${mod}+b" =
+            if config.programs.rofi.enable then
+              "exec ${rofi} -modes buku-bookmarks:rofi-buku-bookmakrs -show buku-bookmarks"
+            else
+              null;
           "XF86AudioRaiseVolume" =
             if audioEnabled then "exec ${wpctl} set-volume @DEFAULT_AUDIO_SINK@ 5%+ --limit 1.0" else null;
           "XF86AudioLowerVolume" =
