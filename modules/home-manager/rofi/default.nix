@@ -17,6 +17,8 @@ let
   };
 in
 {
+  imports = [ ./scripts/buku-bookmarks.nix ];
+
   config = lib.mkIf config.programs.rofi.enable {
 
     programs.rofi = {

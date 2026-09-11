@@ -39,7 +39,7 @@ in
     ./i3status.nix
     ./i3/bars.nix
     ./polybar.nix
-    ./rofi.nix
+    ./rofi
     ./gpg.nix
     ./ssh/ssh-client.nix
     ./ssh/ssh_public_key.nix
@@ -67,7 +67,6 @@ in
 
     # scripts
     ./scripts/i3-monitor.nix
-    ./scripts/rofi-buku-bookmarks.nix
     ./scripts/tmux-sessionizer.nix
     ./scripts/helloworld-python.nix
     ./scripts/cheat-sh.nix

@@ -25,11 +25,11 @@
   #  ../../modules/home-manager/i3status.nix
     ../../modules/home-manager/picom.nix
   #  ../../modules/home-manager/i3.nix
-  #  ../../modules/home-manager/rofi.nix
+  #  ../../modules/home-manager/rofi
     ../../modules/home-manager/gpg.nix
    ../../modules/home-manager/ssh/ssh-client.nix
   #  ../../modules/home-manager/polybar.nix
-   # ../../modules/home-manager/scripts/rofi-buku-bookmarks.nix
+   # ../../modules/home-manager/rofi/scripts/buku-bookmarks.nix
   #  ../../modules/home-manager/scripts/helloworld-python.nix
    ../../modules/home-manager/scripts/tmux-sessionizer.nix
    ../../modules/home-manager/scripts/cheat-sh.nix
