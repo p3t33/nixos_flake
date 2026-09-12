@@ -7,12 +7,7 @@
       withRuby = false; # no plugins require Ruby provider
       withPython3 = false; # no plugins require Python3 provider
 
-      # Dependency management
-      extraPackages = with pkgs; [
-        # required by neovim/vim for copy/paste
-        # to work with system clipboard on x11.
-        xclip
-      ];
+      waylandSupport = config.wayland.windowManager.sway.enable;
 
       initLua = lib.mkOrder 100 ''
            -- ============
