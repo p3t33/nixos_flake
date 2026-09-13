@@ -24,9 +24,6 @@ in
       LIBVA_DRIVER_NAME = "radeonsi";
     };
 
-    services.xserver = {
-      enable = true;
-      videoDrivers = [ "amdgpu" ]; # Enables the AMDGPU driver
-    };
+    services.xserver.videoDrivers = [ "amdgpu" ];
   };
 }

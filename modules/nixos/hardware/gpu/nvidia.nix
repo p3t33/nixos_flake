@@ -11,10 +11,7 @@ in
     # I don't need to install mesa.drivers and rocm-opencl-icd
     # as they are already part of the driver.
 
-    services.xserver = {
-      enable = true;
-      videoDrivers = [ "modesetting" "nvidia" ];
-    };
+    services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
 
     hardware.nvidia = {
       modesetting.enable = true;
