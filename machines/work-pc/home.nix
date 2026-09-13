@@ -31,7 +31,7 @@ in
       core.enable = true;
       desktop = {
         common.enable = true;
-        x11.enable = true;
+        wayland.enable = true;
       };
     };
 
@@ -42,10 +42,12 @@ in
 
     desktop.wallpaper.name = "watchtower.png";
 
-    polybar = {
+    waybar = {
       enableWlan = true;
       enableBattery = true;
       enableAllenTxTime = true;
     };
   };
+
+  wayland.windowManager.sway.config.output."eDP-1".enable = "";
 }

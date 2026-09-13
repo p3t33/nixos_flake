@@ -16,7 +16,6 @@ in
       # graphics
       gimp
       vlc
-      flameshot
 
       # note taking
       cherrytree
