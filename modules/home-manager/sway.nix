@@ -18,6 +18,12 @@ let
     }
   ];
   mod = "Mod4";
+  moolticuteWindowCommands = lib.optionals config.custom.programs.moolticute.enable [
+    {
+      criteria.app_id = "^com[.]themooltipass[.]$";
+      command = "floating disable";
+    }
+  ];
   rofi = lib.getExe config.programs.rofi.finalPackage;
   rofiPowerMenu = lib.getExe pkgs.rofi-power-menu;
   wpctl = lib.getExe' osConfig.services.pipewire.wireplumber.package "wpctl";
@@ -223,7 +229,7 @@ in
           "${ws4}" = [ { app_id = "^google-chrome$"; } ];
         };
 
-        window.commands = flameshotWindowCommands;
+        window.commands = flameshotWindowCommands ++ moolticuteWindowCommands;
 
         startup =
           lib.optionals config.custom.sway.autostart.googleChrome [
