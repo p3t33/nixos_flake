@@ -18,7 +18,7 @@
       core.enable = true;
       desktop = {
         common.enable = true;
-        x11.enable = true;
+        wayland.enable = true;
       };
     };
 

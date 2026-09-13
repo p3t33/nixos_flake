@@ -11,6 +11,8 @@
     ../../modules/nixos # imported via default.nix
   ];
 
+  services.greetd.enable = true;
+
   custom = {
     profiles.system = {
       core.enable = true;
