@@ -74,6 +74,7 @@ in
     desktop = {
       common.enable = lib.mkEnableOption "common desktop service profile";
       x11.enable = lib.mkEnableOption "X11/i3 desktop service profile";
+      wayland.enable = lib.mkEnableOption "Sway desktop service profile";
     };
     server.enable = lib.mkEnableOption "server service profile (sshd, fail2ban)";
     xmr-miner.enable = lib.mkEnableOption "XMR miner service profile (monerod, p2pool, xmrig)";
@@ -103,6 +104,10 @@ in
       custom.services.displayManager.enable = true; #todo
       services.greenclip.enable = true; # clipboard manager
       custom.services.sxhkd.enable = true;
+    })
+
+    (lib.mkIf g.desktop.wayland.enable {
+      programs.sway.enable = true;
     })
 
     (lib.mkIf g.server.enable {
