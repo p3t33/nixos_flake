@@ -35,6 +35,7 @@ in
     ./i3.nix
     ./flameshot.nix
     ./sway.nix
+    ./satty.nix
     ./waybar.nix
     ./i3status.nix
     ./i3/bars.nix
@@ -114,6 +115,7 @@ in
     (lib.mkIf g.desktop.wayland.enable {
       wayland.windowManager.sway.enable = true;
       programs.waybar.enable = true;
+      programs.satty.enable = true;
       custom.services.cliphist.enable = true;
       services.udiskie.enable = true;
       services.flameshot.enable = true;
