@@ -82,6 +82,7 @@ in
     desktop = {
       common.enable = lib.mkEnableOption "common desktop home-manager profile";
       x11.enable = lib.mkEnableOption "X11/i3 desktop home-manager profile";
+      wayland.enable = lib.mkEnableOption "Sway desktop home-manager profile";
     };
   };
 
@@ -109,6 +110,14 @@ in
       services.polybar.enable = true;
       custom.scripts.i3Monitor.enable = true;
       services.redshift.enable = true;
+    })
+
+    (lib.mkIf g.desktop.wayland.enable {
+      wayland.windowManager.sway.enable = true;
+      programs.waybar.enable = true;
+      custom.services.cliphist.enable = true;
+      services.udiskie.enable = true;
+      services.flameshot.enable = true;
     })
 
     (lib.mkIf g.core.enable {

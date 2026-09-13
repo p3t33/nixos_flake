@@ -99,6 +99,11 @@ in
       }
     ];
 
+    home.packages = with pkgs; [
+      nwg-displays
+      wl-clipboard
+    ];
+
     wayland.windowManager.sway = {
       package = osConfig.programs.sway.package;
 
