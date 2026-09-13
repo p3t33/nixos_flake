@@ -26,6 +26,12 @@ let
   ];
   rofi = lib.getExe config.programs.rofi.finalPackage;
   rofiPowerMenu = lib.getExe pkgs.rofi-power-menu;
+  sattyWindowCommands = lib.optionals config.programs.satty.enable [
+    {
+      criteria.app_id = "^com[.]gabm[.]satty$";
+      command = "floating enable, move position cursor";
+    }
+  ];
   wpctl = lib.getExe' osConfig.services.pipewire.wireplumber.package "wpctl";
   ws1 = config.custom.sway.workspaces.ws1;
   ws2 = config.custom.sway.workspaces.ws2;
@@ -158,6 +164,11 @@ in
           "--no-repeat XF86AudioMicMute" =
             if audioEnabled then "exec ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle" else null;
           "Print" = if config.services.flameshot.enable then "exec ${flameshot} gui" else null;
+          "${mod}+Print" =
+            if config.programs.satty.enable then
+              "exec ${lib.getExe config.custom.programs.satty.screenshotPackage}"
+            else
+              null;
           "${mod}+Shift+Return" =
             "exec ${lib.getExe config.programs.alacritty.package} -e zsh -i -c 'tmux a || tmux new'";
 
@@ -225,7 +236,7 @@ in
           "${ws4}" = [ { app_id = "^google-chrome$"; } ];
         };
 
-        window.commands = flameshotWindowCommands ++ moolticuteWindowCommands;
+        window.commands = flameshotWindowCommands ++ sattyWindowCommands ++ moolticuteWindowCommands;
 
         startup =
           lib.optionals config.custom.sway.autostart.googleChrome [
