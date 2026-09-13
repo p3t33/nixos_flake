@@ -16,7 +16,10 @@
   custom = {
     profiles.systemServices = {
       core.enable = true;
-      desktop.enable = true;
+      desktop = {
+        common.enable = true;
+        x11.enable = true;
+      };
     };
 
     services = {

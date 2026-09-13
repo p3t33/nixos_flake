@@ -76,30 +76,36 @@ in
 
   options.custom.profiles.homeManager = {
     core.enable = lib.mkEnableOption "core home-manager profile (shell, terminal, editor, git, CLI tools)";
-    desktop.enable = lib.mkEnableOption "desktop home-manager profile (WM, GUI apps, desktop environment)";
+    desktop = {
+      common.enable = lib.mkEnableOption "common desktop home-manager profile";
+      x11.enable = lib.mkEnableOption "X11/i3 desktop home-manager profile";
+    };
   };
 
   config = lib.mkMerge [
-    (lib.mkIf g.desktop.enable {
+    (lib.mkIf g.desktop.common.enable {
       programs.alacritty.enable = true;
       programs.ssh.enable = true;
       programs.rofi.enable = true;
-      services.picom.enable = true;
-      xsession.windowManager.i3.enable = true;
-      services.polybar.enable = true;
-      custom.scripts.i3Monitor.enable = true;
-      services.redshift.enable = true;
       programs.taskwarrior.enable = true;
       custom.desktop.wallpaper.enable = true;
       xdg.mimeApps.enable = true;
       programs.emacs.enable = true;
       gtk.enable = true;
       qt.enable = true;
-      custom.programs.moolticute.enable = true;
       services.dunst.enable = true;
       programs.firefox.enable = true;
       programs.ghostty.enable = true;
       programs.zathura.enable = true;
+      custom.programs.moolticute.enable = true;
+    })
+
+    (lib.mkIf g.desktop.x11.enable {
+      services.picom.enable = true;
+      xsession.windowManager.i3.enable = true;
+      services.polybar.enable = true;
+      custom.scripts.i3Monitor.enable = true;
+      services.redshift.enable = true;
     })
 
     (lib.mkIf g.core.enable {

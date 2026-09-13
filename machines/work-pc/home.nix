@@ -29,7 +29,10 @@ in
 
     profiles.homeManager = {
       core.enable = true;
-      desktop.enable = true;
+      desktop = {
+        common.enable = true;
+        x11.enable = true;
+      };
     };
 
     file.smartcardPublicKey = {
