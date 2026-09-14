@@ -33,7 +33,6 @@
   #  ../../modules/home-manager/scripts/helloworld-python.nix
    ../../modules/home-manager/scripts/tmux-sessionizer.nix
    ../../modules/home-manager/scripts/cheat-sh.nix
-  #  ../../modules/home-manager/redshift.nix
    ../../modules/home-manager/taskwarrior.nix
   #  ../../modules/home-manager/wallpaper.nix
    ../../modules/home-manager/atuin.nix
