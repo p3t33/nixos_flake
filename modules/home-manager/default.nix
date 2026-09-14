@@ -44,7 +44,7 @@ in
     ./gpg.nix
     ./ssh/ssh-client.nix
     ./ssh/ssh_public_key.nix
-    ./redshift.nix
+    ./wlsunset.nix
     ./taskwarrior.nix
     ./atuin.nix
     ./wallpaper.nix
@@ -109,7 +109,6 @@ in
       services.picom.enable = true;
       xsession.windowManager.i3.enable = true;
       services.polybar.enable = true;
-      services.redshift.enable = true;
     })
 
     (lib.mkIf g.desktop.wayland.enable {
@@ -119,6 +118,7 @@ in
       custom.services.cliphist.enable = true;
       services.udiskie.enable = true;
       services.flameshot.enable = true;
+      services.wlsunset.enable = true;
     })
 
     (lib.mkIf g.core.enable {
