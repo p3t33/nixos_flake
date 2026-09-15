@@ -36,6 +36,7 @@ in
 
     ./gui/gnome-keyring.nix
     ./gui/xserver.nix
+    ./gui/sway.nix
     ./gui/display_manager/display_manager_base.nix
 
     ./system/moolticuted.nix
