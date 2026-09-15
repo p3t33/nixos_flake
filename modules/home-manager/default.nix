@@ -57,6 +57,7 @@ in
     ./zellij.nix
     ./yazi.nix
     ./ghostty.nix
+    ./services/cliphist.nix
     ./services/dunst.nix
     ./services/mcp-gateway.nix
     ./navi.nix
