@@ -9,6 +9,7 @@
 let
   audioEnabled = osConfig.services.pipewire.enable && osConfig.services.pipewire.wireplumber.enable;
   cfg = config.wayland.windowManager.sway;
+  cliphistMenu = import ./rofi/scripts/cliphist.nix { inherit config lib pkgs; };
   flameshot = lib.getExe config.services.flameshot.package;
   flameshotWindowCommands = lib.optionals config.services.flameshot.enable [
     {
@@ -134,6 +135,11 @@ in
           "${mod}+b" =
             if config.programs.rofi.enable then
               "exec ${rofi} -modes buku-bookmarks:rofi-buku-bookmakrs -show buku-bookmarks"
+            else
+              null;
+          "${mod}+c" =
+            if config.services.cliphist.enable && config.programs.rofi.enable then
+              "exec ${cliphistMenu}"
             else
               null;
           "XF86AudioRaiseVolume" =
