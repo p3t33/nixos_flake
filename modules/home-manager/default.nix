@@ -33,6 +33,7 @@ in
     ./alacritty.nix
     ./picom.nix
     ./i3.nix
+    ./sway.nix
     ./i3status.nix
     ./i3/bars.nix
     ./polybar.nix
