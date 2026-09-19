@@ -77,11 +77,6 @@ in
         # startup is divided into two "sections" backgournd commands and the start of gui applications.
         startup = [
           {
-            command = "i3-monitor";
-            always = true;
-            notification = false;
-          }
-          {
             command = "systemctl --user restart polybar";
             # always = true --> exec_always
             # always = false --> exec
@@ -228,7 +223,7 @@ in
           "${mod}+Shift+r" = "reload";
 
           ## restart i3 in place (preserves your layout/session, can be used to upgrade i3)
-          "${mod}+q" = "exec --no-startup-id i3-msg restart && i3-monitor";
+          "${mod}+q" = "exec --no-startup-id i3-msg restart";
 
           # exit i3 (logs you out of your X session)
           "${mod}+Shift+q" =

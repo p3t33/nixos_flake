@@ -67,7 +67,7 @@ in
     ./lnav.nix
 
     # scripts
-    ./scripts/i3-monitor.nix
+    ./scripts/display-recovery.nix
     ./scripts/tmux-sessionizer.nix
     ./scripts/helloworld-python.nix
     ./scripts/cheat-sh.nix
@@ -108,7 +108,6 @@ in
       services.picom.enable = true;
       xsession.windowManager.i3.enable = true;
       services.polybar.enable = true;
-      custom.scripts.i3Monitor.enable = true;
       services.redshift.enable = true;
     })
 
