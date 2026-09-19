@@ -35,6 +35,12 @@ in
       };
     };
 
+    scripts.displayRecovery = {
+      enable = true;
+      builtInOutput = "eDP-1";
+      expectedExternalDisplays = 2;
+    };
+
     file.smartcardPublicKey = {
       enable = true;
       value = config.custom.shared.sshPublicKeys.work-pc.key;
