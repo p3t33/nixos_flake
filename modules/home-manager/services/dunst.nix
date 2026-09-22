@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   config = lib.mkIf config.services.dunst.enable {
     services.dunst = {
@@ -7,10 +12,9 @@
         global = {
           monitor = 0;
           follow = "mouse";
-          border = 0;
-          height = 400;
+          height = "(0, 400)";
           width = 320;
-          offset = "33x65";
+          offset = "(33, 65)";
           indicate_hidden = "yes";
           shrink = "no";
           separator_height = 0;
@@ -22,7 +26,7 @@
           font = "Noto Sans";
           line_height = 4;
           markup = "full";
-          format = "<b>%s</b>\n%b";
+          format = "<b>%s</b>\\n%b";
           alignment = "left";
           transparency = 10;
           show_age_threshold = 60;

@@ -29,18 +29,16 @@ in
     ./zsh.nix
     ./bash.nix
     ./tmux.nix
-    ./sxhkd.nix
     ./alacritty.nix
-    ./picom.nix
-    ./i3.nix
-    ./i3status.nix
-    ./i3/bars.nix
-    ./polybar.nix
-    ./rofi.nix
+    ./flameshot.nix
+    ./sway.nix
+    ./satty.nix
+    ./waybar.nix
+    ./rofi
     ./gpg.nix
     ./ssh/ssh-client.nix
     ./ssh/ssh_public_key.nix
-    ./redshift.nix
+    ./wlsunset.nix
     ./taskwarrior.nix
     ./atuin.nix
     ./wallpaper.nix
@@ -54,6 +52,7 @@ in
     ./zellij.nix
     ./yazi.nix
     ./ghostty.nix
+    ./services/cliphist.nix
     ./services/dunst.nix
     ./services/mcp-gateway.nix
     ./navi.nix
@@ -63,8 +62,7 @@ in
     ./lnav.nix
 
     # scripts
-    ./scripts/i3-monitor.nix
-    ./scripts/rofi-buku-bookmarks.nix
+    ./scripts/display-recovery.nix
     ./scripts/tmux-sessionizer.nix
     ./scripts/helloworld-python.nix
     ./scripts/cheat-sh.nix
@@ -76,30 +74,38 @@ in
 
   options.custom.profiles.homeManager = {
     core.enable = lib.mkEnableOption "core home-manager profile (shell, terminal, editor, git, CLI tools)";
-    desktop.enable = lib.mkEnableOption "desktop home-manager profile (WM, GUI apps, desktop environment)";
+    desktop = {
+      common.enable = lib.mkEnableOption "common desktop home-manager profile";
+      wayland.enable = lib.mkEnableOption "Sway desktop home-manager profile";
+    };
   };
 
   config = lib.mkMerge [
-    (lib.mkIf g.desktop.enable {
+    (lib.mkIf g.desktop.common.enable {
       programs.alacritty.enable = true;
       programs.ssh.enable = true;
       programs.rofi.enable = true;
-      services.picom.enable = true;
-      xsession.windowManager.i3.enable = true;
-      services.polybar.enable = true;
-      custom.scripts.i3Monitor.enable = true;
-      services.redshift.enable = true;
       programs.taskwarrior.enable = true;
       custom.desktop.wallpaper.enable = true;
       xdg.mimeApps.enable = true;
       programs.emacs.enable = true;
       gtk.enable = true;
       qt.enable = true;
-      custom.programs.moolticute.enable = true;
       services.dunst.enable = true;
       programs.firefox.enable = true;
       programs.ghostty.enable = true;
       programs.zathura.enable = true;
+      custom.programs.moolticute.enable = true;
+    })
+
+    (lib.mkIf g.desktop.wayland.enable {
+      wayland.windowManager.sway.enable = true;
+      programs.waybar.enable = true;
+      programs.satty.enable = true;
+      custom.services.cliphist.enable = true;
+      services.udiskie.enable = true;
+      services.flameshot.enable = true;
+      services.wlsunset.enable = true;
     })
 
     (lib.mkIf g.core.enable {

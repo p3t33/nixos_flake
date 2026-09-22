@@ -38,14 +38,6 @@
   boot.zfs.forceImportRoot = false;
   networking.hostId = "f21ff191";
 
-  # Configure keymap in X11
-  services.xserver = {
-    xkb = {
-      layout = "us,il";
-      variant = "";
-    };
-  };
-
   users.users.${hostSpecific.primeUsername} = {
 
     # By default will create /etc/ssh/authorized_keys.d/$USER file with this key in it.

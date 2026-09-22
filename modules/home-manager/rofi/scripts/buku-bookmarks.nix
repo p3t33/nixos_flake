@@ -1,16 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.programs.rofi;
+  swaymsg = lib.getExe' pkgs.sway "swaymsg";
   # Define the focusing logic as a reusable fragment
   focus_browser_logic = ''
     # Give the browser time to open the URL
     sleep 0.1
 
-    # Find the browser window and focus it (using i3-msg or wmctrl)
-    # Note: Using 'Navigator.Firefox' requires the browser to be Firefox
-    windowid=$(wmctrl -lx | grep -i Navigator.Firefox | awk '{print $1}' | tail -1)
-    if [ -n "$windowid" ]; then
-      i3-msg "[id=\"$windowid\"] focus" > /dev/null &
+    if [ -n "''${SWAYSOCK:-}" ]; then
+      ${swaymsg} '[app_id="^firefox$"] focus' > /dev/null
     fi
   '';
 

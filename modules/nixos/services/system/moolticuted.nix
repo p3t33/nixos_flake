@@ -25,10 +25,7 @@ in
         KillMode = "process";
         Restart = "always";
         User = "${hostSpecific.primeUsername}";
-        # --- Why 'Group=' is Not Used ---
-        # No 'Group=' line is needed because the 'uaccess' tag already gives
-        # the user specified above all the necessary permissions. Adding a
-        # 'Group=' would be a redundant,
+        SupplementaryGroups = [ "moolticuted" ];
 
         CapabilityBoundingSet = "";
         RuntimeDirectory = "moolticuted";
@@ -50,6 +47,14 @@ in
 
     };
 
-    services.udev.packages = [ pkgs.moolticute.udev ];
+    users.groups.moolticuted = { };
+
+    services.udev = {
+      packages = [ pkgs.moolticute.udev ];
+      extraRules = ''
+        SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="09a0", GROUP="moolticuted", MODE="0660"
+        SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="4321", GROUP="moolticuted", MODE="0660"
+      '';
+    };
   };
 }

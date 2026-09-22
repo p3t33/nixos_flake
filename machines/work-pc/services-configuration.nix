@@ -21,7 +21,10 @@
   custom = {
     profiles.systemServices = {
       core.enable = true;
-      desktop.enable = true;
+      desktop = {
+        common.enable = true;
+        wayland.enable = true;
+      };
     };
 
     connectivity.bluetooth.enable = true;

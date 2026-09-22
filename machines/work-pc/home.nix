@@ -29,7 +29,16 @@ in
 
     profiles.homeManager = {
       core.enable = true;
-      desktop.enable = true;
+      desktop = {
+        common.enable = true;
+        wayland.enable = true;
+      };
+    };
+
+    scripts.displayRecovery = {
+      enable = true;
+      builtInOutput = "eDP-1";
+      expectedExternalDisplays = 2;
     };
 
     file.smartcardPublicKey = {
@@ -39,10 +48,12 @@ in
 
     desktop.wallpaper.name = "watchtower.png";
 
-    polybar = {
+    waybar = {
       enableWlan = true;
       enableBattery = true;
       enableAllenTxTime = true;
     };
   };
+
+  wayland.windowManager.sway.config.output."eDP-1".enable = "";
 }

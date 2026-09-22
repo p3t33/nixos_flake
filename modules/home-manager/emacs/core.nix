@@ -33,7 +33,10 @@ in
   xdg.dataFile."${autoSaveDirectoryName}/.keep".text = "";
 
   # enables emacs daemon
-  services.emacs.enable = true;
+  services.emacs = {
+    enable = true;
+    startWithUserSession = lib.mkIf config.wayland.windowManager.sway.enable "graphical";
+  };
 
   # Only affects the generated emacsclient desktop file used by launchers like rofi.
   # It does not change how emacsclient behaves when called directly, e.g. by git.
@@ -44,7 +47,7 @@ in
 
   programs.emacs = {
     # Review this explicit version choice on every NixOS stable upgrade.
-    package = pkgs.emacs30;
+    package = pkgs.emacs30-pgtk;
 
     # programs.emacs.extraConfig is responsible to create a configuration file for
     # Emacs but this file, although interpreted as init.el(in logs) isn't located in ~/.emacs.d.
@@ -73,6 +76,11 @@ in
       ;; use of the '+' register (or a custom keybind) to yank to the OS clipboard.
       (setq select-enable-clipboard nil)
       (setq select-enable-primary nil)
+
+      (let ((wayland-clipboard-bin "${pkgs.wl-clipboard}/bin"))
+        (add-to-list 'exec-path wayland-clipboard-bin)
+        (setenv "PATH"
+                (concat wayland-clipboard-bin ":" (or (getenv "PATH") ""))))
 
       ;; smooth scroll with margin of lines
       ;; =================================

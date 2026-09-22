@@ -35,16 +35,14 @@ in
     ./zigbee2mqtt.nix
 
     ./gui/gnome-keyring.nix
-    ./gui/xserver.nix
-    ./gui/display_manager/display_manager_base.nix
+    ./gui/sway.nix
+    ./gui/greetd.nix
 
     ./system/moolticuted.nix
 
     ./user/tmux.nix
     ./user/mutagen.nix
     ./user/watchman.nix
-    ./user/sxhkd.nix
-
 
     ./wireguard/wg-quick-client.nix
     ./wireguard/wireguard-server.nix
@@ -69,7 +67,10 @@ in
 
   options.custom.profiles.systemServices = {
     core.enable = lib.mkEnableOption "core service profile (tmux daemon, watchman)";
-    desktop.enable = lib.mkEnableOption "desktop service profile (sound, printing, display manager, etc.)";
+    desktop = {
+      common.enable = lib.mkEnableOption "common desktop service profile";
+      wayland.enable = lib.mkEnableOption "Sway desktop service profile";
+    };
     server.enable = lib.mkEnableOption "server service profile (sshd, fail2ban)";
     xmr-miner.enable = lib.mkEnableOption "XMR miner service profile (monerod, p2pool, xmrig)";
     wireguardServer.enable = lib.mkEnableOption "WireGuard server service profile (wireguard, dynamic dns)";
@@ -83,18 +84,18 @@ in
       custom.services.watchman.enable = true;
     })
 
-    (lib.mkIf g.desktop.enable {
+    (lib.mkIf g.desktop.common.enable {
       services.avahi.enable = true;
       custom.services.printing.client.enable = true;
       services.udisks2.enable = true; # mount and unmout USB drives
       services.pipewire.enable = true; # sound
-      services.xserver.enable = true;
-      custom.services.displayManager.enable = true; #todo
       services.gnome.gnome-keyring.enable = true;
-      services.upower.enable = true; # used by polybar battery module.
-      services.greenclip.enable = true; # clipboard manager
-      custom.services.sxhkd.enable = true;
+      services.upower.enable = true;
       custom.services.moolticuted.enable = true;
+    })
+
+    (lib.mkIf g.desktop.wayland.enable {
+      programs.sway.enable = true;
     })
 
     (lib.mkIf g.server.enable {

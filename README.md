@@ -43,7 +43,7 @@ dotfiles to the possible extent.
 - Configurations wrapped inside an enable options, and aggregated into profiles,
 allowing fast and easy way to build assemble machines.
 - Secrets deployment using [sops-nix]. Handling secrets on OS level and on home-manger level.
-- Extensively configured xorg and terminal environment.
+- Extensively configured Sway/Wayland desktop and terminal environment.
 - Virtualization configurations for KVM, VirtualBox, and docker.
 - Integration of [disko] to partition hard drives during NixOS installing
   and to create /etc/fstab.
@@ -52,9 +52,8 @@ allowing fast and easy way to build assemble machines.
 installation is made everything will "just work".
 
 # My Desktops
-![My i3 Desktops](snapshots/desktop.png)
 ## Daily Driver Software
-- **Desktop**: xorg with i3 and polybar.
+- **Desktop**: Sway with Waybar.
 - **Launcher**: Rofi.
 - **Shell**: zsh + starship with fzf, zoxide and atuin integration.
 - **Editor**: neovim.
@@ -64,10 +63,10 @@ installation is made everything will "just work".
 ## Some of the Daemons I Use
 - **ssh-agnet(via gpg-agnet)**: For all my ssh needs.
 - **emacs daemon**: for quick load time.
-- **clipmenu**: a clipboard history via rofi.
-- **redshift**: Adjusts the color temperature of your screen according to your surroundings.
-- **dnust**: notification daemon.
-- **sxhkd**: A simple X hotkey daemon.
+- **Cliphist**: Native Wayland clipboard history through Rofi.
+- **wlsunset**: Adjusts the color temperature of the displays according to local sunrise and sunset times.
+- **Dunst**: Notification daemon.
+- **greetd**: Starts the Sway session.
 - **syncthing**: sync files between all of my machines.
 - **tmux**: Used to start tmux on boot and with the resurrect and continuum
             plugins my entire terminal environment is always ready for me.
