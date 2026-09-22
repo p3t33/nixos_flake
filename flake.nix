@@ -44,10 +44,10 @@
       # Review whether this version override is still needed on every NixOS stable upgrade.
       nomachineVersionFix = final: prev: {
         nomachine-client = prev.nomachine-client.overrideAttrs (old: {
-          version = "10.0.59";
+          version = "10.1.7";
           src = prev.fetchurl {
-            url = "https://web9001.nomachine.com/download/10.0/Linux/nomachine-enterprise-client_10.0.59_1_x86_64.tar.gz";
-            hash = "sha256-3cq9itsCms/Sa7ucap6Qcjlgj+4mYZu7EHqeUrTZZKk=";
+            url = "https://download.nomachine.com/download/10.1/Linux/nomachine-enterprise-client_10.1.7_1_x86_64.tar.gz";
+            hash = "sha256-qvScbUV1Tt7LxYgrNpcdsRjjAippdZ/L1nrteqekC8Q=";
           };
         });
       };

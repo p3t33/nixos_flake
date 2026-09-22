@@ -1,9 +1,12 @@
-{ config, lib, ... }:
+{ config, pkgs-unstable, lib, ... }:
 {
   config = lib.mkIf config.services.immich.enable {
 
     services.immich = {
 
+
+      # TOTO: look into after switching to 26.11 when it is released.
+      package = pkgs-unstable.immich;
       # Where immich web gui listens
       host = config.custom.shared.localHostIPv4;
       port = 2283;

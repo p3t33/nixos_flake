@@ -219,9 +219,9 @@ in
 
       # Review these pinned npm package versions on every NixOS stable upgrade.
       packages = [
-        "npm:pi-mcp-adapter@2.32.1"
+        "npm:pi-mcp-adapter@2.36.0"
         "npm:@mjakl/pi-subagent@3.0.1"
-        "npm:pi-ask-user@0.15.0"
+        "npm:pi-ask-user@0.15.1"
       ];
 
       settings = {
