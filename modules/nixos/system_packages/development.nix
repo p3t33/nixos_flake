@@ -1,22 +1,24 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 let
   cfg = config.custom.apps.development;
   myPython = pkgs.python3.withPackages (ps: [
-       ps.pip
-       ps.virtualenv
-     ]);
+    ps.pip
+    ps.virtualenv
+  ]);
 in
 {
-  options.custom.apps.development.enable = lib.mkEnableOption "Enable developer tools and language servers";
+  options.custom.apps.development.enable =
+    lib.mkEnableOption "Enable developer tools and language servers";
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       # editors
       neovim
-      # required by neovim/vim for copy/paste
-      # to work with system clipboard on x11.
-      xclip
-
       vscode
 
       # UML

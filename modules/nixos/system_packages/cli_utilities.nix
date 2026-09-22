@@ -1,10 +1,17 @@
-{ config, lib, pkgs, pkgs-unstable, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
 
 let
   cfg = config.custom.apps.cliUtilities;
 in
 {
-  options.custom.apps.cliUtilities.enable = lib.mkEnableOption "Enable general tools, utilities, and media/networking programs";
+  options.custom.apps.cliUtilities.enable =
+    lib.mkEnableOption "Enable general tools, utilities, and media/networking programs";
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
@@ -106,8 +113,8 @@ in
       # Send notifications to the notification daemon, such as Dunst.
       libnotify
 
-      # evalute key and mouse presses for xorg
-      xev
+      # Evaluate key and mouse events under Wayland.
+      wev
 
       # Searching nix packages
       nix-search-cli # uses as "nix-search <name of package>"

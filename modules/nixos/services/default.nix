@@ -35,18 +35,14 @@ in
     ./zigbee2mqtt.nix
 
     ./gui/gnome-keyring.nix
-    ./gui/xserver.nix
     ./gui/sway.nix
     ./gui/greetd.nix
-    ./gui/display_manager/display_manager_base.nix
 
     ./system/moolticuted.nix
 
     ./user/tmux.nix
     ./user/mutagen.nix
     ./user/watchman.nix
-    ./user/sxhkd.nix
-
 
     ./wireguard/wg-quick-client.nix
     ./wireguard/wireguard-server.nix
@@ -73,7 +69,6 @@ in
     core.enable = lib.mkEnableOption "core service profile (tmux daemon, watchman)";
     desktop = {
       common.enable = lib.mkEnableOption "common desktop service profile";
-      x11.enable = lib.mkEnableOption "X11/i3 desktop service profile";
       wayland.enable = lib.mkEnableOption "Sway desktop service profile";
     };
     server.enable = lib.mkEnableOption "server service profile (sshd, fail2ban)";
@@ -97,13 +92,6 @@ in
       services.gnome.gnome-keyring.enable = true;
       services.upower.enable = true;
       custom.services.moolticuted.enable = true;
-    })
-
-    (lib.mkIf g.desktop.x11.enable {
-      services.xserver.enable = true;
-      custom.services.displayManager.enable = true; #todo
-      services.greenclip.enable = true; # clipboard manager
-      custom.services.sxhkd.enable = true;
     })
 
     (lib.mkIf g.desktop.wayland.enable {

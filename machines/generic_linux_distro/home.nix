@@ -1,11 +1,6 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
-  home.packages = with pkgs; [
-    arandr
-    xrandr
-  ];
-
   imports = [
     ../../modules/shared.nix
     ./sops-home.nix
@@ -20,32 +15,27 @@
     ../../modules/home-manager/zsh.nix
     ../../modules/home-manager/bash.nix
     ../../modules/home-manager/tmux.nix
-    #../../modules/home-manager/sxhkd.nix
     #../../modules/home-manager/syncthing.nix
-  #  ../../modules/home-manager/i3status.nix
-    ../../modules/home-manager/picom.nix
-  #  ../../modules/home-manager/i3.nix
-  #  ../../modules/home-manager/rofi
+    #  ../../modules/home-manager/rofi
     ../../modules/home-manager/gpg.nix
-   ../../modules/home-manager/ssh/ssh-client.nix
-  #  ../../modules/home-manager/polybar.nix
-   # ../../modules/home-manager/rofi/scripts/buku-bookmarks.nix
-  #  ../../modules/home-manager/scripts/helloworld-python.nix
-   ../../modules/home-manager/scripts/tmux-sessionizer.nix
-   ../../modules/home-manager/scripts/cheat-sh.nix
-   ../../modules/home-manager/taskwarrior.nix
-  #  ../../modules/home-manager/wallpaper.nix
-   ../../modules/home-manager/atuin.nix
-   ../../modules/home-manager/git/lazygit.nix
-  #  ../../modules/home-manager/emacs # uses default.nix
-  #  ../../modules/home-manager/xdg/mime_apps.nix
-  #  ../../modules/home-manager/gtk.nix
-  #  ../../modules/home-manager/qt.nix
-  #  ../../modules/home-manager/services/dunst.nix
-   ../../modules/home-manager/bat.nix
-  #  ../../modules/home-manager/firefox.nix
-  #  ../../modules/home-manager/generic_linux_fonts.nix
-   ../../modules/home-manager/yazi.nix
+    ../../modules/home-manager/ssh/ssh-client.nix
+    # ../../modules/home-manager/rofi/scripts/buku-bookmarks.nix
+    #  ../../modules/home-manager/scripts/helloworld-python.nix
+    ../../modules/home-manager/scripts/tmux-sessionizer.nix
+    ../../modules/home-manager/scripts/cheat-sh.nix
+    ../../modules/home-manager/taskwarrior.nix
+    #  ../../modules/home-manager/wallpaper.nix
+    ../../modules/home-manager/atuin.nix
+    ../../modules/home-manager/git/lazygit.nix
+    #  ../../modules/home-manager/emacs # uses default.nix
+    #  ../../modules/home-manager/xdg/mime_apps.nix
+    #  ../../modules/home-manager/gtk.nix
+    #  ../../modules/home-manager/qt.nix
+    #  ../../modules/home-manager/services/dunst.nix
+    ../../modules/home-manager/bat.nix
+    #  ../../modules/home-manager/firefox.nix
+    #  ../../modules/home-manager/generic_linux_fonts.nix
+    ../../modules/home-manager/yazi.nix
   ];
 
   programs.starship.enable = true;
@@ -63,6 +53,6 @@
   programs.yazi.enable = true;
   programs.gpg.enable = true;
 
-  custom.shared.sopsKeyPath = "${config.custom.shared.primeUserHomeDirectory }/.config/sops/age/keys.txt";
+  custom.shared.sopsKeyPath = "${config.custom.shared.primeUserHomeDirectory}/.config/sops/age/keys.txt";
   targets.genericLinux.enable = true;
 }

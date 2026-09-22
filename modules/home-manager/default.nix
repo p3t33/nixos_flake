@@ -29,17 +29,11 @@ in
     ./zsh.nix
     ./bash.nix
     ./tmux.nix
-    ./sxhkd.nix
     ./alacritty.nix
-    ./picom.nix
-    ./i3.nix
     ./flameshot.nix
     ./sway.nix
     ./satty.nix
     ./waybar.nix
-    ./i3status.nix
-    ./i3/bars.nix
-    ./polybar.nix
     ./rofi
     ./gpg.nix
     ./ssh/ssh-client.nix
@@ -82,7 +76,6 @@ in
     core.enable = lib.mkEnableOption "core home-manager profile (shell, terminal, editor, git, CLI tools)";
     desktop = {
       common.enable = lib.mkEnableOption "common desktop home-manager profile";
-      x11.enable = lib.mkEnableOption "X11/i3 desktop home-manager profile";
       wayland.enable = lib.mkEnableOption "Sway desktop home-manager profile";
     };
   };
@@ -103,12 +96,6 @@ in
       programs.ghostty.enable = true;
       programs.zathura.enable = true;
       custom.programs.moolticute.enable = true;
-    })
-
-    (lib.mkIf g.desktop.x11.enable {
-      services.picom.enable = true;
-      xsession.windowManager.i3.enable = true;
-      services.polybar.enable = true;
     })
 
     (lib.mkIf g.desktop.wayland.enable {

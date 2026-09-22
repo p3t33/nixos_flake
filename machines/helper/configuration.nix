@@ -30,13 +30,6 @@
 
   virtualisation.incus.enable = true;
 
-  services.xserver = {
-    xkb = {
-      layout = "us,il";
-      variant = "";
-    };
-  };
-
   users.users.${hostSpecific.primeUsername} = {
     openssh.authorizedKeys.keys = [
       config.custom.shared.sshPublicKeys.home-desktop.key

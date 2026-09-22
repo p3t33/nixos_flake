@@ -1,7 +1,6 @@
 {
   config,
   hostSpecific,
-  lib,
   ...
 }:
 {
@@ -32,20 +31,10 @@
   # The LAN address is assigned through an OPNsense DHCP reservation recorded in
   # modules/nixos/shared/lan-hosts.nix rather than configured on this interface.
 
-  services.xserver.enable = lib.mkForce false;
-
   virtualisation.incus.enable = true;
 
   boot.zfs.forceImportRoot = false;
   networking.hostId = "b8835c95";
-
-  # Configure keymap in X11
-  services.xserver = {
-    xkb = {
-      layout = "us,il";
-      variant = "";
-    };
-  };
 
   users.users.${hostSpecific.primeUsername} = {
 

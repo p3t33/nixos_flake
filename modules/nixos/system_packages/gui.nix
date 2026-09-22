@@ -1,10 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.custom.apps.gui;
 in
 {
-  options.custom.apps.gui.enable = lib.mkEnableOption "Enable GUI utilities and graphical system tools";
+  options.custom.apps.gui.enable =
+    lib.mkEnableOption "Enable GUI utilities and graphical system tools";
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
@@ -23,7 +29,6 @@ in
       # terminal
       alacritty
 
-      sxhkd
       gparted
 
       gpick # color picker.
