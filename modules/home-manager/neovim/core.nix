@@ -405,6 +405,8 @@
           plugin = auto-session;
           type = "lua";
           config = ''
+            vim.opt.sessionoptions:append("localoptions")
+
             require("auto-session").setup({
               suppressed_dirs = { "~/", "~/Downloads", "~/projects", "/" },
               bypass_save_filetypes = { "dashboard" },
