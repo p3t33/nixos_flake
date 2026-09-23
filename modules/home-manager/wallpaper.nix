@@ -18,10 +18,10 @@ let
     shopt -s nullglob
 
     wallpapers=()
-    for wallpaper in ${lib.escapeShellArg rwpspreadCache}/rwps_*.png; do
-      [ -L "$wallpaper" ] || continue
+    for wallpaper in ${lib.escapeShellArg rwpspreadCache}/rwps_*_*.png; do
+      [ -f "$wallpaper" ] && [ ! -L "$wallpaper" ] || continue
       output=''${wallpaper##*/rwps_}
-      output=''${output%.png}
+      output=''${output%_*.png}
       wallpapers+=(--output "$output" --image "$wallpaper")
     done
 
@@ -31,6 +31,47 @@ let
     fi
 
     exec ${lib.getExe pkgs.swaybg} "''${wallpapers[@]}"
+  '';
+
+  watchOutputs = pkgs.writeShellScript "watch-rwpspread-outputs" ''
+    set -euo pipefail
+
+    last_layout=
+
+    update_wallpaper() {
+      local layout
+      if ! layout=$(${lib.getExe' pkgs.sway "swaymsg"} -r -t get_outputs |
+        ${lib.getExe pkgs.jq} -c '[.[] | select(.active) | {name, rect, scale, transform}] | sort_by(.name)'); then
+        return
+      fi
+
+      if [ "$layout" = '[]' ]; then
+        last_layout=
+        return
+      fi
+      if [ "$layout" = "$last_layout" ] &&
+        ${lib.getExe' pkgs.systemd "systemctl"} --user is-active --quiet rwpspread-background.service; then
+        return
+      fi
+
+      if ! ${lib.getExe' pkgs.coreutils "mkdir"} -p ${lib.escapeShellArg rwpspreadCache}; then
+        return
+      fi
+      if ! ${lib.getExe pkgs.rwpspread} --image ${lib.escapeShellArg (toString cfg.pathIn)} \
+        --output ${lib.escapeShellArg rwpspreadCache} --post ${restartSwaybg}; then
+        return
+      fi
+      if ! ${lib.getExe' pkgs.systemd "systemctl"} --user is-active --quiet rwpspread-background.service; then
+        return
+      fi
+      last_layout=$layout
+    }
+
+    update_wallpaper
+    while ${lib.getExe' pkgs.coreutils "sleep"} 5; do
+      update_wallpaper
+    done
+    exit 1
   '';
 in
 {
@@ -76,7 +117,7 @@ in
 
         Service = {
           Type = "simple";
-          ExecStart = "${lib.getExe pkgs.rwpspread} --daemon --image ${cfg.pathIn} --post ${restartSwaybg}";
+          ExecStart = watchOutputs;
           Restart = "on-failure";
           RestartSec = 1;
         };
