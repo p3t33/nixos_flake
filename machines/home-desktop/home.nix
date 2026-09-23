@@ -1,4 +1,8 @@
 { config, ... }:
+let
+  gpt-reasoning = "gpt-6-sol";
+  gpt-workhorse = "gpt-6-luna";
+in
 {
   imports = [
     ./sops-home.nix
@@ -10,6 +14,13 @@
 
   custom = {
     programs = {
+      pi = {
+        defaultModel = gpt-reasoning;
+        models = {
+          reasoning = "${config.custom.programs.pi.defaultProvider}/${gpt-reasoning}";
+          workhorse = "${config.custom.programs.pi.defaultProvider}/${gpt-workhorse}";
+        };
+      };
       gitCommitSignaturesWithGpg.enable = true;
       glabels.enable = true;
     };
