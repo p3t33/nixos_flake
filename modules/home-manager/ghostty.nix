@@ -13,6 +13,7 @@
       settings = {
         font-size = 16;
         window-decoration = "server";
+        confirm-close-surface = false;
 
         mouse-hide-while-typing = true;
 

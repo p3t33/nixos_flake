@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   g = config.custom.profiles.system;
@@ -81,6 +81,7 @@ in
     (lib.mkIf g.server.enable {
       virtualisation.docker.enable = true;
       custom.motd.enable = true; # moto of the day.
+      environment.systemPackages = [ pkgs.ghostty.terminfo ];
     })
 
     # virtualbox is not enbled by default as it is mostly used for cross development.
