@@ -57,7 +57,7 @@ installation is made everything will "just work".
 - **Launcher**: Rofi.
 - **Shell**: zsh + starship with fzf, zoxide and atuin integration.
 - **Editor**: neovim.
-- **Terminal**: alacritty(with tmux).
+- **Terminal**: wezterm(with tmux).
 - **Second brain**: emacs(org-roam).
 
 ## Some of the Daemons I Use

@@ -59,6 +59,8 @@ in
         Tmux
         Kobi
         alacritty
+        ghostty
+        wezterm
         Adv360
         ZMK
         NixOS
@@ -70,6 +72,10 @@ in
         i3
         i3wm
         xorg
+        wayland
+        sway
+        dunst
+        waybar
         zsh
         VirtualBox
         KVM

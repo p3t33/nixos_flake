@@ -134,7 +134,9 @@ in
         # I am using # as a delimiter because this is the recommendation on rofi man page for i3wm
         # This is the default list of models that will be available.
         modi = "drun#ssh#emoji#calc#power-menu:${lib.getExe pkgs.rofi-power-menu}#buku-bookmarks:rofi-buku-bookmakrs";
-        terminal = "alacritty";
+        terminal = lib.getExe config.programs.wezterm.package;
+        ssh-command = "{terminal} start -- {ssh-client} {host} [-p {port}]";
+        run-shell-command = "{terminal} start -- {cmd}";
         sort = true;
         matching = "fuzzy";
         tokenize = true;

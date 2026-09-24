@@ -121,7 +121,7 @@ in
 
       config = {
         modifier = mod;
-        terminal = lib.getExe config.programs.alacritty.package;
+        terminal = lib.getExe config.programs.wezterm.package;
         bars = [ ];
         bindkeysToCode = true;
 
@@ -170,7 +170,7 @@ in
             else
               null;
           "${mod}+Shift+Return" =
-            "exec ${lib.getExe config.programs.alacritty.package} -e zsh -i -c 'tmux a || tmux new'";
+            "exec ${lib.getExe config.programs.wezterm.package} start -- ${lib.getExe pkgs.zsh} -i -c 'tmux a || tmux new'";
 
           "${mod}+Mod1+1" = "[con_mark=\"one\"] focus";
           "${mod}+Mod1+2" = "[con_mark=\"two\"] focus";
