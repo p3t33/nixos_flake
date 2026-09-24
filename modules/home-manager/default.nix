@@ -30,6 +30,7 @@ in
     ./bash.nix
     ./tmux.nix
     ./alacritty.nix
+    ./wezterm.nix
     ./flameshot.nix
     ./sway.nix
     ./satty.nix
