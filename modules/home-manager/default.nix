@@ -56,6 +56,7 @@ in
     ./services/cliphist.nix
     ./services/dunst.nix
     ./services/mcp-gateway.nix
+    ./services/swayidle.nix
     ./navi.nix
     ./tealdeer.nix
     ./pay-respects.nix
@@ -107,6 +108,7 @@ in
       services.udiskie.enable = true;
       services.flameshot.enable = true;
       services.wlsunset.enable = true;
+      services.swayidle.enable = true;
     })
 
     (lib.mkIf g.core.enable {
