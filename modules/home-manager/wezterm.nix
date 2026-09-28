@@ -38,6 +38,8 @@
       settings = {
         font = lib.generators.mkLuaInline ''wezterm.font("${config.custom.shared.font.mono}")'';
         font_size = 16;
+        bidi_enabled = true;
+        bidi_direction = "AutoLeftToRight";
         color_scheme = "Nord (Gogh)";
         window_background_opacity = 0.95;
         scrollback_lines = 10000;
