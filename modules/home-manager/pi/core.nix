@@ -65,7 +65,7 @@ in
 
     defaultModel = lib.mkOption {
       type = lib.types.str;
-      default = "gpt-5.6-sol";
+      default = "gpt-6.1-sol";
       description = ''
         Default model ID for the selected provider, for example "gpt-5.6-sol",
         "claude-opus-4-6", or "gemini-2.5-pro".
@@ -97,7 +97,7 @@ in
       };
       workhorse = lib.mkOption {
         type = lib.types.str;
-        default = "${config.custom.programs.pi.defaultProvider}/gpt-5.6-terra";
+        default = "${config.custom.programs.pi.defaultProvider}/gpt-6.1-luna";
         description = "Provider-qualified model for bulk execution work (worker agent).";
       };
     };
@@ -219,7 +219,7 @@ in
 
       # Review these pinned npm package versions on every NixOS stable upgrade.
       packages = [
-        "npm:pi-mcp-adapter@2.36.0"
+        "npm:pi-mcp-adapter@3.3.0"
         "npm:@mjakl/pi-subagent@3.0.1"
         "npm:pi-ask-user@0.15.1"
       ];
