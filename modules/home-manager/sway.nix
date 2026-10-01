@@ -29,7 +29,7 @@ let
   sattyWindowCommands = lib.optionals config.programs.satty.enable [
     {
       criteria.app_id = "^com[.]gabm[.]satty$";
-      command = "floating enable, move position cursor";
+      command = "floating enable, border pixel 0, move position cursor";
     }
   ];
   wpctl = lib.getExe' osConfig.services.pipewire.wireplumber.package "wpctl";
