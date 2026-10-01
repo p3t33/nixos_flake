@@ -33,7 +33,6 @@ in
     ./wezterm.nix
     ./flameshot.nix
     ./sway.nix
-    ./satty.nix
     ./waybar.nix
     ./rofi
     ./gpg.nix
@@ -103,7 +102,6 @@ in
     (lib.mkIf g.desktop.wayland.enable {
       wayland.windowManager.sway.enable = true;
       programs.waybar.enable = true;
-      programs.satty.enable = true;
       custom.services.cliphist.enable = true;
       services.udiskie.enable = true;
       services.flameshot.enable = true;

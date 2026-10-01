@@ -10,7 +10,7 @@ let
   audioEnabled = osConfig.services.pipewire.enable && osConfig.services.pipewire.wireplumber.enable;
   cfg = config.wayland.windowManager.sway;
   cliphistMenu = import ./rofi/scripts/cliphist.nix { inherit config lib pkgs; };
-  flameshot = lib.getExe config.services.flameshot.package;
+  flameshotFocused = lib.getExe config.custom.programs.flameshot.focusedScreenshotPackage;
   flameshotWindowCommands = lib.optionals config.services.flameshot.enable [
     {
       criteria.app_id = "^flameshot$";
@@ -26,12 +26,6 @@ let
   ];
   rofi = lib.getExe config.programs.rofi.finalPackage;
   rofiPowerMenu = lib.getExe pkgs.rofi-power-menu;
-  sattyWindowCommands = lib.optionals config.programs.satty.enable [
-    {
-      criteria.app_id = "^com[.]gabm[.]satty$";
-      command = "floating enable, border pixel 0, move position cursor";
-    }
-  ];
   wpctl = lib.getExe' osConfig.services.pipewire.wireplumber.package "wpctl";
   ws1 = config.custom.sway.workspaces.ws1;
   ws2 = config.custom.sway.workspaces.ws2;
@@ -163,12 +157,7 @@ in
             if audioEnabled then "exec ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle" else null;
           "--no-repeat XF86AudioMicMute" =
             if audioEnabled then "exec ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle" else null;
-          "Print" = if config.services.flameshot.enable then "exec ${flameshot} gui" else null;
-          "${mod}+Print" =
-            if config.programs.satty.enable then
-              "exec ${lib.getExe config.custom.programs.satty.screenshotPackage}"
-            else
-              null;
+          "Print" = if config.services.flameshot.enable then "exec ${flameshotFocused}" else null;
           "${mod}+Shift+Return" =
             "exec ${lib.getExe config.programs.wezterm.package} start -- ${lib.getExe pkgs.zsh} -i -c 'tmux a || tmux new'";
 
@@ -236,7 +225,7 @@ in
           "${ws4}" = [ { app_id = "^google-chrome$"; } ];
         };
 
-        window.commands = flameshotWindowCommands ++ sattyWindowCommands ++ moolticuteWindowCommands;
+        window.commands = flameshotWindowCommands ++ moolticuteWindowCommands;
 
         startup =
           lib.optionals config.custom.sway.autostart.googleChrome [
