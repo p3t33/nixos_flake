@@ -46,8 +46,8 @@ in
              keymap = {
                -- keys for the built in previewer.
                builtin = {
-                 ["<C-j>"] = "preview-down",
-                 ["<C-k>"] = "preview-up",
+                 ["<M-j>"] = "preview-down",
+                 ["<M-k>"] = "preview-up",
                },
              },
 
@@ -112,8 +112,16 @@ in
                       i = {
                           ['<C-u>'] = false,
                           ['<C-d>'] = false,
-                          ["<C-k>"] = actions.preview_scrolling_up,
-                          ["<C-j>"] = actions.preview_scrolling_down,
+                          ['<C-k>'] = false,
+                          ["<M-k>"] = actions.preview_scrolling_up,
+                          ["<M-j>"] = actions.preview_scrolling_down,
+                      },
+                      n = {
+                          ['<C-u>'] = false,
+                          ['<C-d>'] = false,
+                          ['<C-k>'] = false,
+                          ["<M-k>"] = actions.preview_scrolling_up,
+                          ["<M-j>"] = actions.preview_scrolling_down,
                       },
                   },
                   dynamic_preview_title = true,

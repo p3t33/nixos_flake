@@ -45,6 +45,7 @@
 
            -- Set cursorline
            vim.wo.cursorline = true
+           vim.opt.guicursor:append("t:blinkon0")
 
            -- Disable wrap of text
            vim.wo.wrap = false

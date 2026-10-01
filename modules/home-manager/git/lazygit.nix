@@ -1,13 +1,15 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 
 {
 
   config = lib.mkIf config.programs.lazygit.enable {
     programs.lazygit = {
+      # Stable lazygit lacks Alt+letter keybinding support.
+      package = pkgs-unstable.lazygit;
       settings = {
         promptToReturnFromSubprocess = false;
         git = {
-          pagers =
+          diffRenderers =
           [
             {
               # By default, tools like git use a pager to display
@@ -15,11 +17,12 @@
               # delta too uses paging. In the context of integrating delta
               # with lazygit it is useful to use the --paging=never switch
               # to prevent netsted paging and comflicts between the too.
-              pager = "delta --dark --paging=never";
+              command = "delta --dark --paging=never";
 
             }
             {
-                externalDiffCommand = "difft --color=always";
+                type = "extDiff";
+                command = "${lib.getExe pkgs.difftastic} --color=always";
             }
           ];
         };
@@ -31,8 +34,8 @@
           };
 
           universal = {
-            scrollUpMain-alt1 = "K";
-            scrollDownMain-alt1 = "J";
+            scrollUpMain = "<alt+k>";
+            scrollDownMain = "<alt+j>";
           };
         };
       };
