@@ -2,7 +2,7 @@
 let
   cfg = config.programs.tmux;
   tmux-sessionizer = pkgs.writeShellScriptBin "tmux-sessionizer" ''
-     SINGLE_ARGUMENT=1
+    SINGLE_ARGUMENT=1
 
     _is_user_provided_directory_as_cli_arguments()
     {
@@ -11,7 +11,7 @@ let
 
     _is_user_provided_his_working_directory_as_path_argument()
     {
-        [[ "." = $1 ]] || [[ "./" = $1 ]]
+        [[ "." = "$1" ]] || [[ "./" = "$1" ]]
     }
 
     _is_user_provided_name_of_exisitng_directory()
@@ -32,23 +32,34 @@ let
         # the order.
         {
             __get_existing_tmux_sessions
-            ${lib.getExe pkgs.zoxide} query --list
+            ${lib.getExe pkgs.zoxide} query --list | while IFS= read -r directory || [[ -n $directory ]]; do
+                (CDPATH="" cd -- "$directory" >/dev/null 2>&1) || continue
+                printf '%s\n' "$directory"
+            done
         } | ${lib.getExe pkgs.fzf} --ansi
 
     }
 
     get_directory_to_open_as_tmux_session()
     {
+        local directory
         if _is_user_provided_directory_as_cli_arguments "$#"; then
-            if _is_user_provided_his_working_directory_as_path_argument $1; then
-                echo "$(pwd)"
+            if _is_user_provided_his_working_directory_as_path_argument "$1"; then
+                directory=$(pwd) || return 1
             else
-                if ! _is_user_provided_name_of_exisitng_directory $1; then
-                    mkdir -p $1
+                if ! _is_user_provided_name_of_exisitng_directory "$1"; then
+                    if ! mkdir -p -- "$1"; then
+                        printf 'Cannot create directory: %s\n' "$1" >&2
+                        return 1
+                    fi
                 fi
-
-                echo "$1"
+                directory=$1
             fi
+            if ! (CDPATH="" cd -- "$directory" >/dev/null 2>&1); then
+                printf 'Cannot access directory: %s\n' "$directory" >&2
+                return 1
+            fi
+            printf '%s\n' "$directory"
         else
             _generate_list_of_existing_sessions_and_most_frequently_accessed_paths
         fi
@@ -57,7 +68,7 @@ let
 
     create_session_name()
     {
-        session_name=$(basename "$1" | tr . _)
+        session_name=$(basename -- "$1" | tr . _)
         echo "$session_name"
     }
 
@@ -73,53 +84,54 @@ let
     # detach is one side effect).
     create_new_detached_tmux_session()
     {
-        ${lib.getExe pkgs.tmux}  new-session -ds$1 -c $2
+        ${lib.getExe pkgs.tmux} new-session -d -s "$1" -c "$2"
     }
 
     _is_session_name_already_exit()
     {
         # will return 1 if session does not exist
-        ${lib.getExe pkgs.tmux}  has-session -t=$1 2> /dev/null;
+        ${lib.getExe pkgs.tmux} has-session -t="$1" 2> /dev/null;
         return $?
     }
 
     start_tmux_session()
     {
         if _is_command_executed_from_within_tmux; then
-            if ! _is_session_name_already_exit $1; then
-                create_new_detached_tmux_session $1 $2
+            if ! _is_session_name_already_exit "$1"; then
+                create_new_detached_tmux_session "$1" "$2"
             fi
 
-            ${lib.getExe pkgs.tmux}  switch-client -t $1
+            ${lib.getExe pkgs.tmux} switch-client -t "$1"
         else
-            if ! _is_session_name_already_exit $1; then
-                create_new_detached_tmux_session $1 $2
+            if ! _is_session_name_already_exit "$1"; then
+                create_new_detached_tmux_session "$1" "$2"
             fi
 
-            ${lib.getExe pkgs.tmux}  attach-session -t $1
+            ${lib.getExe pkgs.tmux} attach-session -t "$1"
         fi
 
     }
 
     switch_to_the_requsted_session()
     {
-        ${lib.getExe pkgs.tmux}  switch-client -t $1
+        ${lib.getExe pkgs.tmux} switch-client -t "$1"
     }
 
 
     main()
     {
-        session_path=$(get_directory_to_open_as_tmux_session "$@")
-
+        if ! session_path=$(get_directory_to_open_as_tmux_session "$@"); then
+            (( $# == 0 )) || return 1
+        fi
 
         if [[ -z $session_path ]]; then
             echo "failed to get session path"
             exit 0
         fi
 
-        session_name=$(create_session_name $session_path)
+        session_name=$(create_session_name "$session_path")
 
-        start_tmux_session $session_name $session_path
+        start_tmux_session "$session_name" "$session_path"
     }
 
     main "$@"
