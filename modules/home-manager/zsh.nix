@@ -66,10 +66,17 @@ in
         # below re-applies our custom bindings after zsh-vi-mode initializes:
         #  - ^R: atuin history search (vi-mode rebinds this to redo)
         #  - ^S: tmux-sessionizer (keyboard tmux layer misfire sends Ctrl+S)
+        #  - Esc Esc: toggle sudo on the current or previous command
+        function zvm_config() {
+            ZVM_READKEY_ENGINE=$ZVM_READKEY_ENGINE_ZLE
+            ZVM_KEYTIMEOUT=0.15
+        }
         source ${pkgs.zsh-vi-mode}/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
         function zvm_custom_bindings() {
             bindkey '^R' _atuin_search_widget
             bindkey '^S' tmux-sessionizer-widget
+            zvm_bindkey viins '^[^[' sudo-command-line
+            zvm_bindkey vicmd '^[^[' sudo-command-line
             # Atuin's init prepends itself to ZSH_AUTOSUGGEST_STRATEGY. Reset it here
             # so autosuggestions use zsh's native history (local machine only) instead
             # of Atuin's cross-machine synced database.
