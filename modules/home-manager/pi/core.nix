@@ -97,7 +97,7 @@ in
       };
       workhorse = lib.mkOption {
         type = lib.types.str;
-        default = "${config.custom.programs.pi.defaultProvider}/gpt-6.1-luna";
+        default = "${config.custom.programs.pi.defaultProvider}/gpt-6-luna";
         description = "Provider-qualified model for bulk execution work (worker agent).";
       };
     };
@@ -170,6 +170,10 @@ in
           source = jsonFormat.generate "pi-settings.json" cfg.settings;
         };
 
+        ".pi/agent/mcp.json" = lib.mkIf (config.programs.mcp.enable && config.programs.mcp.servers != { }) {
+          source = config.xdg.configFile."mcp/mcp.json".source;
+        };
+
         ".pi/agent/models.json" = lib.mkIf localOllamaEnabled {
           source = jsonFormat.generate "pi-models.json" {
             providers.ollama = {
@@ -219,9 +223,8 @@ in
 
       # Review these pinned npm package versions on every NixOS stable upgrade.
       packages = [
-        "npm:pi-mcp-adapter@3.3.0"
-        "npm:@mjakl/pi-subagent@3.0.1"
-        "npm:pi-ask-user@0.15.1"
+        "npm:@mjakl/pi-subagent@3.1.0"
+        "npm:pi-ask-user@0.16.0"
       ];
 
       settings = {

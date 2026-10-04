@@ -11,7 +11,7 @@
 # Package sources:
 #   Local package paths can point at sources fetched into the nix store, which
 #   keeps those packages under nix control. NPM package specs such as
-#   `npm:pi-mcp-adapter` are resolved by pi at runtime into ~/.pi/agent/npm.
+#   `npm:pi-ask-user` are resolved by pi at runtime into ~/.pi/agent/npm.
 #
 # Fetching strategy — fetchFromGitHub vs buildNpmPackage:
 #   Use a local nix-store path for packages we intentionally vendor through

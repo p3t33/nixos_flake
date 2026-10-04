@@ -1,7 +1,7 @@
 { config, ... }:
 let
   gpt-reasoning = "gpt-6.1-sol";
-  gpt-workhorse = "gpt-6.1-luna";
+  gpt-workhorse = "gpt-6-luna";
 in
 {
   imports = [
