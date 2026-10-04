@@ -40,6 +40,29 @@
       spiceUSBRedirection.enable = true;
     };
 
+    # Disable automatic USB redirect to virt-manger
+    #
+    # When attaching a USB device to the host by default it will
+    # be redirected to the guest using spice. As I prefer to have
+    # full control over what gets redirected to and where I disabled
+    # this feature.
+    #
+    # virt-manger is a desktop client and it uses dconf database
+    # in order to save preferences
+    programs.dconf.profiles.user.databases = [
+      {
+        settings."org/virt-manager/virt-manager/console" = {
+          auto-redirect = false;
+        };
+
+        # enforces the settings and disallows the user to enable it
+        # manually using the virt-manger gui.
+        locks = [
+          "/org/virt-manager/virt-manager/console/auto-redirect"
+        ];
+      }
+    ];
+
     users.users.${hostSpecific.primeUsername} = {
       extraGroups = [ "libvirtd" ];
     };
