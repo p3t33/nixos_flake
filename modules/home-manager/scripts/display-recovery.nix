@@ -1,6 +1,5 @@
-# Display policy and emergency recovery for the work laptop's dock -> MST ->
-# EDID-emulating KVM display path. DDC distinguishes reachable monitors from
-# the KVM's persistent EDID, while Sway power commands preserve MST topology.
+# Panel policy uses active Sway outputs; recovery uses DDC to check external
+# links and power cycling to preserve the dock -> MST -> KVM topology.
 {
   config,
   lib,
@@ -68,27 +67,23 @@ let
     }
 
     apply_panel_policy() {
-      local detected=''${1:-}
+      local available=''${1:-$external_count}
 
-      if [ -z "$detected" ]; then
-        detected=$(detect_responsive_external_displays)
-      fi
-
-      if [ "$detected" -gt 0 ]; then
+      if [ "$available" -gt 0 ]; then
         if [ "$builtin_present" = true ]; then
           sway_command output "$builtin_display" disable
         fi
-        echo "$detected responsive external display(s); $builtin_display disabled."
+        echo "$available available external display(s); $builtin_display disabled."
         return
       fi
 
       if [ "$builtin_present" != true ]; then
-        echo "No responsive external displays and fallback output $builtin_display is unavailable." >&2
+        echo "No available external displays and fallback output $builtin_display is unavailable." >&2
         return 1
       fi
 
       sway_command output "$builtin_display" enable
-      echo "No responsive external displays; $builtin_display enabled."
+      echo "No available external displays; $builtin_display enabled."
     }
 
     # shellcheck disable=SC2329
