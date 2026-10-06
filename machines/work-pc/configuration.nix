@@ -10,6 +10,12 @@
 
   services.greetd.enable = true;
 
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+  };
+
   custom = {
     profiles.system = {
       core.enable = true;
