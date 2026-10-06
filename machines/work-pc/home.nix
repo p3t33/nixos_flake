@@ -56,5 +56,19 @@ in
     };
   };
 
-  wayland.windowManager.sway.config.output."eDP-1".enable = "";
+  wayland.windowManager.sway.config.output = {
+    "eDP-1".enable = "";
+    "HP Inc. HP E273 CNK944188X" = {
+      mode = "1920x1080@60Hz";
+      position = "0 0";
+      scale = "1";
+      transform = "normal";
+    };
+    "HP Inc. HP E273 CNK944188W" = {
+      mode = "1920x1080@60Hz";
+      position = "1920 0";
+      scale = "1";
+      transform = "normal";
+    };
+  };
 }

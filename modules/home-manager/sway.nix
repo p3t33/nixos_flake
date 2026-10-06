@@ -114,6 +114,23 @@ in
       package = osConfig.programs.sway.package;
 
       config = {
+        # default monitor configurations shared by all gui machines that
+        # use sway.
+        output = {
+          "LG Electronics LG HDR WQHD 0x0000BF89" = {
+            mode = lib.mkDefault "3440x1440@59.973Hz";
+            position = lib.mkDefault "0 0";
+            scale = lib.mkDefault "1";
+            transform = lib.mkDefault "normal";
+          };
+          "Dell Inc. DELL P2314H J8J3141HK8DL" = {
+            mode = lib.mkDefault "1920x1080@60Hz";
+            position = lib.mkDefault "3440 0";
+            scale = lib.mkDefault "1";
+            transform = lib.mkDefault "normal";
+          };
+        };
+
         modifier = mod;
         terminal = lib.getExe config.programs.wezterm.package;
         bars = [ ];
