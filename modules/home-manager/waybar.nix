@@ -39,7 +39,7 @@ in
 
       settings.mainBar = {
         layer = "top";
-        position = "bottom";
+        position = "top";
         height = 38;
         spacing = 0;
 
@@ -47,6 +47,9 @@ in
           "sway/workspaces"
           "sway/mode"
         ];
+        modules-center = [ "clock" ]
+          ++ lib.optionals config.custom.waybar.enableAllenTxTime [ "custom/allen_tx" ];
+
         modules-right = [
           "tray"
           "disk"
@@ -55,11 +58,7 @@ in
         ]
         ++ lib.optionals config.custom.waybar.enableWlan [ "network" ]
         ++ lib.optionals config.custom.waybar.enableBattery [ "custom/battery" ]
-        ++ [
-          "pulseaudio"
-          "clock"
-        ]
-        ++ lib.optionals config.custom.waybar.enableAllenTxTime [ "custom/allen_tx" ];
+        ++ [ "pulseaudio" ];
 
         "sway/workspaces" = {
           all-outputs = false;
@@ -133,7 +132,7 @@ in
         };
 
         "custom/allen_tx" = {
-          exec = "TZ=America/Chicago ${date} +\"US: %H:%M\"";
+          exec = "TZ=America/Chicago ${date} +\"US: %d-%m-%Y %H:%M\"";
           interval = 30;
           format = "{}";
           tooltip = false;
