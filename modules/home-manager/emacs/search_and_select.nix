@@ -29,6 +29,11 @@ in
       ;; Enable vertical completion UI
       (use-package vertico
        :ensure nil
+       :bind (:map vertico-map
+              ("TAB" . vertico-next)
+              ("<tab>" . vertico-next)
+              ("S-TAB" . vertico-previous)
+              ("<backtab>" . vertico-previous))
        :custom
        (vertico-count 12)       ;; Show more candidates
        (vertico-resize t)       ;; Grow and shrink the Vertico minibuffer
@@ -44,6 +49,16 @@ in
         (set-face-attribute 'orderless-match-face-0 nil :foreground "#ecbe7b" :weight 'bold))
        ;; Allow pasting from OS clipboard directly into Vertico minibuffer
        (define-key vertico-map (kbd "C-S-v") (lambda () (interactive) (insert (gui-get-selection 'CLIPBOARD 'STRING)))))
+
+      (use-package vertico-multiform
+       :ensure nil
+       :after vertico
+       :custom
+       (vertico-multiform-commands '((consult-find) (consult-fd)))
+       (vertico-multiform-categories
+        '((file (:keymap "TAB" vertico-insert "<tab>" vertico-insert))))
+       :config
+       (vertico-multiform-mode))
 
       ;; Persist history over Emacs restarts. Vertico sorts by history position.
       (use-package savehist

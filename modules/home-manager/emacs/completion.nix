@@ -51,6 +51,11 @@ in
       ;; It perfectly replaces both company and company-box without the lag.
       (use-package corfu
        :ensure nil
+       :bind (:map corfu-map
+              ("TAB" . corfu-next)
+              ("<tab>" . corfu-next)
+              ("S-TAB" . corfu-previous)
+              ("<backtab>" . corfu-previous))
        :custom
        (corfu-auto t)                 ;; Enable auto completion
        (corfu-auto-delay 0.1)         ;; Delay before popup appears
