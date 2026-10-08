@@ -55,6 +55,8 @@ in
             background-color = mkL "@bg0";
             location = mkL "center";
             width = 640;
+            border = mkL "2px";
+            border-color = mkL config.custom.shared.outlineColors.active;
             border-radius = 8;
           };
 

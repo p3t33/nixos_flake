@@ -22,5 +22,14 @@
         };
       description = "Defines the color palette for the user interface";
     };
+
+    outlineColors = lib.mkOption {
+      type = lib.types.attrsOf lib.types.str;
+      default = {
+        active = "#88c0d0";
+        inactive = "#292e42";
+      };
+      description = "Window and popup outline colors";
+    };
   };
 }

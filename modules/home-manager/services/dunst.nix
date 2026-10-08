@@ -20,7 +20,8 @@
           separator_height = 0;
           padding = 32;
           horizontal_padding = 32;
-          frame_width = 0;
+          frame_width = 2;
+          frame_color = config.custom.shared.outlineColors.active;
           sort = "no";
           idle_threshold = 120;
           font = "Noto Sans";

@@ -9,6 +9,7 @@
 let
   audioEnabled = osConfig.services.pipewire.enable && osConfig.services.pipewire.wireplumber.enable;
   cfg = config.wayland.windowManager.sway;
+  outlines = config.custom.shared.outlineColors;
   cliphistMenu = import ./rofi/scripts/cliphist.nix { inherit config lib pkgs; };
   flameshotFocused = lib.getExe config.custom.programs.flameshot.focusedScreenshotPackage;
   flameshotWindowCommands = lib.optionals config.services.flameshot.enable [
@@ -242,6 +243,10 @@ in
           "${ws4}" = [ { app_id = "^google-chrome$"; } ];
         };
 
+        window.border = 3;
+        window.titlebar = false;
+        floating.border = 3;
+        floating.titlebar = false;
         window.commands = flameshotWindowCommands ++ moolticuteWindowCommands;
 
         startup =
@@ -262,25 +267,25 @@ in
           focused = {
             text = config.custom.shared.colors.text;
             background = config.custom.shared.colors.background-alt;
-            border = config.custom.shared.colors.primary;
-            childBorder = config.custom.shared.colors.primary;
-            indicator = config.custom.shared.colors.alert;
+            border = outlines.active;
+            childBorder = outlines.active;
+            indicator = outlines.active;
           };
 
           focusedInactive = {
             text = config.custom.shared.colors.inactive-text;
             background = config.custom.shared.colors.inactive-bg;
-            border = config.custom.shared.colors.inactive-bg;
-            childBorder = config.custom.shared.colors.secondary;
-            indicator = config.custom.shared.colors.alert;
+            border = outlines.inactive;
+            childBorder = outlines.inactive;
+            indicator = outlines.active;
           };
 
           unfocused = {
             text = config.custom.shared.colors.inactive-text;
             background = config.custom.shared.colors.inactive-bg;
-            border = config.custom.shared.colors.background;
-            childBorder = config.custom.shared.colors.background;
-            indicator = config.custom.shared.colors.alert;
+            border = outlines.inactive;
+            childBorder = outlines.inactive;
+            indicator = outlines.inactive;
           };
         };
       };
