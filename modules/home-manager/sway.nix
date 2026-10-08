@@ -242,6 +242,10 @@ in
           "${ws4}" = [ { app_id = "^google-chrome$"; } ];
         };
 
+        window.border = 3;
+        window.titlebar = false;
+        floating.border = 3;
+        floating.titlebar = false;
         window.commands = flameshotWindowCommands ++ moolticuteWindowCommands;
 
         startup =

@@ -39,7 +39,7 @@ in
 
       settings.mainBar = {
         layer = "top";
-        position = "bottom";
+        position = "top";
         height = 38;
         spacing = 0;
 
@@ -47,6 +47,9 @@ in
           "sway/workspaces"
           "sway/mode"
         ];
+        modules-center = [ "clock" ]
+          ++ lib.optionals config.custom.waybar.enableAllenTxTime [ "custom/allen_tx" ];
+
         modules-right = [
           "tray"
           "disk"
@@ -55,16 +58,12 @@ in
         ]
         ++ lib.optionals config.custom.waybar.enableWlan [ "network" ]
         ++ lib.optionals config.custom.waybar.enableBattery [ "custom/battery" ]
-        ++ [
-          "pulseaudio"
-          "clock"
-        ]
-        ++ lib.optionals config.custom.waybar.enableAllenTxTime [ "custom/allen_tx" ];
+        ++ [ "pulseaudio" ];
 
         "sway/workspaces" = {
           all-outputs = false;
           reverse-scroll = true;
-          format = "{value}";
+          format = "{index}";
         };
 
         "sway/mode" = {
@@ -133,7 +132,7 @@ in
         };
 
         "custom/allen_tx" = {
-          exec = "TZ=America/Chicago ${date} +\"US: %H:%M\"";
+          exec = "TZ=America/Chicago ${date} +\"US: %d-%m-%Y %H:%M\"";
           interval = 30;
           format = "{}";
           tooltip = false;
@@ -168,14 +167,14 @@ in
         #workspaces button.focused {
           background: ${colors.background-alt};
           color: ${colors.primary};
-          box-shadow: inset 0 -2px ${colors.primary};
+          box-shadow: none;
         }
 
         #workspaces button.urgent {
           color: ${colors.alert};
         }
 
-        #workspaces button:hover {
+        #workspaces button:hover:not(.focused) {
           background: ${colors.background-alt};
           box-shadow: inherit;
           text-shadow: inherit;
@@ -203,7 +202,7 @@ in
         #clock,
         #custom-allen_tx {
           padding: 0 16px;
-          background: ${colors.background-alt};
+          background: transparent;
         }
       '';
     };

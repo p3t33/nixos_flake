@@ -20,7 +20,8 @@
           separator_height = 0;
           padding = 32;
           horizontal_padding = 32;
-          frame_width = 0;
+          frame_width = 2;
+          frame_color = config.custom.shared.colors.primary;
           sort = "no";
           idle_threshold = 120;
           font = "Noto Sans";
@@ -28,7 +29,7 @@
           markup = "full";
           format = "<b>%s</b>\\n%b";
           alignment = "left";
-          transparency = 10;
+          transparency = 0;
           show_age_threshold = 60;
           word_wrap = "yes";
           ignore_newline = "no";

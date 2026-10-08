@@ -8,7 +8,7 @@
 let
 
   colors = rec {
-    bg0 = "${config.custom.shared.colors.background}E6";
+    bg0 = "${config.custom.shared.colors.background}";
     bg1 = "${config.custom.shared.colors.background-alt}80";
     bg2 = "${config.custom.shared.colors.primary}E6";
     fg0 = "#DEDEDE";
@@ -54,8 +54,10 @@ in
           window = {
             background-color = mkL "@bg0";
             location = mkL "center";
-            width = 640;
-            border-radius = 8;
+            width = 400;
+            border = mkL "2px";
+            border-color = mkL config.custom.shared.colors.primary;
+            border-radius = 0;
           };
 
           inputbar = {
@@ -99,7 +101,7 @@ in
           };
 
           element = {
-            padding = mkL "8px 16px";
+            padding = mkL "16px 16px";
             spacing = mkL "16px";
             background-color = mkL "transparent";
           };

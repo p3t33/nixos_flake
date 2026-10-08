@@ -40,6 +40,8 @@ in
       # Default command that is executed for fzf - $FZF_DEFAULT_COMMAND
       defaultCommand = "fd --type file --hidden --exclude .git";
 
+      colors = { };
+
       # colors = {
       #   "bg+"     = catppuccinMocha.bg_plus;
       #   bg        = catppuccinMocha.bg;

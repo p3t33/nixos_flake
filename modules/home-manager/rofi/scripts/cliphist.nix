@@ -14,7 +14,7 @@ in
 pkgs.writeShellScript "rofi-cliphist" ''
   set -o pipefail
 
-  selection="$(${cliphist} list | ${rofi} -dmenu -display-columns 2 -no-custom)" || exit 0
+  selection="$(${cliphist} list | ${rofi} -dmenu -display-columns 2 -no-custom -theme-str 'window { width: 800px; }')" || exit 0
   [ -n "$selection" ] || exit 0
 
   decoded="$(${mktemp})"
