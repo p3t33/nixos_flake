@@ -7,7 +7,9 @@
 
 let
   cfg = config.programs.waybar;
-  colors = config.custom.shared.colors;
+  colors = config.custom.shared.omarchyColors // {
+    background = config.custom.shared.omarchyColors.lighter_background;
+  };
   date = lib.getExe' pkgs.coreutils "date";
   batteryStatus = pkgs.writeShellScript "waybar-battery-status" ''
     capacity_file=/sys/class/power_supply/BAT0/capacity
@@ -73,25 +75,25 @@ in
         disk = {
           interval = 25;
           path = "/";
-          format = "<span foreground='${colors.primary}'>󱛟 DISK:</span> {percentage_used:2}%";
+          format = "<span foreground='${colors.foreground}'>󱛟 DISK:</span> {percentage_used:2}%";
         };
 
         memory = {
           interval = 2;
-          format = "<span foreground='${colors.primary}'>󰍛 RAM:</span> {percentage:2}%";
+          format = "<span foreground='${colors.foreground}'>󰍛 RAM:</span> {percentage:2}%";
         };
 
         cpu = {
           interval = 2;
-          format = "<span foreground='${colors.primary}'>󰻠 CPU:</span> {usage:2}%";
+          format = "<span foreground='${colors.foreground}'>󰻠 CPU:</span> {usage:2}%";
         };
 
         network = {
           interface = "wl*";
           interval = 5;
-          format-wifi = "<span foreground='${colors.primary}'>{icon}</span> {signalStrength}%";
-          format-disconnected = "<span foreground='${colors.disabled}'>󰖪</span>";
-          format-disabled = "<span foreground='${colors.disabled}'>󰖪</span>";
+          format-wifi = "<span foreground='${colors.foreground}'>{icon}</span> {signalStrength}%";
+          format-disconnected = "<span foreground='${colors.dark_foreground}'>󰖪</span>";
+          format-disabled = "<span foreground='${colors.dark_foreground}'>󰖪</span>";
           format-icons = [
             "󰤟"
             "󰤟"
@@ -106,7 +108,7 @@ in
           interval = 5;
           return-type = "json";
           hide-empty-text = true;
-          format = "<span foreground='${colors.primary}'>{icon}</span> {percentage:3}%";
+          format = "<span foreground='${colors.foreground}'>{icon}</span> {percentage:3}%";
           format-icons = [
             "󰁺"
             "󰁽"
@@ -117,8 +119,8 @@ in
         };
 
         pulseaudio = {
-          format = "<span foreground='${colors.primary}'>{icon}</span> {volume}%";
-          format-muted = "<span foreground='${colors.primary}'>󰝟</span>";
+          format = "<span foreground='${colors.foreground}'>{icon}</span> {volume}%";
+          format-muted = "<span foreground='${colors.foreground}'>󰝟</span>";
           format-icons.default = [
             "󰕿"
             "󰖀"
@@ -165,25 +167,25 @@ in
         }
 
         #workspaces button.focused {
-          background: ${colors.background-alt};
-          color: ${colors.primary};
+          background: mix(${colors.background}, ${colors.magenta}, 0.20);
+          color: ${colors.bright_foreground};
           box-shadow: none;
         }
 
         #workspaces button.urgent {
-          color: ${colors.alert};
+          color: ${colors.red};
         }
 
         #workspaces button:hover:not(.focused) {
-          background: ${colors.background-alt};
+          background: ${colors.lighter_background};
           box-shadow: inherit;
           text-shadow: inherit;
         }
 
         #mode {
           padding: 0 16px;
-          background: ${colors.background-alt};
-          box-shadow: inset 0 -2px ${colors.primary};
+          background: ${colors.selection};
+          box-shadow: inset 0 -2px ${colors.accent};
         }
 
         #tray {

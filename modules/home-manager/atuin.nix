@@ -1,7 +1,8 @@
 { config, lib, pkgs-unstable, ... }:
 
 let
-  catppuccinTheme = "catppuccin-mocha-blue";
+  themeName = "tokyo-night";
+  palette = config.custom.shared.omarchyColors;
 in
 {
 
@@ -23,22 +24,29 @@ in
         ctrl_n_shortcuts = true; # instead of the alt default.
 
         theme = {
-          name = catppuccinTheme;
+          name = themeName;
         };
       };
 
       themes = {
-        "${catppuccinTheme}" = {
-          theme.name = catppuccinTheme;
+        "${themeName}" = {
+          theme.name = themeName;
           colors = {
-            AlertInfo = "#a6e3a1";
-            AlertWarn = "#fab387";
-            AlertError = "#f38ba8";
-            Annotation = "#89b4fa";
-            Base = "#cdd6f4";
-            Guidance = "#9399b2";
-            Important = "#f38ba8";
-            Title = "#89b4fa";
+            AlertInfo = palette.green;
+            AlertWarn = palette.yellow;
+            AlertError = palette.red;
+            Annotation = palette.accent;
+            Base = palette.bright_foreground;
+            Guidance = palette.foreground;
+            Important = palette.accent;
+            Title = palette.accent;
+            Muted = palette.foreground;
+            SyntaxCommand = palette.accent;
+            SyntaxFlag = palette.cyan;
+            SyntaxString = palette.green;
+            SyntaxVariable = palette.magenta;
+            SyntaxOperator = palette.bright_foreground;
+            SyntaxComment = palette.dark_foreground;
           };
         };
       };

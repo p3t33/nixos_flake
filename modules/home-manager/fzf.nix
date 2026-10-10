@@ -1,22 +1,7 @@
 { config, lib, ... }:
 
 let
-  # catppuccinMocha = {
-  #   bg        = "#1E1E2E";
-  #   bg_plus   = "#313244";
-  #   fg        = "#CDD6F4";
-  #   fg_plus   = "#CDD6F4";
-  #   hl        = "#F38BA8";
-  #   hl_plus   = "#F38BA8";
-  #   header    = "#F38BA8";
-  #   prompt    = "#CBA6F7";
-  #   info      = "#CBA6F7";
-  #   spinner   = "#F5E0DC";
-  #   pointer   = "#F5E0DC";
-  #   marker    = "#B4BEFE";
-  #   border    = "#313244";
-  #   gutter    = "#1E1E2E";
-  # };
+  palette = config.custom.shared.omarchyColors;
 in
 {
 
@@ -40,24 +25,14 @@ in
       # Default command that is executed for fzf - $FZF_DEFAULT_COMMAND
       defaultCommand = "fd --type file --hidden --exclude .git";
 
-      colors = { };
-
-      # colors = {
-      #   "bg+"     = catppuccinMocha.bg_plus;
-      #   bg        = catppuccinMocha.bg;
-      #   spinner   = catppuccinMocha.spinner;
-      #   hl        = catppuccinMocha.hl;
-      #   fg        = catppuccinMocha.fg;
-      #   header    = catppuccinMocha.header;
-      #   gutter    = catppuccinMocha.gutter;
-      #   info      = catppuccinMocha.info;
-      #   pointer   = catppuccinMocha.pointer;
-      #   marker    = catppuccinMocha.marker;
-      #   "fg+"     = catppuccinMocha.fg_plus;
-      #   prompt    = catppuccinMocha.prompt;
-      #   "hl+"     = catppuccinMocha.hl_plus;
-      #   border    = catppuccinMocha.border;
-      # };
+      colors = {
+        "bg+" = palette.selection;
+        "fg+" = palette.magenta;
+        "hl+" = palette.magenta;
+        selected-bg = palette.selection;
+        selected-fg = palette.magenta;
+        selected-hl = palette.magenta;
+      };
     };
   };
 }

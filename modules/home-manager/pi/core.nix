@@ -229,7 +229,7 @@ in
 
       settings = {
         inherit (cfg) defaultProvider defaultModel defaultThinkingLevel;
-        theme = cfg.theme.name;
+        theme = "system";
       };
 
       theme = {

@@ -9,6 +9,11 @@
 let
   audioEnabled = osConfig.services.pipewire.enable && osConfig.services.pipewire.wireplumber.enable;
   cfg = config.wayland.windowManager.sway;
+  colors = config.custom.shared.omarchyColors;
+  outlines = {
+    active = colors.accent;
+    inactive = colors.background;
+  };
   cliphistMenu = import ./rofi/scripts/cliphist.nix { inherit config lib pkgs; };
   flameshotFocused = lib.getExe config.custom.programs.flameshot.focusedScreenshotPackage;
   flameshotWindowCommands = lib.optionals config.services.flameshot.enable [
@@ -264,27 +269,27 @@ in
 
         colors = {
           focused = {
-            text = config.custom.shared.colors.text;
-            background = config.custom.shared.colors.background-alt;
-            border = config.custom.shared.colors.primary;
-            childBorder = config.custom.shared.colors.primary;
-            indicator = config.custom.shared.colors.alert;
+            text = colors.foreground;
+            background = colors.background;
+            border = outlines.active;
+            childBorder = outlines.active;
+            indicator = outlines.active;
           };
 
           focusedInactive = {
-            text = config.custom.shared.colors.inactive-text;
-            background = config.custom.shared.colors.inactive-bg;
-            border = config.custom.shared.colors.inactive-bg;
-            childBorder = config.custom.shared.colors.secondary;
-            indicator = config.custom.shared.colors.alert;
+            text = colors.foreground;
+            background = colors.background;
+            border = outlines.inactive;
+            childBorder = outlines.inactive;
+            indicator = outlines.active;
           };
 
           unfocused = {
-            text = config.custom.shared.colors.inactive-text;
-            background = config.custom.shared.colors.inactive-bg;
-            border = config.custom.shared.colors.background;
-            childBorder = config.custom.shared.colors.background;
-            indicator = config.custom.shared.colors.alert;
+            text = colors.foreground;
+            background = colors.background;
+            border = outlines.inactive;
+            childBorder = outlines.inactive;
+            indicator = outlines.inactive;
           };
         };
       };

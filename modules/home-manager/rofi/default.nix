@@ -7,13 +7,15 @@
 
 let
 
-  colors = rec {
-    bg0 = "${config.custom.shared.colors.background}";
-    bg1 = "${config.custom.shared.colors.background-alt}80";
-    bg2 = "${config.custom.shared.colors.primary}E6";
-    fg0 = "#DEDEDE";
-    fg1 = "${config.custom.shared.colors.foreground}";
-    fg2 = "${config.custom.shared.colors.disabled}80";
+  palette = config.custom.shared.omarchyColors;
+  colors = {
+    bg0 = palette.background;
+    bg1 = "${palette.selection}80";
+    bg2 = "#252734";
+    fg0 = palette.foreground;
+    fg1 = palette.accent;
+    fg2 = "${palette.dark_foreground}80";
+    accent = palette.accent;
   };
 in
 {
@@ -41,6 +43,7 @@ in
             fg0 = mkL colors.fg0;
             fg1 = mkL colors.fg1;
             fg2 = mkL colors.fg2;
+            accent = mkL colors.accent;
 
             background-color = mkL "transparent";
             text-color = mkL "@fg0";
@@ -56,7 +59,7 @@ in
             location = mkL "center";
             width = 400;
             border = mkL "2px";
-            border-color = mkL config.custom.shared.colors.primary;
+            border-color = mkL palette.foreground;
             border-radius = 0;
           };
 
@@ -117,7 +120,7 @@ in
           };
 
           "element normal active" = {
-            text-color = mkL "@bg2";
+            text-color = mkL "@accent";
           };
 
           "element selected normal" = {

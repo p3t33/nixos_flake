@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+let
+  palette = config.custom.shared.omarchyColors;
+in
 {
   config = lib.mkIf config.programs.wezterm.enable {
     programs.wezterm = {
@@ -40,10 +43,45 @@
         font_size = 16;
         bidi_enabled = true;
         bidi_direction = "AutoLeftToRight";
-        color_scheme = "Nord (Gogh)";
+        color_scheme = "Tokyo Night";
         bold_brightens_ansi_colors = false;
-        window_padding = { left = "2pt"; right = "2pt"; top = "2pt"; bottom = "2pt"; };
+        colors = {
+          background = palette.background;
+          foreground = palette.bright_foreground;
+          ansi = [
+            palette.background
+            palette.red
+            palette.green
+            palette.yellow
+            palette.blue
+            palette.magenta
+            palette.cyan
+            palette.foreground
+          ];
+          brights = [
+            palette.muted
+            palette.bright_red
+            palette.bright_green
+            palette.bright_yellow
+            palette.bright_blue
+            palette.bright_magenta
+            palette.bright_cyan
+            palette.bright_foreground
+          ];
+          cursor_bg = palette.bright_foreground;
+          cursor_fg = palette.background;
+          cursor_border = palette.bright_foreground;
+          selection_bg = palette.selection;
+          selection_fg = palette.bright_foreground;
+          split = builtins.substring 0 7 palette.inactive_border;
+        };
         window_background_opacity = 0.95;
+        window_padding = {
+          left = "2pt";
+          right = "2pt";
+          top = "2pt";
+          bottom = "2pt";
+        };
         scrollback_lines = 10000;
         hide_tab_bar_if_only_one_tab = true;
         hide_mouse_cursor_when_typing = true;

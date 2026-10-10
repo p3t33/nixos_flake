@@ -2,6 +2,18 @@
 
 let
   cfg = config.programs.neovim;
+  palette = {
+    dark_background = "#13141c";
+    bright_foreground = "#c0caf5";
+    accent = "#7aa2f7";
+    foreground = "#a9b1d6";
+    green = "#9ece6a";
+    magenta = "#ad8ee6";
+    red = "#f7768e";
+    yellow = "#e0af68";
+  } // (config.custom.shared.omarchyColors or { });
+  statusBackground = "#303030";
+  statusSectionBackground = "#3a3a3a";
 in
 {
   config = lib.mkIf cfg.enable {
@@ -61,7 +73,22 @@ in
         require('lualine').setup {
             options = {
                 icons_enabled = true,
-                theme = 'nord',
+                theme = {
+                    normal = {
+                        a = { fg = '${palette.dark_background}', bg = '${palette.accent}', gui = 'bold' },
+                        b = { fg = '${palette.bright_foreground}', bg = '${statusSectionBackground}' },
+                        c = { fg = '${palette.bright_foreground}', bg = '${statusBackground}' },
+                    },
+                    insert = { a = { fg = '${palette.dark_background}', bg = '${palette.green}', gui = 'bold' } },
+                    visual = { a = { fg = '${palette.dark_background}', bg = '${palette.magenta}', gui = 'bold' } },
+                    replace = { a = { fg = '${palette.dark_background}', bg = '${palette.red}', gui = 'bold' } },
+                    command = { a = { fg = '${palette.dark_background}', bg = '${palette.yellow}', gui = 'bold' } },
+                    inactive = {
+                        a = { fg = '${palette.foreground}', bg = '${statusBackground}' },
+                        b = { fg = '${palette.foreground}', bg = '${statusBackground}' },
+                        c = { fg = '${palette.foreground}', bg = '${statusBackground}' },
+                    },
+                },
                 component_separators = { left = '', right = ''},
                 section_separators = { left = '', right = ''},
                 disabled_filetypes = {
