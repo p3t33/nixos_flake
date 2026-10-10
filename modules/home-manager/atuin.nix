@@ -1,8 +1,8 @@
 { config, lib, pkgs-unstable, ... }:
 
 let
-  themeName = "tokyo-night";
-  palette = config.custom.shared.omarchyColors;
+  themeName = "nord-desktop";
+  accent = config.custom.shared.outlineColors.active;
 in
 {
 
@@ -32,21 +32,21 @@ in
         "${themeName}" = {
           theme.name = themeName;
           colors = {
-            AlertInfo = palette.green;
-            AlertWarn = palette.yellow;
-            AlertError = palette.red;
-            Annotation = palette.accent;
-            Base = palette.bright_foreground;
-            Guidance = palette.foreground;
-            Important = palette.accent;
-            Title = palette.accent;
-            Muted = palette.foreground;
-            SyntaxCommand = palette.accent;
-            SyntaxFlag = palette.cyan;
-            SyntaxString = palette.green;
-            SyntaxVariable = palette.magenta;
-            SyntaxOperator = palette.bright_foreground;
-            SyntaxComment = palette.dark_foreground;
+            AlertInfo = "#a3be8c";
+            AlertWarn = "#ebcb8b";
+            AlertError = "#bf616a";
+            Annotation = accent;
+            Base = "#d8dee9";
+            Guidance = "#81a1c1";
+            Important = accent;
+            Title = accent;
+            Muted = "#a5abb6";
+            SyntaxCommand = "#81a1c1";
+            SyntaxFlag = accent;
+            SyntaxString = "#a3be8c";
+            SyntaxVariable = "#b48ead";
+            SyntaxOperator = "#d8dee9";
+            SyntaxComment = "#81a1c1";
           };
         };
       };

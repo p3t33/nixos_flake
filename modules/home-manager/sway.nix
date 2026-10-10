@@ -10,10 +10,7 @@ let
   audioEnabled = osConfig.services.pipewire.enable && osConfig.services.pipewire.wireplumber.enable;
   cfg = config.wayland.windowManager.sway;
   colors = config.custom.shared.omarchyColors;
-  outlines = {
-    active = colors.accent;
-    inactive = colors.background;
-  };
+  outlines = config.custom.shared.outlineColors;
   cliphistMenu = import ./rofi/scripts/cliphist.nix { inherit config lib pkgs; };
   flameshotFocused = lib.getExe config.custom.programs.flameshot.focusedScreenshotPackage;
   flameshotWindowCommands = lib.optionals config.services.flameshot.enable [

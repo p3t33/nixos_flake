@@ -34,14 +34,14 @@
 
     surfaceBackground = lib.mkOption {
       type = lib.types.str;
-      default = "#282c34";
+      default = "#20242d";
       description = "Background color for desktop surfaces";
     };
 
     omarchyColors = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
       default = {
-        accent = "#7aa2f7";
+        accent = "#88c0d0";
         selection = "#292e42";
         muted = "#414868";
         background = "#1a1b26";
@@ -68,7 +68,7 @@
         bright_magenta = "#bb9af7";
         inactive_border = "#595959aa";
       };
-      description = "Omarchy Tokyo Night palette";
+      description = "Omarchy Tokyo Night palette with a Nord cyan desktop accent";
     };
   };
 }

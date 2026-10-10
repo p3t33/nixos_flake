@@ -14,18 +14,18 @@
     programs.yazi = {
       theme =
         let
-          colors = config.custom.shared.omarchyColors or {
-            background = "#1a1b26";
-            foreground = "#a9b1d6";
-            accent = "#7aa2f7";
-            selection = "#292e42";
-            lighter_background = "#24283b";
-            dark_foreground = "#565f89";
-            green = "#9ece6a";
-            red = "#f7768e";
-            yellow = "#e0af68";
-            magenta = "#ad8ee6";
-            cyan = "#449dab";
+          colors = {
+            background = "#2e3440";
+            foreground = "#d8dee9";
+            accent = config.custom.shared.outlineColors.active or "#88c0d0";
+            selection = "#3b4252";
+            lighter_background = "#3b4252";
+            dark_foreground = "#4c566a";
+            green = "#a3be8c";
+            red = "#bf616a";
+            yellow = "#ebcb8b";
+            magenta = "#b48ead";
+            cyan = "#88c0d0";
           };
         in
         {

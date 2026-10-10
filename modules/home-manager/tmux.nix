@@ -11,39 +11,6 @@ let
   tmux-nerd-font-window-name =
     inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default;
   tmux = lib.getExe pkgs.tmux;
-  palette = {
-    dark_background = "#13141c";
-    bright_foreground = "#c0caf5";
-    lighter_background = "#24283b";
-    accent = "#7aa2f7";
-    bright_cyan = "#0db9d7";
-  } // (config.custom.shared.omarchyColors or { });
-  tmuxTheme = pkgs.tmuxPlugins.nord.overrideAttrs (old: {
-    postInstall = (old.postInstall or "") + ''
-      for file in "$out"/share/tmux-plugins/nord/src/*.conf; do
-        ${lib.getExe pkgs.gnused} -i \
-          -e 's/\<black\>/${palette.dark_background}/g' \
-          -e 's/\<white\>/${palette.bright_foreground}/g' \
-          -e 's/\<brightblack\>/${palette.lighter_background}/g' \
-          -e 's/\<blue\>/${palette.accent}/g' \
-          -e 's/\<cyan\>/${palette.accent}/g' \
-          -e 's/\<brightcyan\>/${palette.bright_cyan}/g' \
-          -e 's|^set -g window-status-format .*|set -g window-status-format "#[fg=${palette.bright_foreground},bg=${palette.lighter_background},nobold,noitalics,nounderscore] #I #W #F "|' \
-          -e 's|^set -g window-status-current-format .*|set -g window-status-current-format "#[fg=${palette.accent},bg=${palette.lighter_background},bold,noitalics,nounderscore] #I #W #F "|' \
-          -e 's/^\(setw\{0,1\} -g [^ ]* \)\([^"]*#[[:xdigit:]]\{6\}[^"]*\)$/\1"\2"/' \
-          "$file"
-        case "$file" in
-          */nord-status-content.conf)
-            ${lib.getExe pkgs.gnused} -i \
-              -e 's/#I #W/#I  #W/g' \
-              -e 's/^\(set -g window-status-\(current-\)\?format "\)/\1#[fg=${palette.dark_background},bg=${palette.lighter_background},nobold,noitalics,nounderscore]/' \
-              -e '/^set -g window-status-\(current-\)\?format /s/"$/#[fg=${palette.lighter_background},bg=${palette.dark_background},nobold,noitalics,nounderscore]"/' \
-              "$file"
-            ;;
-        esac
-      done
-    '';
-  });
 
 in
 {
@@ -75,7 +42,7 @@ in
         # The nord plugin or any other theme should on the top of the list
         # of the plugins. As it writes into the status-right which breaks the
         # set -g @continuum-save-interval for the continuum plugin.
-        tmuxTheme
+        nord
 
         # This plugin needs to be loaded before continuum or else continuum, will
         # not work.

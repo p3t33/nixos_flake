@@ -7,8 +7,15 @@
 
 let
   cfg = config.programs.waybar;
+  workspaceAccent = config.custom.shared.outlineColors.active;
   colors = config.custom.shared.omarchyColors // {
-    background = config.custom.shared.omarchyColors.lighter_background;
+    background = "#2e3440";
+    foreground = "#d8dee9";
+    bright_foreground = "#d8dee9";
+    dark_foreground = "#4c566a";
+    selection = "#3b4252";
+    lighter_background = "#3b4252";
+    red = "#bf616a";
   };
   date = lib.getExe' pkgs.coreutils "date";
   batteryStatus = pkgs.writeShellScript "waybar-battery-status" ''
@@ -163,13 +170,13 @@ in
         #workspaces button {
           padding: 0 16px;
           background: transparent;
-          color: ${colors.foreground};
+          color: ${colors.bright_foreground};
         }
 
         #workspaces button.focused {
-          background: mix(${colors.background}, ${colors.magenta}, 0.20);
+          background: mix(${colors.background}, ${workspaceAccent}, 0.12);
           color: ${colors.bright_foreground};
-          box-shadow: none;
+          box-shadow: inset 0 0 6px alpha(${workspaceAccent}, 0.45);
         }
 
         #workspaces button.urgent {

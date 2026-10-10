@@ -1,8 +1,5 @@
 { config, lib, ... }:
 
-let
-  palette = config.custom.shared.omarchyColors;
-in
 {
 
   config = lib.mkIf config.programs.fzf.enable {
@@ -26,12 +23,12 @@ in
       defaultCommand = "fd --type file --hidden --exclude .git";
 
       colors = {
-        "bg+" = palette.selection;
-        "fg+" = palette.magenta;
-        "hl+" = palette.magenta;
-        selected-bg = palette.selection;
-        selected-fg = palette.magenta;
-        selected-hl = palette.magenta;
+        "bg+" = "#3b4252";
+        "fg+" = "#b48ead";
+        "hl+" = "#b48ead";
+        selected-bg = "#3b4252";
+        selected-fg = "#b48ead";
+        selected-hl = "#b48ead";
       };
     };
   };

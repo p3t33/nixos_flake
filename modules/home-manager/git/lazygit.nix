@@ -1,16 +1,16 @@
 { config, lib, pkgs, pkgs-unstable, ... }:
 
 let
-  palette = config.custom.shared.omarchyColors or {
-    background = "#1a1b26";
-    bright_foreground = "#c0caf5";
-    accent = "#7aa2f7";
-    dark_foreground = "#565f89";
-    selection = "#292e42";
-    lighter_background = "#24283b";
-    magenta = "#ad8ee6";
-    yellow = "#e0af68";
-    red = "#f7768e";
+  colors = {
+    background = "#2e3440";
+    bright_foreground = "#d8dee9";
+    accent = config.custom.shared.outlineColors.active or "#88c0d0";
+    dark_foreground = "#4c566a";
+    selection = "#434c5e";
+    lighter_background = "#3b4252";
+    magenta = "#b48ead";
+    yellow = "#ebcb8b";
+    red = "#bf616a";
   };
 in
 {
@@ -21,18 +21,18 @@ in
       package = pkgs-unstable.lazygit;
       settings = {
         gui.theme = {
-          activeBorderColor = [ palette.accent "bold" ];
-          inactiveBorderColor = [ palette.dark_foreground ];
-          searchingActiveBorderColor = [ palette.accent "bold" ];
-          optionsTextColor = [ palette.accent ];
-          selectedLineBgColor = [ palette.selection ];
-          inactiveViewSelectedLineBgColor = [ palette.lighter_background ];
-          cherryPickedCommitFgColor = [ palette.background ];
-          cherryPickedCommitBgColor = [ palette.magenta ];
-          markedBaseCommitFgColor = [ palette.background ];
-          markedBaseCommitBgColor = [ palette.yellow ];
-          unstagedChangesColor = [ palette.red ];
-          defaultFgColor = [ palette.bright_foreground ];
+          activeBorderColor = [ colors.accent "bold" ];
+          inactiveBorderColor = [ colors.dark_foreground ];
+          searchingActiveBorderColor = [ colors.accent "bold" ];
+          optionsTextColor = [ colors.accent ];
+          selectedLineBgColor = [ colors.selection ];
+          inactiveViewSelectedLineBgColor = [ colors.lighter_background ];
+          cherryPickedCommitFgColor = [ colors.background ];
+          cherryPickedCommitBgColor = [ colors.magenta ];
+          markedBaseCommitFgColor = [ colors.background ];
+          markedBaseCommitBgColor = [ colors.yellow ];
+          unstagedChangesColor = [ colors.red ];
+          defaultFgColor = [ colors.bright_foreground ];
         };
         promptToReturnFromSubprocess = false;
         git = {

@@ -9,12 +9,12 @@ let
 
   palette = config.custom.shared.omarchyColors;
   colors = {
-    bg0 = palette.background;
+    bg0 = config.custom.shared.surfaceBackground;
     bg1 = "${palette.selection}80";
-    bg2 = "#252734";
-    fg0 = palette.foreground;
+    bg2 = "#363a42";
+    fg0 = "#d8dee9";
     fg1 = palette.accent;
-    fg2 = "${palette.dark_foreground}80";
+    fg2 = "#4c566a80";
     accent = palette.accent;
   };
 in
@@ -59,7 +59,7 @@ in
             location = mkL "center";
             width = 400;
             border = mkL "2px";
-            border-color = mkL palette.foreground;
+            border-color = mkL config.custom.shared.outlineColors.active;
             border-radius = 0;
           };
 

@@ -4,9 +4,6 @@
   pkgs,
   ...
 }:
-let
-  palette = config.custom.shared.omarchyColors;
-in
 {
   config = lib.mkIf config.services.dunst.enable {
     services.dunst = {
@@ -24,9 +21,9 @@ in
           padding = 32;
           horizontal_padding = 32;
           frame_width = 2;
-          frame_color = palette.accent;
-          background = palette.background;
-          foreground = palette.foreground;
+          frame_color = config.custom.shared.outlineColors.active;
+          background = config.custom.shared.surfaceBackground;
+          foreground = "#d8dee9";
           sort = "no";
           idle_threshold = 120;
           font = "Noto Sans";
