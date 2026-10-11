@@ -3,6 +3,12 @@
 let
   flakeRepositoryUrl = "https://github.com/${config.custom.shared.githubFlakeRepositoryName}.git";
   pathToFlakeDirectory = "${config.home.homeDirectory}/projects/nixos_flake";
+  fzfColors = lib.concatStringsSep "," (
+    lib.mapAttrsToList (name: color: "${name}:${color}") config.programs.fzf.colors
+  );
+  fzfGroupColors = lib.concatStringsSep " " (
+    lib.replicate 8 "$'\\033[36m' $'\\033[34m'"
+  );
 in
 {
   config = lib.mkIf config.programs.zsh.enable {
@@ -54,6 +60,11 @@ in
       initContent = ''
         # Disable Ctrl+S terminal freeze (vestigial serial flow control)
         stty -ixon
+
+        ${lib.optionalString config.programs.fzf.enable ''
+          zstyle ':fzf-tab:*' fzf-flags '--color=${fzfColors}'
+          zstyle ':fzf-tab:*' group-colors ${fzfGroupColors}
+        ''}
 
         function tmux-sessionizer-widget {
             BUFFER='tmux-sessionizer'

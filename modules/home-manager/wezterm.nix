@@ -41,7 +41,10 @@
         bidi_enabled = true;
         bidi_direction = "AutoLeftToRight";
         color_scheme = "Nord (Gogh)";
-        window_background_opacity = 0.95;
+        colors.background = "#20242d";
+        bold_brightens_ansi_colors = false;
+        window_padding = { left = "2pt"; right = "2pt"; top = "2pt"; bottom = "2pt"; };
+        window_background_opacity = 0.96;
         scrollback_lines = 10000;
         hide_tab_bar_if_only_one_tab = true;
         hide_mouse_cursor_when_typing = true;

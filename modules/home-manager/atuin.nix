@@ -1,7 +1,8 @@
 { config, lib, pkgs-unstable, ... }:
 
 let
-  catppuccinTheme = "catppuccin-mocha-blue";
+  themeName = "nord-desktop";
+  accent = config.custom.shared.outlineColors.active;
 in
 {
 
@@ -23,22 +24,29 @@ in
         ctrl_n_shortcuts = true; # instead of the alt default.
 
         theme = {
-          name = catppuccinTheme;
+          name = themeName;
         };
       };
 
       themes = {
-        "${catppuccinTheme}" = {
-          theme.name = catppuccinTheme;
+        "${themeName}" = {
+          theme.name = themeName;
           colors = {
-            AlertInfo = "#a6e3a1";
-            AlertWarn = "#fab387";
-            AlertError = "#f38ba8";
-            Annotation = "#89b4fa";
-            Base = "#cdd6f4";
-            Guidance = "#9399b2";
-            Important = "#f38ba8";
-            Title = "#89b4fa";
+            AlertInfo = "#a3be8c";
+            AlertWarn = "#ebcb8b";
+            AlertError = "#bf616a";
+            Annotation = accent;
+            Base = "#d8dee9";
+            Guidance = "#81a1c1";
+            Important = accent;
+            Title = accent;
+            Muted = "#a5abb6";
+            SyntaxCommand = "#81a1c1";
+            SyntaxFlag = accent;
+            SyntaxString = "#a3be8c";
+            SyntaxVariable = "#b48ead";
+            SyntaxOperator = "#d8dee9";
+            SyntaxComment = "#81a1c1";
           };
         };
       };

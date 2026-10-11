@@ -7,13 +7,15 @@
 
 let
 
-  colors = rec {
-    bg0 = "${config.custom.shared.colors.background}E6";
-    bg1 = "${config.custom.shared.colors.background-alt}80";
-    bg2 = "${config.custom.shared.colors.primary}E6";
-    fg0 = "#DEDEDE";
-    fg1 = "${config.custom.shared.colors.foreground}";
-    fg2 = "${config.custom.shared.colors.disabled}80";
+  palette = config.custom.shared.omarchyColors;
+  colors = {
+    bg0 = config.custom.shared.surfaceBackground;
+    bg1 = "${palette.selection}80";
+    bg2 = "#363a42";
+    fg0 = "#d8dee9";
+    fg1 = palette.accent;
+    fg2 = "#4c566a80";
+    accent = palette.accent;
   };
 in
 {
@@ -41,6 +43,7 @@ in
             fg0 = mkL colors.fg0;
             fg1 = mkL colors.fg1;
             fg2 = mkL colors.fg2;
+            accent = mkL colors.accent;
 
             background-color = mkL "transparent";
             text-color = mkL "@fg0";
@@ -54,8 +57,10 @@ in
           window = {
             background-color = mkL "@bg0";
             location = mkL "center";
-            width = 640;
-            border-radius = 8;
+            width = 400;
+            border = mkL "2px";
+            border-color = mkL config.custom.shared.outlineColors.active;
+            border-radius = 0;
           };
 
           inputbar = {
@@ -99,7 +104,7 @@ in
           };
 
           element = {
-            padding = mkL "8px 16px";
+            padding = mkL "16px 16px";
             spacing = mkL "16px";
             background-color = mkL "transparent";
           };
@@ -115,7 +120,7 @@ in
           };
 
           "element normal active" = {
-            text-color = mkL "@bg2";
+            text-color = mkL "@accent";
           };
 
           "element selected normal" = {
