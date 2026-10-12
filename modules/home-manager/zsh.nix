@@ -6,6 +6,10 @@ let
   fzfColors = lib.concatStringsSep "," (
     lib.mapAttrsToList (name: color: "${name}:${color}") config.programs.fzf.colors
   );
+  fzfDefaultOptions = lib.concatStringsSep " " (
+    config.programs.fzf.defaultOptions
+    ++ lib.optional (config.programs.fzf.colors != { }) "--color=${fzfColors}"
+  );
   fzfGroupColors = lib.concatStringsSep " " (
     lib.replicate 8 "$'\\033[36m' $'\\033[34m'"
   );
@@ -62,6 +66,7 @@ in
         stty -ixon
 
         ${lib.optionalString config.programs.fzf.enable ''
+          export FZF_DEFAULT_OPTS=${lib.escapeShellArg fzfDefaultOptions}
           zstyle ':fzf-tab:*' fzf-flags '--color=${fzfColors}'
           zstyle ':fzf-tab:*' group-colors ${fzfGroupColors}
         ''}

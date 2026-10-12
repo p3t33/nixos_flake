@@ -9,12 +9,13 @@ let
   cfg = config.programs.waybar;
   workspaceAccent = config.custom.shared.outlineColors.active;
   colors = config.custom.shared.omarchyColors // {
-    background = "#2e3440";
-    foreground = "#d8dee9";
-    bright_foreground = "#d8dee9";
-    dark_foreground = "#4c566a";
+    background = "#3f4545";
+    foreground = "#ffffff";
+    bright_foreground = "#ffffff";
+    dark_foreground = "#a5abb6";
     selection = "#3b4252";
-    lighter_background = "#3b4252";
+    lighter_background = "#4c566a";
+    workspace_background = "#363a42";
     red = "#bf616a";
   };
   date = lib.getExe' pkgs.coreutils "date";
@@ -48,7 +49,7 @@ in
 
       settings.mainBar = {
         layer = "top";
-        position = "top";
+        position = "bottom";
         height = 38;
         spacing = 0;
 
@@ -158,7 +159,8 @@ in
           border: none;
           border-radius: 0;
           font-family: "${config.custom.shared.font.mono}";
-          font-size: 15px;
+          font-size: 17px;
+          font-weight: 700;
           min-height: 0;
         }
 
@@ -168,15 +170,17 @@ in
         }
 
         #workspaces button {
-          padding: 0 16px;
+          margin: 5px 0;
+          padding: 0 10px;
+          border-radius: 4px;
           background: transparent;
           color: ${colors.bright_foreground};
         }
 
         #workspaces button.focused {
-          background: mix(${colors.background}, ${workspaceAccent}, 0.12);
-          color: ${colors.bright_foreground};
-          box-shadow: inset 0 0 6px alpha(${workspaceAccent}, 0.45);
+          background: ${colors.workspace_background};
+          color: ${workspaceAccent};
+          box-shadow: none;
         }
 
         #workspaces button.urgent {
@@ -212,6 +216,9 @@ in
         #custom-allen_tx {
           padding: 0 16px;
           background: transparent;
+          color: ${colors.foreground};
+          font-size: 18px;
+          font-weight: 700;
         }
       '';
     };
