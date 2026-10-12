@@ -16,8 +16,8 @@ in
       "pi: web-search extension has no Brave API key configured. Web search will be unavailable at runtime.";
 
     custom.programs.pi.extensions.web-search = ''
-      import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-      import { Type } from "@sinclair/typebox";
+      import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+      import { Type } from "typebox";
       import { readFileSync } from "node:fs";
 
       interface SearchResult {

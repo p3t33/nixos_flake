@@ -4,18 +4,27 @@
     type ExtensionAPI,
     type ExtensionContext,
     type KeybindingsManager,
-  } from "@mariozechner/pi-coding-agent";
-  import type { Component, EditorTheme, TUI } from "@mariozechner/pi-tui";
-  import { truncateToWidth, visibleWidth } from "@mariozechner/pi-tui";
+  } from "@earendil-works/pi-coding-agent";
+  import type { Component, EditorTheme, TUI } from "@earendil-works/pi-tui";
+  import { parseColor, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+
+  const footerForeground = parseColor("#e5e9f0");
+  const footerBackground = parseColor("#4c566a");
+  const modelBackground = parseColor("#3b4252");
+  const meterForeground = parseColor("#81a1c1");
+  const meterTrackForeground = modelBackground;
 
   function fitLine(
     left: string,
     right: string,
     width: number,
-    fill: string = " ",
+    fill: (width: number) => string = (width) => " ".repeat(width),
+    ellipsis: string = "...",
   ): string {
     const gap = Math.max(1, width - visibleWidth(left) - visibleWidth(right));
-    return truncateToWidth(left + fill.repeat(gap) + right, width);
+    const line = truncateToWidth(left + fill(gap) + right, width, ellipsis);
+    const padding = Math.max(0, width - visibleWidth(line));
+    return padding > 0 ? line + fill(padding) : line;
   }
 
   function formatCwd(cwd: string): string {
@@ -133,18 +142,26 @@
           invalidate() {},
           render(width: number): string[] {
             const thm = ctx.ui.theme;
+            const footerText = (text: string) => thm.style(text, {
+              fg: footerForeground,
+              bg: footerBackground,
+            });
             const segments: string[] = [];
 
             // Model
             const modelId = ctx.model?.id ?? "no model";
-            segments.push(thm.fg("accent", "⊕ " + modelId));
+            segments.push(thm.style("⊕ " + modelId, {
+              fg: footerForeground,
+              bg: modelBackground,
+            }));
 
             // Tokens
             const usage = ctx.getContextUsage();
             const contextWindow = usage?.contextWindow ?? ctx.model?.contextWindow;
             if (usage && contextWindow) {
-              const tokensStr = formatTokens(usage.tokens) + "/" + formatTokens(contextWindow);
-              segments.push(thm.fg("muted", tokensStr));
+              const tokens = usage.tokens === null ? "?" : formatTokens(usage.tokens);
+              const tokensStr = tokens + "/" + formatTokens(contextWindow);
+              segments.push(footerText(tokensStr));
             }
 
             // Progress bar
@@ -154,28 +171,34 @@
               const filled = getFilledWidth(percent, barWidth);
               const filledPart = "█".repeat(filled);
               const emptyPart = "░".repeat(barWidth - filled);
-              const progressStr = "[" + thm.fg("accent", filledPart) + thm.fg("dim", emptyPart) + "] " + Math.round(percent) + "%";
+              const progressStr = footerText("[")
+                + thm.style(filledPart, { fg: meterForeground, bg: footerBackground })
+                + thm.style(emptyPart, { fg: meterTrackForeground, bg: footerBackground })
+                + footerText("] " + Math.round(percent) + "%");
               segments.push(progressStr);
             }
 
             // Turn duration
             if (lastTurnDuration !== undefined) {
-              segments.push(thm.fg("muted", formatDuration(lastTurnDuration)));
+              segments.push(footerText(formatDuration(lastTurnDuration)));
             }
 
             // Live elapsed
             if (isWorking) {
-              segments.push(thm.fg("accent", "⊙ " + elapsedSeconds + "s"));
+              segments.push(footerText("⊙ " + elapsedSeconds + "s"));
             }
 
-            const left = segments.join(thm.fg("muted", " | "));
+            const left = segments.join(footerText(" | "));
 
             // Right side
             const cwdStr = formatCwd(ctx.cwd);
             const branchSuffix = branch ? " (" + branch + ")" : "";
-            const right = thm.fg("dim", cwdStr + branchSuffix);
+            const right = footerText(cwdStr + branchSuffix);
 
-            return [fitLine(left, right, width)];
+            return [
+              fitLine(left, right, width, (gap) => footerText(" ".repeat(gap)), footerText("...")),
+              "",
+            ];
           },
         };
       });

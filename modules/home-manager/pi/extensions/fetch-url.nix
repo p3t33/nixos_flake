@@ -1,8 +1,8 @@
 { lib, pkgs }:
 
 ''
-  import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
-  import { Type } from "@sinclair/typebox";
+  import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+  import { Type } from "typebox";
   import { existsSync, readdirSync, readFileSync, statSync, mkdirSync, openSync, readSync, closeSync } from "node:fs";
   import { join, extname, resolve as resolvePath, sep as pathSep } from "node:path";
 

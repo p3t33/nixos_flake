@@ -111,6 +111,14 @@ in
       '';
     };
 
+    keybindings = lib.mkOption {
+      type = jsonFormat.type;
+      default = { };
+      description = ''
+        Pi keybindings written to ~/.pi/agent/keybindings.json as a JSON object.
+      '';
+    };
+
     extraPackages = lib.mkOption {
       type = with lib.types; listOf package;
       default = [ ];
@@ -168,6 +176,10 @@ in
       file = {
         ".pi/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
           source = jsonFormat.generate "pi-settings.json" cfg.settings;
+        };
+
+        ".pi/agent/keybindings.json" = lib.mkIf (cfg.keybindings != { }) {
+          source = jsonFormat.generate "pi-keybindings.json" cfg.keybindings;
         };
 
         ".pi/agent/mcp.json" = lib.mkIf (config.programs.mcp.enable && config.programs.mcp.servers != { }) {
@@ -232,12 +244,19 @@ in
         theme = cfg.theme.name;
       };
 
+      keybindings = {
+        "tui.altScreen.bottom" = [
+          "end"
+          "shift+g"
+        ];
+      };
+
       theme = {
         "$schema" =
           "https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json";
         name = "nord-teal";
         vars = {
-          accent = colors.primary;
+          accent = nord.cyan;
           dim = "#7f8794";
           muted = "#a5abb6";
         };
