@@ -268,6 +268,14 @@ in
         # tmux copies via OSC 52, but reject raw OSC 52 clipboard writes from panes.
         set -s set-clipboard external
 
+        # Let applications request extended keys so pi can distinguish modified
+        # Enter keys (for example, Shift+Enter) from plain Enter. Unlike 'always',
+        # 'on' does not force extended reporting on applications that do not request it.
+        # Use CSI-u encoding, as recommended by pi for tmux 3.5+, for reliable
+        # modified-key forwarding. These settings do not affect mouse copying.
+        set -g extended-keys on
+        set -g extended-keys-format csi-u
+
         # --- Yazi / image preview essentials ---
         set -g allow-passthrough on
         set -ga update-environment TERM
