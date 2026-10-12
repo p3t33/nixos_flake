@@ -142,7 +142,6 @@ in
       tealdeer
       # TOTO: look into after switching to 26.11 when it is released.
       pkgs-unstable.immich-go # used for mass importing into immich.
-      pkgs-unstable.cursor-cli
       ddcutil
       pkgs-unstable.github-copilot-cli
       sshuttle

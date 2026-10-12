@@ -19,7 +19,6 @@ in
     environment.systemPackages = with pkgs; [
       # editors
       neovim
-      vscode
 
       # UML
       plantuml
