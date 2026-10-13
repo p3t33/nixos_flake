@@ -6,7 +6,7 @@
     type KeybindingsManager,
   } from "@earendil-works/pi-coding-agent";
   import type { Component, EditorTheme, TUI } from "@earendil-works/pi-tui";
-  import { parseColor, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
+  import { parseColor, stripTerminalSequences, truncateToWidth, visibleWidth } from "@earendil-works/pi-tui";
 
   const footerForeground = parseColor("#e5e9f0");
   const footerBackground = parseColor("#4c566a");
@@ -176,6 +176,11 @@
                 + thm.style(emptyPart, { fg: meterTrackForeground, bg: footerBackground })
                 + footerText("] " + Math.round(percent) + "%");
               segments.push(progressStr);
+            }
+
+            const quotaStatus = footerData.getExtensionStatuses().get("usage");
+            if (quotaStatus) {
+              segments.push(footerText(stripTerminalSequences(quotaStatus)));
             }
 
             // Turn duration
