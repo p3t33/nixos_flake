@@ -13,6 +13,12 @@ in
 
   config = lib.mkMerge [
 
+    (lib.mkIf config.services.printing.enable {
+      services.printing.browsedConf = ''
+        DebugLogging stderr
+      '';
+    })
+
     (lib.mkIf config.custom.services.printing.client.enable {
       # Starts the CUPS daemon. On its own this allows printing to any printer
       # explicitly configured, but no auto-discovery of network printers.
