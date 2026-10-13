@@ -7,7 +7,7 @@
     ];
 
     qt = {
-      platformTheme.name = "gtk";
+      platformTheme.name = "gtk3";
 
       style.name = "kvantum";
       # Doens not require to setup xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
