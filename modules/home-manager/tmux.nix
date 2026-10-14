@@ -11,6 +11,7 @@ let
   tmux-nerd-font-window-name =
     inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default;
   tmux = lib.getExe pkgs.tmux;
+  sessionizer = lib.getExe config.custom.scripts.tmuxSessionizer.package;
 
 in
 {
@@ -74,6 +75,9 @@ in
             # adds stuff that can"t be parsed by tmux-resurrect.
 
             set -g @resurrect-dir ${resurrectDirPath}
+            set -g @resurrect-hook-pre-restore-all '${tmux} -N set-option -g @sessionizer-restore-pid "$$"'
+            set -g @resurrect-hook-post-restore-all '${sessionizer} --finish-restore "$$"'
+            set-hook -g session-renamed[101] { if-shell -F '#{&&:#{m:__sessionizer_restore_*,#{hook_session_name}},#{==:#{hook_session_name},#{@sessionizer-restore-pid}}}' { set-option -gu @sessionizer-restore-pid ; run-shell "${tmux} -N wait-for -S #{q:hook_session_name}" } }
             set -g @resurrect-hook-post-save-all '\
             # --- Pass 1: Normalize Neovim command lines ---
             # tmux-resurrect on NixOS records Neovim as:
@@ -248,6 +252,13 @@ in
         # With this enabled, files will auto-reload when you switch back to the tmux pane.
         set -g focus-events on
 
+        set-hook -g client-attached[100] { run-shell "${sessionizer} --record '#{session_id}' '#{@sessionizer-restore-pid}'" }
+        set-hook -g client-session-changed[100] { run-shell "${sessionizer} --record '#{session_id}' '#{@sessionizer-restore-pid}'" }
+        set-hook -g client-focus-in[100] { run-shell "${sessionizer} --record '#{session_id}' '#{@sessionizer-restore-pid}'" }
+        set-hook -g session-created[100] { run-shell "${sessionizer} --remember-name '#{hook_session}'" }
+        set-hook -g session-renamed[100] { run-shell "${sessionizer} --rename '#{hook_session}'" }
+        run-shell "${sessionizer} --remember-names"
+
         # This command is executed to address an edge case where after a fresh install of the OS no resurrect
         # directory exist which means that the continuum plugin will not work. And so without user
         # manually saving the first session(prfix + Ctrl+s) no resurrect-continuum will occur.
@@ -326,8 +337,8 @@ in
         # session was created.
         bind S choose-tree -sZ -O time
 
-        # switch to last session
-        bind-key L switch-client -l
+        # Prefer client-local history, falling back to persistent session order.
+        bind-key L run-shell "${tmux} -N switch-client -c #{q:client_name} -l 2>/dev/null || ${sessionizer} --switch-previous #{q:client_name} '#{session_id}'"
 
         # Pane to window
         unbind !

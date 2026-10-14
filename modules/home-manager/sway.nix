@@ -178,7 +178,7 @@ in
             if audioEnabled then "exec ${wpctl} set-mute @DEFAULT_AUDIO_SOURCE@ toggle" else null;
           "Print" = if config.services.flameshot.enable then "exec ${flameshotFocused}" else null;
           "${mod}+Shift+Return" =
-            "exec ${lib.getExe config.programs.wezterm.package} start -- ${lib.getExe pkgs.zsh} -i -c 'tmux a || tmux new'";
+            "exec ${lib.getExe config.programs.wezterm.package} start -- ${lib.getExe pkgs.zsh} -i -c '${lib.getExe config.custom.scripts.tmuxSessionizer.package} --attach-last'";
 
           "${mod}+Mod1+1" = "[con_mark=\"one\"] focus";
           "${mod}+Mod1+2" = "[con_mark=\"two\"] focus";
