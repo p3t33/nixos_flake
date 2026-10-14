@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -18,21 +17,6 @@ let
     workspace_background = "#363a42";
     red = "#bf616a";
   };
-  date = lib.getExe' pkgs.coreutils "date";
-  batteryStatus = pkgs.writeShellScript "waybar-battery-status" ''
-    capacity_file=/sys/class/power_supply/BAT0/capacity
-
-    if ! IFS= read -r capacity < "$capacity_file" || [[ ! $capacity =~ ^[0-9]+$ ]]; then
-      printf '{"text":"","percentage":0}\n'
-      exit 0
-    fi
-
-    if (( capacity >= 95 )); then
-      capacity=100
-    fi
-
-    printf '{"text":"available","percentage":%d}\n' "$capacity"
-  '';
 in
 {
   options.custom.waybar = {
@@ -57,17 +41,20 @@ in
           "sway/workspaces"
           "sway/mode"
         ];
-        modules-center = [ "clock" ]
-          ++ lib.optionals config.custom.waybar.enableAllenTxTime [ "custom/allen_tx" ];
+        modules-center = [
+          "clock"
+        ]
+        ++ lib.optionals config.custom.waybar.enableAllenTxTime [ "clock#allen_tx" ];
 
         modules-right = [
+          "privacy"
           "tray"
           "disk"
           "memory"
           "cpu"
         ]
         ++ lib.optionals config.custom.waybar.enableWlan [ "network" ]
-        ++ lib.optionals config.custom.waybar.enableBattery [ "custom/battery" ]
+        ++ lib.optionals config.custom.waybar.enableBattery [ "battery" ]
         ++ [ "pulseaudio" ];
 
         "sway/workspaces" = {
@@ -111,20 +98,36 @@ in
           ];
         };
 
-        "custom/battery" = {
-          exec = batteryStatus;
-          interval = 5;
-          return-type = "json";
-          hide-empty-text = true;
-          format = "<span foreground='${colors.foreground}'>{icon}</span> {percentage:3}%";
-          format-icons = [
-            "󰁺"
-            "󰁽"
-            "󰁾"
-            "󰂀"
-            "󰁹"
-          ];
-        };
+        battery =
+          let
+            actualCapacityFormat = "{icon} {capacity:3}% {time}";
+          in
+          {
+            bat = "BAT0";
+            interval = 5;
+            states = {
+              below-full = 94;
+              warning = 30;
+              critical = 15;
+            };
+            format = "{icon} 100% {time}";
+            format-below-full = actualCapacityFormat;
+            format-warning = actualCapacityFormat;
+            format-critical = actualCapacityFormat;
+            format-time = "{H}h{m}m";
+            format-icons = {
+              default = [
+                "󰁺"
+                "󰁽"
+                "󰁾"
+                "󰂀"
+                "󰁹"
+              ];
+              charging = "󰂄";
+              plugged = "󰚥";
+              full = "󰁹";
+            };
+          };
 
         pulseaudio = {
           format = "<span foreground='${colors.foreground}'>{icon}</span> {volume}%";
@@ -141,11 +144,20 @@ in
           format = " {:%d-%m-%Y  %H:%M}";
         };
 
-        "custom/allen_tx" = {
-          exec = "TZ=America/Chicago ${date} +\"US: %d-%m-%Y %H:%M\"";
+        "clock#allen_tx" = {
+          timezone = "America/Chicago";
           interval = 30;
-          format = "{}";
+          format = "US: {:%d-%m-%Y %H:%M}";
           tooltip = false;
+        };
+
+        privacy = {
+          icon-size = 20;
+          icon-spacing = 8;
+          modules = [
+            { type = "audio-in"; }
+            { type = "screenshare"; }
+          ];
         };
 
         tray = {
@@ -178,8 +190,8 @@ in
         }
 
         #workspaces button.focused {
-          background: ${colors.workspace_background};
-          color: ${workspaceAccent};
+          background: ${workspaceAccent};
+          color: ${colors.background};
           box-shadow: none;
         }
 
@@ -207,13 +219,25 @@ in
         #memory,
         #cpu,
         #network,
-        #custom-battery,
+        #battery,
         #pulseaudio {
           padding: 0 8px;
         }
 
-        #clock,
-        #custom-allen_tx {
+        #battery.discharging.warning {
+          color: ${colors.yellow};
+        }
+
+        #battery.discharging.critical {
+          color: ${colors.red};
+        }
+
+        #privacy-item {
+          padding: 0 8px;
+          color: ${colors.red};
+        }
+
+        #clock {
           padding: 0 16px;
           background: transparent;
           color: ${colors.foreground};
