@@ -54,8 +54,10 @@
           "$directory"
           "$python"
           "$c"
+          "$nix_shell"
           "$git_branch"
           "$git_status"
+          "$git_state"
           "$fill" # This will push the right prompt to the right edge
           "$status"
           "$cmd_duration"
@@ -106,6 +108,10 @@
           format = "[$symbol$branch(:$remote_branch)]($style)";
         };
 
+        git_state = {
+          format = "[ \\($state( $progress_current/$progress_total)\\)]($style)";
+        };
+
         # Might be slow on windows.
         git_status = {
           format = "[ $all_status$ahead_behind]($style)";
@@ -151,6 +157,7 @@
 
         nix_shell = {
           symbol = " ";
+          format = "[ $symbol$state( \\($name\\))]($style)";
         };
 
         package = {
