@@ -159,7 +159,7 @@
             const usage = ctx.getContextUsage();
             const contextWindow = usage?.contextWindow ?? ctx.model?.contextWindow;
             if (usage && contextWindow) {
-              const tokens = usage.tokens === null ? "?" : formatTokens(usage.tokens);
+              const tokens = usage.tokens === null ? "·" : formatTokens(usage.tokens);
               const tokensStr = tokens + "/" + formatTokens(contextWindow);
               segments.push(footerText(tokensStr));
             }

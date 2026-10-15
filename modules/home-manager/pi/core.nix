@@ -170,6 +170,7 @@ in
       packages = [ packageWithExtraPackages ];
 
       sessionVariables = {
+        PI_ASK_USER_DISPLAY_MODE = "inline";
         PI_SKIP_VERSION_CHECK = "1";
       };
 
@@ -253,8 +254,7 @@ in
       };
 
       theme = {
-        "$schema" =
-          "https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json";
+        "$schema" = "https://pi.dev/schemas/theme.schema.json";
         name = "nord-teal";
         vars = {
           accent = nord.cyan;
