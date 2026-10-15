@@ -155,7 +155,7 @@ in
           "${mod}+y" = if config.programs.rofi.enable then "exec ${rofi} -modes calc -show calc" else null;
           "${mod}+p" =
             if config.programs.rofi.enable then
-              "exec ${rofi} -modes power-menu:${rofiPowerMenu} -show power-menu"
+              "exec ${rofi} -modes 'power-menu:${rofiPowerMenu} --confirm=' -show power-menu"
             else
               null;
           "${mod}+b" =

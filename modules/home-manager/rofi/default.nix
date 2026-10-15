@@ -67,15 +67,15 @@ in
             padding = mkL "12px";
             spacing = mkL "12px";
             children = map mkL [
-              "icon-search"
+              "textbox-search"
               "entry"
             ];
           };
 
-          icon-search = {
+          textbox-search = {
             expand = false;
-            filename = "search";
-            size = mkL "28px";
+            content = "❯";
+            text-color = mkL "#88c0d0";
             vertical-align = mkL "0.5";
           };
 
