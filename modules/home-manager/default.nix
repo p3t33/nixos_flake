@@ -49,6 +49,7 @@ in
     ./moolticute.nix
     ./glabels.nix
     ./firefox.nix
+    ./whatsapp.nix
     ./zellij.nix
     ./yazi.nix
     ./ghostty.nix
@@ -97,6 +98,7 @@ in
       programs.ghostty.enable = true;
       programs.zathura.enable = true;
       custom.programs.moolticute.enable = true;
+      custom.programs.whatsapp.enable = true;
     })
 
     (lib.mkIf g.desktop.wayland.enable {

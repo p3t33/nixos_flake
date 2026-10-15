@@ -19,6 +19,9 @@ in
       firefox
       google-chrome
 
+      # messaging
+      telegram-desktop
+
       # graphics
       gimp
       vlc
