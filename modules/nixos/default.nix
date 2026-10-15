@@ -9,6 +9,7 @@ in
     ./shared/networking.nix
     ./shared/lan-hosts.nix
     ./auto_upgrade.nix
+    ./chrome.nix
     ./dconf.nix
     ./defaults_for_system_build.nix
     ./desktop_environment.nix
@@ -74,6 +75,7 @@ in
 
     (lib.mkIf g.desktop.enable {
       custom.apps.desktopEnvironment.enable = true;
+      custom.apps.chrome.enable = true;
       custom.apps.gui.enable = true;
       programs.dconf.enable = true;
     })

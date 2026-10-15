@@ -17,7 +17,6 @@ in
 
       # web browser
       firefox
-      google-chrome
 
       # messaging
       telegram-desktop
