@@ -216,32 +216,35 @@ in
        (setq org-download-method 'directory
         org-download-image-org-width 600)
 
-       ;; where to save files?
-       ;; when  org-download-method is set to "attach"
-       ;; then org-roam will handle where to store the
-       ;; file and creat place for it.
-       ;; if you want to specify the directory then
-       ;; org-download-method needs to be changed to directory
-       ;; and you will need to set org-download-image-dir, E.g:
-       ;; Set the default directory where images will be downloaded
-       ;; ONLY WORKS WITH org-download-method set to directory
+       (defun my/org-download-journal-date (file)
+        "Return the ISO date of a DD-MM-YYYY journal FILE, or nil for other names."
+        (let ((base (file-name-base file)))
+          (when (string-match "\\`\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{4\\}\\)\\'" base)
+            (let ((day (string-to-number (match-string 1 base)))
+                  (month (string-to-number (match-string 2 base)))
+                  (year (string-to-number (match-string 3 base))))
+              (require 'calendar)
+              (unless (calendar-date-is-valid-p (list month day year))
+                (user-error "Invalid journal date in filename: %s" file))
+              (format "%04d-%02d-%02d" year month day)))))
 
-       ;; Dynamically set org-download-image-dir to match the Org file timestamp
-       ;; This is done so when org-roam node is deleted the referenced images in it delete
-       ;; as well.
-       (defun my/org-download-set-image-dir ()
-        "Set `org-download-image-dir` based on the timestamp in the Org filename, but do NOT create the directory."
-        (when buffer-file-name
-         (let* ((org-base-name (file-name-base buffer-file-name))
-                ;; Extract timestamp (part before first dash)
-                (timestamp (car (split-string org-base-name "-")))
-                (target-dir (expand-file-name
-                             (concat "images/" timestamp)
-                             (file-truename "${orgRoamDirectoryPath}"))))
-          (setq-local org-download-image-dir target-dir))))
+       (defun my/org-download-image-dir-for-file (file)
+        "Return FILE's image directory without creating it or moving existing images."
+        (let* ((date (my/org-download-journal-date file))
+               (key (if date (concat "journal-" date)
+                      (car (split-string (file-name-base file) "-")))))
+          (expand-file-name (concat "images/" key)
+                            (file-truename "${orgRoamDirectoryPath}"))))
 
-       ;; Hook it to org-mode
-       (add-hook 'org-mode-hook #'my/org-download-set-image-dir))
+       (defun my/org-download-set-image-dir (&rest _)
+        "Refresh the current note's image directory without creating it."
+        (when (and buffer-file-name (derived-mode-p 'org-mode))
+          (setq-local org-download-image-dir
+                      (my/org-download-image-dir-for-file buffer-file-name))))
+
+       (add-hook 'org-mode-hook #'my/org-download-set-image-dir)
+       ;; Refresh at import time as well, including existing buffers and base64 drops.
+       (advice-add 'org-download--dir :before #'my/org-download-set-image-dir))
       ;; ============
 
 
@@ -404,7 +407,8 @@ in
                          (file-in-directory-p file root) (org-roam-file-p file)
                          (verify-visited-file-modtime (current-buffer)))
               (user-error "Current buffer is not an up-to-date local Org-roam note file"))
-            (let* ((summary (custom-org-roam--delete-summary file root))
+            (let* ((journal-date (my/org-download-journal-date file))
+                   (summary (custom-org-roam--delete-summary file root))
                    (nodes (plist-get summary :nodes))
                    (references (plist-get summary :references))
                    (prompt (concat
@@ -416,15 +420,17 @@ in
                                         (mapconcat #'identity references "\n- "))
                               "No incoming references found in eligible Org-roam sources.")
                             "\nOnly saved eligible files within this Org-roam root are checked.\n"
-                            "Existing image cleanup will also remove the associated image directory.\n\nProceed? ")))
+                            (if journal-date
+                                "Journal images will be retained, including legacy shared image directories."
+                              "Existing image cleanup will also remove the associated image directory.")
+                            "\n\nProceed? ")))
               (when (y-or-n-p prompt)
                 (custom-org-roam--delete-check-snapshot root (plist-get summary :snapshots))
-                (let* ((timestamp (car (split-string (file-name-base file) "-")))
-                       (image-dir (expand-file-name (concat "images/" timestamp)
-                                                    (file-truename "${orgRoamDirectoryPath}"))))
+                (let ((image-dir (unless journal-date
+                                   (my/org-download-image-dir-for-file file))))
                   (delete-file file)
                   (message "Deleted file %s" file)
-                  (when (file-directory-p image-dir)
+                  (when (and image-dir (file-directory-p image-dir))
                     (delete-directory image-dir t)
                     (message "Deleted image directory %s" image-dir))
                   (kill-buffer)
@@ -619,7 +625,7 @@ in
                  ((error quit)
                   (user-error "Rename succeeded at %s, but Org-roam index refresh failed: %s"
                               buffer-file-name (error-message-string db-failure))))
-               (message "Renamed to %s and updated #+title and #+category." new-title)))))))
+               (message "Renamed to %s and updated #+title and #+category." new-title))))))
 
        ;; putting the template settings under :custom did not work for me.
        (setq org-roam-capture-templates
