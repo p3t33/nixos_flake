@@ -395,8 +395,90 @@ in
           (custom-org-roam--delete-check-snapshot root snapshots)
           (list :nodes nodes :references (delete-dups (nreverse references)) :snapshots snapshots)))
 
+       (defun custom-org-roam--delete-visiting-buffers (file)
+        "Return buffers visiting FILE, including indirect buffers and path aliases."
+        (let (buffers)
+          (dolist (buffer (buffer-list))
+            (with-current-buffer buffer
+              (let ((path (buffer-file-name (or (buffer-base-buffer) buffer))))
+                (when (and path (not (file-remote-p path))
+                           (equal (file-truename path) file))
+                  (push buffer buffers)))))
+          buffers))
+
+       (defun custom-org-roam--delete-reopen-if-needed (file)
+        "Try to reopen an unchanged-on-disk note after its buffer was closed."
+        (when (and (file-exists-p file)
+                   (not (custom-org-roam--delete-visiting-buffers file)))
+          (condition-case failure
+              (find-file-noselect file)
+            ((error quit)
+             (message "Note remains at %s, but reopening failed: %s"
+                      file (error-message-string failure))))))
+
+       (defun custom-org-roam--delete-to-trash (file root snapshots image-dir)
+        "Close FILE's buffers before trashing it; report each partially completed stage."
+        (let ((org-roam-directory root))
+          (condition-case failure
+              (progn
+                (custom-org-roam--delete-check-snapshot root snapshots)
+                (dolist (buffer (custom-org-roam--delete-visiting-buffers file))
+                  (when (and (buffer-live-p buffer) (not (kill-buffer buffer)))
+                    (user-error "Buffer closure refused; deletion cancelled")))
+                (when (custom-org-roam--delete-visiting-buffers file)
+                  (user-error "A buffer still visits the note; deletion cancelled"))
+                (custom-org-roam--delete-check-snapshot root snapshots))
+            ((error quit)
+             (custom-org-roam--delete-reopen-if-needed file)
+             (user-error "No Trash operation attempted: %s" (error-message-string failure))))
+          (let (note-failure image-failure db-failure
+                (image-status (if image-dir "Image cleanup not attempted"
+                                "Journal images retained")))
+            (condition-case failure
+                (move-file-to-trash file)
+              ((error quit) (setq note-failure failure)))
+            (when (or (file-exists-p file) (file-symlink-p file))
+              (custom-org-roam--delete-reopen-if-needed file)
+              (user-error "Note remains at %s; images untouched; Trash failed: %s"
+                          file (if note-failure (error-message-string note-failure)
+                                 "original path still exists")))
+            (unless note-failure
+              (when image-dir
+                (if (or (file-exists-p image-dir) (file-symlink-p image-dir))
+                    (progn
+                      (condition-case failure
+                          (progn
+                            (move-file-to-trash image-dir)
+                            (when (or (file-exists-p image-dir) (file-symlink-p image-dir))
+                              (error "Image directory still exists at its original path")))
+                        ((error quit) (setq image-failure failure)))
+                      (setq image-status
+                            (if image-failure
+                                (format "Image Trash operation failed (%s); original directory %s: %s"
+                                        (error-message-string image-failure)
+                                        (if (or (file-exists-p image-dir) (file-symlink-p image-dir))
+                                            "remains" "is absent; check Trash")
+                                        image-dir)
+                              (format "Image directory moved to Trash: %s" image-dir))))
+                  (setq image-status "No associated image directory existed"))))
+            (condition-case failure
+                (org-roam-db-sync)
+              ((error quit) (setq db-failure failure)))
+            (let ((status (concat
+                           (if note-failure
+                               (format "Note is absent after a failed Trash attempt (%s); check Trash: %s"
+                                       (error-message-string note-failure) file)
+                             (format "Note moved to Trash: %s" file))
+                           "; " image-status
+                           (if db-failure
+                               (format "; Org-roam index refresh failed: %s" (error-message-string db-failure))
+                             "; Org-roam index refreshed"))))
+              (if (or note-failure image-failure db-failure)
+                  (user-error "%s" status)
+                (message "%s" status))))))
+
        (defun custom-org-roam-delete-node-and-sync ()
-        "Delete the current whole Roam file, warning about all owned nodes and references."
+        "Move the current whole Roam file to Trash after checking owned nodes and references."
         (interactive)
         (let ((source (buffer-file-name (or (buffer-base-buffer) (current-buffer)))))
           (when (or (not source) (file-remote-p source) (file-remote-p org-roam-directory))
@@ -408,11 +490,12 @@ in
                          (verify-visited-file-modtime (current-buffer)))
               (user-error "Current buffer is not an up-to-date local Org-roam note file"))
             (let* ((journal-date (my/org-download-journal-date file))
+                   (image-dir (unless journal-date (my/org-download-image-dir-for-file file)))
                    (summary (custom-org-roam--delete-summary file root))
                    (nodes (plist-get summary :nodes))
                    (references (plist-get summary :references))
                    (prompt (concat
-                            (format "Delete WHOLE note file:\n%s\n\nAll %d owned ID node(s) will be deleted:\n- %s\n\n"
+                            (format "Move WHOLE note file to Trash:\n%s\n\nAll %d owned ID node(s) will be removed:\n- %s\n\n"
                                     file (length nodes)
                                     (mapconcat (lambda (node) (format "%s [%s]" (cdr node) (car node))) nodes "\n- "))
                             (if references
@@ -422,19 +505,10 @@ in
                             "\nOnly saved eligible files within this Org-roam root are checked.\n"
                             (if journal-date
                                 "Journal images will be retained, including legacy shared image directories."
-                              "Existing image cleanup will also remove the associated image directory.")
+                              "The associated image directory will also be moved to Trash if present.")
                             "\n\nProceed? ")))
               (when (y-or-n-p prompt)
-                (custom-org-roam--delete-check-snapshot root (plist-get summary :snapshots))
-                (let ((image-dir (unless journal-date
-                                   (my/org-download-image-dir-for-file file))))
-                  (delete-file file)
-                  (message "Deleted file %s" file)
-                  (when (and image-dir (file-directory-p image-dir))
-                    (delete-directory image-dir t)
-                    (message "Deleted image directory %s" image-dir))
-                  (kill-buffer)
-                  (org-roam-db-sync)))))))
+                (custom-org-roam--delete-to-trash file root (plist-get summary :snapshots) image-dir))))))
 
        (defun custom-org-roam--file-byte-hash (file)
         "Return a hash of FILE's bytes, without decoding its contents."
