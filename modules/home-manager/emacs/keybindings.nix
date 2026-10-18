@@ -373,7 +373,7 @@ in
             "m c" '(org-roam-capture :which-key "org-roam capture")
             "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
             "m n" '(:ignore t :wk "org-roam node")
-            "m n d" '(custom-org-roam-delete-node-and-sync :wk "Delete and sync Org-roam node")
+            "m n d" '(custom-org-roam-delete-node-and-sync :wk "Delete current Org-roam file")
             "m n r" '(custom-org-roam-rename-node  :wk "Rename node and sync Org-roam node")
 
             ;; Open

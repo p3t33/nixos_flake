@@ -269,39 +269,166 @@ in
               ("C-c n j" . org-roam-dailies-capture-today))
        :config
 
-       ;; Define the custom function to delete nodes and sync database.
+       ;; Existing notes need a manual reindex to show transclusions as backlinks.
+       (setq org-roam-db-extra-links-exclude-keys
+             (mapcar (lambda (entry)
+                       (if (eq (car entry) 'keyword)
+                           (cons 'keyword
+                                 (seq-remove (lambda (key) (string-equal (downcase key) "transclude"))
+                                             (cdr entry)))
+                         entry))
+                     org-roam-db-extra-links-exclude-keys))
+
+       (defun custom-org-roam--delete-read-file (file)
+        "Read owned nodes and dependencies from saved FILE, without preview hooks."
+        (require 'org-id)
+        (with-temp-buffer
+          (insert-file-contents file)
+          (let ((org-inhibit-startup t))
+            (delay-mode-hooks (org-mode)))
+          (let* ((tree (org-element-parse-buffer))
+                 (title (or (org-element-map tree 'keyword
+                              (lambda (keyword)
+                                (when (and (equal (org-element-property :key keyword) "TITLE")
+                                           (not (org-element-lineage keyword '(headline))))
+                                  (org-element-property :value keyword))) nil t)
+                            (file-name-base file)))
+                 nodes refs)
+            (org-element-map tree 'node-property
+              (lambda (property)
+                (when (equal (org-element-property :key property) "ID")
+                  (let ((heading (org-element-lineage property '(headline))))
+                    (push (cons (org-element-property :value property)
+                                (if heading (org-element-property :raw-value heading) title)) nodes)))))
+            (org-element-map tree 'link
+              (lambda (link)
+                (when (member (org-element-property :type link) '("id" "file" "file+emacs" "file+sys"))
+                  (push (list :type (org-element-property :type link)
+                              :path (org-element-property :path link)
+                              :kind "link" :line (line-number-at-pos (org-element-property :begin link)))
+                        refs))))
+            (org-element-map tree 'keyword
+              (lambda (keyword)
+                (when (equal (org-element-property :key keyword) "TRANSCLUDE")
+                  (let ((value (org-element-property :value keyword)) links)
+                    (with-temp-buffer
+                      (insert value)
+                      (delay-mode-hooks (org-mode))
+                      (setq links (org-element-map (org-element-parse-buffer) 'link #'identity)))
+                    (unless (and (= (length links) 1)
+                                 (member (org-element-property :type (car links)) '("id" "file")))
+                      (user-error "Cannot check transclusion in %s: %s" file value))
+                    (push (list :type (org-element-property :type (car links))
+                                :path (org-element-property :path (car links))
+                                :kind "transclusion"
+                                :line (line-number-at-pos (org-element-property :begin keyword))) refs)))))
+            (list :title title :nodes (delete-dups (nreverse nodes)) :refs (nreverse refs)))))
+
+       (defun custom-org-roam--delete-note-files (root)
+        "Return canonical eligible local note files, failing on unreadable sources."
+        (let (files)
+          (dolist (file (org-roam-list-files))
+            (when (file-remote-p file)
+              (user-error "Cannot check remote Org-roam source: %s" file))
+            (let ((path (file-truename file)))
+              (unless (and (file-in-directory-p path root) (file-regular-p path)
+                           (file-readable-p path))
+                (user-error "Cannot completely check Org-roam source: %s" file))
+              (push path files)))
+          (sort (delete-dups files) #'string<)))
+
+       (defun custom-org-roam--delete-check-snapshot (root snapshots)
+        "Abort if eligible note files or their saved/unsaved content have changed."
+        (unless (equal (mapcar #'car snapshots) (custom-org-roam--delete-note-files root))
+          (user-error "Org-roam file list changed; run deletion again"))
+        (dolist (buffer (buffer-list))
+          (with-current-buffer buffer
+            (when (and buffer-file-name (not (file-remote-p buffer-file-name))
+                       (assoc (file-truename buffer-file-name) snapshots))
+              (when (buffer-modified-p)
+                (user-error "Save or discard edits in %s before checking deletion" buffer-file-name))
+              (when (fboundp 'org-transclusion-within-live-sync-p)
+                (save-excursion
+                  (save-restriction
+                    (widen)
+                    (goto-char (point-min))
+                    (while (< (point) (point-max))
+                      (when (org-transclusion-within-live-sync-p)
+                        (user-error "Exit transclusion live-sync and save %s before checking deletion"
+                                    buffer-file-name))
+                      (goto-char (next-char-property-change (point) (point-max))))))))))
+        (dolist (snapshot snapshots)
+          (unless (equal (cdr snapshot) (custom-org-roam--file-byte-hash (car snapshot)))
+            (user-error "Org-roam source changed; run deletion again: %s" (car snapshot)))))
+
+       (defun custom-org-roam--delete-summary (target root)
+        "Return TARGET's owned nodes, incoming references and saved-file snapshots."
+        (let* ((files (custom-org-roam--delete-note-files root))
+               (snapshots (mapcar (lambda (file) (cons file (custom-org-roam--file-byte-hash file))) files))
+               (target-data (custom-org-roam--delete-read-file target))
+               (nodes (plist-get target-data :nodes)) references)
+          (unless (member target files)
+            (user-error "Target is not an eligible Org-roam file"))
+          (unless nodes (user-error "Current file owns no Org-roam ID nodes"))
+          (custom-org-roam--delete-check-snapshot root snapshots)
+          (dolist (file files)
+            (unless (equal file target)
+              (let ((data (custom-org-roam--delete-read-file file)))
+                (dolist (ref (plist-get data :refs))
+                  (let* ((type (plist-get ref :type))
+                         (path (org-link-unescape (plist-get ref :path)))
+                         (id (car (split-string path "::")))
+                         (node (and (equal type "id") (assoc id nodes)))
+                         (destination (unless (equal type "id")
+                                        (expand-file-name path (file-name-directory file))))
+                         (file-hit (and destination (not (file-remote-p destination))
+                                        (equal (file-truename destination) target))))
+                    (when (or node file-hit)
+                      (push (format "%s (%s:%d) -> %s [%s]"
+                                    (plist-get data :title) (file-relative-name file root)
+                                    (plist-get ref :line)
+                                    (if node (cdr node) (file-relative-name target root))
+                                    (plist-get ref :kind)) references)))))))
+          (custom-org-roam--delete-check-snapshot root snapshots)
+          (list :nodes nodes :references (delete-dups (nreverse references)) :snapshots snapshots)))
+
        (defun custom-org-roam-delete-node-and-sync ()
-        "Delete the current Org-roam node file with confirmation,
-        warn about existing backlinks, delete the associated image folder (based on timestamp),
-        then sync the Org-roam database."
+        "Delete the current whole Roam file, warning about all owned nodes and references."
         (interactive)
-        (let* ((node (org-roam-node-at-point))
-               (backlinks (when node (org-roam-backlinks-get node :unique t)))
-               (backlink-titles (when backlinks (mapcar (lambda (b) (org-roam-node-title (org-roam-backlink-source-node b))) backlinks)))
-               (prompt-msg (if backlinks
-                               (format "Warning: Node has %d backlink(s) from:\n- %s\n\nAre you sure you want to delete this node and its associated image directory?"
-                                       (length backlinks)
-                                       (string-join backlink-titles "\n- "))
-                             "Are you sure you want to delete this node and its associated image directory?")))
-         (when (and (buffer-file-name)
-                (y-or-n-p prompt-msg))
-         (let* ((file-to-delete (buffer-file-name))
-                (file-base (file-name-base file-to-delete))
-                ;; Extract the timestamp (part before the first dash)
-                (timestamp (car (split-string file-base "-")))
-                (image-dir (expand-file-name
-                            (concat "images/" timestamp)
-                            (file-truename "${orgRoamDirectoryPath}"))))
-          ;; Delete the org file
-          (delete-file file-to-delete)
-          (message "Deleted file %s" file-to-delete)
-          ;; Delete the image folder, if it exists
-          (when (file-directory-p image-dir)
-           (delete-directory image-dir t)
-           (message "Deleted image directory %s" image-dir))
-          ;; Kill buffer and sync
-          (kill-buffer)
-          (org-roam-db-sync)))))
+        (let ((source (buffer-file-name (or (buffer-base-buffer) (current-buffer)))))
+          (when (or (not source) (file-remote-p source) (file-remote-p org-roam-directory))
+            (user-error "Current buffer is not a local Org-roam note file"))
+          (let* ((file (file-truename source))
+                 (root (file-name-as-directory (file-truename org-roam-directory))))
+            (unless (and (derived-mode-p 'org-mode) (file-regular-p file)
+                         (file-in-directory-p file root) (org-roam-file-p file)
+                         (verify-visited-file-modtime (current-buffer)))
+              (user-error "Current buffer is not an up-to-date local Org-roam note file"))
+            (let* ((summary (custom-org-roam--delete-summary file root))
+                   (nodes (plist-get summary :nodes))
+                   (references (plist-get summary :references))
+                   (prompt (concat
+                            (format "Delete WHOLE note file:\n%s\n\nAll %d owned ID node(s) will be deleted:\n- %s\n\n"
+                                    file (length nodes)
+                                    (mapconcat (lambda (node) (format "%s [%s]" (cdr node) (car node))) nodes "\n- "))
+                            (if references
+                                (concat "References from surviving notes will stop resolving:\n- "
+                                        (mapconcat #'identity references "\n- "))
+                              "No incoming references found in eligible Org-roam sources.")
+                            "\nOnly saved eligible files within this Org-roam root are checked.\n"
+                            "Existing image cleanup will also remove the associated image directory.\n\nProceed? ")))
+              (when (y-or-n-p prompt)
+                (custom-org-roam--delete-check-snapshot root (plist-get summary :snapshots))
+                (let* ((timestamp (car (split-string (file-name-base file) "-")))
+                       (image-dir (expand-file-name (concat "images/" timestamp)
+                                                    (file-truename "${orgRoamDirectoryPath}"))))
+                  (delete-file file)
+                  (message "Deleted file %s" file)
+                  (when (file-directory-p image-dir)
+                    (delete-directory image-dir t)
+                    (message "Deleted image directory %s" image-dir))
+                  (kill-buffer)
+                  (org-roam-db-sync)))))))
 
        (defun custom-org-roam--file-byte-hash (file)
         "Return a hash of FILE's bytes, without decoding its contents."
