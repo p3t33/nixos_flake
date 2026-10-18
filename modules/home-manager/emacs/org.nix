@@ -214,7 +214,8 @@ in
        ;; Set the method for handling downloaded images
        ;; 'attach integrates with Org's attachment system
        (setq org-download-method 'directory
-        org-download-image-org-width 600)
+        org-download-image-org-width 600
+        org-download-annotate-function (lambda (_link) ""))
 
        (defun my/org-download-journal-date (file)
         "Return the ISO date of a DD-MM-YYYY journal FILE, or nil for other names."
