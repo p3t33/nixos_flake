@@ -65,16 +65,107 @@ in
       (setq org-hide-emphasis-markers t)
       (setq org-edit-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
 
-      ;; Export settings - save exported files to a dedicated directory
+      ;; Export settings
       (setq org-export-in-background nil)
-      (defun my/org-export-output-file-name (orig-fun extension &optional subtreep pub-dir)
-        "Redirect exports to Documents/org_exports/ directory"
-        (let* ((export-dir (expand-file-name "org_exports" "${documentsDir}"))
-               (pub-dir (or pub-dir export-dir)))
-          (unless (file-directory-p pub-dir)
-            (make-directory pub-dir t))
-          (funcall orig-fun extension subtreep pub-dir)))
-      (advice-add 'org-export-output-file-name :around #'my/org-export-output-file-name)
+      (advice-remove 'org-export-output-file-name #'my/org-export-output-file-name)
+      (defvar my/org-portable-export-routing nil)
+      (defun my/org-portable-export-command (orig-fun &rest args)
+        (let ((my/org-portable-export-routing t))
+          (apply orig-fun args)))
+      (defun my/org-portable-export-validate-bundle (directory)
+        (dolist (entry (directory-files directory t directory-files-no-dot-files-regexp))
+          (let ((attributes (file-attributes entry 'integer)))
+            (when (file-symlink-p entry)
+              (user-error "Unsafe symlink in export bundle: %s" entry))
+            (if (file-directory-p entry)
+                (my/org-portable-export-validate-bundle entry)
+              (when (and attributes (null (file-attribute-type attributes))
+                         (> (file-attribute-link-number attributes) 1))
+                (user-error "Unsafe multiply-linked file in export bundle: %s" entry))))))
+      (defun my/org-portable-export-file (orig-fun backend file &optional async subtreep visible-only body-only ext-plist post-process)
+        (if (not (and my/org-portable-export-routing
+                      (memq backend '(md latex))))
+            (funcall orig-fun backend file async subtreep visible-only body-only ext-plist post-process)
+          (let* ((source (buffer-file-name (buffer-base-buffer)))
+                 (source (and source (expand-file-name source))))
+            (unless (and source (not (file-remote-p source)) (file-readable-p source))
+              (user-error "Portable Org exports require a readable local source file"))
+            (let* ((identity (file-truename source))
+                   (short-id (substring (secure-hash 'sha256 identity) 0 12))
+                   (source-name (file-name-base source))
+                   (source-name (replace-regexp-in-string "[^[:alnum:]_.-]+" "-" source-name))
+                   (source-name (substring source-name 0 (min 60 (length source-name))))
+                   (root (expand-file-name "org_exports" "${documentsDir}"))
+                   (bundle (expand-file-name (format "%s-%s" source-name short-id) root))
+                   (output-name (file-name-nondirectory file))
+                   (output (expand-file-name output-name bundle))
+                   (ext-plist (org-combine-plists ext-plist
+                                                  (list :my-org-export-bundle bundle
+                                                        :my-org-export-source source))))
+              (when (file-symlink-p bundle)
+                (user-error "Export bundle directory is a symlink: %s" bundle))
+              (make-directory bundle t)
+              (my/org-portable-export-validate-bundle bundle)
+              (when (or (file-symlink-p output)
+                        (and (file-exists-p output)
+                             (or (file-equal-p output source)
+                                 (> (file-attribute-link-number (file-attributes output)) 1))))
+                (user-error "Unsafe export output path: %s" output))
+              (funcall orig-fun backend output async subtreep visible-only body-only
+                       ext-plist post-process)))))
+      (defun my/org-portable-export-images (tree backend info)
+        (let ((bundle (plist-get info :my-org-export-bundle))
+              (source (plist-get info :my-org-export-source)))
+          (when (and bundle source (memq backend '(md latex)))
+            (let* ((assets (expand-file-name "assets" bundle))
+                   (rules (plist-get info (if (eq backend 'md)
+                                              :html-inline-image-rules
+                                            :latex-inline-image-rules)))
+                   (copied (make-hash-table :test 'equal)))
+              (when (file-symlink-p assets)
+                (user-error "Export assets directory is a symlink: %s" assets))
+              (make-directory assets t)
+              (org-element-map tree 'link
+                (lambda (link)
+                  (let* ((path (org-element-property :path link))
+                         (rule (cdr (assoc "file" rules))))
+                    (when (and (equal (org-element-property :type link) "file")
+                               (stringp path) rule (string-match-p rule path))
+                      (let* ((absolute (expand-file-name path (file-name-directory source)))
+                             (resolved (and (not (file-remote-p absolute))
+                                            (file-exists-p absolute)
+                                            (file-truename absolute))))
+                        (unless (and resolved (not (file-remote-p resolved))
+                                     (file-readable-p resolved) (not (file-directory-p resolved)))
+                          (user-error "Missing or unreadable exported image: %s" absolute))
+                        (let* ((extension (or (file-name-extension path t) ""))
+                               (name (concat (substring (secure-hash 'sha256 resolved) 0 16) extension))
+                               (destination (expand-file-name name assets)))
+                          (unless (gethash destination copied)
+                            (when (or (file-symlink-p destination)
+                                      (and (file-exists-p destination)
+                                           (or (file-equal-p destination resolved)
+                                               (> (file-attribute-link-number
+                                                   (file-attributes destination)) 1))))
+                              (user-error "Unsafe exported image path: %s" destination))
+                            (let ((temporary (make-temp-file
+                                              (expand-file-name ".org-export-" assets))))
+                              (unwind-protect
+                                  (progn
+                                    (copy-file resolved temporary t)
+                                    (rename-file temporary destination t))
+                                (when (file-exists-p temporary) (delete-file temporary))))
+                            (puthash destination t copied))
+                          (org-element-put-property link :path (concat "assets/" name))
+                          (org-element-put-property link :raw-link (concat "file:assets/" name))))))))))
+          tree))
+      (add-hook 'org-export-filter-parse-tree-functions #'my/org-portable-export-images)
+      (advice-add 'org-export-to-file :around #'my/org-portable-export-file)
+      (with-eval-after-load 'ox-md
+        (advice-add 'org-md-export-to-markdown :around #'my/org-portable-export-command))
+      (with-eval-after-load 'ox-latex
+        (advice-add 'org-latex-export-to-latex :around #'my/org-portable-export-command)
+        (advice-add 'org-latex-export-to-pdf :around #'my/org-portable-export-command))
 
       :config
 
@@ -119,15 +210,15 @@ in
 
        (add-hook 'plantuml-mode-hook
         (lambda ()
-         (add-hook 'after-save-hook #'plantuml-preview-on-save nil t)))
+         (add-hook 'after-save-hook #'plantuml-preview-on-save nil t))))
 
-       ;; Org-mode integration (must use jar method)
-       (with-eval-after-load 'org
-        (org-babel-do-load-languages
-         'org-babel-load-languages
-         '((plantuml . t)))
-        (setq org-plantuml-jar-path "${pkgs.plantuml}/lib/plantuml.jar")
-        (setq org-plantuml-exec-mode 'jar)))
+      ;; Enable Babel independently of opening a .plantuml file.
+      (with-eval-after-load 'org
+       (setq org-plantuml-jar-path "${pkgs.plantuml}/lib/plantuml.jar"
+             org-plantuml-exec-mode 'jar)
+       (org-babel-do-load-languages
+        'org-babel-load-languages
+        (cons '(plantuml . t) (assq-delete-all 'plantuml org-babel-load-languages))))
       ;; =================================
 
       ;; ===================
@@ -136,14 +227,13 @@ in
       (use-package org-tree-slide
        :ensure nil
        :after org ;; Ensure org is loaded first
-       :commands (org-tree-slide-mode org-tree-slide-move-previous-tree org-tree-slide-move-next-tree)
+       :bind (("<f8>" . org-tree-slide-mode)
+              ("<f9>" . org-tree-slide-move-previous-tree)
+              ("<f10>" . org-tree-slide-move-next-tree))
        :config
          (define-key org-tree-slide-mode-map (kbd "<f8>") 'org-tree-slide-mode)
          (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
          (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree)
-         (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
-         (global-set-key (kbd "<f9>") 'org-tree-slide-move-previous-tree)
-         (global-set-key (kbd "<f10>") 'org-tree-slide-move-next-tree)
          ;; Optional: Start with a simple profile
          ;; Uncomment the following line if you want to use the simple profile by default
          ;; (org-tree-slide-simple-profile)
@@ -262,6 +352,7 @@ in
       ;; the database is loaded.
       (use-package org-roam
        :ensure nil
+       :demand t
        :custom
        (org-roam-directory (file-truename "${orgRoamDirectoryPath}"))
        :bind (("C-c n l" . org-roam-buffer-toggle)

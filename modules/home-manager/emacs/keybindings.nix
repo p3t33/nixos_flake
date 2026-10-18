@@ -143,7 +143,7 @@ in
         :move-point nil
         :repeat nil
         (interactive "<R><x><y>")
-        (evil-yank-line beg end type ?+ yank-handler))
+        (evil-yank-line beg end type ?+))
 
       (defun my-paste-from-os-clipboard ()
         "Paste from OS clipboard."
@@ -195,7 +195,7 @@ in
             "SPC" '(execute-extended-command :wk "M-x")
             "." '(find-file :wk "Find file")
             "f r" '(recentf-open :wk "Find recent files")
-            "f f" '(consult-find :wk "Find files")
+            "f f" '(consult-fd :wk "Find files")
             "f n" '(org-roam-node-find :which-key "find org-roam node")
             "f s" '(consult-ripgrep :wk "Find string")
             "f b" '(consult-buffer :wk "Find buffer")
@@ -271,7 +271,7 @@ in
             "g r" '(vc-revert :wk "Git revert file")
             "g s" '(magit-stage-file :wk "Git stage file")
             "g t" '(git-timemachine :wk "Git time machine")
-            "g u" '(magit-stage-file :wk "Git unstage file")
+            "g u" '(magit-file-unstage :wk "Git unstage file")
 
             ;; emacs help
             ;; ----------

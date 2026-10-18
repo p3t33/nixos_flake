@@ -118,10 +118,9 @@ in
                                   (bookmarks . 3)
                                   (projects . 3)
                                   (registers . 3)))
-          :custom
-          (dashboard-modify-heading-icons '((recents . "file-text")
-                                            (bookmarks . "book")))
           :config
+          (dashboard-modify-heading-icons '((recents . "nf-oct-file")
+                                             (bookmarks . "nf-oct-book")))
           (dashboard-setup-startup-hook))
       ;; ============
 

@@ -26,14 +26,13 @@ in
       ;; dired
       ;; =====================
       ;; used to open files that are not text using the desired software
-      ;; this is mostly an example a I did not installed sxiv or mpv.
       (use-package dired-open
           :ensure nil
           :after dired
           :config
-          (setq dired-open-extensions '(("gif" . "sxiv")
-                                        ("jpg" . "sxiv")
-                                        ("png" . "sxiv")
+          (setq dired-open-extensions '(("gif" . "imv")
+                                        ("jpg" . "imv")
+                                        ("png" . "imv")
                                         ("mkv" . "mpv")
                                         ("mp4" . "mpv"))))
 

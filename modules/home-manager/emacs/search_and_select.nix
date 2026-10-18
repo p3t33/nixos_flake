@@ -133,7 +133,7 @@ in
               ("M-g i" . consult-imenu)
               ("M-g I" . consult-imenu-multi)
               ;; M-s bindings in `search-map'
-              ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+              ("M-s d" . consult-fd)
               ("M-s c" . consult-locate)
               ("M-s g" . consult-grep)
               ("M-s G" . consult-git-grep)
@@ -167,8 +167,6 @@ in
        (setq xref-show-xrefs-function #'consult-xref
              xref-show-definitions-function #'consult-xref)
        :config
-       ;; Use `consult-fd` for faster finding
-       (setq consult-find-command "fd --color=never --full-path ARG OPTS")
        (setq consult-narrow-key "<"))
 
       ;; ====================
