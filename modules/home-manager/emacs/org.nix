@@ -2,8 +2,8 @@
 
 let
   cfg = config.programs.emacs;
-  orgRoamDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
-  orgRoamWorkDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/work_notes";
+  orgRoamDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/org_notes/personal";
+  orgRoamWorkDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/org_notes/work";
   documentsDir = config.xdg.userDirs.documents;
 in
 {
