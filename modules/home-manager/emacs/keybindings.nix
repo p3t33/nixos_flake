@@ -25,8 +25,7 @@ in
       ;; ==============================
 
       (with-eval-after-load 'org
-       ;; Ensure "M-h" is unbound in org-mode specifically
-       (define-key org-mode-map (kbd "M-h") nil)
+       ;; Set "M-h" for promoting subtrees
        (define-key org-mode-map (kbd "M-h") 'org-promote-subtree)
 
        ;; Set "M-l" for demoting subtree globally

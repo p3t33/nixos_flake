@@ -8,7 +8,6 @@ in
   home.packages = with pkgs; [
     ripgrep
     fd
-    fzf
   ];
 
   programs.emacs = {

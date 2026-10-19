@@ -8,7 +8,6 @@ in
   config = lib.mkIf cfg.enable {
 
   programs.emacs.extraPackages = epkgs: with epkgs; [
-    flycheck
     flyspell-correct
   ];
 

@@ -63,7 +63,7 @@ in
       (setq org-return-follows-link  t)
       (setq org-startup-with-inline-images t)
       (setq org-hide-emphasis-markers t)
-      (setq org-edit-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
+      (setq org-src-content-indentation 0) ;; Set src block automatic indent to 0 instead of 2.
 
       ;; Export settings
       (setq org-export-in-background nil)
