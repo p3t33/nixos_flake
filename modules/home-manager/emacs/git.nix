@@ -18,13 +18,13 @@ in
       (use-package magit
        :ensure nil)
 
-      (use-package git-timemachine ;; needs to be fixed
+      (use-package git-timemachine
           :ensure nil
           :after evil
-          :hook (evil-normalize-keymaps . git-timemachine-hook)
           :config
-              (evil-define-key 'normal git-timemachine-mode-map (kbd "C-j") 'git-timemachine-show-previous-revision)
-              (evil-define-key 'normal git-timemachine-mode-map (kbd "C-k") 'git-timemachine-show-next-revision)
+              (evil-define-minor-mode-key 'normal 'git-timemachine-mode
+                (kbd "C-j") #'git-timemachine-show-previous-revision
+                (kbd "C-k") #'git-timemachine-show-next-revision)
       )
       ;; ============
 

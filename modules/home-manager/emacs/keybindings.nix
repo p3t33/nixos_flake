@@ -25,8 +25,7 @@ in
       ;; ==============================
 
       (with-eval-after-load 'org
-       ;; Ensure "M-h" is unbound in org-mode specifically
-       (define-key org-mode-map (kbd "M-h") nil)
+       ;; Set "M-h" for promoting subtrees
        (define-key org-mode-map (kbd "M-h") 'org-promote-subtree)
 
        ;; Set "M-l" for demoting subtree globally
@@ -143,7 +142,7 @@ in
         :move-point nil
         :repeat nil
         (interactive "<R><x><y>")
-        (evil-yank-line beg end type ?+ yank-handler))
+        (evil-yank-line beg end type ?+))
 
       (defun my-paste-from-os-clipboard ()
         "Paste from OS clipboard."
@@ -195,9 +194,10 @@ in
             "SPC" '(execute-extended-command :wk "M-x")
             "." '(find-file :wk "Find file")
             "f r" '(recentf-open :wk "Find recent files")
-            "f f" '(consult-find :wk "Find files")
+            "f f" '(my/org-roam-notebook-find-file :wk "Find notebook files")
             "f n" '(org-roam-node-find :which-key "find org-roam node")
-            "f s" '(consult-ripgrep :wk "Find string")
+            "f N" '(my/org-roam-notebook-switch :wk "Switch notebook")
+            "f s" '(my/org-roam-notebook-search :wk "Search notebook")
             "f b" '(consult-buffer :wk "Find buffer")
             "f h" '(consult-org-heading :wk "Find org file header")
             "TAB TAB" '(comment-line :wk "Comment lines")
@@ -271,7 +271,7 @@ in
             "g r" '(vc-revert :wk "Git revert file")
             "g s" '(magit-stage-file :wk "Git stage file")
             "g t" '(git-timemachine :wk "Git time machine")
-            "g u" '(magit-stage-file :wk "Git unstage file")
+            "g u" '(magit-file-unstage :wk "Git unstage file")
 
             ;; emacs help
             ;; ----------
@@ -373,7 +373,7 @@ in
             "m c" '(org-roam-capture :which-key "org-roam capture")
             "m j" '(org-roam-dailies-capture-today :which-key "org-roam dailies capture today")
             "m n" '(:ignore t :wk "org-roam node")
-            "m n d" '(custom-org-roam-delete-node-and-sync :wk "Delete and sync Org-roam node")
+            "m n d" '(custom-org-roam-delete-node-and-sync :wk "Delete current Org-roam file")
             "m n r" '(custom-org-roam-rename-node  :wk "Rename node and sync Org-roam node")
 
             ;; Open

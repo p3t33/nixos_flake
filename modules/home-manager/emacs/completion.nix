@@ -26,8 +26,9 @@ in
           :ensure nil
           :defer t
           :diminish
-          ;; TOTO: remove once flycheck/org fix upstream bug #2161 where org-lint
-          ;; returns marker-propertized line numbers (breaks the checker).
+          ;; Pinned Flycheck mishandles Org 9.8's string line numbers.
+          ;; Keep org-lint disabled until the pinned package includes fixes for
+          ;; https://github.com/flycheck/flycheck/issues/2161.
           :custom
           (flycheck-disabled-checkers '(org-lint))
           :init (global-flycheck-mode))
