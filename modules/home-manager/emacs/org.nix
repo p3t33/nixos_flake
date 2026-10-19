@@ -3,6 +3,7 @@
 let
   cfg = config.programs.emacs;
   orgRoamDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/roam_notes";
+  orgRoamWorkDirectoryPath = "${config.home.homeDirectory}/Sync/dev_resources/work_notes";
   documentsDir = config.xdg.userDirs.documents;
 in
 {
@@ -324,8 +325,11 @@ in
         (let* ((date (my/org-download-journal-date file))
                (key (if date (concat "journal-" date)
                       (car (split-string (file-name-base file) "-")))))
-          (expand-file-name (concat "images/" key)
-                            (file-truename "${orgRoamDirectoryPath}"))))
+          (expand-file-name
+           (concat "images/" key)
+           (or (let ((owner (my/org-roam--notebook-for-file file)))
+                 (and owner (plist-get (my/org-roam--context owner) :root)))
+               (file-name-directory (file-truename file))))))
 
        (defun my/org-download-set-image-dir (&rest _)
         "Refresh the current note's image directory without creating it."
@@ -346,6 +350,247 @@ in
       ;; =====================
       ;; org-roam and its ui
       ;; =====================
+      ;; Org-roam caches SQLite connections by root, so route root and DB as
+      ;; one context for every DB operation and filename-driven autosync hook.
+      (defvar my/org-roam-notebook-selected "personal")
+      (defvar my/org-roam-notebook-registry
+        `((personal :label "Personal"
+                    :root ,(file-name-as-directory
+                            (file-truename "${orgRoamDirectoryPath}"))
+                    :database ,(expand-file-name "org-roam.db" user-emacs-directory))
+          (work :label "Work"
+                :root ,(file-name-as-directory
+                        (file-truename "${orgRoamWorkDirectoryPath}"))
+                :database ,(expand-file-name "org-roam-work.db" user-emacs-directory))))
+      (defvar my/org-roam-notebook-context nil)
+      (defvar my/org-roam-notebook-ui-context nil)
+      (defvar my/org-roam-notebook-capture-active nil)
+      (defvar my/org-roam-notebook-capture-root nil)
+      (defvar-local my/org-roam-buffer-notebook nil)
+      (defvar my/org-roam-notebook-selection-file
+        (expand-file-name "org-roam-notebook" user-emacs-directory))
+
+      (defun my/org-roam--notebook-id (notebook)
+        (let ((id (if (stringp notebook) (intern (downcase notebook)) notebook)))
+          (unless (assq id my/org-roam-notebook-registry)
+            (user-error "Unknown Org-roam notebook: %s" notebook))
+          id))
+
+      (defun my/org-roam--context (&optional notebook file)
+        (let* ((id (my/org-roam--notebook-id
+                    (or notebook (and file (my/org-roam--notebook-for-file file))
+                        (and my/org-roam-notebook-context
+                             (plist-get my/org-roam-notebook-context :id))
+                        my/org-roam-notebook-selected)))
+               (entry (assq id my/org-roam-notebook-registry)))
+          (list :id id :label (plist-get (cdr entry) :label)
+                :root (plist-get (cdr entry) :root)
+                :database (plist-get (cdr entry) :database))))
+
+      (defun my/org-roam--notebook-for-file (file)
+        (when (and file (not (file-remote-p file)))
+          (let ((path (file-truename file)))
+            (catch 'owner
+              (dolist (entry my/org-roam-notebook-registry)
+                (when (file-in-directory-p path (plist-get (cdr entry) :root))
+                  (throw 'owner (car entry))))))))
+
+      (defun my/org-roam--call-in-context (context function &rest arguments)
+        (let* ((my/org-roam-notebook-context context)
+               (org-roam-directory (plist-get context :root))
+               (org-roam-db-location (plist-get context :database)))
+          (apply function arguments)))
+
+      (defun my/org-roam--context-for-root (root)
+        (when root
+          (catch 'context
+            (dolist (entry my/org-roam-notebook-registry)
+              (when (equal (file-name-as-directory (expand-file-name root))
+                           (file-name-as-directory
+                            (expand-file-name (plist-get (cdr entry) :root))))
+                (throw 'context (my/org-roam--context (car entry))))))))
+
+      (defun my/org-roam--current-context ()
+        (let* ((base (or (buffer-base-buffer) (current-buffer)))
+               (file (buffer-file-name base))
+               (owner (my/org-roam--notebook-for-file file)))
+          (or my/org-roam-notebook-context
+              (and file owner (my/org-roam--context owner))
+              (and (not file) my/org-roam-buffer-notebook
+                   (my/org-roam--context my/org-roam-buffer-notebook))
+              (and (not file) (my/org-roam--context-for-root org-roam-directory))
+              (my/org-roam--context))))
+
+      (defun my/org-roam--prepare-buffer-owner ()
+        (let* ((base (or (buffer-base-buffer) (current-buffer)))
+               (file (buffer-file-name base))
+               (owner (my/org-roam--notebook-for-file file)))
+          (cond
+           (owner
+            (let ((context (my/org-roam--context owner)))
+              (setq-local my/org-roam-buffer-notebook owner
+                          org-roam-directory (plist-get context :root)
+                          org-roam-db-location (plist-get context :database))))
+           ((or file my/org-roam-buffer-notebook)
+            (setq-local my/org-roam-buffer-notebook nil)
+            (when (local-variable-p 'org-roam-directory)
+              (kill-local-variable 'org-roam-directory))
+            (when (local-variable-p 'org-roam-db-location)
+              (kill-local-variable 'org-roam-db-location))))))
+
+      (defun my/org-roam--refresh-owner-after-visited-file-change (&rest _)
+        (my/org-roam--prepare-buffer-owner))
+      (unless (advice-member-p #'my/org-roam--refresh-owner-after-visited-file-change
+                               'set-visited-file-name)
+        (advice-add 'set-visited-file-name :after
+                    #'my/org-roam--refresh-owner-after-visited-file-change))
+      ;; Registered before Org-roam's eager autosync find-file hook.
+      (add-hook 'find-file-hook #'my/org-roam--prepare-buffer-owner)
+      (add-hook 'org-mode-hook #'my/org-roam--prepare-buffer-owner)
+      (dolist (buffer (buffer-list))
+        (with-current-buffer buffer
+          (when (derived-mode-p 'org-mode)
+            (my/org-roam--prepare-buffer-owner))))
+
+      (defun my/org-roam--db-context-advice (original &rest arguments)
+        (apply #'my/org-roam--call-in-context
+               (my/org-roam--current-context) original arguments))
+
+      (defun my/org-roam--db-file-advice (original &optional file &rest arguments)
+        (let* ((base (or (buffer-base-buffer) (current-buffer)))
+               (current-file (buffer-file-name base))
+               (owner (my/org-roam--notebook-for-file (or file current-file)))
+               (context (if owner (my/org-roam--context owner)
+                          (my/org-roam--current-context))))
+          (apply #'my/org-roam--call-in-context context original file arguments)))
+
+      (defun my/org-roam--db-vc-delete-advice (original function file)
+        (my/org-roam--call-in-context (my/org-roam--context nil file)
+                                      original function file))
+
+      (defun my/org-roam--db-rename-advice (original old-file new-file &rest arguments)
+        (let ((old-context (my/org-roam--context nil old-file))
+              (new-context (my/org-roam--context nil new-file)))
+          (apply #'my/org-roam--call-in-context
+                 old-context original old-file new-file arguments)
+          (unless (equal (plist-get old-context :id) (plist-get new-context :id))
+            (apply #'my/org-roam--call-in-context
+                   new-context original old-file new-file arguments))))
+
+      (defun my/org-roam--install-db-routing ()
+        (dolist (function '(org-roam-db--get-connection org-roam-db
+                            org-roam-db-query org-roam-db-sync))
+          (when (fboundp function)
+            (unless (advice-member-p #'my/org-roam--db-context-advice function)
+              (advice-add function :around #'my/org-roam--db-context-advice))))
+        (dolist (function '(org-roam-db-update-file org-roam-db-clear-file
+                            org-roam-db-autosync--delete-file-a))
+          (when (fboundp function)
+            (unless (advice-member-p #'my/org-roam--db-file-advice function)
+              (advice-add function :around #'my/org-roam--db-file-advice))))
+        (when (fboundp 'org-roam-db-autosync--vc-delete-file-a)
+          (unless (advice-member-p #'my/org-roam--db-vc-delete-advice
+                                   'org-roam-db-autosync--vc-delete-file-a)
+            (advice-add 'org-roam-db-autosync--vc-delete-file-a :around
+                        #'my/org-roam--db-vc-delete-advice)))
+        (when (fboundp 'org-roam-db-autosync--rename-file-a)
+          (unless (advice-member-p #'my/org-roam--db-rename-advice
+                                   'org-roam-db-autosync--rename-file-a)
+            (advice-add 'org-roam-db-autosync--rename-file-a :around
+                        #'my/org-roam--db-rename-advice))))
+
+      (with-eval-after-load 'org-roam-db
+        (my/org-roam--install-db-routing))
+
+      (defun my/org-roam--capture-active-p ()
+        (or my/org-roam-notebook-capture-active
+            (and (boundp 'org-capture-mode) org-capture-mode)))
+      (defun my/org-roam--capture-started ()
+        (when (bound-and-true-p org-capture-mode)
+          (setq my/org-roam-notebook-capture-active t)))
+      (defun my/org-roam--capture-finished ()
+        (setq my/org-roam-notebook-capture-active nil))
+      (add-hook 'org-capture-mode-hook #'my/org-roam--capture-started)
+      (add-hook 'org-capture-after-finalize-hook #'my/org-roam--capture-finished)
+
+      (defun my/org-roam-notebook-switch (&optional notebook)
+        "Select the notebook used by Org-roam commands, without retagging buffers."
+        (interactive)
+        (let* ((choice (or notebook
+                           (completing-read "Org-roam notebook: "
+                                            '("Personal" "Work") nil t)))
+               (id (my/org-roam--notebook-id choice))
+               (context (my/org-roam--context id)))
+          (when (my/org-roam--capture-active-p)
+            (user-error "Finish or abort the active capture before switching notebooks"))
+          (unless (file-directory-p (plist-get context :root))
+            (make-directory (plist-get context :root) t))
+          (my/org-roam--call-in-context context #'org-roam-db-sync)
+          (when (bound-and-true-p org-roam-ui-mode)
+            (let ((ui-context my/org-roam-notebook-ui-context))
+              (when ui-context
+                (my/org-roam--call-in-context ui-context #'org-roam-ui-mode -1))))
+          (make-directory user-emacs-directory t)
+          (let ((temporary (make-temp-file
+                            (expand-file-name ".org-roam-notebook-"
+                                              user-emacs-directory))))
+            (unwind-protect
+                (progn
+                  (with-temp-file temporary
+                    (insert (symbol-name id) "\n"))
+                  (rename-file temporary my/org-roam-notebook-selection-file t)
+                  (setq temporary nil))
+              (when (and temporary (file-exists-p temporary))
+                (delete-file temporary))))
+          (setq my/org-roam-notebook-selected (symbol-name id)
+                my/org-roam-notebook-ui-context nil)
+          (setq-default org-roam-directory (plist-get context :root)
+                        org-roam-db-location (plist-get context :database))
+          (force-mode-line-update t)
+          (message "Selected %s Org-roam notebook" (plist-get context :label))))
+
+      (defun my/org-roam-notebook-find-file ()
+        "Find a file under the selected notebook using Consult's fd defaults."
+        (interactive)
+        (require 'consult)
+        (let ((root (plist-get (my/org-roam--context) :root)))
+          (let ((default-directory root))
+            (consult-fd root))))
+
+      (defun my/org-roam-notebook-search ()
+        "Search the selected notebook using Consult's ripgrep defaults."
+        (interactive)
+        (require 'consult)
+        (let ((root (plist-get (my/org-roam--context) :root)))
+          (let ((default-directory root))
+            (consult-ripgrep root))))
+
+      (defun my/org-roam-notebook-status ()
+        (let* ((selected (my/org-roam--context))
+               (owner (my/org-roam--notebook-for-file
+                       (buffer-file-name (or (buffer-base-buffer) (current-buffer)))))
+               (owner-entry (and owner (assq owner my/org-roam-notebook-registry))))
+          (format " [%s%s]" (plist-get selected :label)
+                  (if (and owner (not (eq owner (plist-get selected :id))))
+                      (format "; viewing %s" (plist-get (cdr owner-entry) :label))
+                    ""))))
+      (add-to-list 'global-mode-string '(:eval (my/org-roam-notebook-status)) t)
+
+      (let ((saved (and (file-readable-p my/org-roam-notebook-selection-file)
+                        (with-temp-buffer
+                          (insert-file-contents my/org-roam-notebook-selection-file)
+                          (string-trim (buffer-string))))))
+        (when (member saved '("personal" "work"))
+          (setq my/org-roam-notebook-selected saved)))
+      (let ((initial (my/org-roam--context)))
+        (setq-default org-roam-directory (plist-get initial :root)
+                      org-roam-db-location (plist-get initial :database))
+        (when (and (eq (plist-get initial :id) 'work)
+                   (not (file-directory-p (plist-get initial :root)))
+                   (not (file-remote-p (plist-get initial :root))))
+          (make-directory (plist-get initial :root) t)))
+
+      ;;=====================
       ;; No :after org — load eagerly so org-roam-db-autosync-mode runs at
       ;; startup and the database is ready before the first keybinding call.
       ;; Without this, the first org-roam command (e.g. SPC f n) stalls while
@@ -353,8 +598,6 @@ in
       (use-package org-roam
        :ensure nil
        :demand t
-       :custom
-       (org-roam-directory (file-truename "${orgRoamDirectoryPath}"))
        :bind (("C-c n l" . org-roam-buffer-toggle)
               ("C-c n f" . org-roam-node-find)
               ("C-c n g" . org-roam-graph)
@@ -363,6 +606,60 @@ in
               ;; Dailies
               ("C-c n j" . org-roam-dailies-capture-today))
        :config
+
+       (defun my/org-roam--selected-command-advice (original &rest arguments)
+         (apply #'my/org-roam--call-in-context
+                (my/org-roam--context) original arguments))
+
+       (defun my/org-roam--insert-command-advice (original &rest arguments)
+         (let* ((file (buffer-file-name (or (buffer-base-buffer) (current-buffer))))
+                (context (my/org-roam--context nil file)))
+           (apply #'my/org-roam--call-in-context context original arguments)))
+
+       (defun my/org-roam--capture-command-advice (original &rest arguments)
+         (let ((context (or my/org-roam-notebook-context
+                            (my/org-roam--context))))
+           (apply #'my/org-roam--call-in-context context original arguments)))
+
+       (defun my/org-roam--capture-private-advice (original &rest arguments)
+         (let* ((context (or my/org-roam-notebook-context
+                             (my/org-roam--current-context)))
+                (my/org-roam-notebook-context context)
+                (my/org-roam-notebook-capture-root
+                 (expand-file-name org-roam-directory)))
+           (apply original arguments)))
+
+       (defun my/org-roam--capture-target-advice (original &rest arguments)
+         (let* ((context (or my/org-roam-notebook-context
+                             (my/org-roam--current-context)))
+                (root (or my/org-roam-notebook-capture-root
+                          (plist-get context :root)))
+                (org-roam-directory root)
+                (org-roam-db-location (plist-get context :database)))
+           (apply original arguments)))
+
+       (require 'org-roam-capture)
+
+       (dolist (function '(org-roam-node-find org-roam-graph org-roam-buffer-toggle
+                           org-roam-dailies-capture-today org-roam-dailies-goto-today
+                           org-roam-dailies-capture-date org-roam-dailies-goto-date
+                           org-roam-dailies-capture-tomorrow org-roam-dailies-goto-tomorrow
+                           org-roam-dailies-capture-yesterday org-roam-dailies-goto-yesterday
+                           org-roam-dailies-goto-next-note org-roam-dailies-goto-previous-note
+                           org-roam-dailies-find-directory org-roam-dailies-calendar-mark-entries))
+         (when (fboundp function)
+           (unless (advice-member-p #'my/org-roam--selected-command-advice function)
+             (advice-add function :around #'my/org-roam--selected-command-advice))))
+       (unless (advice-member-p #'my/org-roam--insert-command-advice 'org-roam-node-insert)
+         (advice-add 'org-roam-node-insert :around #'my/org-roam--insert-command-advice))
+       (unless (advice-member-p #'my/org-roam--capture-command-advice 'org-roam-capture)
+         (advice-add 'org-roam-capture :around #'my/org-roam--capture-command-advice))
+       (unless (advice-member-p #'my/org-roam--capture-private-advice 'org-roam-capture-)
+         (advice-add 'org-roam-capture- :around #'my/org-roam--capture-private-advice))
+       (unless (advice-member-p #'my/org-roam--capture-target-advice
+                                'org-roam-capture--target-truepath)
+         (advice-add 'org-roam-capture--target-truepath :around
+                     #'my/org-roam--capture-target-advice))
 
        ;; Existing notes need a manual reindex to show transclusions as backlinks.
        (setq org-roam-db-extra-links-exclude-keys
@@ -420,9 +717,12 @@ in
             (list :title title :nodes (delete-dups (nreverse nodes)) :refs (nreverse refs)))))
 
        (defun custom-org-roam--delete-note-files (root)
-        "Return canonical eligible local note files, failing on unreadable sources."
-        (let (files)
-          (dolist (file (org-roam-list-files))
+        "Return canonical eligible local note files from the notebook at ROOT."
+        (let* ((context (or (my/org-roam--context-for-root root)
+                            (user-error "Unknown Org-roam notebook root: %s" root)))
+               (root (plist-get context :root))
+               files)
+          (dolist (file (my/org-roam--call-in-context context #'org-roam-list-files))
             (when (file-remote-p file)
               (user-error "Cannot check remote Org-roam source: %s" file))
             (let ((path (file-truename file)))
@@ -479,11 +779,19 @@ in
                          (file-hit (and destination (not (file-remote-p destination))
                                         (equal (file-truename destination) target))))
                     (when (or node file-hit)
-                      (push (format "%s (%s:%d) -> %s [%s]"
-                                    (plist-get data :title) (file-relative-name file root)
-                                    (plist-get ref :line)
-                                    (if node (cdr node) (file-relative-name target root))
-                                    (plist-get ref :kind)) references)))))))
+                      (let* ((source-owner (my/org-roam--notebook-for-file file))
+                             (target-owner (my/org-roam--notebook-for-file target))
+                             (source-context (my/org-roam--context source-owner))
+                             (target-context (my/org-roam--context target-owner)))
+                        (push (format "%s (%s:%s:%d) -> %s [%s]"
+                                      (plist-get data :title)
+                                      (plist-get source-context :label)
+                                      (file-relative-name file (plist-get source-context :root))
+                                      (plist-get ref :line)
+                                      (if node (cdr node)
+                                        (format "%s:%s" (plist-get target-context :label)
+                                                (file-relative-name target (plist-get target-context :root))))
+                                      (plist-get ref :kind)) references))))))))
           (custom-org-roam--delete-check-snapshot root snapshots)
           (list :nodes nodes :references (delete-dups (nreverse references)) :snapshots snapshots)))
 
@@ -510,7 +818,10 @@ in
 
        (defun custom-org-roam--delete-to-trash (file root snapshots image-dir)
         "Close FILE's buffers before trashing it; report each partially completed stage."
-        (let ((org-roam-directory root))
+        (let* ((context (my/org-roam--context nil file))
+               (my/org-roam-notebook-context context)
+               (org-roam-directory root)
+               (org-roam-db-location (plist-get context :database)))
           (condition-case failure
               (progn
                 (custom-org-roam--delete-check-snapshot root snapshots)
@@ -594,7 +905,7 @@ in
                                 (concat "References from surviving notes will stop resolving:\n- "
                                         (mapconcat #'identity references "\n- "))
                               "No incoming references found in eligible Org-roam sources.")
-                            "\nOnly saved eligible files within this Org-roam root are checked.\n"
+                            "\nOnly saved eligible files in this note's notebook are checked; cross-notebook references are not checked.\n"
                             (if journal-date
                                 "Journal images will be retained, including legacy shared image directories."
                               "The associated image directory will also be moved to Trash if present.")
@@ -812,7 +1123,11 @@ in
 
        ;; If you're using a vertical completion framework, you might want a more informative completion interface
        (setq org-roam-node-display-template (concat "''${title:*} " (propertize "''${tags:10}" 'face 'org-tag)))
-       (org-roam-db-autosync-mode)
+       ;; DB callbacks and their root/database contexts must be installed before
+       ;; autosync registers global save, rename and delete handlers.
+       (my/org-roam--install-db-routing)
+       (unless org-roam-db-autosync-mode
+         (org-roam-db-autosync-mode 1))
        ;; If using org-roam-protocol
        (require 'org-roam-protocol)
 
@@ -840,7 +1155,62 @@ in
         (setq org-roam-ui-sync-theme t
          org-roam-ui-follow t
          org-roam-ui-update-on-save t
-         org-roam-ui-open-on-start t))
+         org-roam-ui-open-on-start t)
+
+        (defun my/org-roam--ui-context-advice (original &rest arguments)
+          (let ((context (or my/org-roam-notebook-ui-context
+                             (my/org-roam--context))))
+            (apply #'my/org-roam--call-in-context context original arguments)))
+
+        (defun my/org-roam--ui-mode-advice (original &optional argument)
+          (let* ((enable (if (null argument) (not (bound-and-true-p org-roam-ui-mode))
+                           (> (prefix-numeric-value argument) 0)))
+                 (context (if enable (my/org-roam--context)
+                            (or my/org-roam-notebook-ui-context
+                                (my/org-roam--context)))))
+            (when enable
+              (setq my/org-roam-notebook-ui-context context))
+            (unwind-protect
+                (my/org-roam--call-in-context context original argument)
+              (unless enable
+                (setq my/org-roam-notebook-ui-context nil)))))
+
+        (defun my/org-roam--ui-message-advice (_original &rest _arguments)
+          (message "Deletion from Org-roam UI is disabled; use the Trash-protected note command"))
+
+        (defun my/org-roam--ui-message-router (original websocket frame)
+          (let* ((msg (json-parse-string (websocket-frame-text frame) :object-type 'alist))
+                 (context (or my/org-roam-notebook-ui-context
+                              (my/org-roam--context))))
+            (if (equal (alist-get 'command msg) "delete")
+                (message "Deletion from Org-roam UI is disabled; use the Trash-protected note command")
+              (my/org-roam--call-in-context context original websocket frame))))
+
+        (defun my/org-roam--install-ui-routing ()
+          (when (fboundp 'org-roam-ui-mode)
+            (unless (advice-member-p #'my/org-roam--ui-mode-advice 'org-roam-ui-mode)
+              (advice-add 'org-roam-ui-mode :around #'my/org-roam--ui-mode-advice)))
+          (dolist (function '(org-roam-ui--ws-on-open org-roam-ui--on-msg-open-node
+                              org-roam-ui--on-msg-create-node org-roam-ui--get-text
+                              org-roam-ui--send-text org-roam-ui--send-graphdata
+                              org-roam-ui--send-variables org-roam-ui--on-save
+                              org-roam-ui--ws-on-close))
+            (when (fboundp function)
+              (unless (advice-member-p #'my/org-roam--ui-context-advice function)
+                (advice-add function :around #'my/org-roam--ui-context-advice))))
+          (when (fboundp 'org-roam-ui--ws-on-message)
+            (unless (advice-member-p #'my/org-roam--ui-message-router
+                                     'org-roam-ui--ws-on-message)
+              (advice-add 'org-roam-ui--ws-on-message :around
+                          #'my/org-roam--ui-message-router)))
+          (when (fboundp 'org-roam-ui--on-msg-delete-node)
+            (unless (advice-member-p #'my/org-roam--ui-message-advice
+                                     'org-roam-ui--on-msg-delete-node)
+              (advice-add 'org-roam-ui--on-msg-delete-node :around
+                          #'my/org-roam--ui-message-advice))))
+        (my/org-roam--install-ui-routing)
+        (with-eval-after-load 'org-roam-ui
+          (my/org-roam--install-ui-routing)))
       ;; =====================
 
   '';
