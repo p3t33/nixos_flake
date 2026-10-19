@@ -14,10 +14,19 @@ let
   sessionizer = lib.getExe config.custom.scripts.tmuxSessionizer.package;
   piWindow = "#{m:*1*,#{P:#{==:#{pane_current_command},pi}}}";
   piAttention = "#{P:#{?@pi-attention,1,}}";
-  inactiveWindowBackground = "#{?${piAttention},#ebcb8b,brightblack}";
-  inactiveWindowForeground = "#{?${piAttention},black,white}";
-  inactiveWindowWeight = "#{?${piAttention},bold,nobold}";
-  windowFlags = "#{?${piWindow},#{s/#+//;s/[*]/●/:window_flags},#{s/#+/◆/;s/[*]/●/:window_flags}}";
+  zbellEnabled =
+    config.programs.zsh.enable
+    && config.programs.zsh.oh-my-zsh.enable
+    && lib.elem "zbell" config.programs.zsh.oh-my-zsh.plugins;
+  windowAttention =
+    if zbellEnabled then
+      "#{||:${piAttention},#{window_bell_flag}}"
+    else
+      piAttention;
+  inactiveWindowBackground = "#{?${windowAttention},#ebcb8b,brightblack}";
+  inactiveWindowForeground = "#{?${windowAttention},black,white}";
+  inactiveWindowWeight = "#{?${windowAttention},bold,nobold}";
+  windowFlags = "#{?${piWindow},#{s/#+//;s/[*]/●/;s/!//:window_flags},#{s/#+/◆/;s/[*]/●/;s/!//:window_flags}}";
   clearPiAttention = ''run-shell "${tmux} -N -S '#{socket_path}' list-panes -t '#{window_id}' -F 'set-option -pu -t ##{pane_id} @pi-attention' | ${tmux} -N -S '#{socket_path}' source-file -"'';
 
 in
@@ -340,11 +349,16 @@ in
 
         setw -g monitor-activity on
         set -g visual-activity off
+        set -g activity-action none
+        ${lib.optionalString zbellEnabled ''
+          setw -g monitor-bell on
+          set -g bell-action none
+        ''}
 
-        # Keep Nord's window styling and other flags. Map the doubled raw # once,
+        # Keep Nord's window styling and other flags. Map activity and bell flags,
         # and append Pi attention independently of tmux's native window flags.
-        set -g window-status-format "#{?${piWindow},#[noreverse],}#[fg=black,bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#I #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#W ${windowFlags}#{?${piAttention},◆,} #[fg=${inactiveWindowBackground},bg=black,nobold,noitalics,nounderscore]"
-        set -g window-status-current-format "#{?${piWindow},#[noreverse],}#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W ${windowFlags}#{?${piAttention},◆,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+        set -g window-status-format "#{?#{||:${piWindow},${windowAttention}},#[noreverse],}#[fg=black,bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#I #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#W ${windowFlags}#{?${piAttention},◆,} #[fg=${inactiveWindowBackground},bg=black,nobold,noitalics,nounderscore]"
+        set -g window-status-current-format "#{?#{||:${piWindow},${windowAttention}},#[noreverse],}#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W ${windowFlags}#{?${piAttention},◆,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
 
         bind-key -r s run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
         bind-key g new-window 'lazygit; tmux kill-pane'

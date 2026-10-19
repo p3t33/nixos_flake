@@ -147,7 +147,13 @@ in
       # the one that are part of oh-my-zsh plugin manager:
       oh-my-zsh = {
         enable = true;
+        extraConfig = ''
+          zbell_duration=30
+          zbell_use_notify_send=false
+          zbell_ignore=($EDITOR $PAGER pi nvim vim vi emacs less more tmux ssh)
+        '';
         plugins = [
+          "zbell"
           "git"
           "command-not-found"
           "history-substring-search"
