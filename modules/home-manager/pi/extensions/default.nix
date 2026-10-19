@@ -41,6 +41,7 @@ in
         ocr = import ./ocr.nix { inherit lib pkgs; };
         status-bar = import ./status-bar.nix;
         cool-header = ./cool-header.ts;
+        tmux-attention = import ./tmux-attention.nix;
       };
     };
   };

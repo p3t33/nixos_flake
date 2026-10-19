@@ -12,11 +12,22 @@ let
     inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default;
   tmux = lib.getExe pkgs.tmux;
   sessionizer = lib.getExe config.custom.scripts.tmuxSessionizer.package;
-  windowFlags = "#{s/[*]/●/;s/##/◆/:window_flags}";
+  piWindow = "#{m:*1*,#{P:#{==:#{pane_current_command},pi}}}";
+  piAttention = "#{P:#{?@pi-attention,1,}}";
+  inactiveWindowBackground = "#{?${piAttention},#ebcb8b,brightblack}";
+  inactiveWindowForeground = "#{?${piAttention},black,white}";
+  inactiveWindowWeight = "#{?${piAttention},bold,nobold}";
+  windowFlags = "#{?${piWindow},#{s/#+//;s/[*]/●/:window_flags},#{s/#+/◆/;s/[*]/●/:window_flags}}";
+  clearPiAttention = ''run-shell "${tmux} -N -S '#{socket_path}' list-panes -t '#{window_id}' -F 'set-option -pu -t ##{pane_id} @pi-attention' | ${tmux} -N -S '#{socket_path}' source-file -"'';
 
 in
 {
   config = lib.mkIf config.programs.tmux.enable {
+    xdg.configFile."tmux/tmux-nerd-font-window-name.yml".text = ''
+      icons:
+        pi: ""
+    '';
+
     programs.tmux = {
       secureSocket = false;
       terminal = "tmux-256color";
@@ -253,6 +264,9 @@ in
         # With this enabled, files will auto-reload when you switch back to the tmux pane.
         set -g focus-events on
 
+        set-hook -g after-select-window[102] { ${clearPiAttention} }
+        set-hook -g client-session-changed[102] { ${clearPiAttention} }
+        set-hook -g client-attached[102] { ${clearPiAttention} }
         set-hook -g client-attached[100] { run-shell "${sessionizer} --record '#{session_id}' '#{@sessionizer-restore-pid}'" }
         set-hook -g client-session-changed[100] { run-shell "${sessionizer} --record '#{session_id}' '#{@sessionizer-restore-pid}'" }
         set-hook -g client-focus-in[100] { run-shell "${sessionizer} --record '#{session_id}' '#{@sessionizer-restore-pid}'" }
@@ -327,9 +341,10 @@ in
         setw -g monitor-activity on
         set -g visual-activity off
 
-        # Keep Nord's window styling and other flags, replacing only * and #.
-        set -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W ${windowFlags} #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
-        set -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W ${windowFlags} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+        # Keep Nord's window styling and other flags. Map the doubled raw # once,
+        # and append Pi attention independently of tmux's native window flags.
+        set -g window-status-format "#{?${piWindow},#[noreverse],}#[fg=black,bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#I #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#W ${windowFlags}#{?${piAttention},◆,} #[fg=${inactiveWindowBackground},bg=black,nobold,noitalics,nounderscore]"
+        set -g window-status-current-format "#{?${piWindow},#[noreverse],}#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W ${windowFlags}#{?${piAttention},◆,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
 
         bind-key -r s run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
         bind-key g new-window 'lazygit; tmux kill-pane'
