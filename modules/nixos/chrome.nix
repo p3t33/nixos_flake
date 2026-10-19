@@ -18,7 +18,6 @@ in
         "imohnlganmafcmidafklgkgfgaagiohn" # Yet Another Speed Dial
         "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
         "pccckmaobkjjboncdfnnofkonhgpceea" # Hover Zoom+
-        "logpjaacgmcbpdkdchjiaagddngobkck" # Shortkeys
         "neebplgakaahbhdphmkckjjcegoiijjo" # Keepa
         "iaiomicjabeggjcfkbimgmglanimpnae" # Tab Session Manager
       ];

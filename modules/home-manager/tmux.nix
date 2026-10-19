@@ -12,6 +12,7 @@ let
     inputs.tmux-nerd-font-window-name.packages.${pkgs.stdenv.hostPlatform.system}.default;
   tmux = lib.getExe pkgs.tmux;
   sessionizer = lib.getExe config.custom.scripts.tmuxSessionizer.package;
+  windowFlags = "#{s/[*]/●/;s/##/◆/:window_flags}";
 
 in
 {
@@ -315,13 +316,20 @@ in
         set-option -g renumber-windows on
 
         # Set easier window split keys
-        bind-key v split-window -h
-        bind-key h split-window -v
+        bind-key v split-window -h -c '#{pane_current_path}'
+        bind-key h split-window -v -c '#{pane_current_path}'
 
         # Enable mouse mode(tmux 2.1++)
         setw -g mouse on
 
         set-option -g status-position top
+
+        setw -g monitor-activity on
+        set -g visual-activity off
+
+        # Keep Nord's window styling and other flags, replacing only * and #.
+        set -g window-status-format "#[fg=black,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#I #[fg=white,bg=brightblack,nobold,noitalics,nounderscore] #[fg=white,bg=brightblack]#W ${windowFlags} #[fg=brightblack,bg=black,nobold,noitalics,nounderscore]"
+        set -g window-status-current-format "#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W ${windowFlags} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
 
         bind-key -r s run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
         bind-key g new-window 'lazygit; tmux kill-pane'
