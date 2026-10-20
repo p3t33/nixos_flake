@@ -26,7 +26,6 @@ let
   inactiveWindowBackground = "#{?${windowAttention},#ebcb8b,brightblack}";
   inactiveWindowForeground = "#{?${windowAttention},black,white}";
   inactiveWindowWeight = "#{?${windowAttention},bold,nobold}";
-  windowFlags = "#{?${piWindow},#{s/#+//;s/[*]/●/;s/!//:window_flags},#{s/#+/◆/;s/[*]/●/;s/!//:window_flags}}";
   clearPiAttention = ''run-shell "${tmux} -N -S '#{socket_path}' list-panes -t '#{window_id}' -F 'set-option -pu -t ##{pane_id} @pi-attention' | ${tmux} -N -S '#{socket_path}' source-file -"'';
 
 in
@@ -347,7 +346,8 @@ in
 
         set-option -g status-position top
 
-        setw -g monitor-activity on
+        setw -g monitor-activity off
+        setw -g window-status-activity-style none
         set -g visual-activity off
         set -g activity-action none
         ${lib.optionalString zbellEnabled ''
@@ -355,10 +355,9 @@ in
           set -g bell-action none
         ''}
 
-        # Keep Nord's window styling and other flags. Map activity and bell flags,
-        # and append Pi attention independently of tmux's native window flags.
-        set -g window-status-format "#{?#{||:${piWindow},${windowAttention}},#[noreverse],}#[fg=black,bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#I #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#W ${windowFlags}#{?${piAttention},◆,} #[fg=${inactiveWindowBackground},bg=black,nobold,noitalics,nounderscore]"
-        set -g window-status-current-format "#{?#{||:${piWindow},${windowAttention}},#[noreverse],}#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W ${windowFlags}#{?${piAttention},◆,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
+        # Use colors for selection and attention; retain only the zoom flag.
+        set -g window-status-format "#{?#{||:${piWindow},${windowAttention}},#[noreverse],}#[fg=black,bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#I #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight},noitalics,nounderscore] #[fg=${inactiveWindowForeground},bg=${inactiveWindowBackground},${inactiveWindowWeight}]#W#{?window_zoomed_flag, Z,} #[fg=${inactiveWindowBackground},bg=black,nobold,noitalics,nounderscore]"
+        set -g window-status-current-format "#{?#{||:${piWindow},${windowAttention}},#[noreverse],}#[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#I #[fg=black,bg=cyan,nobold,noitalics,nounderscore] #[fg=black,bg=cyan]#W#{?window_zoomed_flag, Z,} #[fg=cyan,bg=black,nobold,noitalics,nounderscore]"
 
         bind-key -r s run-shell 'tmux popup -E -w 80% -h 80% "bash tmux-sessionizer"'
         bind-key g new-window 'lazygit; tmux kill-pane'
