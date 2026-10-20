@@ -22,7 +22,7 @@ in
         if vim.fn.filereadable(spellfile) == 0 then
           vim.notify("Generating spell file...", vim.log.levels.INFO)
           vim.cmd('silent! MakeNixSpell')
-          vim.loop.sleep(3000)
+          vim.api.nvim_echo({}, false, {})
           return
         end
 
