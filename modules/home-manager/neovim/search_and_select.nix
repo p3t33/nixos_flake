@@ -1,6 +1,8 @@
 { pkgs, lib, config, ... }:
 let
   cfg = config.programs.neovim;
+  fzfColor = name: fallback:
+    lib.head (lib.splitString ":" (config.programs.fzf.colors.${name} or fallback));
   # Review this pinned plugin revision on every NixOS stable upgrade.
   spelunk-nvim = pkgs.vimUtils.buildVimPlugin {
     pname = "spelunk.nvim";
@@ -106,8 +108,46 @@ in
         type = "lua";
         config = ''
           local actions = require("telescope.actions")
+          local fzf_colors = {
+            selection_bg = "${fzfColor "bg+" "#363a42"}",
+            selection_fg = "${fzfColor "fg+" "#ffffff"}",
+            matching = "${fzfColor "hl+" "#88c0d0"}",
+            pointer = "${fzfColor "pointer" "#88c0d0"}",
+            marker = "${fzfColor "marker" "#88c0d0"}",
+            info = "${fzfColor "info" "#afaf87"}",
+          }
+
+          local function apply_telescope_highlights()
+            local highlights = {
+              TelescopeNormal = { link = 'Normal' },
+              TelescopeBorder = { link = 'FzfLuaBorder' },
+              TelescopeSelection = { fg = fzf_colors.selection_fg, bg = fzf_colors.selection_bg },
+              TelescopeSelectionCaret = { fg = fzf_colors.pointer, bg = fzf_colors.selection_bg },
+              TelescopeMultiSelection = { fg = fzf_colors.selection_fg, bg = fzf_colors.selection_bg },
+              TelescopeMultiIcon = { fg = fzf_colors.marker },
+              TelescopeMatching = { fg = fzf_colors.matching },
+              TelescopePromptPrefix = { fg = fzf_colors.pointer },
+              TelescopePromptCounter = { fg = fzf_colors.info },
+            }
+            for group, highlight in pairs(highlights) do
+              vim.api.nvim_set_hl(0, group, highlight)
+            end
+          end
+
+          apply_telescope_highlights()
+          vim.api.nvim_create_autocmd('ColorScheme', {
+            group = vim.api.nvim_create_augroup('TelescopeFzfTheme', { clear = true }),
+            callback = apply_telescope_highlights,
+          })
+
           require('telescope').setup {
               defaults = {
+                  prompt_prefix = '> ',
+                  selection_caret = '▌ ',
+                  entry_prefix = '  ',
+                  multi_icon = '▌',
+                  color_devicons = false,
+                  results_title = false,
                   mappings = {
                       i = {
                           ['<C-u>'] = false,

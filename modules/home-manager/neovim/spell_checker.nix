@@ -52,7 +52,6 @@ in
       local function suggest_spelling()
         require('telescope.builtin').spell_suggest(require('telescope.themes').get_ivy({
           layout_config = { height = 8, prompt_position = 'top' },
-          selection_caret = '  ',
           results_title = false,
           previewer = false,
           attach_mappings = function(prompt_bufnr)
