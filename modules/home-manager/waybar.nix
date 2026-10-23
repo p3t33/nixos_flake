@@ -48,7 +48,7 @@ in
 
         modules-right = [
           "privacy"
-          "tray"
+          "sway/language"
           "disk"
           "memory"
           "cpu"
@@ -65,6 +65,11 @@ in
 
         "sway/mode" = {
           format = "{}";
+        };
+
+        "sway/language" = {
+          format = "{flag}";
+          tooltip-format = "{long}";
         };
 
         disk = {
@@ -160,10 +165,6 @@ in
           ];
         };
 
-        tray = {
-          icon-size = 20;
-          spacing = 8;
-        };
       };
 
       style = ''
@@ -211,10 +212,7 @@ in
           box-shadow: inset 0 -2px ${colors.accent};
         }
 
-        #tray {
-          padding: 0 12px;
-        }
-
+        #language,
         #disk,
         #memory,
         #cpu,
