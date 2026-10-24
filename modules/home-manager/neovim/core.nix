@@ -89,7 +89,7 @@
           -- Define the Lua function to trim whitespace
           local function trim_whitespace()
                local save = vim.fn.winsaveview()
-               vim.api.nvim_exec('%s/\\s\\+$//e', false)
+               vim.cmd('%s/\\s\\+$//e')
                vim.fn.winrestview(save)
           end
 

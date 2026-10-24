@@ -52,19 +52,27 @@ in
         config = ''
           local opts = { noremap = true, silent = true }
 
+          local function on_diagnostic_jump(_, bufnr)
+            vim.diagnostic.open_float({ bufnr = bufnr, scope = 'cursor', focus = false })
+          end
+
           local on_attach = function(client, bufnr)
             -- Enable completion triggered by <c-x><c-o>
             vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-            local bufopts = { noremap=true, silent=true, buffer=bufnr }
+            local bufopts = { noremap=true, silent=true, buf=bufnr }
 
             -- Keymaps
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
             vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, bufopts)
             vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, bufopts)
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+            vim.keymap.set('n', '[d', function()
+              vim.diagnostic.jump({ count = -1, on_jump = on_diagnostic_jump })
+            end, opts)
+            vim.keymap.set('n', ']d', function()
+              vim.diagnostic.jump({ count = 1, on_jump = on_diagnostic_jump })
+            end, opts)
             vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, bufopts)
             vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, bufopts)
             vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, bufopts)
