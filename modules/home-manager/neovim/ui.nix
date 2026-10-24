@@ -146,9 +146,6 @@ in
         }
       '';
     }
-    {
-      plugin = mini-nvim;
-    }
   ]);
   };
 }
