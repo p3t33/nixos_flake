@@ -74,7 +74,7 @@
            vim.o.mouse = "a"
 
            -- ------swap/backup file disable---
-           -- As I am using undotree I don't need this file
+           -- Persistent undo does not replace swap-based recovery of unsaved edits.
            vim.o.swapfile = false
            vim.o.backup = false
            -- ---------------------------------
@@ -89,7 +89,7 @@
           -- Define the Lua function to trim whitespace
           local function trim_whitespace()
                local save = vim.fn.winsaveview()
-               vim.api.nvim_exec('%s/\\s\\+$//e', false)
+               vim.cmd('%s/\\s\\+$//e')
                vim.fn.winrestview(save)
           end
 

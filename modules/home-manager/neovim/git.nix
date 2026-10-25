@@ -25,12 +25,12 @@ in
                 vim.keymap.set('n', "<leader>gb", gs.toggle_current_line_blame)
                 vim.keymap.set('n', "]g", function()
                         if vim.wo.diff then return ']c' end
-                        vim.schedule(function() gs.next_hunk() end)
+                        vim.schedule(function() gs.nav_hunk('next') end)
                         return '<Ignore>'
                         end, {expr=true})
                 vim.keymap.set('n', "[g", function()
                         if vim.wo.diff then return '[c' end
-                        vim.schedule(function() gs.prev_hunk() end)
+                        vim.schedule(function() gs.nav_hunk('prev') end)
                         return '<Ignore>'
                         end, {expr=true})
         end

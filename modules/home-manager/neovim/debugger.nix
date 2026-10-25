@@ -10,7 +10,6 @@ in
       # Dependencies
       # ----------------
       gdb
-      lldb
     ];
 
     plugins = lib.mkOrder 500 (with pkgs.vimPlugins; [
@@ -22,30 +21,22 @@ in
 
             local dap = require("dap")
 
-            -- requres gdb 14.0+ which I didn't installed yet.
             dap.adapters.gdb = {
                 type = "executable",
                 command = "${lib.getExe pkgs.gdb}",
                 args = { "-i", "dap" }
             }
 
-
-            dap.adapters.lldb = {
-                type = 'executable',
-                command = '${lib.getExe' pkgs.lldb "lldb-dap"}',
-                name = 'lldb'
-            }
-
             dap.configurations.c = {
             {
                 name = "Launch",
-                type = "lldb",
+                type = "gdb",
                 request = "launch",
                 program = function()
                     return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
                     end,
                 cwd = vim.fn.getcwd(),
-                stopAtEntry = true,
+                stopAtBeginningOfMainSubprogram = true,
                 args = {},
             },
             }

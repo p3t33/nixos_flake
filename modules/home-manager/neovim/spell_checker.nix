@@ -22,7 +22,7 @@ in
         if vim.fn.filereadable(spellfile) == 0 then
           vim.notify("Generating spell file...", vim.log.levels.INFO)
           vim.cmd('silent! MakeNixSpell')
-          vim.loop.sleep(3000)
+          vim.api.nvim_echo({}, false, {})
           return
         end
 
@@ -49,8 +49,35 @@ in
         command = "setlocal spell spellsuggest=best,5 spelllang=en_us,nixen",
       })
 
-      vim.keymap.set('n', ']s', ']sz=', { noremap = true, silent = true, desc = "Next misspelled word & suggest" })
-      vim.keymap.set('n', '[s', '[sz=', { noremap = true, silent = true, desc = "Previous misspelled word & suggest" })
+      local function suggest_spelling()
+        require('telescope.builtin').spell_suggest(require('telescope.themes').get_ivy({
+          layout_config = { height = 8, prompt_position = 'top' },
+          results_title = false,
+          previewer = false,
+          attach_mappings = function(prompt_bufnr)
+            local showmode = vim.o.showmode
+            vim.api.nvim_create_autocmd('BufWinLeave', {
+              buffer = prompt_bufnr,
+              once = true,
+              callback = function()
+                vim.o.showmode = showmode
+              end,
+            })
+            vim.o.showmode = false
+            return true
+          end,
+        }))
+      end
+
+      vim.keymap.set('n', 'z=', suggest_spelling, { silent = true, desc = "Spelling suggestions" })
+      vim.keymap.set('n', ']s', function()
+        vim.cmd('normal! ]s')
+        suggest_spelling()
+      end, { silent = true, desc = "Next misspelled word & suggest" })
+      vim.keymap.set('n', '[s', function()
+        vim.cmd('normal! [s')
+        suggest_spelling()
+      end, { silent = true, desc = "Previous misspelled word & suggest" })
     '';
 
     home.file = {
