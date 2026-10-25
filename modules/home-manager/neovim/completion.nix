@@ -116,12 +116,6 @@ in
             on_attach = on_attach,
             flags = flags,
             capabilities = capabilities,
-            cmd = {
-              "jdtls",
-              "-configuration", vim.fn.stdpath("cache") .. "/jdtls/config",
-              "-data", vim.fn.stdpath("cache") .. "/jdtls/workspace",
-            },
-            root_markers = { "pom.xml", "gradle.build", ".git" },
           }
 
           -- --- ENABLE THEM ---
