@@ -3,16 +3,6 @@ let
   cfg = config.programs.neovim;
   fzfColor = name: fallback:
     lib.head (lib.splitString ":" (config.programs.fzf.colors.${name} or fallback));
-  # Review this pinned plugin revision on every NixOS stable upgrade.
-  spelunk-nvim = pkgs.vimUtils.buildVimPlugin {
-    pname = "spelunk.nvim";
-    version = "unstable-2025-01-15";
-    src = pkgs.fetchgit {
-      url = "https://github.com/EvWilson/spelunk.nvim.git";
-      rev = "2ef99a8c9ba50a9e85b68022c31f028faf538fe3";
-      sha256 = "1nwm5fff4f5mpmzm33b14pgvbjmvbjf7l2db6ad6p1nj7bnwd2gg";
-    };
-  };
 in
 {
   config = lib.mkIf cfg.enable {

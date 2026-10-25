@@ -74,7 +74,7 @@
            vim.o.mouse = "a"
 
            -- ------swap/backup file disable---
-           -- As I am using undotree I don't need this file
+           -- Persistent undo does not replace swap-based recovery of unsaved edits.
            vim.o.swapfile = false
            vim.o.backup = false
            -- ---------------------------------
