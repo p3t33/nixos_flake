@@ -41,6 +41,10 @@ in
                  ["<M-j>"] = "preview-down",
                  ["<M-k>"] = "preview-up",
                },
+               fzf = {
+                 ["alt-j"] = "preview-down",
+                 ["alt-k"] = "preview-up",
+               },
              },
 
 
