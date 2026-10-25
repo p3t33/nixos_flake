@@ -23,7 +23,7 @@
     postgresql.enable = true;
     postgresqlBackup.enable = true;
     immich.enable = true;
-    n8n.enable = true;
+    n8n.enable = false; # Revisit on NixOS 26.11 upgrade: pnpm dependency hash mismatch.
     minecraft-server.enable = true;
   };
 

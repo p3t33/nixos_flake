@@ -237,16 +237,26 @@ in
       # Review these pinned npm package versions on every NixOS stable upgrade.
       packages = [
         "npm:@mjakl/pi-subagent@3.1.0"
-        "npm:pi-ask-user@0.16.0"
-        "npm:@narumitw/pi-usage@0.66.0"
+        "npm:pi-ask-user@0.17.2"
+        "npm:@narumitw/pi-usage@0.69.2"
+        "npm:pi-vim-editor@0.10.0"
       ];
 
       settings = {
         inherit (cfg) defaultProvider defaultModel defaultThinkingLevel;
         theme = cfg.theme.name;
+        showHardwareCursor = true;
+        vimEditor.cursorShape = {
+          insert = "steady-bar";
+          normal = "steady-block";
+        };
       };
 
       keybindings = {
+        "tui.altScreen.halfPageUp" = "alt+u";
+        "tui.altScreen.halfPageDown" = "alt+d";
+        "tui.altScreen.lineDown" = "alt+j";
+        "tui.altScreen.lineUp" = "alt+k";
         "tui.altScreen.bottom" = [
           "end"
           "shift+g"
