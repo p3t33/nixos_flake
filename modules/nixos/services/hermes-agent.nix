@@ -14,7 +14,7 @@
       settings = {
         model = {
           provider = "openai-codex";
-          default = "gpt-5.5";
+          default = config.home-manager.users.${hostSpecific.primeUsername}.custom.programs.pi.defaultModel;
         };
       };
 
