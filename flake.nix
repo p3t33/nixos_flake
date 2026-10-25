@@ -59,6 +59,19 @@
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
+        overlays = [
+          (_final: prev: {
+            # patchelf 0.19.2 breaks the ELF layout of CodeGraph 1.6.2's bundled Node.
+            # Use stable's 0.15.2 until upstream is fixed; recheck on nixpkgs updates.
+            codegraph =
+              assert pkgs.patchelf.version == "0.15.2";
+              prev.codegraph.overrideAttrs (old: {
+                preFixup = (old.preFixup or "") + ''
+                  export PATH=${pkgs.patchelf}/bin:$PATH
+                '';
+              });
+          })
+        ];
       };
 
       lib = nixpkgs.lib;

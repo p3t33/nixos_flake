@@ -237,8 +237,8 @@ in
       # Review these pinned npm package versions on every NixOS stable upgrade.
       packages = [
         "npm:@mjakl/pi-subagent@3.1.0"
-        "npm:pi-ask-user@0.16.0"
-        "npm:@narumitw/pi-usage@0.66.0"
+        "npm:pi-ask-user@0.17.0"
+        "npm:@narumitw/pi-usage@0.68.1"
       ];
 
       settings = {
