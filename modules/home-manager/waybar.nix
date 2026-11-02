@@ -91,6 +91,7 @@ in
         network = {
           interface = "wl*";
           interval = 5;
+          tooltip-format-wifi = "{essid}";
           format-wifi = "<span foreground='${colors.foreground}'>{icon}</span> {signalStrength}%";
           format-disconnected = "<span foreground='${colors.dark_foreground}'>󰖪</span>";
           format-disabled = "<span foreground='${colors.dark_foreground}'>󰖪</span>";
