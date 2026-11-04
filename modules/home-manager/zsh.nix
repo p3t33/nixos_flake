@@ -62,6 +62,8 @@ in
       };
 
       initContent = ''
+        setopt IGNORE_EOF
+
         # Disable Ctrl+S terminal freeze (vestigial serial flow control)
         stty -ixon
 
@@ -77,6 +79,13 @@ in
         }
         zle -N tmux-sessionizer-widget
 
+        function delete-char-no-eof() {
+            if [[ -n $RBUFFER ]]; then
+                zle .delete-char
+            fi
+        }
+        zle -N delete-char-no-eof
+
         # zsh-vi-mode uses lazy initialization (runs after .zshrc finishes loading)
         # which causes it to overwrite any keybindings set before it. The function
         # below re-applies our custom bindings after zsh-vi-mode initializes:
@@ -91,6 +100,8 @@ in
         function zvm_custom_bindings() {
             bindkey '^R' _atuin_search_widget
             bindkey '^S' tmux-sessionizer-widget
+            zvm_bindkey viins '^D' delete-char-no-eof
+            zvm_bindkey vicmd '^D' delete-char-no-eof
             zvm_bindkey viins '^[^[' sudo-command-line
             zvm_bindkey vicmd '^[^[' sudo-command-line
             # Atuin's init prepends itself to ZSH_AUTOSUGGEST_STRATEGY. Reset it here
