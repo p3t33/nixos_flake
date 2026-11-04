@@ -165,10 +165,10 @@ in
         # *neovim will "just work" while tmux yank and plugins will need to use -w
         # modifier.
 
-        # tmux has its own buffer it copies text into, and when setting:
-        # set-clipboard external(which is the default for tmux v3.6a), it allows t
-        # tmux to send clipboard writes over OSC 52 to cable terminals, and
-        # the terminal to copy it into the system clipboard.
+        # set-clipboard on lets tmux forward its own copies and accept OSC 52
+        # clipboard writes from applications such as Pi, including over SSH
+        # and in restored panes without DISPLAY/WAYLAND_DISPLAY. Existing
+        # tmux load-buffer/set-buffer -w clipboard writers remain unchanged.
 
         # why not to use system cliborad directly on a system with display server(xorg/wayland)?
         # -------------------------------------------------------------------------------------
@@ -298,9 +298,10 @@ in
         # continuum plugin to work off of.
         run-shell "if [ ! -d ${resurrectDirPath} ]; then tmux new-session -d -s init-resurrect; ${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh; fi"
 
-        # Pin the clipboard policy instead of relying on tmux's default: send
-        # tmux copies via OSC 52, but reject raw OSC 52 clipboard writes from panes.
-        set -s set-clipboard external
+        # Accept application OSC 52 writes so Pi mouse copying works without a
+        # graphical clipboard. Unlike external, on allows any pane output to
+        # overwrite the clipboard; this is an intentional trust trade-off.
+        set -s set-clipboard on
 
         # Let applications request extended keys so pi can distinguish modified
         # Enter keys (for example, Shift+Enter) from plain Enter. Unlike 'always',

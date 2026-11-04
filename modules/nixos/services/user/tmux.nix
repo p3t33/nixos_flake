@@ -29,7 +29,18 @@ let
   '';
 in
 {
-  options.custom.services.tmuxd.enable = lib.mkEnableOption "Enable tmux systemd user service";
+  options.custom.services.tmuxd = {
+    enable = lib.mkEnableOption "Enable tmux systemd user service";
+    startWithGraphicalSession = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = ''
+        Start tmux with the graphical session instead of the user manager.
+        The desktop integration must import the graphical environment before
+        activating graphical-session.target so restored panes inherit it.
+      '';
+    };
+  };
 
   config = lib.mkIf cfg.enable {
     systemd.user.services.tmux = {
@@ -47,7 +58,10 @@ in
         TimeoutStopSec = 10;
       };
 
-      wantedBy = [ "default.target" ];
+      wantedBy = [
+        (if cfg.startWithGraphicalSession then "graphical-session.target" else "default.target")
+      ];
+      after = lib.optional cfg.startWithGraphicalSession "graphical-session-pre.target";
     };
   };
 }
