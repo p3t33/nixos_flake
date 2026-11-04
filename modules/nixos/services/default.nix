@@ -85,6 +85,7 @@ in
     })
 
     (lib.mkIf g.desktop.common.enable {
+      custom.services.tmuxd.startWithGraphicalSession = true;
       services.avahi.enable = true;
       custom.services.printing.client.enable = true;
       services.udisks2.enable = true; # mount and unmout USB drives
