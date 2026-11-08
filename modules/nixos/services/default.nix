@@ -29,6 +29,7 @@ in
     ./alloy.nix
     ./restic.nix
     ./samba.nix
+    ./sftp-backup.nix
     ./sound.nix
     ./sshd.nix
     ./trezor.nix

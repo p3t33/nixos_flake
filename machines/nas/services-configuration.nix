@@ -46,6 +46,13 @@
       restic.enable = true;
       qbittorrent.enable = true;
 
+      sftpBackup = {
+        enable = true;
+        authorizedKeys = [
+          ''from="192.168.1.1" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIXwzY+c2nMYs5xNTi+KLfRbMLorWkVrHc/R0M8SN51f router-network-backup''
+        ];
+      };
+
       syncthing = {
         syncDir = "${config.custom.shared.pathToDataDirectory}/syncthing";
         user = "syncthing";

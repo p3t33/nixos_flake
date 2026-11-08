@@ -331,7 +331,10 @@ in
           # Paths to backup.
           paths =
             []
-            ++ backupPaths;
+            ++ backupPaths
+            ++ lib.optionals config.custom.services.sftpBackup.enable [
+              config.custom.services.sftpBackup.directory
+            ];
 
           pruneOpts =
             []

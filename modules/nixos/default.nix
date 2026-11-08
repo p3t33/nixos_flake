@@ -24,7 +24,7 @@ in
     ./motd.nix
     ./non_free_software.nix
     ./system_version.nix
-    ./users.nix
+    ./users
 
     ./system_packages/cli_utilities.nix
     ./system_packages/development.nix
