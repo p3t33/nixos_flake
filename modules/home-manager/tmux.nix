@@ -323,6 +323,10 @@ in
         # The time a message gets displyed.
         set -g display-time 4000
 
+        # tmux 3.7 overlays messages; restore full-width clearing after Nord.
+        set -ag message-style 'fill=brightblack'
+        set -ag message-command-style 'fill=brightblack'
+
         # kill a session
         bind-key X kill-session
         # sets the length of session name
@@ -393,7 +397,7 @@ in
         unbind z
         bind-key f resize-pane -Z
 
-        bind-key Y run-shell '${tmux} display-message -p -t "#{pane_id}" "##{pane_current_path}" | ${lib.getExe pkgs.perl} -pe "chomp if eof" | ${tmux} load-buffer -w -t "#{client_name}" -'
+        bind-key Y run-shell 'set -o pipefail; ${tmux} display-message -p -t "#{pane_id}" "##{pane_current_path}" | ${lib.getExe pkgs.perl} -pe "chomp if eof" | ${tmux} load-buffer -w -t "#{client_name}" - && ${tmux} display-message -c "#{client_name}" "PWD copied to clipboard!"'
 
         # quick yank of the text in the current line without going into selection
 
