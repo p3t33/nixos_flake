@@ -28,6 +28,12 @@ let
     }
   ];
   rofi = lib.getExe config.programs.rofi.finalPackage;
+  emojiPicker = pkgs.writeShellScript "rofimoji-picker" ''
+    export PATH=${lib.makeBinPath [ config.programs.rofi.finalPackage pkgs.wl-clipboard pkgs.wtype ]}:"$PATH"
+    exec ${lib.getExe pkgs.rofimoji} --selector rofi --clipboarder wl-copy --typer wtype \
+      --action type copy --max-recent 10 --use-icons --skin-tone neutral \
+      --selector-args="-no-sort -theme-str 'window { width: 600px; }'"
+  '';
   rofiPowerMenu = lib.getExe pkgs.rofi-power-menu;
   wpctl = lib.getExe' osConfig.services.pipewire.wireplumber.package "wpctl";
   ws1 = config.custom.sway.workspaces.ws1;
@@ -212,7 +218,7 @@ in
           "${inhibited} ${mod}+d" =
             if config.programs.rofi.enable then "exec ${rofi} -modes drun -show drun" else null;
           "${inhibited} ${mod}+x" = if config.programs.rofi.enable then "exec ${rofi} -modes ssh -show ssh" else null;
-          "${inhibited} ${mod}+z" = if config.programs.rofi.enable then "exec ${rofi} -modes emoji -show emoji" else null;
+          "${inhibited} ${mod}+g" = if config.programs.rofi.enable then "exec ${emojiPicker}" else null;
           "${inhibited} ${mod}+y" = if config.programs.rofi.enable then "exec ${rofi} -modes calc -show calc" else null;
           "${inhibited} ${mod}+p" =
             if config.programs.rofi.enable then
