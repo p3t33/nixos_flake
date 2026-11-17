@@ -1,7 +1,8 @@
+{ inputs, ... }:
 {
   imports = [
-    ../../modules/home-manager/secrets/sops-common.nix
-    ../../modules/home-manager/secrets/sops-git-credentials.nix
-    ../../modules/home-manager/secrets/sops-pi-brave-api-key.nix
+    inputs.self.modules.homeManager.sops-common
+    inputs.self.modules.homeManager.sops-git-credentials
+    inputs.self.modules.homeManager.sops-pi-brave-api-key
   ];
 }

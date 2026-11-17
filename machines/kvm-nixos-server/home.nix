@@ -1,7 +1,8 @@
+{ inputs, ... }:
 {
   imports = [
     ./sops-home.nix
-    ../../modules/home-manager # imported via default.nix
+    inputs.self.modules.homeManager.profile-home-manager # imported via default.nix
   ];
 
   custom = {

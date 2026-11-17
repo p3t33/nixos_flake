@@ -1,6 +1,7 @@
 {
   config,
   hostSpecific,
+  inputs,
   ...
 }:
 {
@@ -9,7 +10,7 @@
     ./services-configuration.nix
     ./disko-configuration.nix
     ./sops-configuration.nix
-    ../../modules/nixos # imported via default.nix
+    inputs.self.modules.nixos.profile-system # imported via default.nix
   ];
 
   custom = {
@@ -29,7 +30,7 @@
   };
 
   # The LAN address is assigned through an OPNsense DHCP reservation recorded in
-  # modules/nixos/shared/lan-hosts.nix rather than configured on this interface.
+  # features/lan-hosts.nix rather than configured on this interface.
 
   virtualisation.incus.enable = true;
 

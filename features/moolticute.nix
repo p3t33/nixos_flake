@@ -1,0 +1,108 @@
+{ ... }:
+{
+  flake.modules = {
+    nixos.moolticute = { config, lib, pkgs, hostSpecific, ... }:
+
+      let
+        cfg = config.custom.services.moolticuted;
+      in
+      {
+        options.custom.services.moolticuted.enable = lib.mkEnableOption "Enable the Moolticuted systemd service and udev rules";
+
+        config = lib.mkIf cfg.enable {
+
+          # Based on the systmed unit provided in the moolticute repository
+          #
+          # IMPORTANT: If this unit is used it is best to disable the option found
+          # in the GUI called "Start Moolticute with the computer".
+
+          systemd.services.moolticuted = {
+            description = "Moolticute daemon";
+
+            serviceConfig = {
+              Type = "simple";
+              # handles some race conditions, without this sleep, service fails with:
+              # Failed to attach to shared segment:  "QSharedMemoryPrivate::initKey: unable to set key on lock"
+              ExecStartPre = "${lib.getExe' pkgs.coreutils "sleep"} 5";
+              ExecStart = "${lib.getExe' pkgs.moolticute "moolticuted"}";
+              KillMode = "process";
+              Restart = "always";
+              User = "${hostSpecific.primeUsername}";
+              SupplementaryGroups = [ "moolticuted" ];
+
+              CapabilityBoundingSet = "";
+              RuntimeDirectory = "moolticuted";
+              RuntimeDirectoryMode = 750;
+              PrivateTmp = "yes";
+              RemoveIPC = true;
+              ProtectSystem = "strict";
+              ProtectHome = "read-only";
+              MemoryDenyWriteExecute = true;
+              ProtectKernelModules = true;
+              ProtectKernelTunables = true;
+              ProtectControlGroups = true;
+              RestrictAddressFamilies = "AF_INET AF_INET6 AF_NETLINK AF_UNIX";
+              RestrictNamespaces = true;
+              RestrictRealtime = true;
+            };
+
+            wantedBy = [ config.systemd.targets.multi-user.name ];
+
+          };
+
+          users.groups.moolticuted = { };
+
+          services.udev = {
+            packages = [ pkgs.moolticute.udev ];
+            extraRules = ''
+              SUBSYSTEM=="hidraw", ATTRS{idVendor}=="16d0", ATTRS{idProduct}=="09a0", GROUP="moolticuted", MODE="0660"
+              SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="4321", GROUP="moolticuted", MODE="0660"
+            '';
+          };
+        };
+      };
+
+    homeManager.moolticute = {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
+
+      let
+        cfg = config.custom.programs.moolticute;
+
+        # TODO: Revisit this light-theme workaround after upgrading Moolticute.
+        # Upstream 1.03 hard-codes colors that make fields unreadable with dark themes.
+        moolticuteWrapped = pkgs.symlinkJoin {
+          inherit (pkgs.moolticute) meta;
+          name = "${lib.getName pkgs.moolticute}-gui-wrapped-${lib.getVersion pkgs.moolticute}";
+          paths = [ pkgs.moolticute ];
+          preferLocalBuild = true;
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          postBuild = ''
+            wrapProgram $out/bin/moolticute \
+              --set GTK_THEME Adwaita \
+              --set QT_QPA_PLATFORMTHEME gtk3 \
+              --set QT_STYLE_OVERRIDE Fusion
+          '';
+        };
+      in
+      {
+        options.custom.programs.moolticute.enable = lib.mkEnableOption "Moolticute GUI";
+
+        config = lib.mkIf cfg.enable {
+          home.packages = [ moolticuteWrapped ];
+
+          xdg.desktopEntries.moolticute = {
+            name = "Moolticute";
+            comment = "Start Moolticute daemon and App";
+            exec = "${moolticuteWrapped}/bin/moolticute";
+            icon = "moolticute";
+            terminal = false;
+            categories = [ "Utility" ];
+          };
+        };
+      };
+  };
+}

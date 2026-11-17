@@ -1,6 +1,7 @@
 {
   config,
   hostSpecific,
+  inputs,
   ...
 }:
 {
@@ -9,7 +10,7 @@
     ./services-configuration.nix
     ./sops-configuration.nix
     ./disko-configuration.nix
-    ../../modules/nixos # imported via default.nix
+    inputs.self.modules.nixos.profile-system # imported via default.nix
   ];
 
     # openssl rand -hex 4

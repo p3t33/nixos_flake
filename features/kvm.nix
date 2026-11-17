@@ -1,0 +1,146 @@
+{ ... }:
+{
+  flake.modules.nixos.kvm = { config, lib, pkgs, hostSpecific, ... }:
+{
+  config = lib.mkIf config.virtualisation.libvirtd.enable {
+    # Accept all host-bound traffic on virbr0 (guest DHCP/DNS to the host's
+    # dnsmasq). Required under nftables: firewall and libvirt sit in separate
+    # base chains, where an accept in one isn't final, so nixos-fw's drop would
+    # otherwise eat it. Harmless under iptables. Lists merge across modules.
+    networking.firewall.trustedInterfaces = [ "virbr0" ];
+
+    # libvirt works under either firewall backend: NixOS defaults
+    # virtualisation.libvirtd.firewallBackend to "nftables" when
+    # networking.nftables.enable is set (e.g. once Incus is on this host) and to
+    # "iptables" otherwise, so libvirt renders its network rules for whichever
+    # backend is active. No change is needed here when nftables is enabled.
+    virtualisation = {
+      libvirtd = {
+
+        qemu = {
+          # Use full QEMU to emulate other architectures (e.g., aarch64 on x86)
+          package = pkgs.qemu;
+          runAsRoot = true; # required for PCI passthrough and raw device access
+
+          # Required for shared folders with virtiofs
+          vhostUserPackages = [ pkgs.virtiofsd ];
+
+          # Enable UEFI firmware support (Full = with Secure Boot and extra features)
+          # ovmf = {
+          #   enable = true;
+          #   packages = [ pkgs.OVMFFull.fd ];  # ← Full UEFI support, including secure boot.
+          # };
+
+          # Trusted Platform Module: lets VM emulate a hardware TPM (needed by Windows 11 and Secure Boot)
+          swtpm = {
+            enable = true;
+            package = pkgs.swtpm;
+          };
+        };
+      };
+
+      spiceUSBRedirection.enable = true;
+    };
+
+    # Disable automatic USB redirect to virt-manger
+    #
+    # When attaching a USB device to the host by default it will
+    # be redirected to the guest using spice. As I prefer to have
+    # full control over what gets redirected to and where I disabled
+    # this feature.
+    #
+    # virt-manger is a desktop client and it uses dconf database
+    # in order to save preferences
+    programs.dconf.profiles.user.databases = [
+      {
+        settings."org/virt-manager/virt-manager/console" = {
+          auto-redirect = false;
+        };
+
+        # enforces the settings and disallows the user to enable it
+        # manually using the virt-manger gui.
+        locks = [
+          "/org/virt-manager/virt-manager/console/auto-redirect"
+        ];
+      }
+    ];
+
+    users.users.${hostSpecific.primeUsername} = {
+      extraGroups = [ "libvirtd" ];
+    };
+
+    environment.systemPackages = with pkgs; [
+      virt-manager
+      qemu_kvm
+      qemu
+      libvirt
+      OVMF
+    ];
+
+    # On first boot after fresh install of NixOS there is no defulat netowrk set to be used by libvirt
+    #
+    # sudo virsh net-list --all
+    #  Name      State      Autostart   Persistent
+    #  ----------------------------------------------
+    # default   inactive   no          yes
+    #
+    # which then requries to execute manually
+    # sudo virsh net-start default
+    # sudo virsh net-autostart default
+    #
+    # This service executes a oneshot script that will parse the "sudo virsh net-list --all" and
+    # enable(and make it auto start) the default network.
+    #
+    # This script assumes that /var/lib/libvirt/qemu/networks/default.xml exists.
+    # This script winll not work inside of qemu virtual machine as hosts default will
+    # set the guest VM to the same default.xml values(VM will get an error:
+    # "error: internal error: Network is already in use by interface <>".
+    systemd.services.libvirt-enable-default-network = {
+      description = "Ensure libvirt default network is started and set to autostart";
+      after = [ config.systemd.services.libvirtd.name ];
+      wantedBy = [ config.systemd.targets.multi-user.name ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "libvirt-net-default-activate" ''
+          set -euo pipefail
+          export LIBVIRT_DEFAULT_URI="qemu:///system"
+
+          echo "Checking current libvirt network state..."
+          output="$(${lib.getExe' pkgs.libvirt "virsh"} net-list --all)"
+          echo "Output:"
+          echo "$output"
+          echo "---- end of virsh net-list --all ----"
+
+          state_line="$(echo "$output" | grep '^\s*default\s')"
+          echo "Parsed default network line: $state_line"
+
+          if [ -z "$state_line" ]; then
+            echo "Default network is not defined. Skipping."
+            exit 0
+          fi
+
+          state=$(echo "$state_line" | ${lib.getExe' pkgs.gawk "awk"} '{print $2}')
+          autostart=$(echo "$state_line" | ${lib.getExe' pkgs.gawk "awk"} '{print $3}')
+
+          if [ "$state" != "active" ]; then
+            echo "Starting default network..."
+            ${lib.getExe' pkgs.libvirt "virsh"} net-start default
+          else
+            echo "Default network already active."
+          fi
+
+          if [ "$autostart" != "yes" ]; then
+            echo "Enabling autostart for default network..."
+            ${lib.getExe' pkgs.libvirt "virsh"} net-autostart default
+          else
+            echo "Autostart already enabled."
+          fi
+
+          echo "Finished setting up default libvirt network."
+        '';
+      };
+    };
+  };
+};
+}

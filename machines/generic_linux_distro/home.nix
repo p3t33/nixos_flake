@@ -1,41 +1,41 @@
-{ config, ... }:
+{ config, inputs, ... }:
 
 {
   imports = [
-    ../../modules/shared.nix
+    inputs.self.modules.generic.shared-options
     ./sops-home.nix
-    ../../modules/home-manager/core.nix # enables home manger and sets the bare minimum.
-    #../../modules/home-manager/shared/colors.nix
-    ../../modules/home-manager/session-variables.nix
-    ../../modules/home-manager/starship.nix
-    ../../modules/home-manager/fzf.nix
-    ../../modules/home-manager/neovim # uses default.nix
-    # ../../modules/home-manager/git.nix
-    ../../modules/home-manager/zoxide.nix
-    ../../modules/home-manager/zsh.nix
-    ../../modules/home-manager/bash.nix
-    ../../modules/home-manager/tmux.nix
-    #../../modules/home-manager/syncthing.nix
-    #  ../../modules/home-manager/rofi
-    ../../modules/home-manager/gpg.nix
-    ../../modules/home-manager/ssh/ssh-client.nix
-    # ../../modules/home-manager/rofi/scripts/buku-bookmarks.nix
-    #  ../../modules/home-manager/scripts/helloworld-python.nix
-    ../../modules/home-manager/scripts/tmux-sessionizer.nix
-    ../../modules/home-manager/scripts/cheat-sh.nix
-    ../../modules/home-manager/taskwarrior.nix
-    #  ../../modules/home-manager/wallpaper.nix
-    ../../modules/home-manager/atuin.nix
-    ../../modules/home-manager/git/lazygit.nix
-    #  ../../modules/home-manager/emacs # uses default.nix
-    #  ../../modules/home-manager/xdg/mime_apps.nix
-    #  ../../modules/home-manager/gtk.nix
-    #  ../../modules/home-manager/qt.nix
-    #  ../../modules/home-manager/services/dunst.nix
-    ../../modules/home-manager/bat.nix
-    #  ../../modules/home-manager/firefox.nix
-    #  ../../modules/home-manager/generic_linux_fonts.nix
-    ../../modules/home-manager/yazi.nix
+    inputs.self.modules.homeManager.home-core # enables home manger and sets the bare minimum.
+    inputs.self.modules.homeManager.colors
+    inputs.self.modules.homeManager.session-variables
+    inputs.self.modules.homeManager.starship
+    inputs.self.modules.homeManager.fzf
+    inputs.self.modules.homeManager.neovim # uses default.nix
+    # inputs.self.modules.homeManager.git
+    inputs.self.modules.homeManager.zoxide
+    inputs.self.modules.homeManager.zsh
+    inputs.self.modules.homeManager.bash
+    inputs.self.modules.homeManager.tmux
+    #inputs.self.modules.homeManager.syncthing
+    #  inputs.self.modules.homeManager.rofi
+    inputs.self.modules.homeManager.gpg
+    inputs.self.modules.homeManager.ssh-client
+    # ../../features/rofi/_/scripts/buku-bookmarks.nix
+    #  inputs.self.modules.homeManager.helloworld-python
+    inputs.self.modules.homeManager.tmux-sessionizer
+    inputs.self.modules.homeManager.cheat-sh
+    inputs.self.modules.homeManager.taskwarrior
+    #  inputs.self.modules.homeManager.wallpaper
+    inputs.self.modules.homeManager.atuin
+    inputs.self.modules.homeManager.lazygit
+    #  inputs.self.modules.homeManager.emacs # uses default.nix
+    #  inputs.self.modules.homeManager.xdg-mime-apps
+    #  inputs.self.modules.homeManager.gtk
+    #  inputs.self.modules.homeManager.qt
+    #  inputs.self.modules.homeManager.dunst
+    inputs.self.modules.homeManager.bat
+    #  inputs.self.modules.homeManager.firefox
+    #  inputs.self.modules.homeManager.generic-linux-fonts
+    inputs.self.modules.homeManager.yazi
   ];
 
   programs.starship.enable = true;

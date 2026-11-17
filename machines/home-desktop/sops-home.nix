@@ -1,10 +1,11 @@
+{ inputs, ... }:
 {
   imports = [
-    ../../modules/home-manager/secrets/sops-common.nix
-    ../../modules/home-manager/secrets/sops-git-credentials.nix
-    ../../modules/home-manager/secrets/sops-extra-ssh-hosts.nix
-    ../../modules/home-manager/secrets/sops-ssh-development-keys-for-vm.nix
-    ../../modules/home-manager/secrets/sops-calibre.nix
-    ../../modules/home-manager/secrets/sops-pi-brave-api-key.nix
+    inputs.self.modules.homeManager.sops-common
+    inputs.self.modules.homeManager.sops-git-credentials
+    inputs.self.modules.homeManager.sops-extra-ssh-hosts
+    inputs.self.modules.homeManager.sops-ssh-development-keys-for-vm
+    inputs.self.modules.homeManager.sops-calibre
+    inputs.self.modules.homeManager.sops-pi-brave-api-key
   ];
 }

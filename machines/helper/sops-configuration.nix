@@ -1,6 +1,7 @@
+{ inputs, ... }:
 {
   imports = [
-    ../../modules/nixos/secrets/sops-common.nix
-    ../../modules/nixos/secrets/sops-prime-user-hashed-password.nix
+    inputs.self.modules.nixos.sops-common
+    inputs.self.modules.nixos.sops-prime-user-hashed-password
   ];
 }

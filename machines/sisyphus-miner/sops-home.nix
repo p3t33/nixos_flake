@@ -1,7 +1,8 @@
+{ inputs, ... }:
 {
   imports = [
-    ../../modules/home-manager/secrets/sops-common.nix
-    ../../modules/home-manager/secrets/sops-extra-ssh-hosts.nix
-    ../../modules/home-manager/secrets/sops-git-credentials.nix
+    inputs.self.modules.homeManager.sops-common
+    inputs.self.modules.homeManager.sops-extra-ssh-hosts
+    inputs.self.modules.homeManager.sops-git-credentials
   ];
 }
