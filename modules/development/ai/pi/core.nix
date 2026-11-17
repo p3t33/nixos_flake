@@ -1,0 +1,391 @@
+{ ... }:
+{
+  flake.modules.homeManager.pi =
+args@{
+  config,
+  lib,
+  pkgs,
+  pkgs-unstable,
+  ...
+}:
+
+let
+  osConfig = args.osConfig or null;
+  cfg = config.custom.programs.pi;
+  jsonFormat = pkgs.formats.json { };
+  localOllamaEnabled = osConfig != null && osConfig.services.ollama.enable;
+  localOllamaModels =
+    if localOllamaEnabled then lib.unique osConfig.services.ollama.loadModels else [ ];
+  quickAnswerModels = with config.custom.shared.AIDefaultModels; [
+    quickAnswer
+    quickAnswerCandidate
+  ];
+
+  piPackage = pkgs-unstable.pi-coding-agent;
+  packageWithExtraPackages =
+    if cfg.extraPackages != [ ] then
+      pkgs.symlinkJoin {
+        inherit (piPackage) meta;
+        name = "${lib.getName piPackage}-wrapped-${lib.getVersion piPackage}";
+        paths = [ piPackage ];
+        preferLocalBuild = true;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/pi \
+            --suffix PATH : ${lib.makeBinPath cfg.extraPackages}
+        '';
+      }
+    else
+      piPackage;
+
+  colors = config.custom.shared.colors;
+  nord = {
+    bg = "#2e3440";
+    fg = "#d8dee9";
+    black = "#3b4252";
+    brightBlack = "#4c566a";
+    red = "#bf616a";
+    green = "#a3be8c";
+    yellow = "#ebcb8b";
+    blue = "#81a1c1";
+    magenta = "#b48ead";
+    cyan = "#88c0d0";
+    brightCyan = "#8fbcbb";
+  };
+in
+{
+  options.custom.programs.pi = {
+    enable = lib.mkEnableOption "pi coding agent (terminal AI harness)";
+
+    defaultProvider = lib.mkOption {
+      type = lib.types.str;
+      default = "openai-codex";
+      description = ''
+        Default model provider. Common values include "openai", "openai-codex", "anthropic",
+        "google", "github-copilot", and "openrouter".
+      '';
+    };
+
+    defaultModel = lib.mkOption {
+      type = lib.types.str;
+      default = "gpt-6.1-sol";
+      description = ''
+        Default model ID for the selected provider, for example "gpt-5.6-sol",
+        "claude-opus-4-6", or "gemini-2.5-pro".
+      '';
+    };
+
+    defaultThinkingLevel = lib.mkOption {
+      type = lib.types.enum [
+        "off"
+        "minimal"
+        "low"
+        "medium"
+        "high"
+        "xhigh"
+        "max"
+      ];
+      default = "high";
+      description = ''
+        Default thinking level. Available values: "off", "minimal", "low",
+        "medium", "high", "xhigh", "max".
+      '';
+    };
+
+    models = {
+      reasoning = lib.mkOption {
+        type = lib.types.str;
+        default = "${config.custom.programs.pi.defaultProvider}/${config.custom.programs.pi.defaultModel}";
+        description = "Provider-qualified model for reasoning-heavy tasks (main agent, explorer, code review).";
+      };
+      workhorse = lib.mkOption {
+        type = lib.types.str;
+        default = "${config.custom.programs.pi.defaultProvider}/gpt-6-luna";
+        description = "Provider-qualified model for bulk execution work (worker agent).";
+      };
+    };
+
+    settings = lib.mkOption {
+      type = jsonFormat.type;
+      default = { };
+      description = ''
+        Pi settings written to ~/.pi/agent/settings.json as a JSON object.
+        See https://github.com/badlogic/pi-mono for all supported settings.
+      '';
+    };
+
+    keybindings = lib.mkOption {
+      type = jsonFormat.type;
+      default = { };
+      description = ''
+        Pi keybindings written to ~/.pi/agent/keybindings.json as a JSON object.
+      '';
+    };
+
+    extraPackages = lib.mkOption {
+      type = with lib.types; listOf package;
+      default = [ ];
+      description = ''
+        Extra packages available on PATH for the wrapped pi binary.
+      '';
+    };
+
+    theme = lib.mkOption {
+      type = jsonFormat.type;
+      default = { };
+      description = ''
+        Pi theme definition written to ~/.pi/agent/themes/<name>.json.
+        Must include a `name`, `vars`, and all required color tokens.
+      '';
+    };
+
+    memory = {
+      text = lib.mkOption {
+        type = lib.types.nullOr lib.types.lines;
+        default = null;
+        description = ''
+          Inline content for ~/.pi/agent/AGENTS.md, or null to disable.
+          Mutually exclusive with memory.source.
+        '';
+      };
+
+      source = lib.mkOption {
+        type = lib.types.nullOr lib.types.path;
+        default = null;
+        description = ''
+          Path to a file used for ~/.pi/agent/AGENTS.md, or null to disable.
+          Mutually exclusive with memory.text.
+        '';
+      };
+    };
+
+  };
+
+  config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = !(cfg.memory.text != null && cfg.memory.source != null);
+        message = "Cannot specify both `custom.programs.pi.memory.text` and `custom.programs.pi.memory.source`";
+      }
+    ];
+
+    home = {
+      packages = lib.mkOrder 100 [ packageWithExtraPackages ];
+
+      sessionVariables = {
+        PI_ASK_USER_DISPLAY_MODE = "inline";
+        PI_SKIP_VERSION_CHECK = "1";
+      };
+
+      file = {
+        ".pi/agent/settings.json" = lib.mkIf (cfg.settings != { }) {
+          source = jsonFormat.generate "pi-settings.json" cfg.settings;
+        };
+
+        ".pi/agent/keybindings.json" = lib.mkIf (cfg.keybindings != { }) {
+          source = jsonFormat.generate "pi-keybindings.json" cfg.keybindings;
+        };
+
+        ".pi/agent/mcp.json" = lib.mkIf (config.programs.mcp.enable && config.programs.mcp.servers != { }) {
+          source = config.xdg.configFile."mcp/mcp.json".source;
+        };
+
+        ".pi/agent/models.json" = lib.mkIf localOllamaEnabled {
+          source = jsonFormat.generate "pi-models.json" {
+            providers.ollama = {
+              baseUrl = "http://${osConfig.services.ollama.host}:${toString osConfig.services.ollama.port}/v1";
+              api = "openai-completions";
+              apiKey = "ollama";
+              compat = {
+                supportsDeveloperRole = false;
+                maxTokensField = "max_tokens";
+              };
+              models = map (
+                modelId:
+                {
+                  id = modelId;
+                }
+                // lib.optionalAttrs (lib.elem modelId quickAnswerModels) {
+                  name = "Quick answer (${modelId}, local, no thinking)";
+                  reasoning = false;
+                  input = [
+                    "text"
+                    "image"
+                  ];
+                  samplingParams.reasoning_effort = "none";
+                }
+              ) localOllamaModels;
+            };
+          };
+        };
+
+        ".pi/agent/themes/${cfg.theme.name}.json" = lib.mkIf (cfg.theme != { }) {
+          source = jsonFormat.generate "pi-theme-${cfg.theme.name}.json" cfg.theme;
+        };
+
+        ".pi/agent/AGENTS.md" = lib.mkIf (cfg.memory.text != null || cfg.memory.source != null) (
+          if cfg.memory.text != null then { text = cfg.memory.text; } else { source = cfg.memory.source; }
+        );
+      };
+    };
+
+    custom.programs.pi = {
+      extraPackages = [
+        # Review the Node.js version provided by nixpkgs on every NixOS stable upgrade.
+        pkgs.nodejs
+        pkgs.bun
+        pkgs-unstable.codegraph
+      ];
+
+      # Review these pinned npm package versions on every NixOS stable upgrade.
+      packages = [
+        "npm:@mjakl/pi-subagent@3.1.0"
+        "npm:pi-ask-user@0.17.2"
+        "npm:@narumitw/pi-usage@0.69.2"
+        "npm:pi-vim-editor@0.10.0"
+      ];
+
+      settings = {
+        inherit (cfg) defaultProvider defaultModel defaultThinkingLevel;
+        theme = cfg.theme.name;
+        showHardwareCursor = true;
+        vimEditor.cursorShape = {
+          insert = "steady-bar";
+          normal = "steady-block";
+        };
+      };
+
+      keybindings = {
+        "tui.altScreen.halfPageUp" = "alt+u";
+        "tui.altScreen.halfPageDown" = "alt+d";
+        "tui.altScreen.lineDown" = "alt+j";
+        "tui.altScreen.lineUp" = "alt+k";
+        "tui.altScreen.bottom" = [
+          "end"
+          "shift+g"
+        ];
+      };
+
+      theme = {
+        "$schema" = "https://pi.dev/schemas/theme.schema.json";
+        name = "nord-teal";
+        vars = {
+          accent = nord.cyan;
+          dim = "#7f8794";
+          muted = "#a5abb6";
+        };
+        colors = {
+          accent = "accent";
+          border = "accent";
+          borderAccent = nord.cyan;
+          borderMuted = "muted";
+          success = nord.green;
+          error = nord.red;
+          warning = nord.yellow;
+          muted = "muted";
+          dim = "dim";
+          text = nord.fg;
+          thinkingText = "dim";
+          selectedBg = colors.background-alt;
+          userMessageBg = colors.background-alt;
+          userMessageText = nord.fg;
+          customMessageBg = colors.background-alt;
+          customMessageText = nord.fg;
+          customMessageLabel = "accent";
+          toolPendingBg = nord.bg;
+          toolSuccessBg = "#2e3a2e";
+          toolErrorBg = "#3a2e2e";
+          toolTitle = "accent";
+          toolOutput = "muted";
+          mdHeading = nord.yellow;
+          mdLink = nord.cyan;
+          mdLinkUrl = nord.blue;
+          mdCode = nord.cyan;
+          mdCodeBlock = "";
+          mdCodeBlockBorder = "muted";
+          mdQuote = "dim";
+          mdQuoteBorder = "muted";
+          mdHr = "muted";
+          mdListBullet = "accent";
+          toolDiffAdded = "#a4e0a0";
+          toolDiffRemoved = "#e8a0ac";
+          toolDiffContext = "muted";
+          syntaxComment = "dim";
+          syntaxKeyword = "#88b4f8";
+          syntaxFunction = nord.cyan;
+          syntaxVariable = nord.fg;
+          syntaxString = "#a4e0a0";
+          syntaxNumber = nord.magenta;
+          syntaxType = nord.brightCyan;
+          syntaxOperator = nord.blue;
+          syntaxPunctuation = "muted";
+          thinkingOff = "muted";
+          thinkingMinimal = "dim";
+          thinkingLow = nord.blue;
+          thinkingMedium = nord.cyan;
+          thinkingHigh = "accent";
+          thinkingXhigh = nord.magenta;
+          bashMode = nord.yellow;
+        };
+      };
+
+      memory.text = ''
+        # Global Context
+
+        ## Communication
+        - Talk to me as a peer engineer, not an assistant. Be direct, push back on bad ideas.
+        - No sycophancy — skip "Great question!", "Excellent point!", "You're absolutely right".
+        - When something is a subjective preference, say so. Don't frame opinions as facts.
+        - Assume I understand common programming concepts without over-explaining.
+        - Keep responses concise. Every token should be purposeful.
+
+        ## Workflow
+        - For ordinary read-only inspection, briefly state the approach and proceed without waiting for
+          approval. This includes file reads, non-mutating commands, and codebase exploration, unless
+          privileged or unusually expensive.
+        - Require explicit approval before editing files, mutating state, destructive or privileged actions,
+          rebuilds/deployments, or unusually expensive commands.
+        - Discuss approach before writing code. Surface trade-offs and get alignment first.
+        - If you discover an issue mid-implementation, stop and discuss.
+        - State assumptions explicitly rather than guessing silently.
+        - Before answering questions about external tools, libraries, platforms, or products, look
+          for and consult their current official upstream documentation. If official documentation
+          is unavailable or inaccessible, say so and use the best available sources. Prefer primary
+          sources over secondary sources; do not rely solely on training data.
+        - When a change has a practical validation path, explicitly suggest how I can test it after
+          applying it. For login or remote-access changes, tell me to verify the new access method
+          before closing the existing session.
+
+        ## Coding Standards
+        - Git: imperative mood, 50 char subject max, no conventional commit types
+        - Prefer self-documenting code over comments
+        - Make minimal, targeted changes that match existing project patterns
+
+        ## Safety
+        - Never force-push or reset --hard without asking
+        - Never touch .env files or secrets
+        - Always show diffs before committing
+        - Never add co-authored-by or any AI attribution trailers to git commits
+
+        ## Subagents
+        - Always use the `subagent` tool to delegate code review — never review your own work
+        - For broad initial source-repository architecture mapping, delegate to
+          codegraph-explorer before manual read/grep/bash exploration.
+        - For targeted symbol, call-flow, or impact-analysis questions, query CodeGraph
+          MCP directly in the parent session, reusing architecture findings already
+          present in the session.
+        - Delegate broad architecture follow-ups to codegraph-explorer.
+        - If CodeGraph is unavailable or not applicable, say so explicitly before
+          falling back to manual exploration.
+        - Call `subagent` with a `calls` array containing `agent` and `prompt` for each task
+        - Use `initialContext: "empty"` for isolated tasks; use `initialContext: "parent"`
+          only when the full parent conversation is needed
+        - After implementing changes, delegate review before reporting completion
+      '';
+
+    };
+  };
+}
+
+  ;
+}

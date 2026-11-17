@@ -30,7 +30,7 @@
   };
 
   # The LAN address is assigned through an OPNsense DHCP reservation recorded in
-  # features/lan-hosts.nix rather than configured on this interface.
+  # modules/networking/lan-hosts.nix rather than configured on this interface.
 
   virtualisation.incus.enable = true;
 

@@ -1,0 +1,123 @@
+{ lib, ... }:
+{
+  flake.modules.homeManager.neovim = lib.mkOrder 200 ({ config, lib, ... }:
+let
+  cfg = config.programs.neovim;
+  neovimCustomDictionaryPathrelativeToHomeDirectory = ".config/nvim/spell/nixen.utf-8";
+in
+{
+  config = lib.mkIf cfg.enable {
+    programs.neovim.initLua = lib.mkOrder 200 ''
+      -- ----------------------------------------------------------
+      -- spelling and costum dictrionary use
+      -- ----------------------------------------------------------
+      -- Define the custom command for nixen spell file compilation
+      vim.api.nvim_create_user_command('MakeNixSpell', function()
+        vim.cmd('mkspell! ~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.spl ~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.add')
+      end, {})
+
+      local function compile_nix_spell_file_if_needed()
+        local spellfile = vim.fn.expand("~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.spl")
+        local addfile = vim.fn.expand("~/${neovimCustomDictionaryPathrelativeToHomeDirectory}.add")
+
+        if vim.fn.filereadable(addfile) == 0 then return end
+        if vim.fn.filereadable(spellfile) == 0 then
+          vim.notify("Generating spell file...", vim.log.levels.INFO)
+          vim.cmd('silent! MakeNixSpell')
+          vim.api.nvim_echo({}, false, {})
+          return
+        end
+
+        local spell_timestamp = vim.fn.system('stat -c %Y ' .. vim.fn.shellescape(spellfile))
+        local add_timestamp = vim.fn.system('stat -c %Y ' .. vim.fn.shellescape(addfile))
+
+        if not vim.fn.filereadable(spellfile) or add_timestamp > spell_timestamp then
+          vim.cmd('silent! MakeNixSpell')
+        end
+      end
+
+      vim.api.nvim_create_autocmd("VimEnter", {
+        pattern = "*",
+        callback = compile_nix_spell_file_if_needed,
+      })
+
+      vim.api.nvim_set_keymap('n', '<F5>', ":setlocal spell! spellsuggest=best,5 spelllang=en_us,nixen<CR>", { noremap = true, silent = true })
+
+      -- Automatically enable spell checking for a broad set of filetypes.
+      -- For code files, treesitter's @spell captures scope it to comments and strings only.
+      -- For text-based formats (markdown, gitcommit) it applies to the whole buffer.
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "gitcommit,markdown,lua,python,c,cpp,nix,java,sh,bash,javascript,typescript",
+        command = "setlocal spell spellsuggest=best,5 spelllang=en_us,nixen",
+      })
+
+      local function suggest_spelling()
+        require('telescope.builtin').spell_suggest(require('telescope.themes').get_ivy({
+          layout_config = { height = 8, prompt_position = 'top' },
+          results_title = false,
+          previewer = false,
+          attach_mappings = function(prompt_bufnr)
+            local showmode = vim.o.showmode
+            vim.api.nvim_create_autocmd('BufWinLeave', {
+              buffer = prompt_bufnr,
+              once = true,
+              callback = function()
+                vim.o.showmode = showmode
+              end,
+            })
+            vim.o.showmode = false
+            return true
+          end,
+        }))
+      end
+
+      vim.keymap.set('n', 'z=', suggest_spelling, { silent = true, desc = "Spelling suggestions" })
+      vim.keymap.set('n', ']s', function()
+        vim.cmd('normal! ]s')
+        suggest_spelling()
+      end, { silent = true, desc = "Next misspelled word & suggest" })
+      vim.keymap.set('n', '[s', function()
+        vim.cmd('normal! [s')
+        suggest_spelling()
+      end, { silent = true, desc = "Previous misspelled word & suggest" })
+    '';
+
+    home.file = {
+      "${neovimCustomDictionaryPathrelativeToHomeDirectory}.add".text = ''
+        tmux
+        Tmux
+        Kobi
+        alacritty
+        ghostty
+        wezterm
+        Adv360
+        ZMK
+        NixOS
+        ToDo
+        rofi
+        systemd
+        nixos
+        polybar
+        i3
+        i3wm
+        xorg
+        wayland
+        sway
+        dunst
+        waybar
+        zsh
+        VirtualBox
+        KVM
+        rsync
+        gpg
+        autosave
+        lua
+        syncthing
+        autostart
+        sxhkd
+        neovim
+      '';
+    };
+  };
+});
+}

@@ -9,7 +9,7 @@
     inputs.self.modules.homeManager.session-variables
     inputs.self.modules.homeManager.starship
     inputs.self.modules.homeManager.fzf
-    inputs.self.modules.homeManager.neovim # uses default.nix
+    inputs.self.modules.homeManager.neovim
     # inputs.self.modules.homeManager.git
     inputs.self.modules.homeManager.zoxide
     inputs.self.modules.homeManager.zsh
@@ -19,7 +19,7 @@
     #  inputs.self.modules.homeManager.rofi
     inputs.self.modules.homeManager.gpg
     inputs.self.modules.homeManager.ssh-client
-    # ../../features/rofi/_/scripts/buku-bookmarks.nix
+    # Buku bookmarks are included with homeManager.rofi.
     #  inputs.self.modules.homeManager.helloworld-python
     inputs.self.modules.homeManager.tmux-sessionizer
     inputs.self.modules.homeManager.cheat-sh
@@ -27,7 +27,7 @@
     #  inputs.self.modules.homeManager.wallpaper
     inputs.self.modules.homeManager.atuin
     inputs.self.modules.homeManager.lazygit
-    #  inputs.self.modules.homeManager.emacs # uses default.nix
+    #  inputs.self.modules.homeManager.emacs
     #  inputs.self.modules.homeManager.xdg-mime-apps
     #  inputs.self.modules.homeManager.gtk
     #  inputs.self.modules.homeManager.qt

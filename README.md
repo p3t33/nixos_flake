@@ -120,10 +120,9 @@ A headless virtual machine for to play with to use for development purposes.
 - **machines**: The machines that can be configured using this repository. With each
 machine having its high level .nix configuration that define machine specific settings
 and include code that can be shared with other machines.
-- **modules**: Divided into modules to be used by home-manger(including user scripts)
-to mange user configuration and into nixos modules which are mostly configurations
-I found in /etc/nixos/configuration.nix and refactored into responsibilities that can
-then be including by the various machines to achieve code reuse.
+- **modules**: Reusable NixOS and home-manager modules organized by domain, such as
+  desktop, development, networking, services, system, terminal, and virtualization.
+  Profiles group features for use by machines.
 - **install**: Scripts for deploying NixOS to new machines. Includes
   `deploy_with_nixos_anywhere.sh` (remote install over SSH) and
   `install_from_live_cd.sh` (local install from a live CD).
