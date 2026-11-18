@@ -1,5 +1,11 @@
-This directory includes all the machines that are declared in the
-flake.nix file. Each such machines is a high level configuration that
-imports into itself all the fractured configuration files that
-are shared with other machines. Each such high level configuration
-have some machine specific settings as well(E.g Nvidia drivers).
+# Machines
+
+The flake automatically discovers NixOS hosts from `machines/<name>/configuration.nix`.
+**The directory name becomes both the NixOS hostname and the key in `nixosConfigurations`.**
+For example, `machines/home-desktop/configuration.nix` defines the host
+`home-desktop` and is selected with `--flake .#home-desktop`.
+
+Each host imports shared modules and defines its machine-specific settings,
+such as hardware configuration. Directories without a `configuration.nix`,
+such as `generic_linux_distro` for standalone Home Manager, are not discovered
+as NixOS hosts.

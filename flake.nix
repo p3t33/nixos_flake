@@ -58,6 +58,7 @@
         config.allowUnfree = true;
         overlays = [ nomachineVersionFix ];
       };
+
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
@@ -65,6 +66,25 @@
 
       lib = nixpkgs.lib;
 
+      # Discover NixOS machines by directory name.
+      # Only directories containing configuration.nix are included.
+      machinesByDirectoryName = lib.filterAttrs
+        (name: type:
+          type == "directory"
+          && builtins.pathExists ./machines/${name}/configuration.nix
+        )
+        (builtins.readDir ./machines);
+
+      # one of the machines has different username which
+      # is stated here, this section is used to change
+      # specific values for specific machines.
+      machineOverrides = {
+        kvm-nixos-server = {
+          primeUsername = "drone";
+        };
+      };
+
+      # function that applies common logic for all of the machines.
       mkHost = { hostName, primeUsername ? "kmedrish" }: lib.nixosSystem {
         inherit system;
         specialArgs = {
@@ -92,15 +112,14 @@
       systems = [ system ];
 
       flake = {
-        nixosConfigurations = {
-          kvm-nixos-server = mkHost { hostName = "kvm-nixos-server"; primeUsername = "drone"; };
-          nas              = mkHost { hostName = "nas"; };
-          home-assistant   = mkHost { hostName = "home-assistant"; };
-          sisyphus-miner   = mkHost { hostName = "sisyphus-miner"; };
-          work-pc          = mkHost { hostName = "work-pc"; };
-          home-desktop     = mkHost { hostName = "home-desktop"; };
-          helper           = mkHost { hostName = "helper"; };
-        };
+        nixosConfigurations = lib.mapAttrs
+          (machineName: _:
+            mkHost (
+              (machineOverrides.${machineName} or {})
+              // { hostName = machineName; }
+            )
+          )
+          machinesByDirectoryName;
 
         # Created for the case I would like to apply home manger settings on non NixOS
         # OS such as Lubuntu.

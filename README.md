@@ -23,11 +23,14 @@ and maintenance, streamlining operations across my desktops and homelab.
 > can serve as a reference.
 
 # Overall Design Philosophy
-- Multiple machines are defined with emphasis on shared code between them
-in order to achieve consistency and to avoid code repeat where possible. With
-each machine having its own separate responsibility.
-- [Import all and enable pattern](https://kobimedrish.com/posts/scaling_nixos_with_import_all_and_enable_pattern/) has been implemented for scaling the number
-of machines a simple task.
+- **Modules** define reusable features. Flake-parts lets related NixOS and Home
+  Manager definitions live together while keeping their evaluations separate.
+  Import-tree discovers public modules under `modules/`.
+- **Profiles** group related features using the [Import all and enable pattern](https://kobimedrish.com/posts/scaling_nixos_with_import_all_and_enable_pattern/).
+  Discovery makes modules available; profile and feature flags control what gets enabled.
+- **Machines** select profiles and add host-specific settings. The flake discovers
+  `machines/<name>/configuration.nix` and uses **the directory name as the NixOS
+  hostname**. See [Machines](machines/README.md).
 - Work flow is heavily skewed towards the use of the keyboard and the terminal.
 Some keyboard bindings may look strange but they are effected by the fact
 that I am using a programmable keyboard(configurations in
