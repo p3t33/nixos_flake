@@ -1,0 +1,50 @@
+{ ... }:
+{
+  flake.modules.homeManager.pi =
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  cfg = config.custom.programs.pi;
+in
+{
+  options.custom.programs.pi = {
+    extensions = lib.mkOption {
+      type = lib.types.attrsOf (lib.types.either lib.types.lines lib.types.path);
+      default = { };
+      description = ''
+        Custom extensions as an attrset of `extensionName = inlineContent | /path/to/extension.ts`.
+        Extensions are stored in .pi/agent/extensions/<name>.ts.
+      '';
+    };
+
+  };
+
+  config = lib.mkIf cfg.enable {
+    home.file = lib.mapAttrs' (
+      name: content:
+      lib.nameValuePair ".pi/agent/extensions/${name}.ts" (
+        if lib.isPath content then { source = content; } else { text = content; }
+      )
+    ) cfg.extensions;
+
+    custom.programs.pi = {
+      extensions = {
+        fetch-url = import ../_/extensions/fetch-url.nix { inherit lib pkgs; };
+        learning-planner = import ../_/extensions/learning-planner.nix;
+        parse-document = import ../_/extensions/parse-document.nix { inherit lib pkgs; };
+        ocr = import ../_/extensions/ocr.nix { inherit lib pkgs; };
+        status-bar = import ../_/extensions/status-bar.nix;
+        cool-header = ../_/extensions/cool-header.ts;
+        tmux-attention = import ../_/extensions/tmux-attention.nix;
+      };
+    };
+  };
+}
+
+  ;
+}

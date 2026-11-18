@@ -1,0 +1,102 @@
+{ lib, ... }:
+{
+  flake.modules.homeManager.emacs = lib.mkOrder 500 ({ lib, config, ... }:
+
+let
+  cfg = config.programs.emacs;
+in
+{
+
+  config = lib.mkIf cfg.enable {
+  programs.emacs.extraPackages = epkgs: with epkgs; [
+    evil
+    evil-collection
+  ];
+  programs.emacs.extraConfig = lib.mkOrder 200 ''
+      ;; =================================
+      ;; Configure and initialize evil-mode
+      ;; =================================
+      (use-package evil
+       :ensure nil
+       :init
+       ;; evil-collection assumes evil-want-keybinding is set to nil and
+       ;; evil-want-integration is set to t before loading evil and evil-collection.
+       ;; Note some other packages may load evil (e.g. evil-leader) so bear that
+       ;; in mind when determining when to set the variables.
+       (setq evil-want-integration t) ;; This is optional since it's already set to t by default
+       (setq evil-want-keybinding nil)
+       (setq evil-want-C-i-jump t)
+
+       (setq evil-vsplit-window-right t)
+       (setq evil-split-window-below t)
+       :config
+       (evil-mode 1)
+
+       (defun save-and-switch-to-normal-mode ()
+        "Save the current buffer and switch to normal mode, preserving cursor position."
+        (interactive)
+        ;; Save the current point as a marker so it moves with buffer changes
+        (let ((pos (point-marker)))
+         ;; Save the buffer
+         (save-buffer)
+         ;; Restore the cursor position
+         (goto-char pos)
+         ;; Clean up the marker to avoid a potential resource leak
+         (set-marker pos nil))
+        ;; Switch to normal mode
+        (evil-normal-state))
+
+        ;; Set the key bindings for normal and insert modes
+        (define-key evil-normal-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
+        (define-key evil-insert-state-map (kbd "C-s") 'save-and-switch-to-normal-mode)
+
+        ;; Allow pasting from OS clipboard in Insert mode using Ctrl+Shift+v
+        (define-key evil-insert-state-map (kbd "C-S-v") (lambda () (interactive) (evil-paste-from-register ?+))))
+
+        ;; recenter org around search string
+        ;; same as:
+        ;;vim.keymap.set('n', 'n', "nzzzv", opts)
+        ;; --------------------------------------
+        (advice-add 'evil-search-next :after
+          (lambda (&rest _) (evil-scroll-line-to-center (line-number-at-pos))))
+        (advice-add 'evil-search-previous :after
+          (lambda (&rest _) (evil-scroll-line-to-center (line-number-at-pos))))
+           ;; --------------------------------------
+
+        (use-package evil-collection
+         :ensure nil
+         :after evil
+         :config
+         ;; limits the mode list to integrate with, might change this
+         ;; in the future.
+         (setq evil-collection-mode-list '(dashboard dired ibuffer))
+         (evil-collection-init))
+
+        ;; Unmap SPC/RET/TAB from evil motion state so org-mode can handle them
+        ;; (e.g. org-return-follows-link, visibility cycling, leader key).
+        ;; Use <tab> (physical key) instead of TAB (ASCII 9) to preserve C-i
+        ;; for evil-jump-forward (enabled via evil-want-C-i-jump).
+        ;; TODO: <tab> vs C-i distinction only works in GUI Emacs. In terminal
+        ;; they are the same keycode (ASCII 9), so C-i jump-forward won't work.
+        ;; Emacs 31 adds kitty keyboard protocol support which solves this.
+        ;; Revisit when upgrading to Emacs 31+.
+        (with-eval-after-load 'evil-maps
+         (define-key evil-motion-state-map (kbd "SPC") nil)
+         (define-key evil-motion-state-map (kbd "RET") nil)
+         (define-key evil-motion-state-map (kbd "<tab>") nil))
+
+        (with-eval-after-load 'evil-maps
+         (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up))
+
+
+        (evil-define-key 'normal 'global (kbd "C-h") 'evil-window-left)
+        (evil-define-key 'normal 'global (kbd "C-j") 'evil-window-down)
+        (evil-define-key 'normal 'global (kbd "C-k") 'evil-window-up)
+        (evil-define-key 'normal 'global (kbd "C-l") 'evil-window-right)
+           ;; =================================
+
+      (evil-set-undo-system 'undo-redo)
+  '';
+};
+});
+}

@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:denful/import-tree";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -56,6 +58,7 @@
         config.allowUnfree = true;
         overlays = [ nomachineVersionFix ];
       };
+
       pkgs-unstable = import inputs.nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
@@ -63,6 +66,25 @@
 
       lib = nixpkgs.lib;
 
+      # Discover NixOS machines by directory name.
+      # Only directories containing configuration.nix are included.
+      machinesByDirectoryName = lib.filterAttrs
+        (name: type:
+          type == "directory"
+          && builtins.pathExists ./machines/${name}/configuration.nix
+        )
+        (builtins.readDir ./machines);
+
+      # one of the machines has different username which
+      # is stated here, this section is used to change
+      # specific values for specific machines.
+      machineOverrides = {
+        kvm-nixos-server = {
+          primeUsername = "drone";
+        };
+      };
+
+      # function that applies common logic for all of the machines.
       mkHost = { hostName, primeUsername ? "kmedrish" }: lib.nixosSystem {
         inherit system;
         specialArgs = {
@@ -82,35 +104,42 @@
         ];
       };
     in
-    {
-      nixosConfigurations = {
-        kvm-nixos-server = mkHost { hostName = "kvm-nixos-server"; primeUsername = "drone"; };
-        nas              = mkHost { hostName = "nas"; };
-        home-assistant   = mkHost { hostName = "home-assistant"; };
-        sisyphus-miner   = mkHost { hostName = "sisyphus-miner"; };
-        work-pc          = mkHost { hostName = "work-pc"; };
-        home-desktop     = mkHost { hostName = "home-desktop"; };
-        helper           = mkHost { hostName = "helper"; };
-      };
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.flake-parts.flakeModules.modules
+        (inputs.import-tree ./modules)
+      ];
+      systems = [ system ];
 
-      # Created for the case I would like to apply home manger settings on non NixOS
-      # OS such as Lubuntu.
-      # For this to work:
-      # The username on the existing system most match the one defined in homeConfigurations.
-      homeConfigurations = {
-        kmedrish = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = {
-            inherit inputs pkgs-unstable;
-            hostSpecific = {
-              hostName = "generic_linux_distro";
-              primeUsername = "kmedrish";
+      flake = {
+        nixosConfigurations = lib.mapAttrs
+          (machineName: _:
+            mkHost (
+              (machineOverrides.${machineName} or {})
+              // { hostName = machineName; }
+            )
+          )
+          machinesByDirectoryName;
+
+        # Created for the case I would like to apply home manger settings on non NixOS
+        # OS such as Lubuntu.
+        # For this to work:
+        # The username on the existing system most match the one defined in homeConfigurations.
+        homeConfigurations = {
+          kmedrish = inputs.home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = {
+              inherit inputs pkgs-unstable;
+              hostSpecific = {
+                hostName = "generic_linux_distro";
+                primeUsername = "kmedrish";
+              };
             };
+            modules = [
+              ./machines/generic_linux_distro/home.nix
+              inputs.sops-nix.homeManagerModules.sops
+            ];
           };
-          modules = [
-            ./machines/generic_linux_distro/home.nix
-            inputs.sops-nix.homeManagerModules.sops
-          ];
         };
       };
     };

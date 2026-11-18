@@ -1,6 +1,0 @@
-{
-  imports = [
-    ./torrent
-    ./usenet
-  ];
-}

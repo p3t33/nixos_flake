@@ -1,0 +1,28 @@
+{ ... }:
+{
+  flake.modules.nixos.motd =
+# This unit was created mostly for readability and constituency with
+# the rest of the cofigurations, you can always use users.motd = <...>.
+#
+# I used figlet to genereate my motd, and to be more specific:
+#
+# figlet -t -f cricket "your text"
+
+{config, lib, ...}:
+let
+  cfg = config.custom.motd;
+in
+{
+  options.custom.motd = {
+    enable = lib.mkEnableOption "Enable setting a Message of the Day (MOTD)";
+    message = lib.mkOption {
+      type = lib.types.str;
+      description = "defines moto of the day";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    users.motd = cfg.message;
+  };
+};
+}

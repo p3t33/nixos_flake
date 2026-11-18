@@ -1,0 +1,98 @@
+{ ... }:
+{
+  flake.modules.nixos.packages-development = {
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.custom.apps.development;
+  myPython = pkgs.python3.withPackages (ps: [
+    ps.pip
+    ps.virtualenv
+  ]);
+in
+{
+  options.custom.apps.development.enable =
+    lib.mkEnableOption "Enable developer tools and language servers";
+
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      # editors
+      neovim
+
+      # UML
+      plantuml
+      graphviz
+      # Review this explicit version choice on every NixOS stable upgrade.
+      jdk11
+
+      #version control
+      git
+      git-crypt
+      delta
+      lazygit
+      lazydocker
+
+      # lua
+      lua-language-server
+      lua
+
+      # C/C++
+      valgrind
+      kdePackages.kcachegrind # front end for callgrind and cachegrind.
+      perf # profiling tool.
+      cppcheck # static analysis tool for c/c++
+      gcc
+      ccls # LSP for C/CPP
+      clang-tools # has clangd as part of it, and clang-format.
+      clang
+      cmake
+      gnumake
+      pkg-config # Used to get compile/linking flags(E.g gcc myprogram.c $(pkg-config --cflags --libs libpng) -o myprogram)
+
+      # debug
+      gdb
+      cgdb
+      lldb
+      rr # record and replay to be used with gdb.
+
+      # nix devlepoment
+      #rnix-lsp
+
+      # python devlepoment
+      # ------------------
+      #
+      # For packages to be able to find each other they must be delared toghter
+      # I installed there the bare minimum minimum to be able to use python
+      # venv scheme.
+
+      myPython
+      pyright # language server.
+
+      # networking
+      wireshark
+
+      # shell script static checker
+      shellcheck
+
+      # serial
+      picocom
+
+      #general
+      universal-ctags
+
+      # encryption
+      openssl
+
+      # message bus system
+      dbus
+      hugo
+
+      # nix formator
+      nixfmt
+    ];
+  };
+};
+}
