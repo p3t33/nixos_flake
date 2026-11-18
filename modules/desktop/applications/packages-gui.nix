@@ -4,6 +4,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 
@@ -45,7 +46,7 @@ in
 
       # Remote control
       tigervnc
-      nomachine-client
+      pkgs-unstable.nomachine-client
 
       # pdf annotation
       xournalpp

@@ -43,20 +43,9 @@
     { nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
-      # Review whether this version override is still needed on every NixOS stable upgrade.
-      nomachineVersionFix = final: prev: {
-        nomachine-client = prev.nomachine-client.overrideAttrs (old: {
-          version = "10.1.7";
-          src = prev.fetchurl {
-            url = "https://download.nomachine.com/download/10.1/Linux/nomachine-enterprise-client_10.1.7_1_x86_64.tar.gz";
-            hash = "sha256-qvScbUV1Tt7LxYgrNpcdsRjjAippdZ/L1nrteqekC8Q=";
-          };
-        });
-      };
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [ nomachineVersionFix ];
       };
 
       pkgs-unstable = import inputs.nixpkgs-unstable {
@@ -93,9 +82,6 @@
         };
         modules = [
           ./machines/${hostName}/configuration.nix
-          {
-            nixpkgs.overlays = [ nomachineVersionFix ];
-          }
           inputs.home-manager.nixosModules.home-manager
           inputs.nix-index-database.nixosModules.nix-index
           inputs.sops-nix.nixosModules.sops
