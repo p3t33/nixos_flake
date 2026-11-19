@@ -32,11 +32,21 @@ in
     warnings = lib.optional (cfg.authorizedKeys == [])
       "The SFTP backup receiver has no authorized keys; add a dedicated device public key before configuring router backups.";
 
+    # The default SSH PAM profile starts a systemd user manager even for SFTP.
+    # Track backup sessions without starting it or launching user services
+    # such as Watchman, Mutagen, and tmux for the backup account.
+    security.pam.services.sshd-network-backup = {
+      unixAuth = false;
+      startSession = true;
+      rules.session.systemd.settings.class = "user-light";
+    };
+
     services.openssh = {
       enable = true;
       allowSFTP = true;
       extraConfig = ''
         Match User network-backup
+            PAMServiceName sshd-network-backup
             ChrootDirectory ${cfg.directory}
             ForceCommand internal-sftp -d / -u 0007
             AuthenticationMethods publickey
